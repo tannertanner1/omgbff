@@ -1,0 +1,131 @@
+import NextAuth, { DefaultSession } from 'next-auth'
+import { authConfig } from '@/auth.config'
+// Auth provider
+import { Resend as ResendClient } from 'resend'
+import Resend from 'next-auth/providers/resend'
+import { VerifyEmail } from '@/lib/emails/verify-email'
+import { LoginEmail } from '@/lib/emails/login-email'
+// Database adapter
+import { Adapter } from 'next-auth/adapters'
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { db } from './db'
+import { sessions, users, accounts, verificationTokens } from './schema'
+import { eq } from 'drizzle-orm'
+// Session strategy
+import { JWT } from 'next-auth/jwt'
+
+// TypeScript module augmentation
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string
+      role?: string
+      emailVerified?: Date | null
+    } & DefaultSession['user']
+  }
+  interface User {
+    id?: string
+    role?: string
+    emailVerified?: Date | null
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    // OpenID Connect claims
+    idToken?: string
+    role?: string
+    emailVerified?: Date | null
+  }
+}
+
+const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  debug: process.env.NODE_ENV !== 'production', // Debug in development only
+  secret: process.env.AUTH_SECRET,
+  ...authConfig, // Spreads authConfig object
+  pages: {
+    signIn: '/signin',
+    verifyRequest: '/verify-request',
+    error: '/error'
+  },
+  // adapter: DrizzleAdapter(db) as any,
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+    verificationTokensTable: verificationTokens
+  }) as Adapter,
+  session: { strategy: 'jwt' },
+  providers: [
+    Resend({
+      apiKey: process.env.AUTH_RESEND_KEY,
+      from: process.env.AUTH_RESEND_EMAIL,
+      async sendVerificationRequest({ identifier: email, url }) {
+        const user = await db.query.users.findFirst({
+          where: (users, { eq }) => eq(users.email, email)
+        })
+        await resend.emails.send({
+          from: process.env.AUTH_RESEND_EMAIL! || 'onboarding@resend.dev',
+          to: email,
+          subject: user?.emailVerified
+            ? 'Log in to your account'
+            : 'Verify your email address',
+          react: user?.emailVerified
+            ? LoginEmail({ url })
+            : VerifyEmail({ url })
+        })
+      }
+    })
+  ],
+  callbacks: {
+    // The `user` argument is only available when using the `database` session strategy;
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+        token.emailVerified = user.emailVerified
+      }
+      return token
+    },
+    // the `token` argument is only available when using the `jwt` session strategy.
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          session: token.session,
+          role: token.role,
+          emailVerified: token.emailVerified
+        }
+      }
+    },
+    authorized: async ({ auth, request }) => {
+      const { pathname } = request.nextUrl
+      // Require authentication only for dashboard routes
+      if (pathname.startsWith('/dashboard')) {
+        return !!auth
+      }
+      // Allow access to all other routes
+      return true
+    }
+  },
+  events: {
+    async createUser({ user }) {
+      if (user.id) {
+        await db
+          .update(users)
+          .set({ role: 'user' })
+          .where(eq(users.id, user.id))
+      }
+    },
+    async linkAccount({ user }) {
+      if (user.id) {
+        await db
+          .update(users)
+          .set({ emailVerified: new Date() })
+          .where(eq(users.id, user.id))
+      }
+    }
+  }
+})
