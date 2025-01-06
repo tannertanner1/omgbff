@@ -1,33 +1,21 @@
-// 'use server'
-
-// import { signIn } from '@/lib/auth'
-
-// export async function signin(formData: FormData) {
-//   console.log(formData)
-//   await signIn('resend', formData)
-// }
-
 'use server'
 
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
 import { auth, signIn } from '@/lib/auth'
+
+import { z } from 'zod'
 import type { ActionResponse } from '@/types/auth'
 
 const emailSchema = z.object({
   email: z.string().email('Invalid email address')
 })
 
-export async function signin(
-  prevState: ActionResponse | null,
+export async function login(
+  _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
   const session = await auth()
-
-  // If user is already authenticated, return success
-  if (session) {
-    redirect('/dashboard')
-  }
+  if (session) redirect('/dashboard')
 
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000))
@@ -37,23 +25,24 @@ export async function signin(
       email: formData.get('email') as string
     }
 
-    // Validate the form data
     const validatedData = emailSchema.safeParse(rawData)
 
     if (!validatedData.success) {
       return {
         success: false,
         message: 'Please fix the errors in the form',
-        errors: validatedData.error.flatten().fieldErrors
+        errors: validatedData.error.flatten().fieldErrors,
+        inputs: rawData
       }
     }
 
-    const signInResult = await signIn('resend', {
+    const result = await signIn('resend', {
       email: validatedData.data.email,
-      redirect: false
+      redirect: false,
+      redirectTo: '/dashboard'
     })
 
-    if (signInResult?.error) {
+    if (result?.error) {
       return {
         success: false,
         message: 'Failed to send authentication email. Please try again.'
@@ -62,7 +51,7 @@ export async function signin(
 
     return {
       success: true,
-      message: 'Check your inbox to continue.'
+      message: 'Check your inbox to continue'
     }
   } catch (error) {
     console.error('Authentication error: ', error)
@@ -73,4 +62,7 @@ export async function signin(
   }
 }
 
-/** @see https://v0.dev/chat/CiFWYqPHKvT?b=b_0...&f=0 */
+/**
+ * @see https://v0.dev/chat/CiFWYqPHKvT?b=b_0...&f=0
+ * @see https://youtu.be/KhO4VjaYSXU?si=CWlmzn0osAe4rW2v
+ */

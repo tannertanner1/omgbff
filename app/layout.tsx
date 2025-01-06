@@ -18,7 +18,7 @@ const mono = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'My App',
+  title: 'OMG BFF',
   description: 'PNPM, React 19, Next, TypeScript, Tailwind CSS, shadcn UI'
 }
 
