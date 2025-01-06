@@ -1,5 +1,4 @@
 import NextAuth, { DefaultSession } from 'next-auth'
-import { authConfig } from '@/auth.config'
 // Auth provider
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
@@ -44,11 +43,9 @@ const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: process.env.NODE_ENV !== 'production', // Debug in development only
   secret: process.env.AUTH_SECRET,
-  ...authConfig, // Spreads authConfig object
   pages: {
     signIn: '/signin',
-    verifyRequest: '/verify-request',
-    error: '/error'
+    verifyRequest: '/verify-request'
   },
   // adapter: DrizzleAdapter(db) as any,
   adapter: DrizzleAdapter(db, {
@@ -67,7 +64,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: (users, { eq }) => eq(users.email, email)
         })
         await resend.emails.send({
-          from: process.env.AUTH_RESEND_EMAIL! || 'onboarding@resend.dev',
+          from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
           subject: user?.emailVerified
             ? 'Log in to your account'

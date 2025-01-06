@@ -480,6 +480,27 @@ function ChevronUp(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
+function CircleCheck(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+      <path d='M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0' />
+      <path d='M9 12l2 2l4 -4' />
+    </svg>
+  )
+}
+
 function CirclePlus(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -1367,6 +1388,55 @@ function List(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
+function LoaderQuarter(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+      <path d='M12 6l0 -3' />
+      <path d='M6 12l-3 0' />
+      <path d='M7.75 7.75l-2.15 -2.15' />
+    </svg>
+  )
+}
+
+function Loader(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+      <path d='M12 6l0 -3' />
+      <path d='M16.25 7.75l2.15 -2.15' />
+      <path d='M18 12l3 0' />
+      <path d='M16.25 16.25l2.15 2.15' />
+      <path d='M12 18l0 3' />
+      <path d='M7.75 16.25l-2.15 2.15' />
+      <path d='M6 12l-3 0' />
+      <path d='M7.75 7.75l-2.15 -2.15' />
+    </svg>
+  )
+}
+
 function LockPassword(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -2157,6 +2227,7 @@ export {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  CircleCheck,
   CirclePlus,
   ClockCheck,
   Clock,
@@ -2198,6 +2269,8 @@ export {
   ListCheck,
   ListDetails,
   List,
+  LoaderQuarter,
+  Loader,
   LockPassword,
   Lock,
   Logout,

@@ -4,7 +4,7 @@ import { Header } from '@/components/header'
 import { redirect } from 'next/navigation'
 
 // import { SignIn } from '@/components/sign-in'
-// import SignOut from '@/components/sign-out'
+import SignOut from '@/components/sign-out'
 
 function Paw(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -33,14 +33,7 @@ function Paw(props: React.SVGProps<SVGSVGElement>) {
 function Component() {
   return (
     <div className='flex w-full max-w-sm flex-col gap-6'>
-      <Link
-        href='/signin'
-        className='flex items-center gap-2 self-center font-medium'
-      >
-        {/* <div className='flex h-6 w-6 items-center justify-center rounded-xl bg-primary text-primary-foreground' /> */}
-        <Paw className='h-5 w-5' aria-hidden='true' />
-        Meow
-      </Link>
+      <SignOut />
     </div>
   )
 }
@@ -52,7 +45,7 @@ export default async function Page() {
     <main className='container mx-auto w-full max-w-5xl flex-grow'>
       <Header />
       <div className='flex flex-col items-center py-12'>
-        {!session ? redirect('/dashboard') : <Component />}
+        {!session ? redirect('/') : <Component />}
       </div>
     </main>
   )

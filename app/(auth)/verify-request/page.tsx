@@ -5,15 +5,57 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+
+function Component() {
+  return (
+    <div className='container flex h-[100vh] items-center justify-center'>
+      <Card className='w-full max-w-md border-0 shadow-none'>
+        <CardHeader className='space-y-1'>
+          <CardTitle className='text-2xl font-semibold tracking-tight'>
+            Verify your email
+          </CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-4'>
+          <p className='text-sm text-muted-foreground'>
+            Email send!
+            {/* Verification email sent! */}
+            <br />
+            Check your inbox to continue
+            {/* Please check your inbox and click the link to confirm your email. */}
+          </p>
+          <div className='flex items-center justify-between'>
+            <p className='text-sm text-muted-foreground'>
+              {/* {!canResend
+                ? `Resend in ${countdown} seconds`
+                : "Didn't receive the email?"} */}
+            </p>
+            <Button
+              variant='ghost'
+              // disabled={!canResend}
+              // onClick={() => {
+              //   setCountdown(60)
+              //   setCanResend(false)
+              // }}
+            >
+              Resend
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 export default function Page() {
   return (
-    <Card className='mx-auto mt-8 max-w-md'>
-      <CardHeader>
-        <CardTitle>Email sent!</CardTitle>
-        <CardDescription>Check your inbox to continue</CardDescription>
-      </CardHeader>
-    </Card>
+    // <Card className='mx-auto mt-8 max-w-md'>
+    //   <CardHeader>
+    //     <CardTitle>Email sent!</CardTitle>
+    //     <CardDescription>Check your inbox to continue</CardDescription>
+    //   </CardHeader>
+    // </Card>
+    <Component />
   )
 }
 

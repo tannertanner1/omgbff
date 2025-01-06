@@ -1,16 +1,16 @@
-import { signOut } from "@/lib/auth";
+import { signOut } from '@/lib/auth'
 
 export default function SignOut() {
   return (
-    <div>
+    <div className='flex items-center gap-2 self-center font-medium'>
       <form
         action={async (formData: FormData) => {
-          "use server";
-          await signOut();
+          'use server'
+          await signOut()
         }}
       >
-        <button type="submit">Sign out</button>
+        <button type='submit'>Sign out</button>
       </form>
     </div>
-  );
+  )
 }

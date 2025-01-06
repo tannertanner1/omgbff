@@ -36,11 +36,12 @@ const Header = () => {
 
   return (
     <PageWrapper>
-      <header className='mt-6 flex h-20 w-full items-center justify-between rounded-full px-4'>
+      {/* <header className='mt-6 flex h-20 w-full items-center justify-between rounded-full px-4'> */}
+      <header className='flex h-20 w-full items-center justify-between rounded-full'>
         <div>
           {pathname !== '/' && pathname !== '/dashboard' ? (
             <button
-              className='relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50'
+              className='relative -ml-1 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50'
               onClick={() => router.back()}
             >
               <ChevronLeft className='mr-1 h-5 w-5' aria-hidden='true' />
