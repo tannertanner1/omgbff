@@ -1,6 +1,5 @@
 import '@/app/globals.css'
 import Providers from '@/app/providers'
-import { Viewport } from 'next'
 import type { Metadata } from 'next'
 // import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'

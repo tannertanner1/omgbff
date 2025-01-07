@@ -11,6 +11,68 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
+export function ThemeToggle({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLButtonElement>) {
+  const { setTheme, theme } = useTheme()
+
+  return (
+    <button
+      {...props}
+      className={cn(
+        'relative overflow-hidden rounded-md bg-transparent text-primary transition-all duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110',
+        className
+      )}
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+    >
+      <Sun aria-hidden='true' className='h-[1.5rem] w-[1.3rem] dark:hidden' />
+      <MoonStars aria-hidden='true' className='hidden h-5 w-5 dark:block' />
+      <span className='sr-only'>Toggle theme</span>
+    </button>
+  )
+}
+
+export function ThemeDropdown({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLButtonElement>) {
+  const { setTheme } = useTheme()
+
+  return (
+    <div className='-mr-5 pb-1'>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            {...props}
+            className={cn(
+              'text-primary transition-colors hover:text-muted-foreground'
+            )}
+          >
+            <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
+            <MoonStars className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
+            <span className='sr-only'>Toggle theme</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end'>
+          <DropdownMenuItem onClick={() => setTheme('light')}>
+            <Sun className='mr-2 h-4 w-4' />
+            <span>Light</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('dark')}>
+            <MoonStars className='mr-2 h-4 w-4' />
+            <span>Dark</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('system')}>
+            <Devices className='mr-2 h-4 w-4' />
+            <span>System</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
+}
+
 function Devices(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -75,67 +137,3 @@ function Sun(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
-
-function ThemeDropdown({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLButtonElement>) {
-  const { setTheme } = useTheme()
-
-  return (
-    <div className='-mr-5 pb-1'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            {...props}
-            className={cn(
-              'text-primary transition-colors hover:text-muted-foreground'
-            )}
-          >
-            <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
-            <MoonStars className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
-            <span className='sr-only'>Toggle theme</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end'>
-          <DropdownMenuItem onClick={() => setTheme('light')}>
-            <Sun className='mr-2 h-4 w-4' />
-            <span>Light</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme('dark')}>
-            <MoonStars className='mr-2 h-4 w-4' />
-            <span>Dark</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme('system')}>
-            <Devices className='mr-2 h-4 w-4' />
-            <span>System</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  )
-}
-
-function ThemeToggle({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLButtonElement>) {
-  const { setTheme, theme } = useTheme()
-
-  return (
-    <button
-      {...props}
-      className={cn(
-        'relative overflow-hidden rounded-md bg-transparent text-primary transition-all duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110',
-        className
-      )}
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-    >
-      <Sun aria-hidden='true' className='h-[1.5rem] w-[1.3rem] dark:hidden' />
-      <MoonStars aria-hidden='true' className='hidden h-5 w-5 dark:block' />
-      <span className='sr-only'>Toggle theme</span>
-    </button>
-  )
-}
-
-export { ThemeDropdown, ThemeToggle }

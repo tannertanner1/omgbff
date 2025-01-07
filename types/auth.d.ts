@@ -1,4 +1,4 @@
-export interface AuthFormData {
+export interface LoginFormData {
   email: string
 }
 
@@ -6,9 +6,9 @@ export interface ActionResponse {
   success: boolean
   message: string
   errors?: {
-    [K in keyof AuthFormData]?: string[]
+    [K in keyof LoginFormData]?: string[]
   }
   inputs?: {
-    [K in keyof AuthFormData]?: string
+    [K in keyof LoginFormData]?: string
   }
 }

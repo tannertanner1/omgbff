@@ -1,4 +1,4 @@
-import { EmailTemplate } from '@/components/email-template'
+import { EmailTemplate } from './email-template'
 
 const verifyEmail = {
   preview: 'Verify your email',

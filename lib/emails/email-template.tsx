@@ -31,9 +31,9 @@ export function EmailTemplate({
       <Head />
       <Preview>{preview}</Preview>
       <Tailwind>
-        <Body className='bg-white font-sans'>
+        <Body className='bg-background font-sans'>
           <Container className='mx-auto max-w-[448px] px-5 py-5'>
-            <Heading className='mb-4 text-left font-serif text-xl font-bold text-zinc-950'>
+            <Heading className='mb-4 text-left font-serif text-xl font-bold text-primary'>
               {heading}
             </Heading>
             <Text className='mb-6 text-left text-[16px] text-muted-foreground'>

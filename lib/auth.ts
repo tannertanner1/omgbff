@@ -1,53 +1,23 @@
-import NextAuth, { DefaultSession } from 'next-auth'
-// Auth provider
-import { Resend as ResendClient } from 'resend'
-import Resend from 'next-auth/providers/resend'
-import { VerifyEmail } from '@/lib/emails/verify-email'
-import { LoginEmail } from '@/lib/emails/login-email'
+// import NextAuth, { DefaultSession } from 'next-auth'
+import NextAuth from 'next-auth'
 // Database adapter
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from './db'
 import { sessions, users, accounts, verificationTokens } from './schema'
 import { eq } from 'drizzle-orm'
-// Session strategy
-import { JWT } from 'next-auth/jwt'
-
-// TypeScript module augmentation
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      id: string
-      role?: string
-      emailVerified?: Date | null
-    } & DefaultSession['user']
-  }
-  interface User {
-    id?: string
-    role?: string
-    emailVerified?: Date | null
-  }
-}
-
-declare module 'next-auth/jwt' {
-  interface JWT {
-    // OpenID Connect claims
-    idToken?: string
-    role?: string
-    emailVerified?: Date | null
-  }
-}
+// Auth provider
+import { Resend as ResendClient } from 'resend'
+import Resend from 'next-auth/providers/resend'
+import { VerifyEmail } from '@/lib/emails/verify-email'
+import { LoginEmail } from '@/lib/emails/login-email'
 
 const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: process.env.NODE_ENV !== 'production', // Debug in development only
   secret: process.env.AUTH_SECRET,
-  pages: {
-    signIn: '/signin',
-    verifyRequest: '/verify-request'
-  },
-  // adapter: DrizzleAdapter(db) as any,
+  pages: { signIn: '/signin' },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
@@ -67,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
           subject: user?.emailVerified
-            ? 'Log in to your account'
+            ? 'Sign in to your account'
             : 'Verify your email address',
           react: user?.emailVerified
             ? LoginEmail({ url })
