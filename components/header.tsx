@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/theme'
 import { ChevronLeft } from '@/components/icons'
-import { PageWrapper } from '@/_private/components/page-wrapper'
+import { PageWrapper } from '@/components/page-wrapper'
 import { usePathname } from 'next/navigation'
 
 const Header = () => {
