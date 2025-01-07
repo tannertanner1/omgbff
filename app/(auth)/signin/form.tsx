@@ -83,21 +83,23 @@ export function Form() {
         and <a href='#'>Privacy Policy</a>.
       </div> */}
       <div className='container mx-auto text-balance text-center text-xs text-muted-foreground'>
-        By clicking continue, you agree to our{' '}
-        <Link
-          href='#'
-          className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
-        >
-          Terms of Service
-        </Link>{' '}
-        and{' '}
-        <Link
-          href='#'
-          className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
-        >
-          Privacy Policy
-        </Link>
-        .
+        <div>By clicking continue, you agree to our</div>
+        <div>
+          <Link
+            href='#'
+            className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
+          >
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link
+            href='#'
+            className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
+          >
+            Privacy Policy
+          </Link>
+          .
+        </div>
       </div>
       {state?.message && (
         <div className='inline-flex'>
