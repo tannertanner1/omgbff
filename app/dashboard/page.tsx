@@ -6,7 +6,7 @@ export default async function Page() {
   const session = await auth()
 
   return (
-    <main className='container mx-auto w-full max-w-5xl flex-grow'>
+    <main className='mx-auto w-full max-w-5xl flex-grow'>
       <Header />
       <div className='flex flex-col items-center py-12'>
         {!session ? redirect('/') : <Component />}

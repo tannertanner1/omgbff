@@ -82,7 +82,7 @@ export function Form() {
         By clicking continue, you agree to our <a href='#'>Terms of Service</a>{' '}
         and <a href='#'>Privacy Policy</a>.
       </div> */}
-      <div className='text-balance text-center text-xs text-muted-foreground'>
+      <div className='container mx-auto text-balance text-center text-xs text-muted-foreground'>
         By clicking continue, you agree to our{' '}
         <Link
           href='#'
