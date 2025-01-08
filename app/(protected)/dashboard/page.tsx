@@ -1,5 +1,4 @@
 import { auth, signOut } from '@/lib/auth'
-import { Header } from '@/components/header'
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
@@ -7,7 +6,6 @@ export default async function Page() {
 
   return (
     <main className='mx-auto w-full max-w-5xl flex-grow'>
-      <Header />
       <div className='flex flex-col items-center py-12'>
         {!session ? redirect('/') : <Component />}
       </div>

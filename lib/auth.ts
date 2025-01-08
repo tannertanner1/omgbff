@@ -1,4 +1,3 @@
-// import NextAuth, { DefaultSession } from 'next-auth'
 import NextAuth from 'next-auth'
 // Database adapter
 import { Adapter } from 'next-auth/adapters'
@@ -17,7 +16,7 @@ const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: process.env.NODE_ENV !== 'production', // Debug in development only
   secret: process.env.AUTH_SECRET,
-  pages: { signIn: '/signin' },
+  pages: { signIn: '/login' },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,

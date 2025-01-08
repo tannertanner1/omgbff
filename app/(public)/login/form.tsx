@@ -57,11 +57,6 @@ export function Form() {
             </div>
             <Button
               type='submit'
-              // className={
-              //   state?.errors?.email
-              //     ? 'w-full rounded-full'
-              //     : 'mt-7 w-full rounded-full'
-              // }
               className={cn(
                 'w-full rounded-full',
                 state?.errors?.email ? '' : 'mt-7'
@@ -86,14 +81,14 @@ export function Form() {
         <div>By clicking continue, you agree to our</div>
         <div>
           <Link
-            href='#'
+            href='/terms'
             className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
           >
             Terms of Service
           </Link>{' '}
           and{' '}
           <Link
-            href='#'
+            href='privacy'
             className='relative after:absolute after:bottom-[-4px] after:left-0 after:h-px after:w-full after:origin-bottom-left after:scale-x-100 after:bg-muted-foreground after:transition-transform after:duration-300 hover:after:origin-bottom-right hover:after:scale-x-0'
           >
             Privacy Policy

@@ -3,8 +3,36 @@ import { auth } from '@/lib/auth'
 import { Header } from '@/components/header'
 import { redirect } from 'next/navigation'
 
-// import { SignIn } from '@/components/sign-in'
-// import SignOut from '@/components/sign-out'
+export default async function Page() {
+  const session = await auth()
+
+  return (
+    <main className='mx-auto w-full max-w-5xl flex-grow'>
+      <Header />
+      <div className='flex flex-col items-center py-12'>
+        {!session ? <Component /> : redirect('/login')}
+      </div>
+    </main>
+  )
+}
+
+function Component() {
+  return (
+    <div className='flex w-full max-w-sm flex-col gap-6'>
+      <Link
+        href='/login'
+        className='flex items-center gap-2 self-center font-medium'
+      >
+        <Paw
+          className='h-6 w-6'
+          // className='flex h-6 w-6 items-center justify-center rounded-xl bg-primary text-primary-foreground'
+          aria-hidden='true'
+        />
+        Meow
+      </Link>
+    </div>
+  )
+}
 
 function Paw(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -27,33 +55,5 @@ function Paw(props: React.SVGProps<SVGSVGElement>) {
       <path d='M16.456 6.733c.214 -1.376 -.375 -2.594 -1.32 -2.722a1.164 1.164 0 0 0 -.162 -.011c-.885 0 -1.728 .97 -1.93 2.267c-.214 1.376 .375 2.594 1.32 2.722c.054 .007 .108 .011 .162 .011c.885 0 1.73 -.974 1.93 -2.267z' />
       <path d='M5.69 12.918c.816 -.352 1.054 -1.719 .536 -3.052c-.436 -1.124 -1.271 -1.866 -2.009 -1.866c-.14 0 -.277 .027 -.407 .082c-.816 .352 -1.054 1.719 -.536 3.052c.436 1.124 1.271 1.866 2.009 1.866c.14 0 .277 -.027 .407 -.082z' />
     </svg>
-  )
-}
-
-function Component() {
-  return (
-    <div className='flex w-full max-w-sm flex-col gap-6'>
-      <Link
-        href='/signin'
-        className='flex items-center gap-2 self-center font-medium'
-      >
-        {/* <div className='flex h-6 w-6 items-center justify-center rounded-xl bg-primary text-primary-foreground' /> */}
-        <Paw className='h-5 w-5' aria-hidden='true' />
-        Meow
-      </Link>
-    </div>
-  )
-}
-
-export default async function Page() {
-  const session = await auth()
-
-  return (
-    <main className='mx-auto w-full max-w-5xl flex-grow'>
-      <Header />
-      <div className='flex flex-col items-center py-12'>
-        {!session ? <Component /> : redirect('/signin')}
-      </div>
-    </main>
   )
 }

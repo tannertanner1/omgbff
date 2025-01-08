@@ -164,12 +164,12 @@ body {
   html::-webkit-scrollbar {
     display: none;
   }
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button {
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  input[type="number"] {
+  input[type='number'] {
     -moz-appearance: textfield;
   }
 
@@ -190,10 +190,17 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-  .text-body {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  /* .text-body {
     @apply text-zinc-950 dark:text-zinc-50;
   }
   .text-hover {
     @apply hover:text-zinc-800 dark:hover:text-zinc-200;
-  }
+  } */
 }
