@@ -1,4 +1,5 @@
 import { Nav } from '@/components/nav'
+import { Auth } from '@/components/auth'
 import { ThemeToggle } from '@/components/theme'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -34,7 +35,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className='pointer-events-none absolute right-0 top-0 z-20 h-full w-8 bg-gradient-to-l from-background to-transparent' />
             <Nav isHorizontal />
           </div>
-          <div className='shrink-0 px-4 pt-3.5'>
+          {/* <div className='shrink-0 px-4 pt-3.5'>
+            <ThemeToggle aria-label='Toggle theme' />
+          </div> */}
+          <div className='flex shrink-0 items-center gap-6 self-center px-4 pt-2'>
+            <Auth />
             <ThemeToggle aria-label='Toggle theme' />
           </div>
         </div>

@@ -9,9 +9,7 @@ function PageWrapper({
   children: ReactNode
 }) {
   return (
-    <div
-      className={cn('container mx-auto w-full max-w-5xl flex-grow', className)}
-    >
+    <div className={cn('mx-auto w-full max-w-5xl flex-grow', className)}>
       {children}
     </div>
   )

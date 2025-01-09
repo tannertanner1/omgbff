@@ -1,27 +1,33 @@
-import { auth, signOut } from '@/lib/auth'
-import { Logo } from '@/components/logo'
-// import { PageWrapper } from '@/components/page-wrapper'
-import { ThemeToggle } from '@/components/theme'
-import { AuthButton } from '@/components/auth-button'
+'use client'
 
-export async function Header() {
-  const session = await auth()
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
-  async function logout() {
-    'use server'
-    await signOut({ redirectTo: '/' })
-  }
+export function Logo() {
+  const router = useRouter()
+  const pathname = usePathname()
 
   return (
-    <header className='mx-auto -mt-1.5 flex h-20 w-full items-center justify-between rounded-full px-4'>
-      <div className='flex items-center px-2'>
-        <Logo />
-      </div>
-      <div className='flex items-center gap-6 self-center px-2 pb-1.5'>
-        <AuthButton session={!!session} logout={logout} />
-        <ThemeToggle />
-      </div>
-    </header>
+    <div>
+      {pathname !== '/' && pathname !== '/dashboard' ? (
+        <button
+          className='relative -ml-1 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50'
+          onClick={() => router.back()}
+        >
+          <ChevronLeft className='mr-1 h-5 w-5' aria-hidden='true' />
+          Back
+        </button>
+      ) : (
+        <Link
+          href='/'
+          prefetch={false}
+          className='relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50'
+        >
+          <Fish className='h-8 w-8' aria-hidden='true' />
+        </Link>
+      )}
+    </div>
   )
 }
 

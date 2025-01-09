@@ -1,3 +1,4 @@
+import { PageWrapper } from '@/components/page-wrapper'
 import { auth } from '@/lib/auth'
 import { Header } from '@/components/header'
 import { Form } from './form'
@@ -7,11 +8,11 @@ export default async function Page() {
   const session = await auth()
 
   return (
-    <main className='mx-auto w-full max-w-5xl flex-grow'>
+    <PageWrapper>
       <Header />
       <div className='container flex flex-col items-center py-12'>
         {!session ? <Form /> : redirect('/dashboard')}
       </div>
-    </main>
+    </PageWrapper>
   )
 }
