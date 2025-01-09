@@ -1,11 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ThemeToggle } from '@/components/theme'
-import { ChevronLeft } from '@/components/icons'
-import { PageWrapper } from '@/components/page-wrapper'
+import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
+import { ThemeToggle } from '@/components/theme'
+
+import { PageWrapper } from '@/components/page-wrapper'
 
 const Header = () => {
   const router = useRouter()
@@ -62,6 +62,26 @@ function Fish(props: React.SVGProps<SVGSVGElement>) {
       <path d='M2 9.504c7.715 8.647 14.75 10.265 20 2.498c-5.25 -7.761 -12.285 -6.142 -20 2.504' />
       <path d='M18 11v.01' />
       <path d='M11.5 10.5c-.667 1 -.667 2 0 3' />
+    </svg>
+  )
+}
+
+function ChevronLeft(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+      <path d='M15 6l-6 6l6 6' />
     </svg>
   )
 }

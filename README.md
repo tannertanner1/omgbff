@@ -127,6 +127,11 @@ out/
 public/
 *.config.js
 *.config.mjs
+
+/.history/
+.history/*
+.history
+_**private**
 ```
 
   </details>

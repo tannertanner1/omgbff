@@ -1,26 +1,26 @@
 'use client'
 
-import {
-  IconDashboard,
-  IconFolders,
-  IconFiles,
-  IconPlaceholder,
-  IconInvoice
-} from '@tabler/icons-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
+import {
+  Dashboard,
+  Folders,
+  Files,
+  Placeholder,
+  Invoice
+} from '@/components/icons'
 
 const items = [
-  { title: 'Dashboard', icon: IconDashboard, href: '/dashboard' },
-  { title: 'Invoices', icon: IconInvoice, href: '/dashboard/invoices' }
-  // { title: 'Accounts', icon: IconFolders, href: '/dashboard/accounts' },
-  // { title: 'Services', icon: IconFiles, href: '/dashboard/services' },
-  // { title: 'One', icon: IconPlaceholder, href: '/dashboard/one' },
-  // { title: 'Two', icon: IconPlaceholder, href: '/dashboard/two' },
-  // { title: 'Three', icon: IconPlaceholder, href: '/dashboard/three' },
-  // { title: 'Four', icon: IconPlaceholder, href: '/dashboard/four' }
+  { title: 'Dashboard', icon: Dashboard, href: '/dashboard' },
+  { title: 'Invoices', icon: Invoice, href: '/dashboard/invoices' }
+  // { title: 'Accounts', icon: Folders, href: '/dashboard/accounts' },
+  // { title: 'Services', icon: Files, href: '/dashboard/services' },
+  // { title: 'One', icon: Placeholder, href: '/dashboard/one' },
+  // { title: 'Two', icon: Placeholder, href: '/dashboard/two' },
+  // { title: 'Three', icon: Placeholder, href: '/dashboard/three' },
+  // { title: 'Four', icon: Placeholder, href: '/dashboard/four' }
 ]
 
 export function Nav({ isHorizontal = false }: { isHorizontal?: boolean }) {

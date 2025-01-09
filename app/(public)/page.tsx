@@ -1,35 +1,35 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { Header } from '@/components/header'
-import { redirect } from 'next/navigation'
 
 export default async function Page() {
   const session = await auth()
 
   return (
-    <main className='mx-auto w-full max-w-5xl flex-grow'>
+    <>
       <Header />
-      <div className='flex flex-col items-center py-12'>
-        {!session ? <Component /> : redirect('/login')}
-      </div>
-    </main>
+      {!session ? <Component /> : redirect('/login')}
+    </>
   )
 }
 
 function Component() {
   return (
-    <div className='flex w-full max-w-sm flex-col gap-6'>
-      <Link
-        href='/login'
-        className='flex items-center gap-2 self-center font-medium'
-      >
-        <Paw
-          className='h-6 w-6'
-          // className='flex h-6 w-6 items-center justify-center rounded-xl bg-primary text-primary-foreground'
-          aria-hidden='true'
-        />
-        Meow
-      </Link>
+    <div className='flex h-auto flex-col items-center py-12'>
+      <div className='flex w-full max-w-sm flex-col gap-6'>
+        <Link
+          href='/login'
+          className='flex items-center gap-2 self-center font-medium'
+        >
+          <Paw
+            className='h-6 w-6'
+            // className='flex h-6 w-6 items-center justify-center rounded-xl bg-primary text-primary-foreground'
+            aria-hidden='true'
+          />
+          Meow
+        </Link>
+      </div>
     </div>
   )
 }
