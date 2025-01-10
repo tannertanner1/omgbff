@@ -1,7 +1,7 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { auth, signIn } from '@/lib/auth'
+import { auth, signIn, signOut } from '@/lib/auth'
 
 import { z } from 'zod'
 import type { ActionResponse } from '@/types/auth'
@@ -10,7 +10,7 @@ const emailSchema = z.object({
   email: z.string().email('Invalid email address')
 })
 
-export async function login(
+async function login(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
@@ -18,7 +18,7 @@ export async function login(
   if (session) redirect('/dashboard')
 
   // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  // await new Promise(resolve => setTimeout(resolve, 1000))
 
   try {
     const rawData = {
@@ -61,6 +61,12 @@ export async function login(
     }
   }
 }
+
+async function logout() {
+  await signOut({ redirectTo: '/' })
+}
+
+export { login, logout }
 
 /**
  * @see https://v0.dev/chat/CiFWYqPHKvT?b=b_0...&f=0

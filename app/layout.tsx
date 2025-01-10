@@ -1,20 +1,10 @@
 import '@/app/globals.css'
 import Providers from '@/app/providers'
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-// import localFont from 'next/font/local'
+import type { Metadata } from 'next'
+import { Header } from '@/components/header'
 
 const inter = Inter({ subsets: ['latin'] })
-// const sans = localFont({
-//   src: './fonts/GeistVF.woff',
-//   variable: '--font-sans',
-//   weight: '100 900'
-// })
-// const mono = localFont({
-//   src: './fonts/GeistMonoVF.woff',
-//   variable: '--font-mono',
-//   weight: '100 900'
-// })
 
 export const metadata: Metadata = {
   title: 'OMG BFF',
@@ -28,11 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${inter.className} font-sans antialiased`}
-        // className={`${sans.variable} ${mono.variable} font-sans antialiased`}
-      >
-        <Providers>{children}</Providers>
+      <body className={`${inter.className} font-sans antialiased`}>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   )

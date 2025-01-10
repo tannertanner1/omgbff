@@ -1,69 +1,208 @@
-import { auth, signOut } from '@/lib/auth'
-import { Logo } from '@/components/logo'
-// import { PageWrapper } from '@/components/page-wrapper'
-import { ThemeToggle } from '@/components/theme'
-import { AuthButton } from '@/components/auth-button'
+'use client'
 
-export async function Header() {
-  const session = await auth()
+import * as React from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
+import {
+  IconFish,
+  IconCircleFilled,
+  IconCircle,
+  IconCircleHalf,
+  IconPercentage50,
+  IconCheck,
+  IconLogin2,
+  IconLogout2,
+  IconDashboard,
+  IconInvoice
+} from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'motion/react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { useTheme } from 'next-themes'
+import { usePathname, useRouter } from 'next/navigation'
+import { logout } from '@/actions/auth'
+import { cn } from '@/lib/utils'
 
-  async function logout() {
-    'use server'
-    await signOut({ redirectTo: '/' })
+export function Header() {
+  const pathname = usePathname()
+  const showTabs = pathname?.startsWith('/dashboard')
+
+  return (
+    <div className='mx-auto flex h-14 max-w-5xl flex-grow items-center justify-between px-4'>
+      <div className='flex items-center'>
+        <Link href='/'>
+          <div className='-mt-0.5'>
+            <IconFish className='h-8 w-8' />
+          </div>
+        </Link>
+      </div>
+      {showTabs && (
+        <div className='relative flex flex-1 items-center justify-center overflow-hidden'>
+          <div className='pointer-events-none absolute left-0 z-20 h-full w-8 bg-gradient-to-r from-background to-transparent' />
+          <div className='pointer-events-none absolute right-0 z-20 h-full w-8 bg-gradient-to-l from-background to-transparent' />
+          <div className='scrollbar-none w-full overflow-x-auto'>
+            <IconTabs />
+          </div>
+        </div>
+      )}
+      <div className='flex items-center'>
+        <UserDropdown />
+      </div>
+    </div>
+  )
+}
+
+const tabs = [
+  { title: 'Dashboard', icon: IconDashboard, href: '/dashboard' },
+  { title: 'Invoices', icon: IconInvoice, href: '/dashboard/invoices' }
+]
+
+function IconTabs() {
+  const pathname = usePathname()
+  const [selected, setSelected] = useState<(typeof tabs)[number]>(
+    tabs.find(tab => tab.href === pathname) ?? tabs[0]
+  )
+
+  const buttonVariants = {
+    initial: {
+      gap: 0,
+      paddingLeft: '.5rem',
+      paddingRight: '.5rem'
+    },
+    animate: (isSelected: boolean) => ({
+      gap: isSelected ? '.5rem' : 0,
+      paddingLeft: isSelected ? '1rem' : '.5rem',
+      paddingRight: isSelected ? '1rem' : '.5rem'
+    })
   }
 
+  const transition = { delay: 0.1, type: 'spring', bounce: 0, duration: 0.35 }
+
   return (
-    <header className='mx-auto -mt-1.5 flex h-20 w-full items-center justify-between rounded-full px-4'>
-      <div className='flex items-center px-2'>
-        <Logo />
-      </div>
-      <div className='flex items-center gap-6 self-center px-2 pb-1.5'>
-        <AuthButton session={!!session} logout={logout} />
-        <ThemeToggle />
-      </div>
-    </header>
+    <div className='flex items-center justify-center gap-2'>
+      {tabs.map(tab => {
+        const Icon = tab.icon
+        const isSelected = selected === tab
+
+        return (
+          <Link key={tab.href} href={tab.href} onClick={() => setSelected(tab)}>
+            <motion.div
+              variants={buttonVariants}
+              initial='initial'
+              animate='animate'
+              custom={isSelected}
+              transition={transition}
+              className={cn(
+                'relative flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-within:outline-gray-500/50',
+                isSelected
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-primary'
+              )}
+            >
+              <Icon className='h-5 w-5' />
+              <AnimatePresence>
+                {isSelected && (
+                  <motion.span
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 'auto', opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={transition}
+                    className='overflow-hidden'
+                  >
+                    {tab.title}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </Link>
+        )
+      })}
+    </div>
   )
 }
 
-function Fish(props: React.SVGProps<SVGSVGElement>) {
+function UserDropdown({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLButtonElement>) {
+  const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const router = useRouter()
+  const handleSubmit = () => {
+    if (pathname === '/' || pathname === '/login') {
+      router.push('/login')
+    } else {
+      // router.push('/')
+      logout()
+    }
+  }
   return (
-    <svg
-      {...props}
-      xmlns='http://www.w3.org/2000/svg'
-      width='24'
-      height='24'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    >
-      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-      <path d='M16.69 7.44a6.973 6.973 0 0 0 -1.69 4.56c0 1.747 .64 3.345 1.699 4.571' />
-      <path d='M2 9.504c7.715 8.647 14.75 10.265 20 2.498c-5.25 -7.761 -12.285 -6.142 -20 2.504' />
-      <path d='M18 11v.01' />
-      <path d='M11.5 10.5c-.667 1 -.667 2 0 3' />
-    </svg>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button {...props}>
+          <IconCircleFilled className='h-6 w-6 cursor-pointer' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className='w-[var(--radix-dropdown-menu-trigger-width)]'
+        align='end'
+      >
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger className='flex items-center gap-2'>
+            <IconCircle className='h-4 w-4' /> Preferences
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className='w-[var(--radix-dropdown-menu-trigger-width)]'>
+            <DropdownMenuItem onClick={() => setTheme('system')}>
+              <IconCircleHalf className='h-4 w-4' />
+              <span>System</span>
+              {theme === 'system' && <IconCheck className='ml-auto h-4 w-4' />}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('light')}>
+              <IconPercentage50 className='h-4 w-4 dark:rotate-180' />
+              <span>Light</span>
+              {theme === 'light' && <IconCheck className='ml-auto h-4 w-4' />}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')}>
+              <IconPercentage50 className='h-4 w-4 rotate-180 dark:rotate-0' />
+              <span>Dark</span>
+              {theme === 'dark' && <IconCheck className='ml-auto h-4 w-4' />}
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuItem onClick={handleSubmit}>
+          {pathname === '/' || pathname === '/login' ? (
+            <>
+              <IconLogin2 className='h-4 w-4' />
+              <span>Sign in</span>
+            </>
+          ) : (
+            <>
+              {/* <form action={logout}>
+                <button type='submit'>
+                  <IconLogout2 className='h-4 w-4' />
+                  <span>Sign out</span>
+                </button>
+              </form> */}
+              <IconLogout2 className='h-4 w-4' />
+              <span>Sign out</span>
+            </>
+          )}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
-function ChevronLeft(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns='http://www.w3.org/2000/svg'
-      width='24'
-      height='24'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    >
-      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-      <path d='M15 6l-6 6l6 6' />
-    </svg>
-  )
-}
+/**
+ * @see https://tabler.io/icons
+ * @see https://syntaxui.com/components/tabs
+ * @see https://ui.shadcn.com/docs/components/dropdown-menu
+ * @see https://ui.shadcn.com/docs/dark-mode/next
+ */

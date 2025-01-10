@@ -33,7 +33,7 @@ export default function Error({
           <Link href='/' className='inline-flex' prefetch={false}>
             <Button
               className={cn(
-                'relative bg-background text-primary after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:bg-primary after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0'
+                'shadown-none relative bg-background text-primary after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:bg-primary after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0'
               )}
               onClick={() => router.back()}
             >
@@ -43,7 +43,7 @@ export default function Error({
           <Link href='/' className='inline-flex' prefetch={false}>
             <Button
               className={cn(
-                'relative bg-background text-primary after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:bg-primary after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0'
+                'shadown-none relative bg-background text-primary after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:bg-primary after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0'
               )}
               onClick={() => reset()}
             >
