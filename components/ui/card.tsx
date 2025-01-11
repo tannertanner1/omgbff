@@ -8,9 +8,9 @@ const Card = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // Removed 'shadow bg-card', added 'backdrop-blur-sm'
+    // Removed 'shadow bg-card'
     className={cn(
-      'rounded-xl border text-card-foreground backdrop-blur-sm',
+      'rounded-xl border bg-transparent text-card-foreground',
       className
     )}
     {...props}

@@ -1,5 +1,16 @@
 import { cn } from '@/lib/utils'
 
+export function Loading() {
+  return (
+    <div
+      className='flex h-screen items-start justify-center pt-[60vh]'
+      aria-label='Loading'
+    >
+      <LoadingDots color='bg-primary' size='medium' />
+    </div>
+  )
+}
+
 function LoadingDots({
   color = 'currentColor',
   size = 'small',
@@ -38,20 +49,3 @@ function LoadingDots({
     </div>
   )
 }
-
-export { LoadingDots }
-
-/**
-
-export default function LoadingPage() {
-  return (
-    <div
-      className="flex h-screen items-start justify-center pt-[40vh]"
-      aria-label="Loading"
-    >
-      <LoadingDots color="bg-primary" size="medium" />
-    </div>
-  );
-}
-
-*/

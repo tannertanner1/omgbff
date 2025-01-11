@@ -22,6 +22,7 @@ export default async function Page() {
         <Card className={cn('w-full shadow-none backdrop-blur-sm')}>
           <CardHeader>
             <CardTitle>Invoice</CardTitle>
+            <CardDescription></CardDescription>
           </CardHeader>
           <CardContent className='mt-6 space-y-4'>
             <div>

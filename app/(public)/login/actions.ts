@@ -16,9 +16,6 @@ export async function login(
   const session = await auth()
   if (session) redirect('/dashboard')
 
-  // Simulate network delay
-  // await new Promise(resolve => setTimeout(resolve, 1000))
-
   try {
     const rawData = {
       email: formData.get('email') as string

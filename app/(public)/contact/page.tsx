@@ -2,9 +2,13 @@ import { Form } from './form'
 
 export default async function Page() {
   return (
-    <div className='mx-auto w-[400px] flex-1 px-4'>
-      <div className='flex items-center gap-2 self-center'>
-        <Form />
+    <div className='flex h-screen'>
+      <div className='flex min-w-0 flex-1 flex-col'>
+        <div className='mx-auto w-full max-w-5xl'>
+          <div className='flex flex-col items-center'>
+            <Form />
+          </div>
+        </div>
       </div>
     </div>
   )
