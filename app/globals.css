@@ -203,4 +203,16 @@ body {
   .text-hover {
     @apply hover:text-zinc-800 dark:hover:text-zinc-200;
   } */
+
+  /* Add these styles for the floating sidebar */
+  .group\/sidebar-wrapper {
+    @apply fixed inset-y-0 left-0 z-50;
+  }
+  .group\/sidebar-wrapper [data-sidebar='sidebar'] {
+    @apply shadow-lg;
+  }
+
+  [data-variant='inset'] [data-sidebar='sidebar'] {
+    @apply bg-sidebar shadow-none;
+  }
 }

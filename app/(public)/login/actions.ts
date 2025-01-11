@@ -1,16 +1,15 @@
 'use server'
 
-import { redirect } from 'next/navigation'
-import { auth, signIn, signOut } from '@/lib/auth'
-
 import { z } from 'zod'
-import type { ActionResponse } from '@/types/auth'
+import { redirect } from 'next/navigation'
+import { auth, signIn } from '@/lib/auth'
+import type { ActionResponse } from './types'
 
-const emailSchema = z.object({
+const schema = z.object({
   email: z.string().email('Invalid email address')
 })
 
-async function login(
+export async function login(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
@@ -25,7 +24,7 @@ async function login(
       email: formData.get('email') as string
     }
 
-    const validatedData = emailSchema.safeParse(rawData)
+    const validatedData = schema.safeParse(rawData)
 
     if (!validatedData.success) {
       return {
@@ -61,12 +60,6 @@ async function login(
     }
   }
 }
-
-async function logout() {
-  await signOut({ redirectTo: '/' })
-}
-
-export { login, logout }
 
 /**
  * @see https://v0.dev/chat/CiFWYqPHKvT?b=b_0...&f=0

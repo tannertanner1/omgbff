@@ -14,7 +14,7 @@ export default async function Page() {
           <div className='relative flex flex-1 items-center overflow-x-auto pt-2'></div>
           <div className='flex shrink-0 items-center gap-6 self-center px-4 pt-2'></div>
         </div>
-        <main className='mx-auto w-full max-w-[1200px] flex-1 overflow-auto px-4 py-2 lg:-ml-2'>
+        <main className='container mx-auto w-full max-w-5xl'>
           <div className='flex flex-col items-center py-12'>
             <Link
               href='/login'

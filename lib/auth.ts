@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth'
+import NextAuth, { DefaultSession } from 'next-auth'
 // Database adapter
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
@@ -10,6 +10,33 @@ import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
 import { VerifyEmail } from '@/lib/emails/verify-email'
 import { LoginEmail } from '@/lib/emails/login-email'
+// Session strategy
+import { JWT } from 'next-auth/jwt'
+
+// TypeScript module augmentation
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string
+      role?: string
+      emailVerified?: Date | null
+    } & DefaultSession['user']
+  }
+  interface User {
+    id?: string
+    role?: string
+    emailVerified?: Date | null
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    // OpenID Connect claims
+    idToken?: string
+    role?: string
+    emailVerified?: Date | null
+  }
+}
 
 const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 

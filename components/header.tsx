@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import {
   IconFish,
@@ -10,6 +10,7 @@ import {
   IconCircleHalf,
   IconPercentage50,
   IconCheck,
+  IconHelp,
   IconLogin2,
   IconLogout2,
   IconDashboard,
@@ -27,12 +28,31 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useTheme } from 'next-themes'
 import { usePathname, useRouter } from 'next/navigation'
-import { logout } from '@/actions/auth'
+import { logout } from '@/actions/logout'
 import { cn } from '@/lib/utils'
 
 export function Header() {
   const pathname = usePathname()
   const showTabs = pathname?.startsWith('/dashboard')
+  const [isAuthed, setIsAuthed] = useState(false)
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/session')
+      if (!res.ok) {
+        throw new Error('Failed to fetch session')
+      }
+      const session = await res.json()
+      setIsAuthed(!!session && !!session.user)
+    } catch (error) {
+      console.error('Error checking auth:', error)
+      setIsAuthed(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   return (
     <div className='mx-auto flex h-14 max-w-5xl flex-grow items-center justify-between px-4'>
@@ -53,7 +73,11 @@ export function Header() {
         </div>
       )}
       <div className='flex items-center'>
-        <UserDropdown />
+        <UserDropdown
+          isAuthed={isAuthed}
+          setIsAuthed={setIsAuthed}
+          checkAuth={checkAuth}
+        />
       </div>
     </div>
   )
@@ -129,20 +153,36 @@ function IconTabs() {
 }
 
 function UserDropdown({
+  isAuthed,
+  setIsAuthed,
+  checkAuth,
   className,
   ...props
-}: React.HTMLAttributes<HTMLButtonElement>) {
+}: React.HTMLAttributes<HTMLButtonElement> & {
+  isAuthed: boolean
+  setIsAuthed: React.Dispatch<React.SetStateAction<boolean>>
+  checkAuth: () => Promise<void>
+}) {
   const { theme, setTheme } = useTheme()
-  const pathname = usePathname()
   const router = useRouter()
-  const handleSubmit = () => {
-    if (pathname === '/' || pathname === '/login') {
+
+  const handleSubmit = async () => {
+    if (!isAuthed) {
       router.push('/login')
     } else {
-      // router.push('/')
-      logout()
+      setIsAuthed(false) // Immediately update the UI
+      await logout()
+      checkAuth() // Double-check the auth state after logout
     }
   }
+  // const handleSubmit = () => {
+  //   if (pathname === '/' || pathname === '/login') {
+  //     router.push('/login')
+  //   } else {
+  //     logout()
+  //   }
+  // }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -176,13 +216,18 @@ function UserDropdown({
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
+        <DropdownMenuItem>
+          <Link
+            href='/contact'
+            prefetch={true}
+            className='flex items-center gap-2'
+          >
+            <IconHelp className='h-4 w-4' />
+            <span>Contact</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSubmit}>
-          {pathname === '/' || pathname === '/login' ? (
-            <>
-              <IconLogin2 className='h-4 w-4' />
-              <span>Sign in</span>
-            </>
-          ) : (
+          {isAuthed ? (
             <>
               {/* <form action={logout}>
                 <button type='submit'>
@@ -192,6 +237,11 @@ function UserDropdown({
               </form> */}
               <IconLogout2 className='h-4 w-4' />
               <span>Sign out</span>
+            </>
+          ) : (
+            <>
+              <IconLogin2 className='h-4 w-4' />
+              <span>Sign in</span>
             </>
           )}
         </DropdownMenuItem>

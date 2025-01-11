@@ -1,15 +1,12 @@
 'use client'
 
 import React from 'react'
+import { useActionState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { ActionResponse } from '@/types/auth'
-import { useActionState } from 'react'
-import { login } from '@/actions/auth'
 import { cn } from '@/lib/utils'
 import {
   IconCat,
@@ -17,6 +14,8 @@ import {
   IconCircleCheck,
   IconCircleX
 } from '@tabler/icons-react'
+import type { ActionResponse } from './types'
+import { login } from './actions'
 
 const initialState: ActionResponse = {
   success: false,
