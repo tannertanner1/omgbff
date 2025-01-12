@@ -2,8 +2,8 @@
 
 import { cache } from 'react'
 import { redirect } from 'next/navigation'
-import { db } from '@/lib/db'
-import { users } from '@/lib/schema'
+import { db } from '@/db'
+import { users } from '@/db/schema/users'
 import { eq } from 'drizzle-orm'
 import { auth } from '@/lib/auth'
 
@@ -11,7 +11,7 @@ const verifySession = cache(async () => {
   const session = await auth()
 
   if (!session?.user?.id) {
-    redirect('/signin')
+    redirect('/login')
   }
 
   const user = await db

@@ -11,8 +11,10 @@ import {
   IconPercentage50,
   IconCheck,
   IconHelp,
-  IconLogin2,
-  IconLogout2,
+  // IconLogin2,
+  // IconLogout2,
+  IconUserCircle,
+  IconPhotoCircle,
   IconDashboard,
   IconInvoice
 } from '@tabler/icons-react'
@@ -235,12 +237,12 @@ function UserDropdown({
                   <span>Sign out</span>
                 </button>
               </form> */}
-              <IconLogout2 className='h-4 w-4' />
+              <IconPhotoCircle className='h-4 w-4' />
               <span>Sign out</span>
             </>
           ) : (
             <>
-              <IconLogin2 className='h-4 w-4' />
+              <IconUserCircle className='h-4 w-4' />
               <span>Sign in</span>
             </>
           )}

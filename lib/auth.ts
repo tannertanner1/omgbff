@@ -2,8 +2,13 @@ import NextAuth, { DefaultSession } from 'next-auth'
 // Database adapter
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import { db } from './db'
-import { sessions, users, accounts, verificationTokens } from './schema'
+import { db } from '@/db'
+import {
+  sessions,
+  users,
+  accounts,
+  verificationTokens
+} from '@/db/schema/users'
 import { eq } from 'drizzle-orm'
 // Auth provider
 import { Resend as ResendClient } from 'resend'
@@ -64,7 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           to: email,
           subject: user?.emailVerified
             ? 'Sign in to your account'
-            : 'Verify your email address',
+            : 'Verify your email',
           react: user?.emailVerified
             ? LoginEmail({ url })
             : VerifyEmail({ url })
