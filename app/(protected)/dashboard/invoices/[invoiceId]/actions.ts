@@ -10,10 +10,7 @@ import { redirect } from 'next/navigation'
 export async function updateInvoiceStatus(prevState: any, formData: FormData) {
   const session = await auth()
   if (!session) {
-    return {
-      success: false,
-      message: 'You must be logged in to update invoices'
-    }
+    redirect('/login')
   }
 
   const invoiceId = formData.get('invoiceId') as string
@@ -48,7 +45,7 @@ export async function updateInvoiceStatus(prevState: any, formData: FormData) {
 export async function deleteInvoice(formData: FormData) {
   const session = await auth()
   if (!session) {
-    throw new Error('You must be logged in to delete invoices')
+    redirect('/login')
   }
 
   const invoiceId = formData.get('invoiceId') as string

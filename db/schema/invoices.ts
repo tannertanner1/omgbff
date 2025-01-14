@@ -6,7 +6,7 @@ import {
   text,
   timestamp
 } from 'drizzle-orm/pg-core'
-import { users } from './users'
+import { organizations, users } from './users'
 import { InferInsertModel } from 'drizzle-orm'
 
 const STATUSES = [
@@ -25,38 +25,39 @@ export const statusEnum = pgEnum(
   statuses as [Status, ...Array<Status>]
 )
 
-const invoices = pgTable('invoices', {
+const customers = pgTable('customer', {
+  id: serial('id').primaryKey().notNull(),
+  organizationId: text('organizationId')
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id),
+  email: text('email').notNull(),
+  name: text('name').notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt').defaultNow().notNull()
+})
+
+const invoices = pgTable('invoice', {
   id: serial('id').primaryKey().notNull(),
   customerId: integer('customerId')
     .notNull()
-    .references(() => customers.id),
+    .references(() => customers.id, { onDelete: 'cascade' }),
   userId: text('userId')
     .notNull()
     .references(() => users.id),
-  organizationId: text('organizationId'),
-
-  createdAt: timestamp('createdAt').defaultNow().notNull(),
   value: integer('value').notNull(),
   description: text('description').notNull(),
-  status: statusEnum('status').notNull()
-})
-
-const customers = pgTable('customers', {
-  id: serial('id').primaryKey().notNull(),
-  userId: text('userId')
-    .notNull()
-    .references(() => users.id),
-  organizationId: text('organizationId'),
-
+  status: statusEnum('status').notNull(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
-  name: text('name').notNull(),
-  email: text('email').notNull()
+  updatedAt: timestamp('updatedAt').defaultNow().notNull()
 })
 
-export { invoices, customers }
+export { customers, invoices }
 
-export type NewInvoice = InferInsertModel<typeof invoices>
 export type NewCustomer = InferInsertModel<typeof customers>
+export type NewInvoice = InferInsertModel<typeof invoices>
 
 /**
  * @see https://youtu.be/Mcw8Mp8PYUE?si=vuf6VVt5Jv-AXct3

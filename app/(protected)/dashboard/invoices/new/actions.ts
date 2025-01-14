@@ -3,12 +3,14 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { customers, invoices } from '@/db/schema/invoices'
+import { customers, invoices, type Status } from '@/db/schema/invoices'
+import { users } from '@/db/schema/users'
 import { schema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
 import { InvoiceEmail } from '@/lib/emails/invoice-email'
 import { revalidatePath } from 'next/cache'
+import { eq } from 'drizzle-orm'
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY)
 
@@ -18,14 +20,10 @@ export async function create(
 ): Promise<ActionResponse> {
   const session = await auth()
   if (!session) {
-    return {
-      success: false,
-      message: 'You must be logged in to create invoices'
-    }
+    redirect('/login')
   }
 
-  // const userId = session.user.id
-  const userId = '9be1014c-7160-4c75-b8f8-ce2e3cd1bd96'
+  const userId = session.user.id
 
   const rawData = {
     name: formData.get('name') as string,
@@ -49,13 +47,29 @@ export async function create(
   try {
     const { name, email, value, description } = validatedData.data
 
+    // Get user's organization
+    const [user] = await db
+      .select({ organizationId: users.organizationId })
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
+
+    if (!user?.organizationId) {
+      return {
+        success: false,
+        message: 'User is not associated with an organization',
+        inputs: rawData
+      }
+    }
+
     // Create customer first
     const [customer] = await db
       .insert(customers)
       .values({
         name: name || '',
         email,
-        userId: userId
+        userId: userId,
+        organizationId: user.organizationId
       })
       .returning({
         id: customers.id
@@ -67,9 +81,9 @@ export async function create(
       .values({
         value: Math.floor(Number.parseFloat(value) * 100),
         description,
-        userId: userId,
         customerId: customer.id,
-        status: 'open'
+        userId: userId, // Add this line
+        status: 'open' as Status
       })
       .returning({
         id: invoices.id
@@ -82,7 +96,7 @@ export async function create(
       from: process.env.AUTH_RESEND_EMAIL as string,
       to: [email],
       subject: 'New Invoice',
-      react: InvoiceEmail({ invoiceId: result.id })
+      react: InvoiceEmail({ invoiceId: invoice.id })
     })
 
     revalidatePath('/dashboard/invoices')

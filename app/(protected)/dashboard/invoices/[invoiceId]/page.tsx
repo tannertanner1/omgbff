@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import { db } from '@/db'
 import { customers, invoices } from '@/db/schema/invoices'
 import { eq } from 'drizzle-orm'
-import { Invoice } from './invoice'
+import { Invoice } from './component'
 
 export default async function Page({
   params: paramsPromise
@@ -33,8 +33,8 @@ export default async function Page({
   }
 
   const invoice = {
-    ...result.invoices,
-    customer: result.customers
+    ...result.invoice,
+    customer: result.customer
   }
 
   return <Invoice invoice={invoice} />

@@ -9,11 +9,9 @@ import { auth } from '@/lib/auth'
 
 const verifySession = cache(async () => {
   const session = await auth()
-
   if (!session?.user?.id) {
     redirect('/login')
   }
-
   const user = await db
     .select({
       id: users.id,
@@ -25,18 +23,15 @@ const verifySession = cache(async () => {
     .from(users)
     .where(eq(users.id, session.user.id))
     .execute()
-
   if (!user || user.length === 0) {
     redirect('/signin')
   }
-
   return { isAuth: true, user: user[0] }
 })
 
 const getUser = cache(async () => {
   const session = await auth()
   if (!session?.user?.id) return null
-
   try {
     const user = await db
       .select({
@@ -49,7 +44,6 @@ const getUser = cache(async () => {
       .from(users)
       .where(eq(users.id, session.user.id))
       .execute()
-
     return user[0] || null
   } catch (error) {
     console.error('Failed to fetch user:', error)

@@ -1,11 +1,12 @@
 import { auth } from '@/lib/auth'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 import { db } from '@/db'
-import { customers, invoices } from '@/db/schema/invoices'
+import { invoices, customers } from '@/db/schema/invoices'
+import { users } from '@/db/schema/users'
 
 import { Badge } from '@/components/ui/badge'
 import {
@@ -25,17 +26,38 @@ export default async function Page() {
     redirect('/login')
   }
 
-  const results = await db
+  // First, get the user's organization
+  const [user] = await db
     .select()
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .limit(1)
+
+  if (!user || !user.organizationId) {
+    return (
+      <p>No organization found. Please create or join an organization first.</p>
+    )
+  }
+
+  // Then, fetch invoices for the user's organization
+  // Cast the serial id to text for the join
+  const results = await db
+    .select({
+      invoice: invoices,
+      customer: customers
+    })
     .from(invoices)
-    .innerJoin(customers, eq(invoices.customerId, customers.id))
-    .where(eq(invoices.userId, session.user.id))
+    .innerJoin(
+      customers,
+      eq(invoices.customerId, sql`${customers.id}::integer`)
+    )
+    .where(eq(customers.organizationId, user.organizationId))
 
   console.log('Fetched invoices:', results) // Debug log
 
-  const invoicesList = results.map(({ invoices, customers }) => ({
-    ...invoices,
-    customer: customers
+  const invoicesList = results.map(({ invoice, customer }) => ({
+    ...invoice,
+    customer: customer
   }))
 
   return (

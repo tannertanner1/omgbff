@@ -2,12 +2,7 @@ import NextAuth, { DefaultSession } from 'next-auth'
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@/db'
-import {
-  sessions,
-  users,
-  accounts,
-  verificationTokens
-} from '@/db/schema/users'
+import { sessions, users, accounts, verificationTokens } from '@/db/schema/users'
 import { eq, and, sql } from 'drizzle-orm'
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
@@ -20,12 +15,12 @@ type Role = 'owner' | 'admin' | 'user'
 interface DatabaseUser {
   id: string
   email: string | null
-  emailVerified: Date | null
-  name: string | null
-  image: string | null
   role: Role
+  name: string | null
+  emailVerified: Date | null
   createdAt: Date
   updatedAt: Date
+  image: string | null
 }
 
 declare module 'next-auth' {
@@ -33,16 +28,14 @@ declare module 'next-auth' {
     user: {
       id: string
       email: string
-      name: string | null
-      image: string | null
       role: Role
+      name: string | null
       emailVerified: Date | null
+      image: string | null
     }
   }
-
   interface User extends DatabaseUser {}
 }
-
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string
@@ -78,12 +71,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await resend.emails.send({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
-          subject: user?.emailVerified
-            ? 'Sign in to your account'
-            : 'Verify your email',
-          react: user?.emailVerified
-            ? LoginEmail({ url })
-            : VerifyEmail({ url })
+          subject: user?.emailVerified ? 'Sign in to your account' : 'Verify your email',
+          react: user?.emailVerified ? LoginEmail({ url }) : VerifyEmail({ url })
         })
       }
     })
@@ -92,19 +81,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         const dbUser = await db.query.users.findFirst({
-          where: and(
-            eq(users.id, sql`${user.id}::text`),
-            sql`${users.id} IS NOT NULL`
-          )
+          where: and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`)
         })
 
         if (dbUser) {
-          token.id = dbUser.id
-          token.email = dbUser.email || ''
-          token.name = dbUser.name
-          token.image = dbUser.image
-          token.role = dbUser.role
-          token.emailVerified = dbUser.emailVerified
+          ;(token.id = dbUser.id),
+            (token.email = dbUser.email || ''),
+            (token.role = dbUser.role),
+            (token.name = dbUser.name),
+            (token.emailVerified = dbUser.emailVerified),
+            (token.image = dbUser.image)
         }
       }
       return token
@@ -112,25 +98,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token && token.id) {
         const dbUser = await db.query.users.findFirst({
-          where: and(
-            eq(users.id, sql`${token.id}::text`),
-            sql`${users.id} IS NOT NULL`
-          )
+          where: and(eq(users.id, sql`${token.id}::text`), sql`${users.id} IS NOT NULL`)
         })
-
         if (!dbUser) {
           throw new Error('User not found')
         }
-
         return {
           ...session,
           user: {
             id: dbUser.id,
             email: dbUser.email || '',
-            name: dbUser.name,
-            image: dbUser.image,
             role: dbUser.role,
-            emailVerified: dbUser.emailVerified
+            name: dbUser.name,
+            emailVerified: dbUser.emailVerified,
+            image: dbUser.image
           }
         }
       }
@@ -153,12 +134,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             role: 'user' as Role,
             updatedAt: new Date()
           })
-          .where(
-            and(
-              eq(users.id, sql`${user.id}::text`),
-              sql`${users.id} IS NOT NULL`
-            )
-          )
+          .where(and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`))
       }
     },
     async linkAccount({ user }) {
@@ -169,12 +145,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             emailVerified: new Date(),
             updatedAt: new Date()
           })
-          .where(
-            and(
-              eq(users.id, sql`${user.id}::text`),
-              sql`${users.id} IS NOT NULL`
-            )
-          )
+          .where(and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`))
       }
     }
   }

@@ -9,6 +9,15 @@ import {
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { InferInsertModel } from 'drizzle-orm'
 
+const organizations = pgTable('organization', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text('name').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
+})
+
 const users = pgTable(
   'user',
   {
@@ -16,15 +25,18 @@ const users = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
     email: text('email').unique(),
+    organizationId: text('organizationId').references(() => organizations.id, {
+      onDelete: 'set null' // When organization is deleted, set user's organizationId to null
+    }),
 
-    emailVerified: timestamp('emailVerified', { mode: 'date' }),
-    image: text('image'),
-    name: text('name'),
     role: text('role', { enum: ['owner', 'admin', 'user'] })
       .notNull()
       .default('user'),
+    name: text('name'),
+    emailVerified: timestamp('emailVerified', { mode: 'date' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow()
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    image: text('image')
   },
   user => [uniqueIndex('unique_idx').on(user.email)]
 )
@@ -66,8 +78,8 @@ const sessions = pgTable('session', {
 const verificationTokens = pgTable(
   'verificationToken',
   {
-    identifier: text('identifier').notNull(),
     token: text('token').notNull(),
+    identifier: text('identifier').notNull(),
 
     expires: timestamp('expires', { mode: 'date' }).notNull()
   },
@@ -78,8 +90,9 @@ const verificationTokens = pgTable(
   ]
 )
 
-export { users, accounts, sessions, verificationTokens }
+export { organizations, users, accounts, sessions, verificationTokens }
 
+export type NewOrganization = InferInsertModel<typeof organizations>
 export type NewUser = InferInsertModel<typeof users>
 export type NewSession = InferInsertModel<typeof sessions>
 
