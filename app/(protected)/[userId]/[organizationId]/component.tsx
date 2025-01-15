@@ -33,7 +33,7 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 // import { CreateCustomer, ReadCustomers } from './[customerId]/component'
 // import { CreateInvoice, ReadInvoices } from './[invoiceId]/component'
 import { CustomerForm } from './[customerId]/form'
-import { InvoiceForm } from './[invoiceId]/form'
+import { InvoiceForm } from './[customerId]/[invoiceId]/form'
 import { deleteOrganization } from '../actions'
 
 interface OrganizationProps {

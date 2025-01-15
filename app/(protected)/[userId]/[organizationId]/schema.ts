@@ -1,0 +1,12 @@
+import { z } from 'zod'
+
+export const customerSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Invalid email address' })
+})
+
+export const invoiceSchema = z.object({
+  customerId: z.string().min(1, { message: 'Customer is required' }),
+  amount: z.string().min(1, { message: 'Amount is required' }),
+  description: z.string().min(1, { message: 'Description is required' })
+})
