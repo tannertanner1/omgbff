@@ -2,13 +2,20 @@ import NextAuth, { DefaultSession } from 'next-auth'
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@/db'
-import { sessions, users, accounts, verificationTokens } from '@/db/schema/users'
+import {
+  sessions,
+  users,
+  accounts,
+  verificationTokens
+} from '@/db/schema/users'
 import { eq, and, sql } from 'drizzle-orm'
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
 import { VerifyEmail } from '@/lib/emails/verify-email'
 import { LoginEmail } from '@/lib/emails/login-email'
 import { JWT } from 'next-auth/jwt'
+
+const publicRoutes = ['/', '/contact', '/terms', '/policy', '/login']
 
 type Role = 'owner' | 'admin' | 'user'
 
@@ -36,6 +43,7 @@ declare module 'next-auth' {
   }
   interface User extends DatabaseUser {}
 }
+
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string
@@ -71,8 +79,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await resend.emails.send({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
-          subject: user?.emailVerified ? 'Sign in to your account' : 'Verify your email',
-          react: user?.emailVerified ? LoginEmail({ url }) : VerifyEmail({ url })
+          subject: user?.emailVerified
+            ? 'Sign in to your account'
+            : 'Verify your email',
+          react: user?.emailVerified
+            ? LoginEmail({ url })
+            : VerifyEmail({ url })
         })
       }
     })
@@ -81,7 +93,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         const dbUser = await db.query.users.findFirst({
-          where: and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`)
+          where: and(
+            eq(users.id, sql`${user.id}::text`),
+            sql`${users.id} IS NOT NULL`
+          )
         })
 
         if (dbUser) {
@@ -98,7 +113,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token && token.id) {
         const dbUser = await db.query.users.findFirst({
-          where: and(eq(users.id, sql`${token.id}::text`), sql`${users.id} IS NOT NULL`)
+          where: and(
+            eq(users.id, sql`${token.id}::text`),
+            sql`${users.id} IS NOT NULL`
+          )
         })
         if (!dbUser) {
           throw new Error('User not found')
@@ -117,12 +135,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
+    // authorized: async ({ auth, request }) => {
+    //   const { pathname } = request.nextUrl
+    //   if (pathname.startsWith('/dashboard')) {
+    //     return !!auth
+    //   }
+    //   return true
+    // }
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
-      if (pathname.startsWith('/dashboard')) {
-        return !!auth
+      // Allow access to public routes
+      if (publicRoutes.includes(pathname)) {
+        return true
       }
-      return true
+      // Require authentication for all other routes
+      return !!auth
     }
   },
   events: {
@@ -134,7 +161,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             role: 'user' as Role,
             updatedAt: new Date()
           })
-          .where(and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`))
+          .where(
+            and(
+              eq(users.id, sql`${user.id}::text`),
+              sql`${users.id} IS NOT NULL`
+            )
+          )
       }
     },
     async linkAccount({ user }) {
@@ -145,7 +177,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             emailVerified: new Date(),
             updatedAt: new Date()
           })
-          .where(and(eq(users.id, sql`${user.id}::text`), sql`${users.id} IS NOT NULL`))
+          .where(
+            and(
+              eq(users.id, sql`${user.id}::text`),
+              sql`${users.id} IS NOT NULL`
+            )
+          )
       }
     }
   }

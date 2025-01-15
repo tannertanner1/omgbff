@@ -3,8 +3,11 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { customers, invoices, type Status } from '@/db/schema/invoices'
 import { users } from '@/db/schema/users'
+// import { customers, invoices, type Status } from '@/db/schema/invoices'
+import { customers, invoices } from '@/db/schema/invoices'
+import { status } from '@/data/invoice-status'
+
 import { schema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
@@ -83,7 +86,8 @@ export async function create(
         description,
         customerId: customer.id,
         userId: userId, // Add this line
-        status: 'open' as Status
+        // status: 'open' as Status
+        status: 'open' as status
       })
       .returning({
         id: invoices.id

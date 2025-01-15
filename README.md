@@ -1,5 +1,20 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
+```ts
+/[userId]
+  ├── page.tsx // organizations <Table>
+  ├── actions.ts // organization CRUD Actions
+  └── [organizationId]
+      ├── page.tsx // organizations customers <Table> & invoices <Table>
+      ├── actions.ts // customer & invoice CRUD Actions
+      └── [customerId]
+          └── page.tsx // customer form
+      └── [invoiceId]
+          └── page.tsx // invoice form
+```
+
+<br />
+
 ```bash
 git clone https://github.com/tannertanner1/omgbff.git
 touch .env.local .eslintrc.json .gitignore .prettierignore .prettierrc

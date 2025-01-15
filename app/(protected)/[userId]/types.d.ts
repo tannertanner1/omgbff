@@ -9,4 +9,5 @@ export interface ActionResponse {
     [K in keyof FormData]?: string[]
   }
   inputs: FormData
+  organizationId?: string
 }
