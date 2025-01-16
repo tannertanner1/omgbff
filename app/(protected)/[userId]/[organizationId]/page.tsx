@@ -51,13 +51,20 @@ export default async function Page({
     .where(eq(customers.organizationId, params.organizationId))
 
   return (
-    <Organization
-      organization={organization}
-      customers={organizationCustomers}
-      invoices={organizationInvoices}
-      userId={params.userId}
-      organizationId={params.organizationId}
-    />
+    <main className='mx-auto w-full max-w-5xl'>
+      {/* {organizationId.length === 0 ? (
+      <></>
+    ) : (
+      <></>
+    )} */}
+      <Organization
+        organization={organization}
+        customers={organizationCustomers}
+        invoices={organizationInvoices}
+        userId={params.userId}
+        organizationId={params.organizationId}
+      />
+    </main>
   )
 }
 

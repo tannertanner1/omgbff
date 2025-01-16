@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+
 import { invoiceSchema } from './schema'
 import { createInvoice } from './actions'
 
@@ -74,7 +75,10 @@ export function InvoiceForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='-mt-8 space-y-8 p-4'
+      >
         <FormField
           control={form.control}
           name='customerId'

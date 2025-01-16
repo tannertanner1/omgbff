@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 export function Loading() {
   return (
     <div
-      className='flex h-screen items-start justify-center pt-[60vh]'
+      className='flex h-screen items-start justify-center pt-[20vh]'
       aria-label='Loading'
     >
       <LoadingDots color='bg-primary' size='medium' />

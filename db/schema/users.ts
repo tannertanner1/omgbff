@@ -41,6 +41,24 @@ const users = pgTable(
   user => [uniqueIndex('unique_idx').on(user.email)]
 )
 
+export const userOrganizations = pgTable(
+  'user_organization',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    organizationId: text('organization_id')
+      .notNull()
+      .references(() => organizations.id, { onDelete: 'cascade' }),
+    role: text('role', { enum: ['owner', 'admin', 'user'] })
+      .notNull()
+      .default('user'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow()
+  },
+  userOrg => [primaryKey({ columns: [userOrg.userId, userOrg.organizationId] })]
+)
+
 const accounts = pgTable(
   'account',
   {

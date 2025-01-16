@@ -6,8 +6,10 @@ export interface ActionResponse {
   success: boolean
   message: string
   errors?: {
-    [K in keyof FormData]?: string[]
+    [key: string]: string[]
   }
-  inputs: FormData
+  inputs?: {
+    [K in keyof FormData]?: string
+  }
   organizationId?: string
 }

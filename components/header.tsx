@@ -4,12 +4,9 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
-  IconFish,
   IconCircleFilled,
   IconCircle,
-  IconCircleHalf,
   IconPercentage50,
-  IconCheck,
   IconHelp,
   IconUserCircle,
   IconPhotoCircle,
@@ -21,9 +18,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuContent
@@ -66,10 +60,16 @@ export function Header() {
 
   return (
     <div className='mx-auto flex h-14 max-w-5xl flex-grow items-center justify-between px-4'>
+      {' '}
       <div className='flex items-center'>
         <Link href='/'>
-          <div className='-mt-0.5'>
-            <IconFish className='h-8 w-8' />
+          <div
+          // className='-mt-0.5'
+          >
+            <IconCircle
+              className='h-6 w-6'
+              // className='h-8 w-8'
+            />
           </div>
         </Link>
       </div>
@@ -96,7 +96,9 @@ const tabs = [
 
 function IconTabs() {
   const pathname = usePathname()
-  const [selected, setSelected] = useState<(typeof tabs)[number]>(tabs.find(tab => tab.href === pathname) ?? tabs[0])
+  const [selected, setSelected] = useState<(typeof tabs)[number]>(
+    tabs.find(tab => tab.href === pathname) ?? tabs[0]
+  )
 
   const buttonVariants = {
     initial: { gap: 0, paddingLeft: '.5rem', paddingRight: '.5rem' },
@@ -125,7 +127,9 @@ function IconTabs() {
               transition={transition}
               className={cn(
                 'relative flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-within:outline-gray-500/50',
-                isSelected ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                isSelected
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-primary'
               )}
             >
               <Icon className='h-5 w-5' />
@@ -150,7 +154,13 @@ function IconTabs() {
   )
 }
 
-function UserDropdown({ session, setSession }: { session: any; setSession: (session: any) => void }) {
+function UserDropdown({
+  session,
+  setSession
+}: {
+  session: any
+  setSession: (session: any) => void
+}) {
   const { theme, setTheme } = useTheme()
   const handleLogout = async () => {
     try {
@@ -162,67 +172,70 @@ function UserDropdown({ session, setSession }: { session: any; setSession: (sess
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className='rounded-full'>
-          <IconCircleFilled className='h-6 w-6 cursor-pointer' />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-[var(--radix-dropdown-menu-trigger-width)]' align='end'>
-        {session?.user && (
-          <>
-            <DropdownMenuLabel className='font-normal'>
-              <div className='flex flex-col space-y-1'>
-                <p className='truncate text-sm font-medium leading-none'>{session.user.email}</p>
-                <p className='truncate text-xs leading-none text-muted-foreground'>{session.user.id}</p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-          </>
-        )}
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger className='flex items-center gap-2'>
-            <IconCircle className='h-4 w-4' /> Preferences
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className='w-[var(--radix-dropdown-menu-trigger-width)]'>
-            <DropdownMenuItem onClick={() => setTheme('system')}>
-              <IconCircleHalf className='h-4 w-4' />
-              <span>System</span>
-              {theme === 'system' && <IconCheck className='ml-auto h-4 w-4' />}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('light')}>
-              <IconPercentage50 className='h-4 w-4 dark:rotate-180' />
-              <span>Light</span>
-              {theme === 'light' && <IconCheck className='ml-auto h-4 w-4' />}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>
-              <IconPercentage50 className='h-4 w-4 rotate-180 dark:rotate-0' />
-              <span>Dark</span>
-              {theme === 'dark' && <IconCheck className='ml-auto h-4 w-4' />}
-            </DropdownMenuItem>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuItem asChild>
-          <Link href='/contact' className='flex items-center gap-2'>
-            <IconHelp className='h-4 w-4' />
-            <span>Contact</span>
-          </Link>
-        </DropdownMenuItem>
-        {session?.user ? (
-          <DropdownMenuItem onClick={handleLogout}>
-            <IconPhotoCircle className='h-4 w-4' />
-            <span>Sign out</span>
-          </DropdownMenuItem>
-        ) : (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className='rounded-full'>
+            <IconCircleFilled className='h-6 w-6 cursor-pointer' />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          // className='w-[var(--radix-dropdown-menu-trigger-width)]'
+          align='end'
+        >
+          {session?.user && (
+            <>
+              <DropdownMenuLabel className='font-normal'>
+                <div className='flex flex-col space-y-1'>
+                  <p className='truncate text-sm font-medium leading-none'>
+                    {session.user.email}
+                  </p>
+                  <p className='truncate text-xs leading-none text-muted-foreground'>
+                    {session.user.id}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem asChild>
-            <Link href='/login' className='flex items-center gap-2'>
-              <IconUserCircle className='h-4 w-4' />
-              <span>Sign in</span>
+            <Link href='/contact' className='flex items-center gap-2'>
+              <IconHelp className='h-4 w-4' />
+              Contact
             </Link>
           </DropdownMenuItem>
+          {session?.user ? (
+            <DropdownMenuItem onClick={handleLogout} className='gap-2'>
+              <IconPhotoCircle className='h-4 w-4' />
+              Sign out
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem asChild>
+              <Link href='/login' className='flex items-center gap-2'>
+                <IconUserCircle className='h-4 w-4' />
+                Sign in
+              </Link>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <button
+        className={cn(
+          'relative overflow-hidden rounded-md bg-transparent text-primary transition-all duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:-translate-y-1 active:scale-x-90 active:scale-y-110'
         )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      >
+        <IconPercentage50
+          aria-hidden='true'
+          className='dark:rotate-360 h-6 w-6 dark:hidden'
+        />
+        <IconPercentage50
+          aria-hidden='true'
+          className='rotate-360 hidden h-6 w-6 dark:block'
+        />
+        <span className='sr-only'>Toggle theme</span>
+      </button>
+    </>
   )
 }
 
