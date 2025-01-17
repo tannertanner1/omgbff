@@ -6,7 +6,7 @@ import { db } from '@/db'
 import { users } from '@/db/schema/users'
 // import { customers, invoices, type Status } from '@/db/schema/invoices'
 import { customers, invoices } from '@/db/schema/invoices'
-import { status } from '@/data/invoice-status'
+import { Status } from '@/data/invoice-statuses'
 
 import { schema } from './schema'
 import { ActionResponse } from './types'
@@ -86,8 +86,7 @@ export async function create(
         description,
         customerId: customer.id,
         userId: userId, // Add this line
-        // status: 'open' as Status
-        status: 'open' as status
+        status: 'open' as Status
       })
       .returning({
         id: invoices.id

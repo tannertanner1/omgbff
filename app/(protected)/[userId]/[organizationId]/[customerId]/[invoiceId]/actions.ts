@@ -10,7 +10,7 @@ import { invoiceSchema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
 import { InvoiceEmail } from '@/lib/emails/invoice-email'
-import { status } from '@/data/invoice-status'
+import { Status } from '@/data/invoice-statuses'
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY)
 
@@ -99,7 +99,7 @@ export async function updateInvoice(
     customerId: formData.get('customerId') as string,
     amount: formData.get('amount') as string,
     description: formData.get('description') as string,
-    status: formData.get('status') as status
+    status: formData.get('status') as Status
   }
 
   const validatedData = invoiceSchema.safeParse({

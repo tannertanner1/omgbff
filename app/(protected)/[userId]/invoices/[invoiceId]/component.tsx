@@ -11,14 +11,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { IconLoader, IconChevronDown } from '@tabler/icons-react'
 import { updateInvoiceStatus, deleteInvoice } from './actions'
-import { STATUSES, type status } from '@/data/invoice-status'
+import { STATUSES, type Status } from '@/data/invoice-statuses'
 
 export function Invoice({
   invoice
 }: {
   invoice: {
     id: number
-    status: status
+    status: Status
     value: number
     description: string
     customer: {
@@ -29,10 +29,10 @@ export function Invoice({
 }) {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
-  const [status, setStatus] = React.useState<status>(invoice.status)
+  const [status, setStatus] = React.useState<Status>(invoice.status)
   const [isDeleting, setIsDeleting] = React.useState(false)
 
-  const updateStatus = (newStatus: status) => {
+  const updateStatus = (newStatus: Status) => {
     startTransition(async () => {
       const formData = new FormData()
       formData.set('invoiceId', invoice.id.toString())
@@ -66,12 +66,12 @@ export function Invoice({
   return (
     <div className='mx-auto w-full max-w-2xl p-6'>
       <div className='mb-8 flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>Invoice #{invoice.id}</h1>
+        <h1 className='text-2xl font-bold'>Invoice {invoice.id}</h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant='outline'
-              className='w-[180px] justify-start border-zinc-800 bg-background px-3'
+              className='w-[180px] justify-start px-3'
               disabled={isPending}
             >
               {isPending ? (
@@ -91,12 +91,12 @@ export function Invoice({
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-[180px] border-zinc-800 bg-background'>
+          <DropdownMenuContent className='w-[180px]'>
             {STATUSES.map(({ id, color }) => (
               <DropdownMenuItem
                 key={id}
                 onClick={() => updateStatus(id)}
-                className='flex items-center gap-2 bg-transparent text-white'
+                className='flex items-center gap-2'
               >
                 <div
                   className='h-2 w-2 rounded-full'
@@ -110,16 +110,11 @@ export function Invoice({
       </div>
 
       <div className='space-y-6 text-lg'>
-        <div>
-          <span className='text-zinc-400'>Email:</span> {invoice.customer.email}
-        </div>
-        <div>
-          <span className='text-zinc-400'>Amount:</span> $
-          {(invoice.value / 100).toFixed(2)}
-        </div>
-        <div>
-          <span className='text-zinc-400'>Description:</span>{' '}
-          {invoice.description}
+        <div className='flex justify-between'>
+          <div>{invoice.customer.email}</div>
+          <div className='justify-end text-right'>
+            ${(invoice.value / 100).toFixed(2)}
+          </div>
         </div>
       </div>
 

@@ -4,6 +4,8 @@ import { db } from '@/db'
 import { customers, invoices } from '@/db/schema/invoices'
 import { eq } from 'drizzle-orm'
 import Link from 'next/link'
+import { Back } from '@/components/back'
+import { IconCircleChevronLeft } from '@tabler/icons-react'
 
 export default async function Page({
   params
@@ -37,47 +39,50 @@ export default async function Page({
     .where(eq(invoices.customerId, customer.id))
 
   return (
-    <div className='space-y-6'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-3xl font-semibold'>{customer.name}</h1>
-        <Link
-          href={`/${params.userId}/${params.organizationId}`}
-          className='text-blue-500 hover:underline'
-        >
-          Back to Organization
-        </Link>
+    <div className='mx-auto w-full max-w-5xl p-4'>
+      <div className='mb-8 flex items-center justify-between'>
+        <h1 className='text-3xl font-bold'>{customer.id}</h1>
+        <div>
+          {/* <Link href={`/${params.userId}/${params.organizationId}`}>
+            <IconCircleChevronLeft className='h-6 w-6' />
+          </Link> */}
+          <Back>
+            <IconCircleChevronLeft className='h-6 w-6' />
+          </Back>
+        </div>
       </div>
-      <div className='rounded-lg bg-white p-6 shadow'>
-        <h2 className='mb-4 text-xl font-semibold'>Customer Details</h2>
-        <div className='grid grid-cols-2 gap-4'>
-          <div>
-            <p className='text-gray-600'>Name</p>
+      <div className='space-y-4'>
+        <h2 className='mb-4 text-xl font-semibold'>Customer</h2>
+        <div className='space-y-2'>
+          <div className='inline-flex items-center gap-2'>
+            <p className='text-muted-foreground'>Name</p>
             <p className='font-medium'>{customer.name}</p>
           </div>
-          <div>
-            <p className='text-gray-600'>Email</p>
+        </div>
+        <div className='space-y-4'>
+          <div className='inline-flex items-center gap-2'>
+            <p className='text-muted-foreground'>Email</p>
             <p className='font-medium'>{customer.email}</p>
           </div>
         </div>
       </div>
-      <div className='rounded-lg bg-white p-6 shadow'>
-        <h2 className='mb-4 text-xl font-semibold'>Customer Invoices</h2>
+      <div className='pt-6'>
+        <h2 className='mb-4 text-xl font-semibold'>Invoices</h2>
         {customerInvoices.length > 0 ? (
-          <ul className='divide-y divide-gray-200'>
+          <ul className='capitalize'>
             {customerInvoices.map(invoice => (
-              <li key={invoice.id} className='py-4'>
+              <li key={invoice.id} className='py-2'>
                 <Link
                   href={`/${params.userId}/${params.organizationId}/invoices/${invoice.id}`}
                   className='hover:underline'
                 >
-                  Invoice #{invoice.id} - ${invoice.value / 100} -{' '}
-                  {invoice.status}
+                  {invoice.id}, ${invoice.value / 100}, {invoice.status}
                 </Link>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No invoices found for this customer.</p>
+          <p>No invoices found for this customer</p>
         )}
       </div>
     </div>

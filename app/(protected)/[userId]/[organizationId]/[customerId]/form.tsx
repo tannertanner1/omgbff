@@ -15,6 +15,8 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { IconLoader } from '@tabler/icons-react'
+
 import { customerSchema } from './schema'
 import { createCustomer } from './actions'
 
@@ -26,7 +28,7 @@ export function CustomerForm({
   organizationId: string
 }) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, setPending] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(customerSchema),
@@ -37,7 +39,7 @@ export function CustomerForm({
   })
 
   async function onSubmit(data: { name: string; email: string }) {
-    setIsLoading(true)
+    setPending(true)
     try {
       const formData = new FormData()
       formData.append('name', data.name)
@@ -53,7 +55,7 @@ export function CustomerForm({
     } catch (error) {
       console.error('Failed to create customer:', error)
     } finally {
-      setIsLoading(false)
+      setPending(false)
     }
   }
 
@@ -95,8 +97,18 @@ export function CustomerForm({
             </FormItem>
           )}
         />
-        <Button type='submit' disabled={isLoading}>
-          {isLoading ? 'Creating...' : 'Create Customer'}
+        <Button
+          type='submit'
+          variant='outline'
+          className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
+          disabled={isPending}
+          aria-disabled={isPending}
+        >
+          {isPending ? (
+            <IconLoader className='h-4 w-4 animate-spin motion-reduce:hidden' />
+          ) : (
+            'Create'
+          )}
         </Button>
       </form>
     </Form>

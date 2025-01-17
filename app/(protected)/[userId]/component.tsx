@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
   Dialog,
   DialogContent,
@@ -90,45 +91,43 @@ function Read({
   }>
   userId: string
 }) {
-  const router = useRouter()
-
-  const handleRowClick = (organizationId: string) => {
-    router.push(`/${userId}/${organizationId}`)
-  }
-
   return (
-    <div className='space-y-4'>
-      <div className='rounded-lg border'>
-        <Table>
-          <TableHeader>
-            <TableRow className={cn('border-b hover:bg-transparent')}>
-              <TableHead>Name</TableHead>
-              <TableHead>Created</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {organizations.map(organization => (
-              <TableRow
-                key={organization.id}
-                onClick={() => handleRowClick(organization.id)}
-                className='cursor-pointer'
-              >
-                <TableCell className='font-medium'>
+    <div className=''>
+      <Table>
+        <TableHeader>
+          <TableRow className={cn('hover:bg-transparent')}>
+            <TableHead className='w-[200px] p-4'>Name</TableHead>
+            <TableHead className='p-4'>Created</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {organizations.map(organization => (
+            <TableRow key={organization.id}>
+              <TableCell className='p-0 font-medium'>
+                <Link
+                  href={`/${userId}/${organization.id}`}
+                  className='block p-4 font-semibold'
+                >
                   <div className='flex items-center gap-2'>
                     <IconFolder className='h-4 w-4' />
                     {organization.name}
                   </div>
-                </TableCell>
-                <TableCell>
+                </Link>
+              </TableCell>
+              <TableCell className='p-0'>
+                <Link
+                  href={`/${userId}/${organization.id}`}
+                  className='block p-4'
+                >
                   {formatDistanceToNow(new Date(organization.createdAt), {
                     addSuffix: true
                   })}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

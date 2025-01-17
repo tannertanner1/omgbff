@@ -125,7 +125,7 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
             <Button
               type='submit'
               variant='outline'
-              className='w-full'
+              className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
               disabled={isPending}
               aria-disabled={isPending}
             >

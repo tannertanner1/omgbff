@@ -1,7 +1,7 @@
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 import { organizations, users } from './users'
 import { InferInsertModel } from 'drizzle-orm'
-import { STATUS } from '@/data/invoice-status'
+import { STATUS } from '@/data/invoice-statuses'
 
 const customers = pgTable('customer', {
   id: serial('id').primaryKey().notNull(),

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { IconLoader } from '@tabler/icons-react'
 
 import { invoiceSchema } from './schema'
 import { createInvoice } from './actions'
@@ -36,7 +37,7 @@ export function InvoiceForm({
   customers: Array<{ id: number; name: string }>
 }) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, setPending] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(invoiceSchema),
@@ -52,7 +53,7 @@ export function InvoiceForm({
     amount: string
     description: string
   }) {
-    setIsLoading(true)
+    setPending(true)
     try {
       const formData = new FormData()
       formData.append('customerId', data.customerId)
@@ -69,7 +70,7 @@ export function InvoiceForm({
     } catch (error) {
       console.error('Failed to create invoice:', error)
     } finally {
-      setIsLoading(false)
+      setPending(false)
     }
   }
 
@@ -116,12 +117,7 @@ export function InvoiceForm({
             <FormItem>
               <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input
-                  type='number'
-                  step='0.01'
-                  placeholder='100.00'
-                  {...field}
-                />
+                <Input type='number' step='0.01' {...field} />
               </FormControl>
               <FormDescription>
                 Enter the invoice amount in dollars.
@@ -146,8 +142,17 @@ export function InvoiceForm({
             </FormItem>
           )}
         />
-        <Button type='submit' disabled={isLoading}>
-          {isLoading ? 'Creating...' : 'Create Invoice'}
+        <Button
+          type='submit'
+          className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
+          disabled={isPending}
+          aria-disabled={isPending}
+        >
+          {isPending ? (
+            <IconLoader className='h-4 w-4 animate-spin motion-reduce:hidden' />
+          ) : (
+            'Create'
+          )}
         </Button>
       </form>
     </Form>

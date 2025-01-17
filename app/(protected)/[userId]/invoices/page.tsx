@@ -1,13 +1,5 @@
-import { auth } from '@/lib/auth'
-import { eq, sql } from 'drizzle-orm'
 import Link from 'next/link'
-import { CirclePlus } from 'lucide-react'
 import { redirect } from 'next/navigation'
-
-import { db } from '@/db'
-import { invoices, customers } from '@/db/schema/invoices'
-import { users } from '@/db/schema/users'
-
 import { Badge } from '@/components/ui/badge'
 import {
   Table,
@@ -18,7 +10,13 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import { IconCirclePlus } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
+import { auth } from '@/lib/auth'
+import { eq, sql } from 'drizzle-orm'
+import { db } from '@/db'
+import { invoices, customers } from '@/db/schema/invoices'
+import { users } from '@/db/schema/users'
 
 export default async function Page() {
   const session = await auth()
@@ -68,7 +66,7 @@ export default async function Page() {
           href='/dashboard/invoices/new'
           className='inline-flex items-center gap-2'
         >
-          <CirclePlus className='h-6 w-6' />
+          <IconCirclePlus className='h-6 w-6' />
         </Link>
       </div>
       {invoicesList.length === 0 ? (
