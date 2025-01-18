@@ -53,7 +53,7 @@ export function Invoice({
       const formData = new FormData(e.currentTarget as HTMLFormElement)
       const result = await deleteInvoice(formData)
       if (result.success) {
-        router.push('/dashboard/invoices')
+        router.push('/invoices')
       } else {
         setIsDeleting(false)
       }

@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm'
 import { invoiceSchema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
-import { InvoiceEmail } from '@/lib/emails/invoice-email'
+import { InvoiceEmail } from '@/emails/invoice-email'
 import { Status } from '@/data/invoice-statuses'
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY)

@@ -1,11 +1,22 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { IconPaw } from '@tabler/icons-react'
+import { Menu } from '@/components/menu'
 
 export default async function Page() {
   const session = await auth()
-  if (session) return redirect('/dashboard')
+  if (session)
+    return (
+      <div className='flex h-screen px-2'>
+        <div className='flex min-w-0 flex-1 flex-col'>
+          <div className='container mx-auto w-full max-w-5xl'>
+            <div className='mb-8 flex flex-col items-center'>
+              <Menu />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
 
   return (
     <div className='flex h-screen px-2'>
@@ -17,7 +28,6 @@ export default async function Page() {
               className='flex items-center gap-2 self-center font-medium'
             >
               <IconPaw className='h-12 w-12' aria-hidden='true' />
-              {/* <SessionData session={session} /> */}
             </Link>
           </div>
         </div>

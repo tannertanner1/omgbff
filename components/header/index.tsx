@@ -1,11 +1,9 @@
+import * as React from 'react'
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { IconCircle } from '@tabler/icons-react'
-import { ROUTES } from '@/data/public-routes'
-import { TABS } from '@/data/icon-tabs'
-import { IconTabs } from './icon-tabs'
-import { UserDropdown } from './user-dropdown'
-import { ThemeToggle } from './theme-toggle'
+import { Dropdown } from './dropdown'
+import { Toggle } from './toggle'
 
 export async function Header() {
   const session = await auth()
@@ -19,16 +17,9 @@ export async function Header() {
           </div>
         </Link>
       </div>
-      <div className='relative flex flex-1 items-center justify-center overflow-hidden'>
-        <div className='pointer-events-none absolute left-0 z-20 h-full w-8 bg-gradient-to-r from-background to-transparent' />
-        <div className='pointer-events-none absolute right-0 z-20 h-full w-8 bg-gradient-to-l from-background to-transparent' />
-        <div className='scrollbar-none w-full overflow-x-auto'>
-          <IconTabs tabs={TABS} />
-        </div>
-      </div>
       <div className='flex items-center'>
-        <UserDropdown session={session} />
-        <ThemeToggle />
+        <Dropdown session={session} />
+        <Toggle />
       </div>
     </div>
   )

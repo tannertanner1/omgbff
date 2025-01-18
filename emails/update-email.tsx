@@ -1,4 +1,4 @@
-import { EmailTemplate } from '@/lib/emails/email-template'
+import { EmailTemplate } from '@/emails/email-template'
 
 const updateEmail = {
   preview: 'Confirm change of email',

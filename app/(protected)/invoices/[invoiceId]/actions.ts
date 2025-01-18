@@ -26,7 +26,7 @@ export async function updateInvoiceStatus(prevState: any, formData: FormData) {
       .set({ status })
       .where(eq(invoices.id, parseInt(invoiceId)))
 
-    revalidatePath(`/dashboard/invoices/${invoiceId}`)
+    revalidatePath(`/invoices/${invoiceId}`)
     return {
       success: true,
       message: 'Invoice status updated successfully',
@@ -52,7 +52,7 @@ export async function deleteInvoice(formData: FormData) {
 
   try {
     await db.delete(invoices).where(eq(invoices.id, parseInt(invoiceId)))
-    revalidatePath('/dashboard/invoices')
+    revalidatePath('/invoices')
     return { success: true }
   } catch (error) {
     console.error('Error deleting invoice:', error)

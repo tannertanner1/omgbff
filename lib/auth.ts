@@ -11,8 +11,8 @@ import {
 import { eq, and, sql } from 'drizzle-orm'
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
-import { VerifyEmail } from '@/lib/emails/verify-email'
-import { LoginEmail } from '@/lib/emails/login-email'
+import { VerifyEmail } from '@/emails/verify-email'
+import { LoginEmail } from '@/emails/login-email'
 import { JWT } from 'next-auth/jwt'
 
 const publicRoutes = ['/', '/contact', '/terms', '/policy', '/login']

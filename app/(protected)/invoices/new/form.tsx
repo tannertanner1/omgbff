@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useRouter } from 'next/navigation'
 import {
   Card,
   CardTitle,
@@ -17,18 +18,23 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import { IconCircleCheck, IconCircleX, IconLoader } from '@tabler/icons-react'
 
-import { contact } from './actions'
+import { create } from './actions'
 import { ActionResponse } from './types'
 
 const initialState: ActionResponse = {
   success: false,
-  message: '',
-  errors: undefined,
-  inputs: { name: '', email: '', message: '' }
+  message: ''
 }
 
 export function Form({ className }: React.ComponentProps<typeof Card>) {
-  const [state, action, isPending] = React.useActionState(contact, initialState)
+  const router = useRouter()
+  const [state, action, isPending] = React.useActionState(create, initialState)
+
+  React.useEffect(() => {
+    if (state?.success && state?.invoiceId) {
+      router.push(`/invoices/${state.invoiceId}`)
+    }
+  }, [state?.success, state?.invoiceId, router])
 
   return (
     <div className={cn('w-full max-w-sm')}>
@@ -48,11 +54,6 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
                 className='mb-7'
                 defaultValue={state?.inputs?.name}
               />
-              {state?.errors?.name && (
-                <p id='name-error' className='text-sm text-[#DB4437]'>
-                  {state.errors.name[0]}
-                </p>
-              )}
             </div>
             <div className='grid gap-2'>
               <Label
@@ -77,21 +78,45 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
             </div>
             <div className='grid gap-2'>
               <Label
-                htmlFor='message'
+                htmlFor='value'
                 className="after:ml-0.5 after:text-[#DB4437] after:content-['*']"
               >
-                Message
+                Amount
+              </Label>
+              <Input
+                id='value'
+                name='value'
+                type='number'
+                step='0.01'
+                aria-describedby='value-error'
+                className={state?.errors?.value ? 'border-[#DB4437]' : 'mb-7'}
+                defaultValue={state?.inputs?.value}
+              />
+              {state?.errors?.value && (
+                <p id='value-error' className='text-sm text-[#DB4437]'>
+                  {state.errors.value[0]}
+                </p>
+              )}
+            </div>
+            <div className='grid gap-2'>
+              <Label
+                htmlFor='description'
+                className="after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+              >
+                Description
               </Label>
               <Textarea
-                id='message'
-                name='message'
-                aria-describedby='message-error'
-                className={state?.errors?.message ? 'border-[#DB4437]' : 'mb-7'}
-                defaultValue={state?.inputs?.message}
+                id='description'
+                name='description'
+                aria-describedby='description-error'
+                className={
+                  state?.errors?.description ? 'border-[#DB4437]' : 'mb-7'
+                }
+                defaultValue={state?.inputs?.description}
               />
-              {state?.errors?.message && (
-                <p id='message-error' className='text-sm text-[#DB4437]'>
-                  {state.errors.message[0]}
+              {state?.errors?.description && (
+                <p id='description-error' className='text-sm text-[#DB4437]'>
+                  {state.errors.description[0]}
                 </p>
               )}
             </div>
@@ -100,18 +125,14 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
             <Button
               type='submit'
               variant='outline'
-              className={cn(
-                // 'w-full border border-background bg-primary text-background hover:border-primary hover:bg-background hover:text-primary',
-                'w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background',
-                state?.errors?.message ? '' : ''
-              )}
+              className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
               disabled={isPending}
               aria-disabled={isPending}
             >
               {isPending ? (
                 <IconLoader className='h-4 w-4 animate-spin motion-reduce:hidden' />
               ) : (
-                'Send'
+                'Submit'
               )}
             </Button>
           </CardFooter>

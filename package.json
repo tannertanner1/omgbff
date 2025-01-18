@@ -18,7 +18,7 @@
     "migrate": "drizzle-kit migrate --config drizzle.config.ts",
     "push": "drizzle-kit push --config drizzle.config.ts",
     "pull": "drizzle-kit pull --config drizzle.config.ts",
-    "email": "email dev --port 4000 --dir ./email"
+    "email": "email dev --port 4000 --dir ./emails"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

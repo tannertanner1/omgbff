@@ -62,10 +62,7 @@ export default async function Page() {
     <main className='mx-auto w-full max-w-5xl px-4 pt-2'>
       <div className='mb-6 flex justify-between'>
         <h1 className='text-3xl font-semibold'>Invoices</h1>
-        <Link
-          href='/dashboard/invoices/new'
-          className='inline-flex items-center gap-2'
-        >
+        <Link href='/invoices/new' className='inline-flex items-center gap-2'>
           <IconCirclePlus className='h-6 w-6' />
         </Link>
       </div>
@@ -88,7 +85,7 @@ export default async function Page() {
               <TableRow key={invoice.id}>
                 <TableCell className='p-0 font-medium'>
                   <Link
-                    href={`/dashboard/invoices/${invoice.id}`}
+                    href={`/invoices/${invoice.id}`}
                     className='block p-4 font-semibold'
                   >
                     {new Date(invoice.createdAt).toLocaleDateString()}
@@ -96,25 +93,19 @@ export default async function Page() {
                 </TableCell>
                 <TableCell className='p-0'>
                   <Link
-                    href={`/dashboard/invoices/${invoice.id}`}
+                    href={`/invoices/${invoice.id}`}
                     className='block p-4 font-semibold'
                   >
                     {invoice.customer.name}
                   </Link>
                 </TableCell>
                 <TableCell className='p-0'>
-                  <Link
-                    href={`/dashboard/invoices/${invoice.id}`}
-                    className='block p-4'
-                  >
+                  <Link href={`/invoices/${invoice.id}`} className='block p-4'>
                     {invoice.customer.email}
                   </Link>
                 </TableCell>
                 <TableCell className='p-0 text-center'>
-                  <Link
-                    href={`/dashboard/invoices/${invoice.id}`}
-                    className='block p-4'
-                  >
+                  <Link href={`/invoices/${invoice.id}`} className='block p-4'>
                     <Badge
                       className={cn(
                         'rounded-full capitalize',
@@ -130,7 +121,7 @@ export default async function Page() {
                 </TableCell>
                 <TableCell className='p-0 text-right'>
                   <Link
-                    href={`/dashboard/invoices/${invoice.id}`}
+                    href={`/invoices/${invoice.id}`}
                     className='block p-4 font-semibold'
                   >
                     ${(invoice.value / 100).toFixed(2)}

@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
 import {
   Card,
   CardTitle,
@@ -18,23 +17,21 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import { IconCircleCheck, IconCircleX, IconLoader } from '@tabler/icons-react'
 
-import { create } from './actions'
+import { feedback } from './actions'
 import { ActionResponse } from './types'
 
 const initialState: ActionResponse = {
   success: false,
-  message: ''
+  message: '',
+  errors: undefined,
+  inputs: { name: '', message: '' }
 }
 
 export function Form({ className }: React.ComponentProps<typeof Card>) {
-  const router = useRouter()
-  const [state, action, isPending] = React.useActionState(create, initialState)
-
-  React.useEffect(() => {
-    if (state?.success && state?.invoiceId) {
-      router.push(`/dashboard/invoices/${state.invoiceId}`)
-    }
-  }, [state?.success, state?.invoiceId, router])
+  const [state, action, isPending] = React.useActionState(
+    feedback,
+    initialState
+  )
 
   return (
     <div className={cn('w-full max-w-sm')}>
@@ -54,69 +51,29 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
                 className='mb-7'
                 defaultValue={state?.inputs?.name}
               />
-            </div>
-            <div className='grid gap-2'>
-              <Label
-                htmlFor='email'
-                className="after:ml-0.5 after:text-[#DB4437] after:content-['*']"
-              >
-                Email
-              </Label>
-              <Input
-                id='email'
-                name='email'
-                type='email'
-                aria-describedby='email-error'
-                className={state?.errors?.email ? 'border-[#DB4437]' : 'mb-7'}
-                defaultValue={state?.inputs?.email}
-              />
-              {state?.errors?.email && (
-                <p id='email-error' className='text-sm text-[#DB4437]'>
-                  {state.errors.email[0]}
+              {state?.errors?.name && (
+                <p id='name-error' className='text-sm text-[#DB4437]'>
+                  {state.errors.name[0]}
                 </p>
               )}
             </div>
             <div className='grid gap-2'>
               <Label
-                htmlFor='value'
+                htmlFor='message'
                 className="after:ml-0.5 after:text-[#DB4437] after:content-['*']"
               >
-                Amount
-              </Label>
-              <Input
-                id='value'
-                name='value'
-                type='number'
-                step='0.01'
-                aria-describedby='value-error'
-                className={state?.errors?.value ? 'border-[#DB4437]' : 'mb-7'}
-                defaultValue={state?.inputs?.value}
-              />
-              {state?.errors?.value && (
-                <p id='value-error' className='text-sm text-[#DB4437]'>
-                  {state.errors.value[0]}
-                </p>
-              )}
-            </div>
-            <div className='grid gap-2'>
-              <Label
-                htmlFor='description'
-                className="after:ml-0.5 after:text-[#DB4437] after:content-['*']"
-              >
-                Description
+                Message
               </Label>
               <Textarea
-                id='description'
-                name='description'
-                aria-describedby='description-error'
-                className={
-                  state?.errors?.description ? 'border-[#DB4437]' : 'mb-7'
-                }
-                defaultValue={state?.inputs?.description}
+                id='message'
+                name='message'
+                aria-describedby='message-error'
+                className={state?.errors?.message ? 'border-[#DB4437]' : 'mb-7'}
+                defaultValue={state?.inputs?.message}
               />
-              {state?.errors?.description && (
-                <p id='description-error' className='text-sm text-[#DB4437]'>
-                  {state.errors.description[0]}
+              {state?.errors?.message && (
+                <p id='message-error' className='text-sm text-[#DB4437]'>
+                  {state.errors.message[0]}
                 </p>
               )}
             </div>
@@ -125,7 +82,11 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
             <Button
               type='submit'
               variant='outline'
-              className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
+              className={cn(
+                // 'w-full border border-background bg-primary text-background hover:border-primary hover:bg-background hover:text-primary',
+                'w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background',
+                state?.errors?.message ? '' : ''
+              )}
               disabled={isPending}
               aria-disabled={isPending}
             >

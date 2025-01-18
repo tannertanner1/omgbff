@@ -11,7 +11,7 @@ import { Status } from '@/data/invoice-statuses'
 import { schema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
-import { InvoiceEmail } from '@/lib/emails/invoice-email'
+import { InvoiceEmail } from '@/emails/invoice-email'
 import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 
@@ -102,7 +102,7 @@ export async function create(
       react: InvoiceEmail({ invoiceId: invoice.id })
     })
 
-    revalidatePath('/dashboard/invoices')
+    revalidatePath('/invoices')
   } catch (error) {
     console.error('Invoice creation error:', error)
     return {
@@ -113,5 +113,5 @@ export async function create(
   }
 
   // Redirect outside of try/catch
-  redirect(`/dashboard/invoices/${result.id}`)
+  redirect(`/invoices/${result.id}`)
 }

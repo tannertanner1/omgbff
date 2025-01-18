@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import { IconPercentage50 } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 
-export function ThemeToggle() {
+export function Toggle() {
   const { theme, setTheme } = useTheme()
 
   return (

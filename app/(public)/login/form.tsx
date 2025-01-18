@@ -62,7 +62,12 @@ export function Form() {
             </div>
             <Button
               type='submit'
-              className={cn('w-full', state?.errors?.email ? '' : 'mt-7')}
+              // className={cn('w-full', state?.errors?.email ? '' : 'mt-7')}
+              className={cn(
+                // 'w-full border border-background bg-primary text-background hover:border-primary hover:bg-background hover:text-primary',
+                'w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background',
+                state?.errors?.email ? '' : 'mt-7'
+              )}
               disabled={isPending}
               aria-disabled={isPending}
             >
