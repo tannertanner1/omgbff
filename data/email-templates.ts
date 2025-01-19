@@ -45,7 +45,7 @@ export const emails = {
 }
 
 // const invoiceEmail = {
-//   preview: process.env.VERCEL_URL as string,
+//   preview: 'tannertanner.me',
 //   heading: 'New invoice ready',
 //   body: 'Your invoice is due for payment.',
 //   button: 'Pay invoice',
@@ -54,7 +54,7 @@ export const emails = {
 // }
 
 // const loginEmail = {
-//   preview: process.env.VERCEL_URL as string,
+//   preview: 'tannertanner.me',
 //   heading: 'Sign in to your account',
 //   body: 'Click the button below to securely sign in to your account.',
 //   button: 'Sign in',
@@ -62,7 +62,7 @@ export const emails = {
 // }
 
 // const updateEmail = {
-//   preview: process.env.VERCEL_URL as string,
+//   preview: 'tannertanner.me',
 //   heading: 'Confirm change of email',
 //   body: 'Click the button below to confirm the update of your email.',
 //   button: 'Update email',
@@ -70,7 +70,7 @@ export const emails = {
 // }
 
 // const verifyEmail = {
-//   preview: process.env.VERCEL_URL as string,
+//   preview: 'tannertanner.me',
 //   heading: 'Verify your email',
 //   body: 'Click the button below to verify your email.',
 //   button: 'Verify email',

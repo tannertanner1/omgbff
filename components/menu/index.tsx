@@ -3,11 +3,12 @@
 import { motion } from 'motion/react'
 import { ITEMS } from './items'
 import { Item } from './item'
+import { cn } from '@/lib/utils'
 
 export function Menu() {
   return (
     <motion.div
-      className='min-w-sm mx-auto w-full max-w-5xl space-y-3 p-4'
+      className={cn('min-w-sm mx-auto w-full space-y-3 pt-4')}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

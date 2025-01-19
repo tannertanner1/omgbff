@@ -7,38 +7,8 @@ import {
   Html,
   Preview,
   Section,
-  Text,
-  Img
+  Text
 } from '@react-email/components'
-// import { IconCircle } from '@tabler/icons-react'
-
-// function Icon(props: React.SVGProps<SVGSVGElement>) {
-//   return (
-//     <svg
-//       // {...props}
-//       style={{
-//         display: 'inline-block',
-//         margin: '0 auto 16px',
-//         marginBottom: '0px',
-//         color: '#000',
-//         width: '40px',
-//         height: '40px'
-//       }}
-//       xmlns='http://www.w3.org/2000/svg'
-//       width='24'
-//       height='24'
-//       viewBox='0 0 24 24'
-//       fill='none'
-//       stroke='currentColor'
-//       strokeWidth='2'
-//       strokeLinecap='round'
-//       strokeLinejoin='round'
-//     >
-//       <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-//       <path d='M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0' />
-//     </svg>
-//   )
-// }
 
 export const Email = ({
   preview,
@@ -65,13 +35,6 @@ export const Email = ({
     container: {
       margin: '0 auto',
       maxWidth: '560px'
-    },
-    icon: {
-      display: 'inline-block',
-      margin: '0 auto 16px',
-      color: '#000',
-      width: '40px',
-      height: '40px'
     },
     heading: {
       fontSize: '24px',
@@ -111,25 +74,6 @@ export const Email = ({
       <Preview>{preview}</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
-          {/* <Icon style={styles.icon} /> */}
-          {/* <IconCircle
-            style={{
-              display: 'inline-block',
-              margin: '0 auto 16px',
-              marginBottom: '0px',
-              color: '#000',
-              width: '40px',
-              height: '40px'
-            }}
-          /> */}
-          {/* <Icon /> */}
-          <Img
-            src='/logo.png'
-            alt='Logo'
-            // width='40'
-            // height='40'
-            style={styles.icon}
-          />
           <Heading style={styles.heading}>{heading}</Heading>
           <Text style={styles.text}>{body}</Text>
           <Section>

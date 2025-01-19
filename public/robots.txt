@@ -1,3 +1,0 @@
-User-Agent: *
-Allow: /$
-Sitemap: https://omgbff.vercel.app/sitemap.xml

@@ -79,7 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await resend.emails.send({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
-          subject: process.env.VERCEL_URL!,
+          subject: 'tannertanner.me',
           // subject: user?.emailVerified
           //   ? 'Sign in to your account'
           //   : 'Verify your email',

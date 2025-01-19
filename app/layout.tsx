@@ -7,27 +7,8 @@ import { Header } from '@/components/header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://omgbff.vercel.app'),
-  alternates: { canonical: 'https://omgbff.vercel.app' },
-  icons: { icon: [{ rel: 'icon', type: 'image/svg+xml', url: '/icon.svg' }] },
-  title: '😍',
-  description: 'PNPM, React 19, Next, TypeScript, Tailwind CSS, shadcn UI',
-  openGraph: {
-    title: 'OMGBFF',
-    description: '❤️',
-    images: {
-      url: 'https://omgbff.vercel.app/icon.png',
-      alt: '❤️OMGBFF❤️',
-      width: 800,
-      height: 400
-    },
-    url: 'https://omgbff.vercel.app',
-    siteName: 'OMGBFF',
-    type: 'website'
-  },
-  generator: 'Next.js',
-  applicationName: 'OMG BFF',
-  authors: [{ name: '@tannertanner1', url: 'https://tannertanner.me' }]
+  title: 'OMGBFF',
+  description: 'PNPM, React 19, Next, TypeScript, Tailwind CSS, shadcn UI'
 }
 
 export default function RootLayout({
