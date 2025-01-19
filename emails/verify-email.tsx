@@ -1,15 +1,13 @@
-import { EmailTemplate } from './email-template'
+import { Email } from '@/components/email'
+import { emails } from '@/data/email-templates'
 
-const verifyEmail = {
-  preview: 'Verify your email',
-  heading: 'Verify your email',
-  body: 'Click the button below to verify your email.',
-  button: 'Verify email',
-  footer: "If you didn't try to sign up, you can safely ignore this email."
+export default function VerifyEmail({ url }: { url: string }) {
+  return <Email {...emails.verify} url={url} />
 }
 
-function VerifyEmail({ url }: { url: string }) {
-  return <EmailTemplate {...verifyEmail} url={url} />
-}
+// import { Email } from '../components/email'
+// import { verifyEmail } from '@/data/email-templates'
 
-export { VerifyEmail }
+// export default function VerifyEmail({ url }: { url: string }) {
+//   return <Email {...verifyEmail} url={url} />
+// }

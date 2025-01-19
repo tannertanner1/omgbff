@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm'
 import { invoiceSchema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
-import { InvoiceEmail } from '@/emails/invoice-email'
+import InvoiceEmail from '@/emails/invoice-email'
 import { Status } from '@/data/invoice-statuses'
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY)
@@ -68,7 +68,8 @@ export async function createInvoice(
         from: process.env.AUTH_RESEND_EMAIL as string,
         to: [customer.email],
         subject: 'New Invoice',
-        react: InvoiceEmail({ invoiceId: invoice.id })
+        react: InvoiceEmail()
+        // react: InvoiceEmail({ invoiceId: invoice.id })
       })
     }
 

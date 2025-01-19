@@ -11,8 +11,8 @@ import {
 import { eq, and, sql } from 'drizzle-orm'
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
-import { VerifyEmail } from '@/emails/verify-email'
-import { LoginEmail } from '@/emails/login-email'
+import VerifyEmail from '@/emails/verify-email'
+import LoginEmail from '@/emails/login-email'
 import { JWT } from 'next-auth/jwt'
 
 const publicRoutes = ['/', '/contact', '/terms', '/policy', '/login']
@@ -79,9 +79,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await resend.emails.send({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
-          subject: user?.emailVerified
-            ? 'Sign in to your account'
-            : 'Verify your email',
+          subject: process.env.VERCEL_URL!,
+          // subject: user?.emailVerified
+          //   ? 'Sign in to your account'
+          //   : 'Verify your email',
           react: user?.emailVerified
             ? LoginEmail({ url })
             : VerifyEmail({ url })

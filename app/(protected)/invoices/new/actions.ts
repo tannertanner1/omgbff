@@ -11,7 +11,7 @@ import { Status } from '@/data/invoice-statuses'
 import { schema } from './schema'
 import { ActionResponse } from './types'
 import { Resend } from 'resend'
-import { InvoiceEmail } from '@/emails/invoice-email'
+import InvoiceEmail from '@/emails/invoice-email'
 import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 
@@ -99,7 +99,8 @@ export async function create(
       from: process.env.AUTH_RESEND_EMAIL as string,
       to: [email],
       subject: 'New Invoice',
-      react: InvoiceEmail({ invoiceId: invoice.id })
+      react: InvoiceEmail()
+      // react: InvoiceEmail({ invoiceId: invoice.id })
     })
 
     revalidatePath('/invoices')

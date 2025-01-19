@@ -1,15 +1,13 @@
-import { EmailTemplate } from '@/emails/email-template'
+import { Email } from '@/components/email'
+import { emails } from '@/data/email-templates'
 
-const updateEmail = {
-  preview: 'Confirm change of email',
-  heading: 'Confirm change of email',
-  body: 'Click the button below to confirm the update of your email.',
-  button: 'Update email',
-  footer: "If you didn't request this change, you can safely ignore this email."
+export default function UpdateEmail({ url }: { url: string }) {
+  return <Email {...emails.update} url={url} />
 }
 
-function UpdateEmail({ url }: { url: string }) {
-  return <EmailTemplate {...updateEmail} url={url} />
-}
+// import { Email } from '@/components/email'
+// import { updateEmail } from '@/data/email-templates'
 
-export { UpdateEmail }
+// export default function UpdateEmail({ url }: { url: string }) {
+//   return <Email {...updateEmail} url={url} />
+// }

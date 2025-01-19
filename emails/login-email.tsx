@@ -1,15 +1,13 @@
-import { EmailTemplate } from './email-template'
+import { Email } from '@/components/email'
+import { emails } from '@/data/email-templates'
 
-const loginEmail = {
-  preview: 'Sign in to your account',
-  heading: 'Sign in to your account',
-  body: 'Click the button below to securely sign in to your account.',
-  button: 'Sign in',
-  footer: "If you didn't try to sign in, you can safely ignore this email."
+export default function LoginEmail({ url }: { url: string }) {
+  return <Email {...emails.login} url={url} />
 }
 
-function LoginEmail({ url }: { url: string }) {
-  return <EmailTemplate {...loginEmail} url={url} />
-}
+// import { Email } from '@/components/email'
+// import { loginEmail } from '@/data/email-templates'
 
-export { LoginEmail }
+// export default function LoginEmail({ url }: { url: string }) {
+//   return <Email {...loginEmail} url={url} />
+// }
