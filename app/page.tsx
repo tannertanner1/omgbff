@@ -7,10 +7,10 @@ export default async function Page() {
   const session = await auth()
   if (session)
     return (
-      <div className='flex h-screen px-2'>
+      <div className='flex h-screen'>
         <div className='flex min-w-0 flex-1 flex-col'>
-          <div className='container mx-auto w-full max-w-5xl'>
-            <div className='mb-8 flex flex-col items-center'>
+          <div className='mx-auto w-full max-w-5xl'>
+            <div className='mb-8 flex flex-col items-center px-4'>
               <Menu />
             </div>
           </div>
@@ -19,9 +19,9 @@ export default async function Page() {
     )
 
   return (
-    <div className='flex h-screen px-2'>
+    <div className='flex h-screen'>
       <div className='flex min-w-0 flex-1 flex-col'>
-        <div className='container mx-auto w-full max-w-5xl'>
+        <div className='mx-auto w-full max-w-5xl'>
           <div className='flex flex-col items-center py-12'>
             <Link
               href='/login'

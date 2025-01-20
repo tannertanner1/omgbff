@@ -2,29 +2,27 @@ import { IconFolder, IconUser, IconInvoice } from '@tabler/icons-react'
 
 export const ITEMS = [
   {
-    icon: <IconFolder className='h-6 w-6 text-background' />,
+    icon: IconFolder,
     title: 'Organizations',
     description: 'Manage Organizations',
-    iconClassName: 'bg-primary',
     href: '/organization'
   },
   {
-    icon: <IconUser className='h-6 w-6 text-background' />,
+    icon: IconUser,
     title: 'Customers',
     description: 'Manage Customers',
-    iconClassName: 'bg-primary',
     href: '/customer'
   },
   {
-    icon: <IconInvoice className='h-6 w-6 text-background' />,
+    icon: IconInvoice,
     title: 'Invoices',
     description: 'Manage Invoices',
-    iconClassName: 'bg-primary',
     href: '/invoices'
   }
 ]
 
 /**
+
 import {
   IconRosetteDiscountCheck,
   IconActivity,
@@ -41,80 +39,70 @@ import {
 } from '@tabler/icons-react'
 
   {
-    icon: <IconFile className='h-6 w-6 text-background' />,
+    icon: IconFile,
     title: 'Services',
     description: 'Manage Services',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconCheckbox className='h-6 w-6 text-background' />,
+    icon: IconCheckbox,
     title: 'Tasks',
     description: 'Manage Tasks',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconActivity className='h-6 w-6 text-background' />,
+    icon: IconActivity,
     title: 'Activity',
     description: 'Manage Activity',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconTag className='h-6 w-6 text-background' />,
+    icon: IconTag,
     title: 'Products',
     description: 'Manage Products',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconArticle className='h-6 w-6 text-background' />,
+    icon: IconArticle,
     title: 'Posts',
     description: 'Manage Posts',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconChartBarPopular className='h-6 w-6 text-background' />,
+    icon: IconChartBarPopular,
     title: 'Analytics',
     description: 'Manage Analytics',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconCloud className='h-6 w-6 text-background' />,
+    icon: IconCloud,
     title: 'Files',
     description: 'Manage Files',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconBell className='h-6 w-6 text-background' />,
+    icon: IconBell,
     title: 'Notifications',
     description: 'Manage Notifications',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconBook className='h-6 w-6 text-background' />,
+    icon: IconBook,
     title: 'Docs',
     description: 'Manage Docs',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconNote className='h-6 w-6 text-background' />,
+    icon: IconNote,
     title: 'Notes',
     description: 'Manage Notes',
-    iconClassName: 'bg-primary',
     href: '#'
   },
   {
-    icon: <IconSettings className='h-6 w-6 text-background' />,
+    icon: IconSettings,
     title: 'Settings',
     description: 'Manage Settings',
-    iconClassName: 'bg-primary',
     href: '#'
   }
- */
+
+*/

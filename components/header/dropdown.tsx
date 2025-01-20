@@ -48,10 +48,10 @@ export function Dropdown({ session }: { session: Session | null }) {
             <>
               <DropdownMenuLabel className='font-normal'>
                 <div className='flex flex-col space-y-1'>
-                  <p className='truncate text-sm font-medium leading-none'>
+                  <p className='truncate text-sm font-medium'>
                     {session.user.email}
                   </p>
-                  <p className='truncate text-xs leading-none text-muted-foreground'>
+                  <p className='truncate text-xs text-muted-foreground'>
                     {session.user.id}
                   </p>
                 </div>
