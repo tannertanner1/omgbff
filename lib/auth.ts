@@ -13,9 +13,8 @@ import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
 import VerifyEmail from '@/emails/verify-email'
 import LoginEmail from '@/emails/login-email'
+import { ROUTES } from '@/data/public-routes'
 import { JWT } from 'next-auth/jwt'
-
-const publicRoutes = ['/', '/contact', '/terms', '/policy', '/login']
 
 type Role = 'owner' | 'admin' | 'user'
 
@@ -146,7 +145,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
       // Allow access to public routes
-      if (publicRoutes.includes(pathname)) {
+      if (ROUTES.includes(pathname)) {
         return true
       }
       // Require authentication for all other routes

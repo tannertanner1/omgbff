@@ -1,6 +1,28 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
+would you say the attached screenshot including the following file structure
+summarizes the changes that were made? ...because its my desired outcome tbh.
+
 ```ts
+/[userId]
+  ├── actions.ts
+  ├── page.tsx
+  └── /organizations
+      ├── actions.ts
+      ├── page.tsx            // Create() <Form>, Read() <Table>
+      └── /[organizationId]
+          └── page.tsx        // Update() <Form>, Delete() <Button>
+  └── /customers
+      ├── actions.ts
+      ├── page.tsx            // Create() <Form>, Read() <Table>
+      └── /[customerId]
+          └── page.tsx        // Update() <Form>, Delete() <Button>
+  └── /invoices
+      ├── actions.ts
+      ├── page.tsx            // Create() <Form>, Read() <Table>
+      └── /[invoiceId]
+          └── page.tsx        // Update() <Form>, Delete() <Button>
+/**
 /[userId]
   ├── page.tsx // organizations <Table>
   ├── actions.ts // organization CRUD Actions
@@ -11,6 +33,7 @@
           └── page.tsx // customer form
       └── [invoiceId]
           └── page.tsx // invoice form
+*/
 ```
 
 <br />
