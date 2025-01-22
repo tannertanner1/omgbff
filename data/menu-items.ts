@@ -5,13 +5,13 @@ export const ITEMS = [
     icon: IconFolder,
     title: 'Organizations',
     description: 'Manage Organizations',
-    href: '/organization'
+    href: '/organizations'
   },
   {
     icon: IconUser,
     title: 'Customers',
     description: 'Manage Customers',
-    href: '/customer'
+    href: '#'
   },
   {
     icon: IconInvoice,

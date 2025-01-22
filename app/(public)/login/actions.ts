@@ -13,8 +13,8 @@ export async function login(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const session = await auth()
-  if (session) redirect('/')
+  // const session = await auth()
+  // if (session) redirect('/')
 
   try {
     const rawData = {
@@ -35,7 +35,7 @@ export async function login(
     const result = await signIn('resend', {
       email: validatedData.data.email,
       redirect: false,
-      redirectTo: '/'
+      redirectTo: '/' // `/${session?.user?.id}`
     })
 
     if (result?.error) {

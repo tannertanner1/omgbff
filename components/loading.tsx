@@ -2,7 +2,10 @@ import { cn } from '@/lib/utils'
 
 export function Loading() {
   return (
-    <div className='flex items-center justify-center' aria-label='Loading'>
+    <div
+      className='flex items-center justify-center pt-[34vh]'
+      aria-label='Loading'
+    >
       <LoadingDots color='bg-primary' size='medium' />
     </div>
   )

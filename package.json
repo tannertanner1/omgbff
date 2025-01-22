@@ -40,6 +40,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@react-email/components": "^0.0.30",
     "@tabler/icons-react": "^3.23.0",
+    "@tanstack/react-table": "^8.20.6",
     "add": "^2.0.6",
     "babel-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "class-variance-authority": "^0.7.1",

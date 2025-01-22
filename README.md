@@ -1,9 +1,70 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
-would you say the attached screenshot including the following file structure
-summarizes the changes that were made? ...because its my desired outcome tbh.
-
 ```ts
+📁 app
+  📜 page.tsx
+  📁 (protected)
+    📁 [id]
+      📜 page.tsx             // Dashboard with Menu component
+      📁 organizations
+        📜 actions.ts         // Contains create, update, and delete actions
+        📜 columns.tsx
+        📜 page.tsx           // Read() <DataTable>
+        📁 new
+          📜 actions.ts
+          📜 form.tsx         // Create() <OrganizationForm>
+          📜 page.tsx
+          📜 schema.ts
+          📜 types.d.ts
+        📁 [organizationId]
+          📜 page.tsx         // Update() <OrganizationForm>, Delete() <Button>
+      📁 customers
+        📜 actions.ts         // Contains create, update, and delete actions
+        📜 columns.tsx
+        📜 page.tsx           // Read() <DataTable>
+        📁 new
+          📜 actions.ts
+          📜 form.tsx         // Create() <CustomerForm>
+          📜 page.tsx
+          📜 schema.ts
+          📜 types.d.ts
+        📁 [customerId]
+          📜 page.tsx         // Update() <CustomerForm>, Delete() <Button>
+      📁 invoices
+        📜 actions.ts         // Contains create, update, and delete actions
+        📜 columns.tsx
+        📜 page.tsx           // Read() <DataTable>
+        📁 new
+          📜 actions.ts
+          📜 form.tsx         // Create() <InvoiceForm>
+          📜 page.tsx
+          📜 schema.ts
+          📜 types.d.ts
+        📁 [invoiceId]
+          📜 page.tsx         // Update() <InvoiceForm>, Delete() <Button>
+
+/**
+📁 app
+  📜 page.tsx
+  📁 (protected)
+    📁 organizations
+      📜 actions.ts
+      📜 page.tsx     // Create() <Form>, Read() <Table>
+      📁 [id]
+        📜 page.tsx   // Update() <Form>, Delete() <Button>
+    📁 customers
+      📜 actions.ts
+      📜 page.tsx     // Create() <Form>, Read() <Table>
+      📁 [id]
+        📜 page.tsx   // Update() <Form>, Delete() <Button>
+    📁 invoices
+      📜 actions.ts
+      📜 page.tsx     // Create() <Form>, Read() <Table>
+      📁 [id]
+        📜 page.tsx   // Update() <Form>, Delete() <Button>
+*/
+
+/**
 /[userId]
   ├── actions.ts
   ├── page.tsx
@@ -22,6 +83,8 @@ summarizes the changes that were made? ...because its my desired outcome tbh.
       ├── page.tsx            // Create() <Form>, Read() <Table>
       └── /[invoiceId]
           └── page.tsx        // Update() <Form>, Delete() <Button>
+*/
+
 /**
 /[userId]
   ├── page.tsx // organizations <Table>

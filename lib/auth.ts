@@ -16,7 +16,8 @@ import LoginEmail from '@/emails/login-email'
 import { ROUTES } from '@/data/public-routes'
 import { JWT } from 'next-auth/jwt'
 
-type Role = 'owner' | 'admin' | 'user'
+// export type Role = 'owner' | 'admin' | 'user'
+import type { Role } from '@/data/system-roles'
 
 interface DatabaseUser {
   id: string
@@ -134,6 +135,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       }
       return session
+    },
+    redirect: async ({ url, baseUrl }) => {
+      const session = await auth()
+      if (session?.user?.id) {
+        return `${baseUrl}/${session.user.id}`
+      }
+      return url.startsWith(baseUrl) ? url : baseUrl
     },
     // authorized: async ({ auth, request }) => {
     //   const { pathname } = request.nextUrl
