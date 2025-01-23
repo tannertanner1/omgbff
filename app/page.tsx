@@ -1,22 +1,22 @@
 import Link from 'next/link'
-import { auth } from '@/lib/auth'
 import { IconPaw } from '@tabler/icons-react'
+import { auth } from '@/lib/auth'
 import { Menu } from '@/components/menu'
 
 export default async function Page() {
-  const session = await auth()
-  if (session)
-    return (
-      <div className='flex h-screen'>
-        <div className='flex min-w-0 flex-1 flex-col'>
-          <div className='mx-auto w-full max-w-5xl'>
-            <div className='mb-8 flex flex-col items-center px-4'>
-              <Menu />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+  // const session = await auth()
+  // if (session)
+  //   return (
+  //     <div className='flex h-screen'>
+  //       <div className='flex min-w-0 flex-1 flex-col'>
+  //         <div className='mx-auto w-full max-w-5xl'>
+  //           <div className='mb-8 flex flex-col items-center px-4'>
+  //             <Menu />
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
 
   return (
     <div className='flex h-screen'>

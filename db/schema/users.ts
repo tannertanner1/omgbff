@@ -6,6 +6,7 @@ import {
   integer,
   uniqueIndex
 } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { InferInsertModel } from 'drizzle-orm'
 
@@ -26,7 +27,7 @@ const users = pgTable(
       .$defaultFn(() => crypto.randomUUID()),
     email: text('email').unique(),
     organizationId: text('organizationId').references(() => organizations.id, {
-      onDelete: 'set null' // When organization is deleted, set user's organizationId to null
+      onDelete: 'set null'
     }),
 
     role: text('role', { enum: ['owner', 'admin', 'user'] })
@@ -41,7 +42,7 @@ const users = pgTable(
   user => [uniqueIndex('unique_idx').on(user.email)]
 )
 
-export const userOrganizations = pgTable(
+const userOrganizations = pgTable(
   'user_organization',
   {
     userId: text('user_id')
@@ -56,7 +57,11 @@ export const userOrganizations = pgTable(
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow()
   },
-  userOrg => [primaryKey({ columns: [userOrg.userId, userOrg.organizationId] })]
+  userOrganization => [
+    primaryKey({
+      columns: [userOrganization.userId, userOrganization.organizationId]
+    })
+  ]
 )
 
 const accounts = pgTable(
@@ -108,7 +113,36 @@ const verificationTokens = pgTable(
   ]
 )
 
-export { organizations, users, accounts, sessions, verificationTokens }
+const usersRelations = relations(users, ({ many }) => ({
+  userOrganizations: many(userOrganizations)
+}))
+
+const organizationsRelations = relations(organizations, ({ many }) => ({
+  userOrganizations: many(userOrganizations)
+}))
+
+const userOrganizationsRelations = relations(userOrganizations, ({ one }) => ({
+  user: one(users, {
+    fields: [userOrganizations.userId],
+    references: [users.id]
+  }),
+  organization: one(organizations, {
+    fields: [userOrganizations.organizationId],
+    references: [organizations.id]
+  })
+}))
+
+export {
+  organizations,
+  users,
+  userOrganizations,
+  accounts,
+  sessions,
+  verificationTokens,
+  usersRelations,
+  organizationsRelations,
+  userOrganizationsRelations
+}
 
 export type NewOrganization = InferInsertModel<typeof organizations>
 export type NewUser = InferInsertModel<typeof users>

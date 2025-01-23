@@ -5,43 +5,54 @@
   📜 page.tsx
   📁 (protected)
     📁 [id]
-      📜 page.tsx             // Dashboard with Menu component
+      📜 page.tsx             // Dashboard <Menu>
+
       📁 organizations
-        📜 actions.ts         // Contains create, update, and delete actions
+        📜 actions.ts         // createAction, updateAction, deleteAction
         📜 columns.tsx
         📜 page.tsx           // Read() <DataTable>
         📁 new
           📜 actions.ts
-          📜 form.tsx         // Create() <OrganizationForm>
+          📜 form.tsx         // Create() <Form>
           📜 page.tsx
           📜 schema.ts
           📜 types.d.ts
-        📁 [organizationId]
-          📜 page.tsx         // Update() <OrganizationForm>, Delete() <Button>
+        📁 [id]
+          📜 page.tsx         // Update() <Form>, Delete() <Button>
+
       📁 customers
-        📜 actions.ts         // Contains create, update, and delete actions
+        📜 actions.ts         // createAction, updateAction, deleteAction
         📜 columns.tsx
         📜 page.tsx           // Read() <DataTable>
         📁 new
           📜 actions.ts
-          📜 form.tsx         // Create() <CustomerForm>
+          📜 form.tsx         // Create() <Form>
           📜 page.tsx
           📜 schema.ts
           📜 types.d.ts
-        📁 [customerId]
-          📜 page.tsx         // Update() <CustomerForm>, Delete() <Button>
+        📁 [id]
+          📜 page.tsx         // Update() <Form>, Delete() <Button>
+
       📁 invoices
-        📜 actions.ts         // Contains create, update, and delete actions
+        📜 actions.ts         // createAction, updateAction, deleteAction
         📜 columns.tsx
         📜 page.tsx           // Read() <DataTable>
         📁 new
           📜 actions.ts
-          📜 form.tsx         // Create() <InvoiceForm>
+          📜 form.tsx         // Create() <Form>
           📜 page.tsx
           📜 schema.ts
           📜 types.d.ts
-        📁 [invoiceId]
-          📜 page.tsx         // Update() <InvoiceForm>, Delete() <Button>
+        📁 [id]
+          📜 page.tsx         // Update() <Form>, Delete() <Button>
+```
+
+<div>
+  <details>
+    <summary><code>/_private</code></summary>
+
+```ts
+#fail
 
 /**
 📁 app
@@ -99,6 +110,8 @@
 */
 ```
 
+  </details>
+</div>
 <br />
 
 ```bash

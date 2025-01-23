@@ -16,7 +16,6 @@ import LoginEmail from '@/emails/login-email'
 import { ROUTES } from '@/data/public-routes'
 import { JWT } from 'next-auth/jwt'
 
-// export type Role = 'owner' | 'admin' | 'user'
 import type { Role } from '@/data/system-roles'
 
 interface DatabaseUser {
@@ -136,20 +135,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
-    redirect: async ({ url, baseUrl }) => {
-      const session = await auth()
-      if (session?.user?.id) {
-        return `${baseUrl}/${session.user.id}`
-      }
-      return url.startsWith(baseUrl) ? url : baseUrl
-    },
-    // authorized: async ({ auth, request }) => {
-    //   const { pathname } = request.nextUrl
-    //   if (pathname.startsWith('/dashboard')) {
-    //     return !!auth
+    // async redirect({ url, baseUrl }) {
+    //   // Allows relative callback URLs
+    //   if (url.startsWith('/')) return `${baseUrl}${url}`
+
+    //   // Allows callback URLs on the same origin
+    //   if (new URL(url).origin === baseUrl) return url
+
+    //   return baseUrl
+    // },
+    // redirect: async ({ url, baseUrl }) => {
+    //   const session = await auth()
+    //   if (session?.user?.id) {
+    //     return `${baseUrl}/${session.user.id}`
     //   }
-    //   return true
-    // }
+    //   return url.startsWith(baseUrl) ? url : baseUrl
+    // },
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
       // Allow access to public routes

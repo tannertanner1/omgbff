@@ -8,10 +8,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     redirect('/login')
   }
 
-  // Verify the user is accessing their own page
-  if (session.user.id !== params.id) {
-    redirect(`/${session.user.id}`)
-  }
+  // if (session.user.id !== params.id) {
+  //   redirect(`/${session.user.id}`)
+  // }
 
   return (
     <div className='flex h-screen'>
