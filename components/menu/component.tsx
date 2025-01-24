@@ -8,18 +8,20 @@ export function Component({
   icon,
   title,
   description,
+  id,
   href,
   index
 }: {
   icon: React.ElementType
   title: string
   description: string
+  id: string
   href: string
   index: number
 }) {
   return (
     <motion.a
-      href={href}
+      href={`/${id}${href}`}
       className='flex cursor-pointer items-center gap-4 rounded-2xl border border-border bg-background p-4 no-underline shadow-sm'
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}

@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { db } from '@/db'
 import { organizations, userOrganizations } from '@/db/schema/users'
 import { eq } from 'drizzle-orm'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/_private/components/data-table'
 import { CreateOrganizationForm } from './form'
 import { columns } from './columns'
 

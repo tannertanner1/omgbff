@@ -1,6 +1,13 @@
 import { IconFolder, IconUser, IconInvoice } from '@tabler/icons-react'
 
-export const ITEMS = [
+type Item = {
+  icon: React.ElementType
+  title: string
+  description: string
+  href: string
+}
+
+export const ITEMS: Item[] = [
   {
     icon: IconFolder,
     title: 'Organizations',
@@ -11,7 +18,7 @@ export const ITEMS = [
     icon: IconUser,
     title: 'Customers',
     description: 'Manage Customers',
-    href: '#'
+    href: '/customers'
   },
   {
     icon: IconInvoice,
@@ -21,88 +28,88 @@ export const ITEMS = [
   }
 ]
 
-/**
+// /**
 
-import {
-  IconRosetteDiscountCheck,
-  IconActivity,
-  IconArticle,
-  IconTag,
-  IconFile,
-  IconCheckbox,
-  IconCloud,
-  IconChartBarPopular,
-  IconBell,
-  IconBook,
-  IconNote,
-  IconSettings
-} from '@tabler/icons-react'
+// import {
+//   IconRosetteDiscountCheck,
+//   IconActivity,
+//   IconArticle,
+//   IconTag,
+//   IconFile,
+//   IconCheckbox,
+//   IconCloud,
+//   IconChartBarPopular,
+//   IconBell,
+//   IconBook,
+//   IconNote,
+//   IconSettings
+// } from '@tabler/icons-react'
 
-  {
-    icon: IconFile,
-    title: 'Services',
-    description: 'Manage Services',
-    href: '#'
-  },
-  {
-    icon: IconCheckbox,
-    title: 'Tasks',
-    description: 'Manage Tasks',
-    href: '#'
-  },
-  {
-    icon: IconActivity,
-    title: 'Activity',
-    description: 'Manage Activity',
-    href: '#'
-  },
-  {
-    icon: IconTag,
-    title: 'Products',
-    description: 'Manage Products',
-    href: '#'
-  },
-  {
-    icon: IconArticle,
-    title: 'Posts',
-    description: 'Manage Posts',
-    href: '#'
-  },
-  {
-    icon: IconChartBarPopular,
-    title: 'Analytics',
-    description: 'Manage Analytics',
-    href: '#'
-  },
-  {
-    icon: IconCloud,
-    title: 'Files',
-    description: 'Manage Files',
-    href: '#'
-  },
-  {
-    icon: IconBell,
-    title: 'Notifications',
-    description: 'Manage Notifications',
-    href: '#'
-  },
-  {
-    icon: IconBook,
-    title: 'Docs',
-    description: 'Manage Docs',
-    href: '#'
-  },
-  {
-    icon: IconNote,
-    title: 'Notes',
-    description: 'Manage Notes',
-    href: '#'
-  },
-  {
-    icon: IconSettings,
-    title: 'Settings',
-    description: 'Manage Settings',
-    href: '#'
-  }
+//   {
+//     icon: IconFile,
+//     title: 'Services',
+//     description: 'Manage Services',
+//     href: '#'
+//   },
+//   {
+//     icon: IconCheckbox,
+//     title: 'Tasks',
+//     description: 'Manage Tasks',
+//     href: '#'
+//   },
+//   {
+//     icon: IconActivity,
+//     title: 'Activity',
+//     description: 'Manage Activity',
+//     href: '#'
+//   },
+//   {
+//     icon: IconTag,
+//     title: 'Products',
+//     description: 'Manage Products',
+//     href: '#'
+//   },
+//   {
+//     icon: IconArticle,
+//     title: 'Posts',
+//     description: 'Manage Posts',
+//     href: '#'
+//   },
+//   {
+//     icon: IconChartBarPopular,
+//     title: 'Analytics',
+//     description: 'Manage Analytics',
+//     href: '#'
+//   },
+//   {
+//     icon: IconCloud,
+//     title: 'Files',
+//     description: 'Manage Files',
+//     href: '#'
+//   },
+//   {
+//     icon: IconBell,
+//     title: 'Notifications',
+//     description: 'Manage Notifications',
+//     href: '#'
+//   },
+//   {
+//     icon: IconBook,
+//     title: 'Docs',
+//     description: 'Manage Docs',
+//     href: '#'
+//   },
+//   {
+//     icon: IconNote,
+//     title: 'Notes',
+//     description: 'Manage Notes',
+//     href: '#'
+//   },
+//   {
+//     icon: IconSettings,
+//     title: 'Settings',
+//     description: 'Manage Settings',
+//     href: '#'
+//   }
 
-*/
+// */

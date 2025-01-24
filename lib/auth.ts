@@ -135,22 +135,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
-    // async redirect({ url, baseUrl }) {
-    //   // Allows relative callback URLs
-    //   if (url.startsWith('/')) return `${baseUrl}${url}`
-
-    //   // Allows callback URLs on the same origin
-    //   if (new URL(url).origin === baseUrl) return url
-
-    //   return baseUrl
-    // },
-    // redirect: async ({ url, baseUrl }) => {
-    //   const session = await auth()
-    //   if (session?.user?.id) {
-    //     return `${baseUrl}/${session.user.id}`
-    //   }
-    //   return url.startsWith(baseUrl) ? url : baseUrl
-    // },
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
       // Allow access to public routes

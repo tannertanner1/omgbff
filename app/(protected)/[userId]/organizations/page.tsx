@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { IconCirclePlus } from '@tabler/icons-react'
+import {
+  IconCirclePlus,
+  IconCircleChevronLeft,
+  IconDotsCircleHorizontal
+} from '@tabler/icons-react'
 import { auth } from '@/lib/auth'
 import { hasPermission } from '@/lib/abac'
 import { getUserOrganizations } from '@/db/queries'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table/table'
 import { columns } from './columns'
 
 export default async function Page({ params }: { params: { userId: string } }) {
@@ -14,7 +17,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
     redirect('/login')
   }
 
-  const userId = params.userId as string
+  const userId = params.userId
 
   if (session.user.id !== userId) {
     redirect(`/${session.user.id}/organizations`)
@@ -27,28 +30,34 @@ export default async function Page({ params }: { params: { userId: string } }) {
   const userOrganizations = await getUserOrganizations()
 
   return (
-    <div className='space-y-4'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>Organizations</h1>
-        {hasPermission(session.user, 'organizations', 'create') && (
-          <Button asChild>
-            <Link
-              href={`/${userId}/organizations/new`}
-              className='flex items-center hover:bg-transparent'
-            >
-              <IconCirclePlus className='h-4 w-4' />
+    <div className='flex min-h-screen flex-col'>
+      <div className='mx-auto w-full max-w-5xl p-4'>
+        <div className='mb-8 flex items-center justify-between'>
+          <div className='flex items-center gap-4'>
+            <Link href='/'>
+              <IconCircleChevronLeft className='h-6 w-6 text-primary' />
             </Link>
-          </Button>
-        )}
+            <h1 className='text-xl font-medium'>Organizations</h1>
+          </div>
+          <div className='flex items-center gap-2'>
+            {hasPermission(session.user, 'organizations', 'create') && (
+              <Link href={`/${userId}/organizations/new`}>
+                <IconCirclePlus className='h-6 w-6 text-primary' />
+              </Link>
+            )}
+            <IconDotsCircleHorizontal className='h-6 w-6 text-primary' />
+          </div>
+        </div>
+
+        <DataTable
+          columns={columns}
+          data={userOrganizations.map(uo => ({
+            ...uo.organization,
+            userId
+          }))}
+          filterColumn='name'
+        />
       </div>
-      <DataTable
-        columns={columns}
-        data={userOrganizations.map(uo => ({
-          ...uo.organization,
-          userId
-        }))}
-        filterColumn='name'
-      />
     </div>
   )
 }
