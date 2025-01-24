@@ -12,13 +12,14 @@ export interface FormState {
   message: string
   errors?: Record<string, string[]>
   inputs?: Record<string, string>
+  organizationId?: string // Add this line
 }
 
 export interface FormProps {
   fields: Field[]
   action: (prevState: FormState, formData: FormData) => Promise<FormState>
   button?: string
-  redirectPath?: string
+  onSuccess?: (state: FormState) => void
 }
 
 // import type { z } from 'zod'

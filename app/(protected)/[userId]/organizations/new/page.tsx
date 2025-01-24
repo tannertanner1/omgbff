@@ -1,43 +1,77 @@
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useRouter } from 'next/navigation'
 import { Form } from '@/components/form'
 import { createAction } from './actions'
+import type { FormState } from '@/components/form/types'
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-
-  if (session.user.id !== params.userId) {
-    redirect(`/${session.user.id}/organizations/new`)
-  }
+export default function Page({ params }: { params: { userId: string } }) {
+  const router = useRouter()
 
   const fields = [
     {
       name: 'name',
-      label: 'Organization Name',
+      label: 'Name',
       type: 'text' as const,
       required: true
     }
   ]
 
+  const handleSuccess = (state: FormState) => {
+    if (state.organizationId) {
+      router.push(`/${params.userId}/organizations/${state.organizationId}`)
+    } else {
+      router.push(`/${params.userId}/organizations`)
+    }
+  }
+
   return (
-    <div className='min-h-screen bg-black'>
-      <div className='mx-auto max-w-5xl p-4'>
-        <h1 className='mb-8 text-2xl font-bold text-white'>
-          Create New Organization
-        </h1>
-        <Form
-          fields={fields}
-          action={createAction}
-          button='Create Organization'
-          redirectPath={`/${params.userId}/organizations`}
-        />
-      </div>
-    </div>
+    <Form
+      fields={fields}
+      action={createAction}
+      button='Create'
+      onSuccess={handleSuccess}
+    />
   )
 }
+
+// import { auth } from '@/lib/auth'
+// import { redirect } from 'next/navigation'
+// import { Form } from '@/components/form'
+// import { createAction } from './actions'
+
+// export default async function Page({ params }: { params: { userId: string } }) {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   if (session.user.id !== params.userId) {
+//     redirect(`/${session.user.id}/organizations/new`)
+//   }
+
+//   const fields = [
+//     {
+//       name: 'name',
+//       label: 'Name',
+//       type: 'text' as const,
+//       required: true
+//     }
+//   ]
+
+//   return (
+//     <div className='mx-auto max-w-5xl'>
+//       <div className='flex items-center justify-center'>
+//         <Form
+//           fields={fields}
+//           action={createAction}
+//           button='Create'
+//           redirectPath={`/${params.userId}/organizations`}
+//         />
+//       </div>
+//     </div>
+//   )
+// }
 
 // import { Form } from '@/components/form'
 // import { createAction } from './actions'

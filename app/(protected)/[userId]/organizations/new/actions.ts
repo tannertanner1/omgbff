@@ -6,58 +6,70 @@ import { db } from '@/db'
 import { organizations, userOrganizations } from '@/db/schema/users'
 import { revalidatePath } from 'next/cache'
 import type { Role } from '@/data/system-roles'
+import { schema } from './schema'
 import type { FormState } from '@/components/form/types'
-import { z } from 'zod'
-
-const organizationSchema = z.object({
-  name: z.string().min(1, 'Name is required')
-})
+import { hasPermission } from '@/lib/abac'
 
 export async function createAction(
-  prevState: FormState,
+  _: FormState | null,
   formData: FormData
 ): Promise<FormState> {
   const session = await auth()
   if (!session) {
-    return { success: false, message: 'Unauthorized' }
+    redirect('/login')
   }
 
-  const userId = session.user.id
-  const validationResult = organizationSchema.safeParse(
-    Object.fromEntries(formData)
-  )
-
-  if (!validationResult.success) {
+  if (!hasPermission(session.user, 'organizations', 'create')) {
     return {
       success: false,
-      message: 'Please fix the errors in the form',
-      errors: validationResult.error.flatten().fieldErrors
+      message: 'Unauthorized',
+      errors: {},
+      inputs: { name: formData.get('name') as string }
     }
   }
 
-  const { name } = validationResult.data
+  const validatedData = schema.safeParse({
+    name: formData.get('name')
+  })
+
+  if (!validatedData.success) {
+    return {
+      success: false,
+      message: 'Please fix the errors in the form',
+      errors: validatedData.error.flatten().fieldErrors,
+      inputs: { name: formData.get('name') as string }
+    }
+  }
 
   try {
-    const [org] = await db
+    const [organization] = await db
       .insert(organizations)
       .values({
-        name: name
+        name: validatedData.data.name
       })
       .returning()
 
     await db.insert(userOrganizations).values({
-      userId: userId,
-      organizationId: org.id,
+      userId: session.user.id,
+      organizationId: organization.id,
       role: 'owner' as Role
     })
 
-    revalidatePath(`/${userId}/organizations`)
-    return { success: true, message: 'Organization created successfully' }
+    revalidatePath(`/${session.user.id}/organizations`)
+    return {
+      success: true,
+      message: 'Organization created successfully',
+      organizationId: organization.id,
+      errors: {},
+      inputs: { name: validatedData.data.name }
+    }
   } catch (error) {
     console.error('Error creating organization:', error)
     return {
       success: false,
-      message: 'An unexpected error occurred. Please try again.'
+      message: 'An unexpected error occurred. Please try again.',
+      errors: {},
+      inputs: { name: validatedData.data.name }
     }
   }
 }
