@@ -1,7 +1,7 @@
 'use client'
 
 import { CreateOrganizationForm } from './form'
-import { DataTable } from '@/_private/components/data-table'
+import { DataTable } from '@/components/data-table'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
