@@ -28,7 +28,7 @@ export type Invoice = {
 export const columns: ColumnDef<Invoice>[] = [
   {
     accessorKey: 'id',
-    header: '',
+    header: 'Invoice #',
     cell: ({ row }) => (
       <Link
         href={`/${row.original.userId}/invoices/${row.original.id}`}

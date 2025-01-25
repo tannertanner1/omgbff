@@ -1,8 +1,8 @@
-export interface FormData {
+export type FormData = {
   name: string
 }
 
-export interface ActionResponse {
+export type ActionResponse = {
   success: boolean
   message: string
   errors?: {
@@ -11,5 +11,6 @@ export interface ActionResponse {
   inputs?: {
     [K in keyof FormData]?: string
   }
-  organizationId?: number
+  organizationId?: string
+  redirect?: string
 }
