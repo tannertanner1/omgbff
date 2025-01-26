@@ -34,7 +34,12 @@ export default async function Page({
   return (
     <div className='min-h-screen'>
       <div className='mx-auto w-full max-w-5xl'>
-        <Form fields={fields} action={createAction} button='Create' />
+        <Form
+          fields={fields}
+          action={createAction}
+          button='Create'
+          userId={params.userId}
+        />
       </div>
     </div>
   )

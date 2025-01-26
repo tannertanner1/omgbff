@@ -83,9 +83,11 @@ body {
     scroll-behavior: smooth;
   }
   html {
+    /*
     font-family:
-      var(--font-serif) var(--font-sans),
-      var(--font-mono);
+    var(--font-serif) var(--font-sans),
+    var(--font-mono);
+    */
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-behavior: smooth;
@@ -121,13 +123,15 @@ body {
   }
   body {
     @apply bg-background font-sans text-foreground;
-    /* @apply bg-background text-foreground;
+    /*
+    @apply bg-background text-foreground;
     line-height: 1.6;
     min-height: 100%;
     font-family: var(--font-sans);
     color: var(--foreground);
     background: var(--background);
-    font-synthesis: none; */
+    font-synthesis: none;
+    */
   }
   body,
   p {
@@ -155,12 +159,14 @@ body {
   pre,
   kbd,
   samp,
+  /*
   time {
     font-family: var(--font-mono);
   }
   code {
     @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
   }
+  */
   html::-webkit-scrollbar {
     display: none;
   }
@@ -182,9 +188,9 @@ body {
   }
 }
 
-:focus {
+/* :focus {
   outline: none !important;
-}
+} */
 
 @layer utilities {
   .text-balance {

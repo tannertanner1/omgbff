@@ -1,5 +1,10 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
+```bash
+pnpm add babel-plugin-react-compiler
+pnpm add eslint-plugin-react-compiler -D
+```
+
 ```ts
 📁 app
   📜 page.tsx

@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { useActionState } from 'react'
-// import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -33,21 +33,22 @@ export function Form({
   action: (prevState: any, formData: FormData) => Promise<any>
   button?: string
 }) {
-  // const router = useRouter()
+  const router = useRouter()
   const initialState = {
     success: false,
     message: '',
     errors: {},
-    inputs: {}
+    inputs: {},
+    redirect: null
   }
 
   const [state, formAction, isPending] = useActionState(action, initialState)
 
-  // React.useEffect(() => {
-  //   if (state?.success && redirect) {
-  //     router.push(redirect)
-  //   }
-  // }, [state?.success, redirect, router])
+  React.useEffect(() => {
+    if (state?.success && state.redirect) {
+      router.push(state.redirect)
+    }
+  }, [state?.success, state?.redirect, router])
 
   return (
     <div className='mx-auto max-w-5xl'>
