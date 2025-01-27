@@ -33,7 +33,7 @@ export default async function Page() {
         <h1 className='text-3xl font-bold tracking-tight'>Organizations</h1>
         <CreateOrganizationForm userId={session.user.id} />
       </div>
-      <DataTable columns={columns} data={userOrgs} filterColumn='name' />
+      {/* <DataTable columns={columns} data={userOrgs} filterColumn='name' /> */}
     </div>
   )
 }

@@ -5,7 +5,6 @@ export const ROUTES = [
   '/terms',
   '/privacy',
   '/login',
-  '/example'
 ] as string[]
 
 export type Route = (typeof ROUTES)[number]

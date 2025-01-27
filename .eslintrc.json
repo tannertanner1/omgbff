@@ -1,5 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
@@ -8,8 +13,8 @@
     "@typescript-eslint/no-unused-expressions": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-require-imports": "off",
-    "prefer-const": "off",
     "@next/next/no-img-element": "off",
+    "prefer-const": "off",
     "react/jsx-key": "warn",
     "@next/next/no-async-client-component": "warn",
     "react-hooks/rules-of-hooks": "error"

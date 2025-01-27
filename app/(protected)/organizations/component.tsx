@@ -44,7 +44,7 @@ export function Component({
     <div className='space-y-4'>
       <h1 className='text-2xl font-bold'>Organizations</h1>
       <CreateOrganizationForm userId={userId} />
-      <DataTable columns={columns} data={userOrgs} filterColumn='name' />
+      {/* <DataTable columns={columns} data={userOrgs} filterColumn='name' /> */}
     </div>
   )
 }

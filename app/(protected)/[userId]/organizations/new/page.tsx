@@ -1,46 +1,110 @@
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation'
-import { Form } from '@/components/form'
-import { createAction } from './actions'
-import { hasPermission } from '@/lib/abac'
+import { Form } from "@/components/form"
+import { createAction } from "./actions"
 
-export default async function Page({
-  params: paramsPromise
-}: {
-  params: Promise<{ userId: string }>
-}) {
-  const [session, params] = await Promise.all([auth(), paramsPromise])
-  if (!session) {
-    redirect('/login')
-  }
+const fields = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text" as const,
+    required: true,
+  },
+]
 
-  if (session.user.id !== params.userId) {
-    redirect(`/${session.user.id}/organizations/new`)
-  }
-
-  if (!hasPermission(session.user, 'organizations', 'create')) {
-    redirect(`/${params.userId}/organizations`)
-  }
-
-  const fields = [
-    {
-      name: 'name',
-      label: 'Name',
-      type: 'text' as const,
-      required: true
-    }
-  ]
-
+export default function Page() {
   return (
-    <div className='min-h-screen'>
-      <div className='mx-auto w-full max-w-5xl'>
-        <Form
-          fields={fields}
-          action={createAction}
-          button='Create'
-          userId={params.userId}
-        />
+    <div className="min-h-screen">
+      <div className="mx-auto w-full max-w-5xl">
+        <Form fields={fields} action={createAction} button="Create" />
       </div>
     </div>
   )
 }
+
+// import { auth } from "@/lib/auth"
+// import { redirect } from "next/navigation"
+// import { Form } from "@/components/form"
+// import { createAction } from "./actions"
+// import { hasPermission } from "@/lib/abac"
+
+// export default async function Page({
+//   params,
+// }: {
+//   params: { userId: string }
+// }) {
+//   const session = await auth()
+//   if (!session) {
+//     redirect("/login")
+//   }
+
+//   if (session.user.id !== params.userId) {
+//     redirect(`/${session.user.id}/organizations/new`)
+//   }
+
+//   if (!hasPermission(session.user, "organizations", "create")) {
+//     redirect(`/${params.userId}/organizations`)
+//   }
+
+//   const fields = [
+//     {
+//       name: "name",
+//       label: "Name",
+//       type: "text" as const,
+//       required: true,
+//     },
+//   ]
+
+//   return (
+//     <div className="min-h-screen">
+//       <div className="mx-auto w-full max-w-5xl">
+//         <Form fields={fields} action={createAction} button="Create" userId={params.userId} />
+//       </div>
+//     </div>
+//   )
+// }
+
+// import { auth } from '@/lib/auth'
+// import { redirect } from 'next/navigation'
+// import { Form } from '@/components/form'
+// import { createAction } from './actions'
+// import { hasPermission } from '@/lib/abac'
+
+// export default async function Page({
+//   params: paramsPromise
+// }: {
+//   params: Promise<{ userId: string }>
+// }) {
+//   const [session, params] = await Promise.all([auth(), paramsPromise])
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   if (session.user.id !== params.userId) {
+//     redirect(`/${session.user.id}/organizations/new`)
+//   }
+
+//   if (!hasPermission(session.user, 'organizations', 'create')) {
+//     redirect(`/${params.userId}/organizations`)
+//   }
+
+//   const fields = [
+//     {
+//       name: 'name',
+//       label: 'Name',
+//       type: 'text' as const,
+//       required: true
+//     }
+//   ]
+
+//   return (
+//     <div className='min-h-screen'>
+//       <div className='mx-auto w-full max-w-5xl'>
+//         <Form
+//           fields={fields}
+//           action={createAction}
+//           button='Create'
+//           userId={params.userId}
+//         />
+//       </div>
+//     </div>
+//   )
+// }

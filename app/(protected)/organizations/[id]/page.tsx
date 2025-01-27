@@ -1,145 +1,228 @@
-import { auth } from '@/lib/auth'
-import { notFound, redirect } from 'next/navigation'
-import { db } from '@/db'
-import { organizations } from '@/db/schema/users'
-import { customers, invoices } from '@/db/schema/invoices'
-import { eq } from 'drizzle-orm'
-import { DataTable } from '@/components/data-table'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { IconArrowLeft } from '@tabler/icons-react'
-import { formatDistanceToNow } from 'date-fns'
+// import { auth } from "@/lib/auth"
+// import { notFound, redirect } from "next/navigation"
+// import Link from "next/link"
+// import { IconArrowLeft, IconCirclePlus } from "@tabler/icons-react"
+// import { DataTable } from "@/components/data-table"
+// import { columns as customerColumns } from "./customer-columns"
+// import { columns as invoiceColumns } from "./invoice-columns"
+// import { hasPermission } from "@/lib/abac"
+// import { getOrganizationById, getOrganizationCustomers, getOrganizationInvoices } from "@/db/queries"
 
-export default async function OrganizationPage({
-  params
-}: {
-  params: { id: string }
-}) {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
+// export default async function Page({
+//   params,
+// }: {
+//   params: { id: string }
+// }) {
+//   const session = await auth()
+//   if (!session) {
+//     redirect("/login")
+//   }
 
-  const [organization] = await db
-    .select()
-    .from(organizations)
-    .where(eq(organizations.id, params.id))
-    .limit(1)
+//   if (!hasPermission(session.user, "organizations", "view")) {
+//     redirect(`/${session.user.id}/organizations`)
+//   }
 
-  if (!organization) {
-    notFound()
-  }
+//   const organization = await getOrganizationById(params.id)
+//   if (!organization) {
+//     notFound()
+//   }
 
-  const organizationCustomers = await db
-    .select()
-    .from(customers)
-    .where(eq(customers.organizationId, organization.id))
+//   const customers = await getOrganizationCustomers(params.id)
+//   const invoices = await getOrganizationInvoices(params.id)
 
-  const organizationInvoices = await db
-    .select({
-      id: invoices.id,
-      customerId: invoices.customerId,
-      customerName: customers.name,
-      value: invoices.value,
-      status: invoices.status,
-      createdAt: invoices.createdAt
-    })
-    .from(invoices)
-    .innerJoin(customers, eq(invoices.customerId, customers.id))
-    .where(eq(customers.organizationId, organization.id))
+//   return (
+//     <div className="min-h-screen">
+//       <div className="mx-auto w-full max-w-5xl p-4">
+//         <div className="mb-8 flex flex-col gap-4">
+//           <Link href={`/${session.user.id}/organizations`}>
+//             <IconArrowLeft className="h-6 w-6" />
+//           </Link>
+//           <h1 className="text-2xl font-bold">{organization.name}</h1>
+//         </div>
 
-  return (
-    <div className='space-y-6'>
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-4'>
-          <Link href='/organizations'>
-            <Button variant='ghost' size='icon'>
-              <IconArrowLeft className='h-4 w-4' />
-            </Button>
-          </Link>
-          <h1 className='text-2xl font-bold'>{organization.name}</h1>
-        </div>
-        <div className='text-sm text-muted-foreground'>
-          Created{' '}
-          {formatDistanceToNow(organization.createdAt, { addSuffix: true })}
-        </div>
-      </div>
+//         <div className="space-y-8">
+//           <section>
+//             <div className="mb-4 flex items-center justify-between">
+//               <h2 className="text-lg font-semibold">Customers</h2>
+//               {hasPermission(session.user, "customers", "create") && (
+//                 <Link href={`/${session.user.id}/customers/new?org=${organization.id}`}>
+//                   <IconCirclePlus className="h-6 w-6" />
+//                 </Link>
+//               )}
+//             </div>
+//             <DataTable
+//               columns={customerColumns}
+//               data={customers}
+//               filterColumn="name"
+//               filterPlaceholder="Filter customers..."
+//             />
+//           </section>
 
-      <div className='grid gap-6'>
-        <div className='space-y-4'>
-          <div className='flex items-center justify-between'>
-            <h2 className='text-lg font-semibold'>Customers</h2>
-            <Button asChild>
-              <Link href={`/organizations/${organization.id}/customers/new`}>
-                Add Customer
-              </Link>
-            </Button>
-          </div>
-          <DataTable
-            columns={[
-              {
-                accessorKey: 'name',
-                header: 'Name'
-              },
-              {
-                accessorKey: 'email',
-                header: 'Email'
-              },
-              {
-                accessorKey: 'createdAt',
-                header: 'Created',
-                cell: ({ row }) =>
-                  formatDistanceToNow(row.original.createdAt, {
-                    addSuffix: true
-                  })
-              }
-            ]}
-            data={organizationCustomers}
-            filterColumn='name'
-          />
-        </div>
+//           <section>
+//             <div className="mb-4 flex items-center justify-between">
+//               <h2 className="text-lg font-semibold">Invoices</h2>
+//               {hasPermission(session.user, "invoices", "create") && (
+//                 <Link href={`/${session.user.id}/invoices/new?org=${organization.id}`}>
+//                   <IconCirclePlus className="h-6 w-6" />
+//                 </Link>
+//               )}
+//             </div>
+//             <DataTable
+//               columns={invoiceColumns}
+//               data={invoices}
+//               filterColumn="customerName"
+//               filterPlaceholder="Filter invoices..."
+//             />
+//           </section>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
 
-        <div className='space-y-4'>
-          <div className='flex items-center justify-between'>
-            <h2 className='text-lg font-semibold'>Invoices</h2>
-            <Button asChild>
-              <Link href={`/organizations/${organization.id}/invoices/new`}>
-                Create Invoice
-              </Link>
-            </Button>
-          </div>
-          <DataTable
-            columns={[
-              {
-                accessorKey: 'customerName',
-                header: 'Customer'
-              },
-              {
-                accessorKey: 'value',
-                header: 'Amount',
-                cell: ({ row }) => `$${(row.original.value / 100).toFixed(2)}`
-              },
-              {
-                accessorKey: 'status',
-                header: 'Status'
-              },
-              {
-                accessorKey: 'createdAt',
-                header: 'Created',
-                cell: ({ row }) =>
-                  formatDistanceToNow(row.original.createdAt, {
-                    addSuffix: true
-                  })
-              }
-            ]}
-            data={organizationInvoices}
-            filterColumn='customerName'
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
+
+// import { auth } from '@/lib/auth'
+// import { notFound, redirect } from 'next/navigation'
+// import { db } from '@/db'
+// import { organizations } from '@/db/schema/users'
+// import { customers, invoices } from '@/db/schema/invoices'
+// import { eq } from 'drizzle-orm'
+// import { DataTable } from '@/components/data-table'
+// import Link from 'next/link'
+// import { Button } from '@/components/ui/button'
+// import { IconArrowLeft } from '@tabler/icons-react'
+// import { formatDistanceToNow } from 'date-fns'
+
+// export default async function OrganizationPage({
+//   params
+// }: {
+//   params: { id: string }
+// }) {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   const [organization] = await db
+//     .select()
+//     .from(organizations)
+//     .where(eq(organizations.id, params.id))
+//     .limit(1)
+
+//   if (!organization) {
+//     notFound()
+//   }
+
+//   const organizationCustomers = await db
+//     .select()
+//     .from(customers)
+//     .where(eq(customers.organizationId, organization.id))
+
+//   const organizationInvoices = await db
+//     .select({
+//       id: invoices.id,
+//       customerId: invoices.customerId,
+//       customerName: customers.name,
+//       value: invoices.value,
+//       status: invoices.status,
+//       createdAt: invoices.createdAt
+//     })
+//     .from(invoices)
+//     .innerJoin(customers, eq(invoices.customerId, customers.id))
+//     .where(eq(customers.organizationId, organization.id))
+
+//   return (
+//     <div className='space-y-6'>
+//       <div className='flex items-center justify-between'>
+//         <div className='flex items-center gap-4'>
+//           <Link href='/organizations'>
+//             <Button variant='ghost' size='icon'>
+//               <IconArrowLeft className='h-4 w-4' />
+//             </Button>
+//           </Link>
+//           <h1 className='text-2xl font-bold'>{organization.name}</h1>
+//         </div>
+//         <div className='text-sm text-muted-foreground'>
+//           Created{' '}
+//           {formatDistanceToNow(organization.createdAt, { addSuffix: true })}
+//         </div>
+//       </div>
+
+//       <div className='grid gap-6'>
+//         <div className='space-y-4'>
+//           <div className='flex items-center justify-between'>
+//             <h2 className='text-lg font-semibold'>Customers</h2>
+//             <Button asChild>
+//               <Link href={`/organizations/${organization.id}/customers/new`}>
+//                 Add Customer
+//               </Link>
+//             </Button>
+//           </div>
+//           <DataTable
+//             columns={[
+//               {
+//                 accessorKey: 'name',
+//                 header: 'Name'
+//               },
+//               {
+//                 accessorKey: 'email',
+//                 header: 'Email'
+//               },
+//               {
+//                 accessorKey: 'createdAt',
+//                 header: 'Created',
+//                 cell: ({ row }) =>
+//                   formatDistanceToNow(row.original.createdAt, {
+//                     addSuffix: true
+//                   })
+//               }
+//             ]}
+//             data={organizationCustomers}
+//             filterColumn='name'
+//           />
+//         </div>
+
+//         <div className='space-y-4'>
+//           <div className='flex items-center justify-between'>
+//             <h2 className='text-lg font-semibold'>Invoices</h2>
+//             <Button asChild>
+//               <Link href={`/organizations/${organization.id}/invoices/new`}>
+//                 Create Invoice
+//               </Link>
+//             </Button>
+//           </div>
+//           <DataTable
+//             columns={[
+//               {
+//                 accessorKey: 'customerName',
+//                 header: 'Customer'
+//               },
+//               {
+//                 accessorKey: 'value',
+//                 header: 'Amount',
+//                 cell: ({ row }) => `$${(row.original.value / 100).toFixed(2)}`
+//               },
+//               {
+//                 accessorKey: 'status',
+//                 header: 'Status'
+//               },
+//               {
+//                 accessorKey: 'createdAt',
+//                 header: 'Created',
+//                 cell: ({ row }) =>
+//                   formatDistanceToNow(row.original.createdAt, {
+//                     addSuffix: true
+//                   })
+//               }
+//             ]}
+//             data={organizationInvoices}
+//             filterColumn='customerName'
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
 
 // import { auth } from '@/lib/auth'
 // import { notFound, redirect } from 'next/navigation'

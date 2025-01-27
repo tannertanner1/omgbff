@@ -1,5 +1,5 @@
-import { type User, columns } from "./_components/data-table/columns"
-import { DataTable } from "./_components/data-table"
+import { type User, columns } from "@/components/data-table/columns"
+import { DataTable } from "@/components/data-table"
 
 async function getData(): Promise<User[]> {
   return [
