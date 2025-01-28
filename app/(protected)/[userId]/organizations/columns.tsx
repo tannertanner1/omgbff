@@ -1,19 +1,19 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import type { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import Link from 'next/link'
+import type { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { formatDistanceToNow } from "date-fns"
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { formatDistanceToNow } from 'date-fns'
 
 export type Organization = {
   id: string
@@ -24,71 +24,84 @@ export type Organization = {
 
 export const columns: ColumnDef<Organization, unknown>[] = [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+        aria-label='Select all'
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        onCheckedChange={value => row.toggleSelected(!!value)}
+        aria-label='Select row'
       />
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: false
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: 'name',
+    header: 'Name',
     cell: ({ row }) => (
-      <Link href={`/${row.original.userId}/organizations/${row.original.id}`} className="hover:underline">
-        {row.getValue("name")}
+      <Link
+        href={`/${row.original.userId}/organizations/${row.original.id}`}
+        className='hover:underline'
+      >
+        {row.getValue('name')}
       </Link>
-    ),
+    )
   },
   {
-    accessorKey: "createdAt",
-    header: "Created",
+    accessorKey: 'createdAt',
+    header: 'Created',
     cell: ({ row }) =>
-      formatDistanceToNow(new Date(row.getValue("createdAt")), {
-        addSuffix: true,
-      }),
+      formatDistanceToNow(new Date(row.getValue('createdAt')), {
+        addSuffix: true
+      })
   },
   {
-    id: "actions",
+    id: 'actions',
     cell: ({ row }) => {
       const organization = row.original
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <MoreHorizontal className='h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(organization.id)}>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(organization.id)}
+            >
               Copy organization ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/${organization.userId}/organizations/${organization.id}/edit`}>Edit</Link>
+              <Link
+                href={`/${organization.userId}/organizations/${organization.id}/edit`}
+              >
+                Edit
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/${organization.userId}/organizations/${organization.id}/delete`}>Delete</Link>
+              <Link
+                href={`/${organization.userId}/organizations/${organization.id}/delete`}
+              >
+                Delete
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
-    },
-  },
+    }
+  }
 ]
 
 // 'use client'
