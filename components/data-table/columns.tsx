@@ -1,14 +1,6 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
 import {
   IconSelector,
   IconArrowUp,
@@ -18,7 +10,13 @@ import {
   IconPencil,
   IconTrash
 } from '@tabler/icons-react'
-import { cn } from '@/lib/utils'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
 export function Columns<T extends object>(data: T[]): ColumnDef<T>[] {
   if (data.length === 0) return []
@@ -28,20 +26,13 @@ export function Columns<T extends object>(data: T[]): ColumnDef<T>[] {
     accessorKey: key,
     header: ({ column }) => {
       return (
-        <div className='px-2'>
+        <div className='flex items-center gap-2'>
+          <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                size='sm'
-                className={cn(
-                  '-ml-3 h-8 hover:bg-transparent', // data-[state=open]:bg-accent
-                  'justify-start font-medium'
-                )}
-              >
-                <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-                <IconSelector className='ml-2 h-4 w-4' />
-              </Button>
+              <div className='h-4 w-4 cursor-pointer'>
+                <IconSelector className='h-4 w-4' />
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='start'>
               <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
@@ -63,7 +54,7 @@ export function Columns<T extends object>(data: T[]): ColumnDef<T>[] {
       )
     },
     cell: ({ row }) => (
-      <div className='px-2'>{row.getValue(key)?.toString()}</div>
+      <div className='px-4'>{row.getValue(key)?.toString()}</div>
     )
   }))
 
@@ -72,16 +63,12 @@ export function Columns<T extends object>(data: T[]): ColumnDef<T>[] {
     cell: ({ row }) => {
       const item = row.original
       return (
-        <div className='px-2 text-right'>
+        <div className='px-4 text-right'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                className='h-8 w-8 p-0 hover:bg-transparent'
-              >
-                <span className='sr-only'>Open menu</span>
+              <button className='inline-flex h-8 w-8 cursor-pointer items-center justify-center'>
                 <IconDots className='h-4 w-4' />
-              </Button>
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuItem
