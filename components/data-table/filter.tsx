@@ -53,7 +53,7 @@ export function Filter<TData>({ table }: { table: Table<TData> }) {
             <span className='sr-only'>Filter column</span>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='w-[200px]'>
+        <DropdownMenuContent align='end' className='w-[144px]'>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <span>Filter</span>

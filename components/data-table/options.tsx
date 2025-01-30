@@ -22,7 +22,7 @@ export function Options<TData>({ table }: { table: Table<TData> }) {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>Columns</DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className='w-[100px] p-0'>
+      <DropdownMenuSubContent className='w-[144px] p-0'>
         <Command>
           <CommandInput placeholder='Search...' className='border-0' />
           <CommandList>

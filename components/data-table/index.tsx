@@ -36,7 +36,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Options } from './options'
 import { Pagination } from './pagination'
-// import { Filter } from './filter'
 import { cn } from '@/lib/utils'
 
 export function DataTable<TData, TValue>({
@@ -53,7 +52,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const [selectedColumn, setSelectedColumn] = React.useState<string>('')
+  const [selectedColumn, setSelectedColumn] = React.useState('')
   const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
 
   const table = useReactTable({
@@ -72,33 +71,28 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection
-    },
-    filterFns: {
-      custom: (row, columnId, filterValue) => {
-        const value = row.getValue(columnId)
-        if (typeof value === 'number') {
-          return value.toString().includes(filterValue)
-        }
-        if (typeof value === 'string') {
-          return value.toLowerCase().includes(filterValue.toLowerCase())
-        }
-        return false
-      }
     }
   })
 
+  // Set initial filter column
   React.useEffect(() => {
-    const firstColumn = table
-      .getAllColumns()
-      .find(
-        column =>
-          typeof column.accessorFn !== 'undefined' &&
-          !['select', 'actions'].includes(column.id)
-      )
-    if (firstColumn && !selectedColumn) {
-      setSelectedColumn(firstColumn.id)
+    if (selectedColumn === '') {
+      const firstColumn = table
+        .getAllColumns()
+        .find(
+          column =>
+            typeof column.accessorFn !== 'undefined' &&
+            !['select', 'actions'].includes(column.id)
+        )
+      if (firstColumn) {
+        setSelectedColumn(firstColumn.id)
+      }
     }
   }, [table, selectedColumn])
+
+  // Get the current column
+  const currentColumn = selectedColumn ? table.getColumn(selectedColumn) : null
+  const filterValue = currentColumn?.getFilterValue() as string
 
   return (
     <div className='w-full'>
@@ -107,12 +101,12 @@ export function DataTable<TData, TValue>({
           placeholder={
             selectedColumn ? `Filter by ${selectedColumn}...` : 'Filter...'
           }
-          value={
-            (table.getColumn(selectedColumn)?.getFilterValue() as string) ?? ''
-          }
-          onChange={event =>
-            table.getColumn(selectedColumn)?.setFilterValue(event.target.value)
-          }
+          value={filterValue ?? ''}
+          onChange={event => {
+            if (currentColumn) {
+              currentColumn.setFilterValue(event.target.value)
+            }
+          }}
           className='w-full'
         />
         <DropdownMenu open={isOptionsOpen} onOpenChange={setIsOptionsOpen}>
@@ -166,7 +160,6 @@ export function DataTable<TData, TValue>({
                 </DropdownMenuRadioGroup>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
-            {/* <Filter table={table} /> */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Rows</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
