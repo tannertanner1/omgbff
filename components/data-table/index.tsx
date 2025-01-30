@@ -37,6 +37,7 @@ import { Input } from '@/components/ui/input'
 import { Options } from './options'
 import { Pagination } from './pagination'
 // import { Filter } from './filter'
+import { cn } from '@/lib/utils'
 
 export function DataTable<TData, TValue>({
   columns,
@@ -53,6 +54,7 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [selectedColumn, setSelectedColumn] = React.useState<string>('')
+  const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
 
   const table = useReactTable({
     data,
@@ -113,14 +115,31 @@ export function DataTable<TData, TValue>({
           }
           className='w-full'
         />
-        <DropdownMenu>
+        <DropdownMenu open={isOptionsOpen} onOpenChange={setIsOptionsOpen}>
           <DropdownMenuTrigger asChild>
-            <button aria-label='Table options'>
-              <IconDotsCircleHorizontal className='flex h-6 w-6 items-center p-0' />
+            <button
+              aria-label='Table options'
+              className={cn('group rounded-full transition-colors')}
+            >
+              <IconDotsCircleHorizontal
+                className={cn(
+                  'h-6 w-6 transition-colors',
+                  isOptionsOpen
+                    ? 'text-primary'
+                    : 'text-muted-foreground group-hover:text-primary'
+                )}
+              />
               <span className='sr-only'>Table options</span>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='w-[200px]'>
+          <DropdownMenuContent
+            align='end'
+            sticky='partial'
+            className='w-[100px]'
+            collisionPadding={12}
+            side='bottom'
+            updatePositionStrategy='always'
+          >
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Filter</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>

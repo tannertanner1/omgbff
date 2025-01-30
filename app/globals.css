@@ -221,4 +221,10 @@ body {
   [data-variant='inset'] [data-sidebar='sidebar'] {
     @apply bg-sidebar shadow-none;
   }
+
+  @media (max-width: 640px) {
+    [data-radix-popper-content-wrapper] {
+      position: fixed !important;
+    }
+  }
 }

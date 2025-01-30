@@ -5,6 +5,7 @@ import {
   IconCircleChevronLeft,
   IconCircleChevronRight
 } from '@tabler/icons-react'
+import { cn } from '@/lib/utils'
 
 export function Pagination<TData>({ table }: { table: Table<TData> }) {
   return (
@@ -15,10 +16,12 @@ export function Pagination<TData>({ table }: { table: Table<TData> }) {
           disabled={!table.getCanPreviousPage()}
         >
           <IconCircleChevronLeft
-            className='h-6 w-6 p-0'
-            style={{
-              opacity: !table.getCanPreviousPage() ? 0.25 : 0.5
-            }}
+            className={cn(
+              'h-6 w-6 p-0 transition-colors',
+              !table.getCanPreviousPage()
+                ? 'text-muted-foreground/50'
+                : 'text-muted-foreground hover:text-primary'
+            )}
           />
           <span className='sr-only'>Previous page</span>
         </button>
@@ -27,10 +30,12 @@ export function Pagination<TData>({ table }: { table: Table<TData> }) {
           disabled={!table.getCanNextPage()}
         >
           <IconCircleChevronRight
-            className='h-6 w-6 p-0'
-            style={{
-              opacity: !table.getCanNextPage() ? 0.25 : 0.5
-            }}
+            className={cn(
+              'h-6 w-6 p-0 transition-colors',
+              !table.getCanNextPage()
+                ? 'text-muted-foreground/50'
+                : 'text-muted-foreground hover:text-primary'
+            )}
           />
           <span className='sr-only'>Next page</span>
         </button>
