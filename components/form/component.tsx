@@ -1,46 +1,4 @@
 'use client'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { Drawer, DrawerContent } from '@/components/ui/drawer'
-import { useMediaQuery } from '@/hooks/use-media-query'
-import { Component } from './component'
-
-export function Form({
-  fields,
-  action,
-  button,
-  data,
-  open = true
-}: {
-  fields: Array<{
-    name: string
-    label: string
-    type?: 'text' | 'email' | 'number' | 'textarea'
-    required?: boolean
-    defaultValue?: string
-  }>
-  action: (prevState: any, formData: FormData) => Promise<any>
-  button?: string
-  data?: Record<string, any>
-  open?: boolean
-}) {
-  const isDesktop = useMediaQuery('(min-width: 768px)')
-  const FormContent = (
-    <Component fields={fields} action={action} button={button} data={data} />
-  )
-
-  return isDesktop ? (
-    <Dialog open={open}>
-      <DialogContent>{FormContent}</DialogContent>
-    </Dialog>
-  ) : (
-    <Drawer open={open}>
-      <DrawerContent>{FormContent}</DrawerContent>
-    </Drawer>
-  )
-}
-
-/**
-'use client'
 
 import * as React from 'react'
 import { useActionState } from 'react'
@@ -61,26 +19,29 @@ import {
 import { IconLoader, IconCircleCheck, IconCircleX } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 
-export function Form({
+export function Component({
   fields,
   action,
-  button = 'Submit'
+  button = 'Submit',
+  data = {}
 }: {
   fields: Array<{
     name: string
     label: string
     type?: 'text' | 'email' | 'number' | 'textarea'
     required?: boolean
+    defaultValue?: string
   }>
   action: (prevState: any, formData: FormData) => Promise<any>
   button?: string
+  data?: Record<string, any>
 }) {
   const router = useRouter()
   const initialState = {
     success: false,
     message: '',
     errors: {},
-    inputs: {},
+    inputs: data,
     redirect: null
   }
 
@@ -103,50 +64,52 @@ export function Form({
             </CardHeader>
             <form action={formAction}>
               <CardContent className='flex flex-col gap-6'>
-                {fields.map(({ name, label, type = 'text', required }) => (
-                  <div key={name} className='grid gap-2'>
-                    <Label
-                      htmlFor={name}
-                      className={
-                        required
-                          ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
-                          : ''
-                      }
-                    >
-                      {label}
-                    </Label>
-                    {type === 'textarea' ? (
-                      <Textarea
-                        id={name}
-                        name={name}
-                        aria-describedby={`${name}-error`}
+                {fields.map(
+                  ({ name, label, type = 'text', required, defaultValue }) => (
+                    <div key={name} className='grid gap-2'>
+                      <Label
+                        htmlFor={name}
                         className={
-                          state?.errors?.[name] ? 'border-[#DB4437]' : 'mb-7'
+                          required
+                            ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                            : ''
                         }
-                        defaultValue={state?.inputs?.[name]}
-                      />
-                    ) : (
-                      <Input
-                        id={name}
-                        name={name}
-                        type={type}
-                        aria-describedby={`${name}-error`}
-                        className={
-                          state?.errors?.[name] ? 'border-[#DB4437]' : 'mb-7'
-                        }
-                        defaultValue={state?.inputs?.[name]}
-                      />
-                    )}
-                    {state?.errors?.[name] && (
-                      <p
-                        id={`${name}-error`}
-                        className='text-sm text-[#DB4437]'
                       >
-                        {state.errors[name][0]}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                        {label}
+                      </Label>
+                      {type === 'textarea' ? (
+                        <Textarea
+                          id={name}
+                          name={name}
+                          aria-describedby={`${name}-error`}
+                          className={
+                            state?.errors?.[name] ? 'border-[#DB4437]' : 'mb-7'
+                          }
+                          defaultValue={defaultValue || state?.inputs?.[name]}
+                        />
+                      ) : (
+                        <Input
+                          id={name}
+                          name={name}
+                          type={type}
+                          aria-describedby={`${name}-error`}
+                          className={
+                            state?.errors?.[name] ? 'border-[#DB4437]' : 'mb-7'
+                          }
+                          defaultValue={defaultValue || state?.inputs?.[name]}
+                        />
+                      )}
+                      {state?.errors?.[name] && (
+                        <p
+                          id={`${name}-error`}
+                          className='text-sm text-[#DB4437]'
+                        >
+                          {state.errors[name][0]}
+                        </p>
+                      )}
+                    </div>
+                  )
+                )}
               </CardContent>
               <CardFooter className='flex flex-col gap-4'>
                 <Button
@@ -198,4 +161,3 @@ export function Form({
     </div>
   )
 }
-*/

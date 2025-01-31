@@ -40,10 +40,12 @@ import { cn } from '@/lib/utils'
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  link
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  link?: (row: TData) => string
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -74,7 +76,6 @@ export function DataTable<TData, TValue>({
     }
   })
 
-  // Set initial filter column
   React.useEffect(() => {
     if (selectedColumn === '') {
       const firstColumn = table
@@ -90,7 +91,6 @@ export function DataTable<TData, TValue>({
     }
   }, [table, selectedColumn])
 
-  // Get the current column
   const currentColumn = selectedColumn ? table.getColumn(selectedColumn) : null
   const filterValue = currentColumn?.getFilterValue() as string
 
@@ -126,14 +126,7 @@ export function DataTable<TData, TValue>({
               <span className='sr-only'>Table options</span>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align='end'
-            sticky='partial'
-            className='w-[100px]'
-            collisionPadding={12}
-            side='bottom'
-            updatePositionStrategy='always'
-          >
+          <DropdownMenuContent align='end' className='w-[200px]'>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Filter</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -207,6 +200,18 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className={cn(link && 'cursor-pointer hover:bg-muted')}
+                  onClick={e => {
+                    // Don't navigate if clicking action buttons
+                    if (
+                      (e.target as HTMLElement).closest('[data-action-trigger]')
+                    ) {
+                      return
+                    }
+                    if (link) {
+                      window.location.href = link(row.original)
+                    }
+                  }}
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} className='p-0'>
@@ -235,3 +240,8 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+/**
+ * @see https://github.com/sadmann7/shadcn-table/tree/8b70d2e761ca9d8f0a9302ea0e15c196086883d5/src/components/data-table
+ * @see https://github.com/shadcn-ui/ui/tree/805ed4120a6a8ae6f6e9714cbd776e18eeba92c7/apps/www/app/(app)/examples/tasks/components
+ */
