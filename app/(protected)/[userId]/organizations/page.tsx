@@ -6,7 +6,7 @@ import { getUserOrganizations } from '@/db/queries'
 import { Table } from '@/components/data-table/table'
 import { Button } from '@/components/ui/button'
 import { IconPlus } from '@tabler/icons-react'
-import { Columns, type Organization } from './columns'
+import { getColumns, type Organization } from './columns'
 
 export default async function Page({
   params,
@@ -31,7 +31,7 @@ export default async function Page({
     userId
   }))
 
-  const columns = Columns(userId, { refresh: () => {} })
+  const columns = getColumns(userId, { refresh: () => {} })
 
   return (
     <div className='min-h-screen'>

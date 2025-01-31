@@ -11,7 +11,7 @@ export type Organization = {
   updatedAt: Date
 }
 
-export function Columns(
+export function getColumns(
   userId: string,
   router: any
 ): ColumnDef<Organization>[] {
