@@ -1,8 +1,9 @@
 'use client'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { Drawer, DrawerContent } from '@/components/ui/drawer'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Component } from './component'
+import { cn } from '@/lib/utils'
 
 export function Form({
   fields,
@@ -30,14 +31,61 @@ export function Form({
 
   return isDesktop ? (
     <Dialog open={open}>
-      <DialogContent>{FormContent}</DialogContent>
+      <DialogContent>
+        <DialogTitle className='sr-only'>Form</DialogTitle>
+        <div className={cn('w-full')}>{FormContent}</div>
+      </DialogContent>
     </Dialog>
   ) : (
     <Drawer open={open}>
-      <DrawerContent>{FormContent}</DrawerContent>
+      <DrawerContent>
+        <DrawerTitle className='sr-only'>Form</DrawerTitle>
+        <div className={cn('-p-8 w-full')}>{FormContent}</div>
+      </DrawerContent>
     </Drawer>
   )
 }
+
+// 'use client'
+// import { Dialog, DialogContent } from '@/components/ui/dialog'
+// import { Drawer, DrawerContent } from '@/components/ui/drawer'
+// import { useMediaQuery } from '@/hooks/use-media-query'
+// import { Component } from './component'
+
+// export function Form({
+//   fields,
+//   action,
+//   button,
+//   data,
+//   open = true
+// }: {
+//   fields: Array<{
+//     name: string
+//     label: string
+//     type?: 'text' | 'email' | 'number' | 'textarea'
+//     required?: boolean
+//     defaultValue?: string
+//   }>
+//   action: (prevState: any, formData: FormData) => Promise<any>
+//   button?: string
+//   data?: Record<string, any>
+//   open?: boolean
+// }) {
+//   const isDesktop = useMediaQuery('(min-width: 768px)')
+//   const FormContent = (
+//     <Component fields={fields} action={action} button={button} data={data} />
+//   )
+
+//   return isDesktop ? (
+//     <Dialog open={open}>
+//       <DialogContent>{FormContent}</DialogContent>
+//     </Dialog>
+//   ) : (
+//     <Drawer open={open}>
+//       <DrawerContent>{FormContent}</DrawerContent>
+//     </Drawer>
+//   )
+// }
 
 /**
 'use client'

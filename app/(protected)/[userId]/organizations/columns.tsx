@@ -1,4 +1,5 @@
 'use client'
+
 import type { ColumnDef } from '@tanstack/react-table'
 import { Columns } from '@/components/data-table/columns'
 import { deleteAction } from './actions'
