@@ -1,4 +1,5 @@
 'use client'
+
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/use-media-query'
@@ -33,14 +34,14 @@ export function Form({
     <Dialog open={open}>
       <DialogContent>
         <DialogTitle className='sr-only'>Form</DialogTitle>
-        <div className={cn('w-full')}>{FormContent}</div>
+        <div className={cn('pb-3 pt-1.5')}>{FormContent}</div>
       </DialogContent>
     </Dialog>
   ) : (
     <Drawer open={open}>
       <DrawerContent>
         <DrawerTitle className='sr-only'>Form</DrawerTitle>
-        <div className={cn('-p-8 w-full')}>{FormContent}</div>
+        <div className={cn('-pt-0.5 p-1 px-0.5 pb-1')}>{FormContent}</div>
       </DrawerContent>
     </Drawer>
   )
