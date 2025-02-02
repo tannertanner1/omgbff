@@ -1,28 +1,29 @@
-import { eq, inArray, desc, asc, sql, ilike } from "drizzle-orm"
-import { db } from "@/db"
-import { organizations, userOrganizations } from "@/db/schema"
-import { customers, invoices } from "@/db/schema"
-import { hasPermission } from "@/lib/abac"
-import { auth } from "@/lib/auth"
-import { notFound } from "next/navigation"
+import { eq, inArray } from 'drizzle-orm'
+import { db } from '@/db'
+import { organizations, userOrganizations } from '@/db/schema'
+import { customers, invoices } from '@/db/schema'
+import { hasPermission } from '@/lib/abac'
+import { auth } from '@/lib/auth'
+import { notFound } from 'next/navigation'
 
 async function getUserOrganizations() {
   const session = await auth()
-  if (!session?.user || !hasPermission(session.user, "organizations", "view")) {
+  if (!session?.user || !hasPermission(session.user, 'organizations', 'view')) {
     return []
   }
 
   return await db.query.userOrganizations.findMany({
     where: eq(userOrganizations.userId, session.user.id),
     with: {
-      organization: true,
+      organization: true
     },
+    orderBy: (userOrgs, { desc }) => [desc(userOrgs.createdAt)]
   })
 }
 
 async function getOrganizationById(organizationId: string) {
   const session = await auth()
-  if (!session?.user || !hasPermission(session.user, "organizations", "view")) {
+  if (!session?.user || !hasPermission(session.user, 'organizations', 'view')) {
     return null
   }
 
@@ -31,10 +32,10 @@ async function getOrganizationById(organizationId: string) {
     with: {
       userOrganizations: {
         with: {
-          user: true,
-        },
-      },
-    },
+          user: true
+        }
+      }
+    }
   })
 
   if (!organization) {
@@ -46,36 +47,122 @@ async function getOrganizationById(organizationId: string) {
 
 async function getOrganizationCustomers(organizationId: string) {
   const session = await auth()
-  if (!session?.user || !hasPermission(session.user, "customers", "view")) {
+  if (!session?.user || !hasPermission(session.user, 'customers', 'view')) {
     return []
   }
 
   return await db.query.customers.findMany({
     where: eq(customers.organizationId, organizationId),
     with: {
-      invoices: true,
-    },
+      invoices: true
+    }
   })
 }
 
 async function getOrganizationInvoices(organizationId: string) {
   const session = await auth()
-  if (!session?.user || !hasPermission(session.user, "invoices", "view")) {
+  if (!session?.user || !hasPermission(session.user, 'invoices', 'view')) {
     return []
   }
 
   const organizationCustomers = await getOrganizationCustomers(organizationId)
-  const customerIds = organizationCustomers.map((customer) => customer.id)
+  const customerIds = organizationCustomers.map(customer => customer.id)
 
   return await db.query.invoices.findMany({
     where: inArray(invoices.customerId, customerIds),
     with: {
-      customer: true,
-    },
+      customer: true
+    }
   })
 }
 
-export { getUserOrganizations, getOrganizationById, getOrganizationCustomers, getOrganizationInvoices }
+export {
+  getUserOrganizations,
+  getOrganizationById,
+  getOrganizationCustomers,
+  getOrganizationInvoices
+}
+
+// @note
+
+// import { eq, inArray, desc, asc, sql, ilike } from "drizzle-orm"
+// import { db } from "@/db"
+// import { organizations, userOrganizations } from "@/db/schema"
+// import { customers, invoices } from "@/db/schema"
+// import { hasPermission } from "@/lib/abac"
+// import { auth } from "@/lib/auth"
+// import { notFound } from "next/navigation"
+
+// async function getUserOrganizations() {
+//   const session = await auth()
+//   if (!session?.user || !hasPermission(session.user, "organizations", "view")) {
+//     return []
+//   }
+
+//   return await db.query.userOrganizations.findMany({
+//     where: eq(userOrganizations.userId, session.user.id),
+//     with: {
+//       organization: true,
+//     },
+//   })
+// }
+
+// async function getOrganizationById(organizationId: string) {
+//   const session = await auth()
+//   if (!session?.user || !hasPermission(session.user, "organizations", "view")) {
+//     return null
+//   }
+
+//   const organization = await db.query.organizations.findFirst({
+//     where: eq(organizations.id, organizationId),
+//     with: {
+//       userOrganizations: {
+//         with: {
+//           user: true,
+//         },
+//       },
+//     },
+//   })
+
+//   if (!organization) {
+//     notFound()
+//   }
+
+//   return organization
+// }
+
+// async function getOrganizationCustomers(organizationId: string) {
+//   const session = await auth()
+//   if (!session?.user || !hasPermission(session.user, "customers", "view")) {
+//     return []
+//   }
+
+//   return await db.query.customers.findMany({
+//     where: eq(customers.organizationId, organizationId),
+//     with: {
+//       invoices: true,
+//     },
+//   })
+// }
+
+// async function getOrganizationInvoices(organizationId: string) {
+//   const session = await auth()
+//   if (!session?.user || !hasPermission(session.user, "invoices", "view")) {
+//     return []
+//   }
+
+//   const organizationCustomers = await getOrganizationCustomers(organizationId)
+//   const customerIds = organizationCustomers.map((customer) => customer.id)
+
+//   return await db.query.invoices.findMany({
+//     where: inArray(invoices.customerId, customerIds),
+//     with: {
+//       customer: true,
+//     },
+//   })
+// }
+
+// export { getUserOrganizations, getOrganizationById, getOrganizationCustomers, getOrganizationInvoices }
 
 // import { eq, inArray, desc, asc, sql, ilike } from 'drizzle-orm'
 // import { db } from '@/db'

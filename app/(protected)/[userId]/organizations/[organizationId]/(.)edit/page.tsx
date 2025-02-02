@@ -1,6 +1,7 @@
 import { Form } from '@/components/form'
 import { getOrganizationById } from '@/db/queries'
 import { updateAction } from '../../actions'
+import { notFound } from 'next/navigation'
 
 export default async function Page({
   params
@@ -10,7 +11,7 @@ export default async function Page({
   const organization = await getOrganizationById(params.organizationId)
 
   if (!organization) {
-    return null
+    notFound()
   }
 
   const fields = [
@@ -23,20 +24,58 @@ export default async function Page({
     }
   ]
 
-  const editAction = async (prevState: any, formData: FormData) => {
-    formData.append('id', organization.id)
-    return updateAction(prevState, formData)
-  }
-
   return (
     <Form
       fields={fields}
-      action={editAction}
+      action={updateAction}
       button='Save'
-      data={organization}
+      data={{
+        id: organization.id,
+        name: organization.name
+      }}
     />
   )
 }
+
+// import { Form } from '@/components/form'
+// import { getOrganizationById } from '@/db/queries'
+// import { updateAction } from '../../actions'
+
+// export default async function Page({
+//   params
+// }: {
+//   params: { userId: string; organizationId: string }
+// }) {
+//   const organization = await getOrganizationById(params.organizationId)
+
+//   if (!organization) {
+//     return null
+//   }
+
+//   const fields = [
+//     {
+//       name: 'name',
+//       label: 'Name',
+//       type: 'text' as const,
+//       required: true,
+//       defaultValue: organization.name
+//     }
+//   ]
+
+//   const editAction = async (prevState: any, formData: FormData) => {
+//     formData.append('id', organization.id)
+//     return updateAction(prevState, formData)
+//   }
+
+//   return (
+//     <Form
+//       fields={fields}
+//       action={editAction}
+//       button='Save'
+//       data={organization}
+//     />
+//   )
+// }
 
 // import { Form } from '@/components/form'
 // import { getOrganizationById } from '@/db/queries'

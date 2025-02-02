@@ -3,7 +3,7 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/db'
-import { organizations } from '@/db/schema'
+import { organizations, userOrganizations } from '@/db/schema'
 import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 import { schema } from './schema'
@@ -51,11 +51,18 @@ async function createAction(
       })
       .returning()
 
+    // Create the user_organization relationship
+    await db.insert(userOrganizations).values({
+      userId: session.user.id,
+      organizationId: organization.id,
+      role: session.user.role // Inherit the user's role
+    })
+
     revalidatePath(`/${session.user.id}/organizations`)
     return {
       success: true,
       message: 'Organization created successfully',
-      organizationId: organization.id
+      redirect: `/${session.user.id}/organizations/${organization.id}`
     }
   } catch (error) {
     console.error('Error creating organization:', error)
@@ -113,7 +120,8 @@ async function updateAction(
     revalidatePath(`/${session.user.id}/organizations`)
     return {
       success: true,
-      message: 'Organization updated successfully'
+      message: 'Organization updated successfully',
+      redirect: `/${session.user.id}/organizations/${id}`
     }
   } catch (error) {
     console.error('Error updating organization:', error)
@@ -147,7 +155,8 @@ async function deleteAction(
     revalidatePath(`/${session.user.id}/organizations`)
     return {
       success: true,
-      message: 'Organization deleted successfully'
+      message: 'Organization deleted successfully',
+      redirect: `/${session.user.id}/organizations`
     }
   } catch (error) {
     console.error('Error deleting organization:', error)
@@ -159,6 +168,332 @@ async function deleteAction(
 }
 
 export { createAction, updateAction, deleteAction }
+
+// 'use server'
+
+// import { auth } from '@/lib/auth'
+// import { redirect } from 'next/navigation'
+// import { db } from '@/db'
+// import { organizations } from '@/db/schema'
+// import { revalidatePath } from 'next/cache'
+// import { eq } from 'drizzle-orm'
+// import { schema } from './schema'
+// import { hasPermission } from '@/lib/abac'
+// import type { ActionResponse } from './types'
+
+// async function createAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   if (!hasPermission(session.user, 'organizations', 'create')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized',
+//       errors: {},
+//       inputs: { name: formData.get('name') as string }
+//     }
+//   }
+
+//   const rawData = {
+//     name: formData.get('name') as string
+//   }
+
+//   const validatedData = schema.safeParse(rawData)
+
+//   if (!validatedData.success) {
+//     return {
+//       success: false,
+//       message: 'Please fix the errors in the form',
+//       errors: validatedData.error.flatten().fieldErrors,
+//       inputs: rawData
+//     }
+//   }
+
+//   try {
+//     const [organization] = await db
+//       .insert(organizations)
+//       .values({
+//         name: validatedData.data.name
+//       })
+//       .returning()
+
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization created successfully',
+//       redirect: `/${session.user.id}/organizations/${organization.id}`
+//     }
+//   } catch (error) {
+//     console.error('Error creating organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.',
+//       inputs: rawData
+//     }
+//   }
+// }
+
+// async function updateAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   const id = formData.get('id') as string
+//   if (!hasPermission(session.user, 'organizations', 'update')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized',
+//       errors: {},
+//       inputs: { name: formData.get('name') as string }
+//     }
+//   }
+
+//   const rawData = {
+//     name: formData.get('name') as string
+//   }
+
+//   const validatedData = schema.safeParse(rawData)
+
+//   if (!validatedData.success) {
+//     return {
+//       success: false,
+//       message: 'Please fix the errors in the form',
+//       errors: validatedData.error.flatten().fieldErrors,
+//       inputs: rawData
+//     }
+//   }
+
+//   try {
+//     await db
+//       .update(organizations)
+//       .set({
+//         name: validatedData.data.name,
+//         updatedAt: new Date()
+//       })
+//       .where(eq(organizations.id, id))
+
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization updated successfully',
+//       redirect: `/${session.user.id}/organizations/${id}`
+//     }
+//   } catch (error) {
+//     console.error('Error updating organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.',
+//       inputs: rawData
+//     }
+//   }
+// }
+
+// async function deleteAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   const id = formData.get('id') as string
+//   if (!hasPermission(session.user, 'organizations', 'delete')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized'
+//     }
+//   }
+
+//   try {
+//     await db.delete(organizations).where(eq(organizations.id, id))
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization deleted successfully',
+//       redirect: `/${session.user.id}/organizations`
+//     }
+//   } catch (error) {
+//     console.error('Error deleting organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.'
+//     }
+//   }
+// }
+
+// export { createAction, updateAction, deleteAction }
+
+// 'use server'
+
+// import { auth } from '@/lib/auth'
+// import { redirect } from 'next/navigation'
+// import { db } from '@/db'
+// import { organizations } from '@/db/schema'
+// import { revalidatePath } from 'next/cache'
+// import { eq } from 'drizzle-orm'
+// import { schema } from './schema'
+// import { hasPermission } from '@/lib/abac'
+// import type { ActionResponse } from './types'
+
+// async function createAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   if (!hasPermission(session.user, 'organizations', 'create')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized',
+//       errors: {},
+//       inputs: { name: formData.get('name') as string }
+//     }
+//   }
+
+//   const rawData = {
+//     name: formData.get('name') as string
+//   }
+
+//   const validatedData = schema.safeParse(rawData)
+
+//   if (!validatedData.success) {
+//     return {
+//       success: false,
+//       message: 'Please fix the errors in the form',
+//       errors: validatedData.error.flatten().fieldErrors,
+//       inputs: rawData
+//     }
+//   }
+
+//   try {
+//     const [organization] = await db
+//       .insert(organizations)
+//       .values({
+//         name: validatedData.data.name
+//       })
+//       .returning()
+
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization created successfully',
+//       organizationId: organization.id
+//     }
+//   } catch (error) {
+//     console.error('Error creating organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.',
+//       inputs: rawData
+//     }
+//   }
+// }
+
+// async function updateAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   const id = formData.get('id') as string
+//   if (!hasPermission(session.user, 'organizations', 'update')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized',
+//       errors: {},
+//       inputs: { name: formData.get('name') as string }
+//     }
+//   }
+
+//   const rawData = {
+//     name: formData.get('name') as string
+//   }
+
+//   const validatedData = schema.safeParse(rawData)
+
+//   if (!validatedData.success) {
+//     return {
+//       success: false,
+//       message: 'Please fix the errors in the form',
+//       errors: validatedData.error.flatten().fieldErrors,
+//       inputs: rawData
+//     }
+//   }
+
+//   try {
+//     await db
+//       .update(organizations)
+//       .set({
+//         name: validatedData.data.name,
+//         updatedAt: new Date()
+//       })
+//       .where(eq(organizations.id, id))
+
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization updated successfully'
+//     }
+//   } catch (error) {
+//     console.error('Error updating organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.',
+//       inputs: rawData
+//     }
+//   }
+// }
+
+// async function deleteAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const session = await auth()
+//   if (!session) {
+//     redirect('/login')
+//   }
+
+//   const id = formData.get('id') as string
+//   if (!hasPermission(session.user, 'organizations', 'delete')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized'
+//     }
+//   }
+
+//   try {
+//     await db.delete(organizations).where(eq(organizations.id, id))
+//     revalidatePath(`/${session.user.id}/organizations`)
+//     return {
+//       success: true,
+//       message: 'Organization deleted successfully'
+//     }
+//   } catch (error) {
+//     console.error('Error deleting organization:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.'
+//     }
+//   }
+// }
+
+// export { createAction, updateAction, deleteAction }
 
 // 'use server'
 

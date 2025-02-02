@@ -1,18 +1,34 @@
 import { Form } from '@/components/form'
 import { createAction } from '../actions'
 
-const fields = [
-  {
-    name: 'name',
-    label: 'Name',
-    type: 'text' as const,
-    required: true
-  }
-]
-
 export default function Page() {
+  const fields = [
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text' as const,
+      required: true
+    }
+  ]
+
   return <Form fields={fields} action={createAction} button='Create' />
 }
+
+// import { Form } from '@/components/form'
+// import { createAction } from '../actions'
+
+// const fields = [
+//   {
+//     name: 'name',
+//     label: 'Name',
+//     type: 'text' as const,
+//     required: true
+//   }
+// ]
+
+// export default function Page() {
+//   return <Form fields={fields} action={createAction} button='Create' />
+// }
 
 // "use client"
 
