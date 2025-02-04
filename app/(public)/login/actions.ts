@@ -6,7 +6,7 @@ import { auth, signIn } from '@/lib/auth'
 import type { ActionResponse } from './types'
 
 const schema = z.object({
-  email: z.string().email('Invalid email address')
+  email: z.string().email('Invalid email')
 })
 
 export async function login(
@@ -41,7 +41,7 @@ export async function login(
     if (result?.error) {
       return {
         success: false,
-        message: 'Failed to send authentication email. Please try again.'
+        message: 'Failed to send authentication email'
       }
     }
 
@@ -53,7 +53,7 @@ export async function login(
     console.error('Authentication error: ', error)
     return {
       success: false,
-      message: 'An unexpected error occurred. Please try again.'
+      message: 'An unexpected error occurred'
     }
   }
 }

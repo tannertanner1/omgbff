@@ -5,33 +5,37 @@ import { redirect } from 'next/navigation'
 import { db } from '@/db'
 import { organizations, userOrganizations } from '@/db/schema'
 import { revalidatePath } from 'next/cache'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { schema } from './schema'
 import { hasPermission } from '@/lib/abac'
 import type { ActionResponse } from './types'
+
+// Helper function to check session and return user
+async function getSessionUser() {
+  const session = await auth()
+  if (!session) {
+    redirect('/login')
+  }
+  return session.user
+}
 
 async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
+  const user = await getSessionUser()
 
-  if (!hasPermission(session.user, 'organizations', 'create')) {
+  // Check if user has permission to create an organization
+  if (!hasPermission(user, 'organizations', 'create')) {
     return {
       success: false,
-      message: 'Unauthorized',
+      message: 'Unauthorized to create an organization',
       errors: {},
       inputs: { name: formData.get('name') as string }
     }
   }
 
-  const rawData = {
-    name: formData.get('name') as string
-  }
-
+  const rawData = { name: formData.get('name') as string }
   const validatedData = schema.safeParse(rawData)
 
   if (!validatedData.success) {
@@ -44,25 +48,23 @@ async function createAction(
   }
 
   try {
+    // Create organization and link it to the user
     const [organization] = await db
       .insert(organizations)
-      .values({
-        name: validatedData.data.name
-      })
+      .values({ name: validatedData.data.name })
       .returning()
 
-    // Create the user_organization relationship
     await db.insert(userOrganizations).values({
-      userId: session.user.id,
+      userId: user.id,
       organizationId: organization.id,
-      role: session.user.role // Inherit the user's role
+      role: 'owner' // Set the creator as the owner
     })
 
-    revalidatePath(`/${session.user.id}/organizations`)
+    revalidatePath(`/${user.id}/organizations`)
     return {
       success: true,
       message: 'Organization created successfully',
-      redirect: `/${session.user.id}/organizations/${organization.id}`
+      redirect: `/${user.id}/organizations/${organization.id}`
     }
   } catch (error) {
     console.error('Error creating organization:', error)
@@ -78,12 +80,11 @@ async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-
+  const user = await getSessionUser()
   const id = formData.get('id') as string
+
+  console.log('Updating organization:', id, 'for user:', user.id)
+
   if (!id) {
     return {
       success: false,
@@ -92,19 +93,36 @@ async function updateAction(
     }
   }
 
-  if (!hasPermission(session.user, 'organizations', 'update')) {
+  // Check if the user is associated with the organization
+  const userOrg = await db.query.userOrganizations.findFirst({
+    where: and(
+      eq(userOrganizations.userId, user.id),
+      eq(userOrganizations.organizationId, id)
+    )
+  })
+
+  console.log('User organization relationship:', userOrg)
+
+  if (!userOrg) {
     return {
       success: false,
-      message: 'Unauthorized',
+      message: 'User is not associated with this organization',
       errors: {},
       inputs: { name: formData.get('name') as string }
     }
   }
 
-  const rawData = {
-    name: formData.get('name') as string
+  // Allow update if user is owner or admin
+  if (userOrg.role !== 'owner' && userOrg.role !== 'admin') {
+    return {
+      success: false,
+      message: 'Unauthorized to update this organization',
+      errors: {},
+      inputs: { name: formData.get('name') as string }
+    }
   }
 
+  const rawData = { name: formData.get('name') as string }
   const validatedData = schema.safeParse(rawData)
 
   if (!validatedData.success) {
@@ -119,17 +137,14 @@ async function updateAction(
   try {
     await db
       .update(organizations)
-      .set({
-        name: validatedData.data.name,
-        updatedAt: new Date()
-      })
+      .set({ name: validatedData.data.name, updatedAt: new Date() })
       .where(eq(organizations.id, id))
 
-    revalidatePath(`/${session.user.id}/organizations`)
+    revalidatePath(`/${user.id}/organizations`)
     return {
       success: true,
       message: 'Organization updated successfully',
-      redirect: `/${session.user.id}/organizations`
+      redirect: `/${user.id}/organizations`
     }
   } catch (error) {
     console.error('Error updating organization:', error)
@@ -145,33 +160,35 @@ async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-
+  const user = await getSessionUser()
   const id = formData.get('id') as string
+
   if (!id) {
-    return {
-      success: false,
-      message: 'Organization ID is required'
-    }
+    return { success: false, message: 'Organization ID is required' }
   }
 
-  if (!hasPermission(session.user, 'organizations', 'delete')) {
+  // Check if the user has owner or admin role in the organization
+  const userOrg = await db.query.userOrganizations.findFirst({
+    where: and(
+      eq(userOrganizations.userId, user.id),
+      eq(userOrganizations.organizationId, id)
+    )
+  })
+
+  if (!userOrg || (userOrg.role !== 'owner' && userOrg.role !== 'admin')) {
     return {
       success: false,
-      message: 'Unauthorized'
+      message: 'Unauthorized to delete this organization'
     }
   }
 
   try {
     await db.delete(organizations).where(eq(organizations.id, id))
-    revalidatePath(`/${session.user.id}/organizations`)
+    revalidatePath(`/${user.id}/organizations`)
     return {
       success: true,
       message: 'Organization deleted successfully',
-      redirect: `/${session.user.id}/organizations`
+      redirect: `/${user.id}/organizations`
     }
   } catch (error) {
     console.error('Error deleting organization:', error)

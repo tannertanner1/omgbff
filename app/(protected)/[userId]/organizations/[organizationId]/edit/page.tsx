@@ -39,7 +39,6 @@ export default async function Page({
         id: organization.id,
         name: organization.name
       }}
-      title='Edit Organization'
     />
   )
 }
