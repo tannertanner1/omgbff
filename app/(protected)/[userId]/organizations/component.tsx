@@ -44,9 +44,9 @@ export function Component({
   const columns = getColumns(userId, handleEdit, handleDelete)
 
   return (
-    <div className='min-h-screen'>
+    <div className='h-fit'>
       <div className='mx-auto max-w-5xl p-4'>
-        <div className='mb-6 flex items-center justify-between'>
+        <div className='-mt-3 mb-2 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>Organizations</h1>
           <Link href={`/${userId}/organizations/new`}>
             <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />

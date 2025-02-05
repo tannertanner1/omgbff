@@ -100,7 +100,7 @@ export function Form({ className }: React.ComponentProps<typeof Card>) {
         </form>
       </Card>
       {state?.message && (
-        <div className='mx-auto mt-7 w-full max-w-sm px-6'>
+        <div className='mx-auto mt-[0.25rem] w-full max-w-sm px-6'>
           <Alert
             className={cn(
               'w-full',

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 export function Pagination<TData>({ table }: { table: Table<TData> }) {
   return (
-    <div className='flex items-center justify-end py-4'>
+    <div className='flex items-center justify-end pt-4'>
       <div className='flex items-center gap-2'>
         <button
           onClick={() => table.previousPage()}
