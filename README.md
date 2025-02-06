@@ -1,8 +1,39 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
 ```bash
-pnpm add babel-plugin-react-compiler
-pnpm add eslint-plugin-react-compiler -D
+# pnpm add babel-plugin-react-compiler
+# pnpm add eslint-plugin-react-compiler -D
+```
+
+<div>
+  <strong>Note:</strong>
+    <ul>
+      <li>Treat <code>params</code> as a Promise and await them</li>
+      <li>Use destructuring to get specific <code>params</code></li>
+    </ul>
+</div>
+
+- Check for falsy values and returns from the function to prevent further
+  execution
+
+```tsx
+/** @/app/[id]/page.tsx */
+
+import { notFound } from 'next/navigation'
+import { query } from '@/db/queries'
+
+export default async function Page({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const obj = await query(id)
+
+  if (!obj) return notFound()
+
+  return <></>
+}
 ```
 
 ```ts

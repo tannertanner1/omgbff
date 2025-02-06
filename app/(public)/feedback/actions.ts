@@ -1,8 +1,21 @@
 'use server'
 
+import { z } from 'zod'
 import { Resend } from 'resend'
-import { schema } from './schema'
-import { ActionResponse } from './types'
+import { Action, type ActionResponse } from '@/types/forms'
+
+const schema = z.object({
+  name: z
+    .string()
+    .max(32, { message: 'Name must be at most 32 characters' })
+    .optional(),
+  message: z
+    .string()
+    .min(1, { message: 'Message required' })
+    .max(1000, { message: 'Message must be at most 1000 characters' })
+})
+
+const { FormData } = Action(schema)
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY)
 

@@ -1,13 +1,15 @@
 'use server'
 
-import { z } from 'zod'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 import { auth, signIn } from '@/lib/auth'
-import type { ActionResponse } from './types'
+import { Action, type ActionResponse } from '@/types/forms'
 
 const schema = z.object({
   email: z.string().email('Invalid email')
 })
+
+const { FormData } = Action(schema)
 
 export async function login(
   _: ActionResponse | null,

@@ -58,8 +58,8 @@ const invoices = pgTable('invoice', {
     .notNull()
     .references(() => users.id),
   value: integer('value').notNull(),
-  description: text('description').notNull(),
-  status: STATUS('status').notNull(),
+  description: text('description'),
+  status: STATUS('status').notNull().default('open'),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   updatedAt: timestamp('updatedAt').defaultNow().notNull()
 })

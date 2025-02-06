@@ -1,21 +1,19 @@
-import { Form } from '@/components/form'
+import { notFound } from 'next/navigation'
+import { Form, type Field } from '@/components/form'
 import { getOrganizationById } from '@/db/queries'
 import { updateAction } from '../../actions'
-import { notFound } from 'next/navigation'
 
 export default async function Page({
-  params: paramsPromise
+  params
 }: {
   params: Promise<{ userId: string; organizationId: string }>
 }) {
-  const params = await paramsPromise
-  const organization = await getOrganizationById(params.organizationId)
+  const { userId, organizationId } = await params
+  const organization = await getOrganizationById(organizationId)
 
-  if (!organization) {
-    notFound()
-  }
+  if (!organization) return notFound()
 
-  const fields = [
+  const fields: Field[] = [
     {
       name: 'name',
       label: 'Name',

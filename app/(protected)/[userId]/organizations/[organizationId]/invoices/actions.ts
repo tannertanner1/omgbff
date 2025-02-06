@@ -1,29 +1,38 @@
 'use server'
 
-import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { invoices } from '@/db/schema'
-import { revalidatePath } from 'next/cache'
 import { hasPermission } from '@/lib/abac'
-import { schema } from './schema'
-import type { ActionResponse } from './types'
-import { eq } from 'drizzle-orm'
+
 import * as z from 'zod'
+import { STATUS, type Status } from '@/data/invoice-statuses'
+import { verifySession } from '@/lib/dal'
+import { Action, type ActionResponse } from '@/types/forms'
 
-async function getSessionUser() {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-  return session.user
-}
+const schema = z.object({
+  organizationId: z.string().min(1, 'Organization required'),
+  customerId: z.number().int().positive('Customer required'),
+  value: z.number().min(0, 'Value must be positive'),
+  status: z.enum(STATUS.enumValues, {
+    required_error: 'Status required',
+    invalid_type_error: 'Invalid status'
+  }),
+  description: z
+    .string()
+    .max(32, { message: 'Name must be at most 32 characters' })
+    .optional()
+})
 
-export async function createAction(
+const { FormData } = Action(schema)
+
+async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
 
   if (!hasPermission(user, 'invoices', 'create')) {
     return {
@@ -76,11 +85,11 @@ export async function createAction(
   }
 }
 
-export async function updateAction(
+async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
 
   if (!hasPermission(user, 'invoices', 'update')) {
     return {
@@ -138,11 +147,11 @@ export async function updateAction(
   }
 }
 
-export async function deleteAction(
+async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
   const id = Number(formData.get('id'))
   const organizationId = formData.get('organizationId') as string
 
@@ -171,3 +180,5 @@ export async function deleteAction(
     }
   }
 }
+
+export { createAction, updateAction, deleteAction }

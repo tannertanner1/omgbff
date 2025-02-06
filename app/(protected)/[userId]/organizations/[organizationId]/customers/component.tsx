@@ -65,7 +65,7 @@ export function Customers({
         data={customers}
         columns={columns}
         link={row =>
-          `/${userId}/organizations/${organizationId}/customers/${row.id}`
+          `/${userId}/organizations/${organizationId}/customers/${row.id}/edit`
         }
       />
     </div>

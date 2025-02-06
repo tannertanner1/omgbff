@@ -65,7 +65,7 @@ export function Invoices({
         data={invoices}
         columns={columns}
         link={row =>
-          `/${userId}/organizations/${organizationId}/invoices/${row.id}`
+          `/${userId}/organizations/${organizationId}/invoices/${row.id}/edit`
         }
       />
     </div>

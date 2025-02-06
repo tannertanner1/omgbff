@@ -65,7 +65,7 @@ export function Form({
   }, [state?.success, state?.redirect, router])
 
   return (
-    <div className='flex h-fit'>
+    <div className='h-fit'>
       <div className='flex min-w-0 flex-1 flex-col'>
         <div className='mx-auto w-full max-w-5xl'>
           <div className='flex flex-col items-center'>
@@ -77,7 +77,7 @@ export function Form({
                   </CardHeader>
                 )}
                 <form action={formAction}>
-                  <CardContent className='flex flex-col gap-6'>
+                  <CardContent className='flex flex-col pt-4'>
                     {fields.map(
                       ({
                         name,
@@ -93,7 +93,7 @@ export function Form({
                               htmlFor={name}
                               className={
                                 required
-                                  ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                                  ? "mt-6 after:ml-0.5 after:text-[#DB4437] after:content-['*']"
                                   : ''
                               }
                             >

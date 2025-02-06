@@ -1,46 +1,43 @@
-import { auth } from '@/lib/auth'
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { hasPermission } from '@/lib/abac'
 import {
   getOrganizationById,
   getOrganizationCustomers,
   getOrganizationInvoices
 } from '@/db/queries'
+import { IconCircleX } from '@tabler/icons-react'
+import { verifySession } from '@/lib/dal'
+import { hasPermission } from '@/lib/abac'
 import { Customers } from './customers/component'
 import { Invoices } from './invoices/component'
-import Link from 'next/link'
-import { IconCircleX } from '@tabler/icons-react'
 
 export default async function Page({
   params
 }: {
-  params: { userId: string; organizationId: string }
+  params: Promise<{ userId: string; organizationId: string }>
 }) {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
+  const user = await verifySession()
+
+  const { userId, organizationId } = await params
+
+  if (!hasPermission(user, 'organizations', 'view')) {
+    redirect(`/${user.id}/organizations`)
   }
 
-  if (!hasPermission(session.user, 'organizations', 'view')) {
-    redirect(`/${session.user.id}/organizations`)
-  }
-
-  const organization = await getOrganizationById(params.organizationId)
-  if (!organization) {
-    notFound()
-  }
-
-  const [customers, invoices] = await Promise.all([
-    getOrganizationCustomers(params.organizationId),
-    getOrganizationInvoices(params.organizationId)
+  const [organization, customers, invoices] = await Promise.all([
+    getOrganizationById(organizationId),
+    getOrganizationCustomers(organizationId),
+    getOrganizationInvoices(organizationId)
   ])
 
+  if (organization == null) return notFound()
+
   return (
-    <div className='h-fit'>
+    <div className='flex h-fit'>
       <div className='mx-auto w-full max-w-5xl p-4'>
         <div className='mb-8 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>{organization.name}</h1>
-          <Link href={`/${params.userId}/organizations`}>
+          <Link href={`/${userId}/organizations`}>
             <IconCircleX className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
           </Link>
         </div>
@@ -48,13 +45,13 @@ export default async function Page({
         <div className='space-y-8'>
           <Customers
             customers={customers}
-            userId={params.userId}
-            organizationId={params.organizationId}
+            userId={userId}
+            organizationId={organizationId}
           />
           <Invoices
             invoices={invoices}
-            userId={params.userId}
-            organizationId={params.organizationId}
+            userId={userId}
+            organizationId={organizationId}
           />
         </div>
       </div>

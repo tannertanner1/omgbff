@@ -1,37 +1,24 @@
+import { notFound } from 'next/navigation'
 import { Form, type Field } from '@/components/form'
-import { createAction } from '../actions'
 import { STATUSES } from '@/data/invoice-statuses'
 import { getOrganizationCustomers } from '@/db/queries'
+import { createAction } from '../actions'
 
 export default async function Page({
   params
 }: {
-  params: { userId: string; organizationId: string }
+  params: Promise<{ userId: string; organizationId: string }>
 }) {
-  const customers = await getOrganizationCustomers(params.organizationId)
+  const { userId, organizationId } = await params
+  const customers = await getOrganizationCustomers(organizationId)
+
+  if (!customers) return notFound()
 
   const fields: Field[] = [
     {
-      name: 'description',
-      label: 'Description',
-      type: 'text',
-      required: true
-    },
-    {
-      name: 'value',
-      label: 'Value',
-      type: 'number',
-      required: true
-    },
-    {
-      name: 'status',
-      label: 'Status',
-      type: 'select',
-      required: true,
-      options: STATUSES.map(status => ({
-        label: status.label,
-        value: status.id
-      }))
+      name: 'organizationId',
+      type: 'hidden',
+      defaultValue: organizationId
     },
     {
       name: 'customerId',
@@ -44,9 +31,26 @@ export default async function Page({
       }))
     },
     {
-      name: 'organizationId',
-      type: 'hidden',
-      defaultValue: params.organizationId
+      name: 'value',
+      label: 'Value',
+      type: 'number',
+      required: true
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      required: true,
+      defaultValue: 'open',
+      options: STATUSES.map(status => ({
+        label: status.label,
+        value: status.id
+      }))
+    },
+    {
+      name: 'description',
+      label: 'Description',
+      type: 'text'
     }
   ]
 

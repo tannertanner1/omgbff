@@ -1,30 +1,43 @@
-import { Form } from '@/components/form'
+import { notFound } from 'next/navigation'
+import { Form, type Field } from '@/components/form'
+import { STATUSES } from '@/data/invoice-statuses'
 import { updateAction } from '../../actions'
 import { getInvoiceById, getOrganizationCustomers } from '@/db/queries'
-import { notFound } from 'next/navigation'
-import { STATUSES } from '@/data/invoice-statuses'
 
 export default async function Page({
   params
 }: {
-  params: { userId: string; organizationId: string; invoiceId: string }
+  params: Promise<{ userId: string; organizationId: string; invoiceId: string }>
 }) {
+  const { userId, organizationId, invoiceId } = await params
   const [invoice, customers] = await Promise.all([
-    getInvoiceById(params.invoiceId),
-    getOrganizationCustomers(params.organizationId)
+    getInvoiceById(invoiceId),
+    getOrganizationCustomers(organizationId)
   ])
 
-  if (!invoice) {
-    notFound()
-  }
+  if (!invoice) return notFound()
 
-  const fields = [
+  const fields: Field[] = [
     {
-      name: 'description',
-      label: 'Description',
-      type: 'text' as const,
+      name: 'organizationId',
+      type: 'hidden' as const,
+      defaultValue: organizationId
+    },
+    {
+      name: 'customerId',
+      label: 'Customer',
+      type: 'select' as const,
       required: true,
-      defaultValue: invoice.description
+      options: customers.map(customer => ({
+        label: customer.name,
+        value: customer.id.toString()
+      })),
+      defaultValue: invoice.customerId.toString()
+    },
+    {
+      name: 'id',
+      type: 'hidden' as const,
+      defaultValue: invoice.id.toString()
     },
     {
       name: 'value',
@@ -45,25 +58,9 @@ export default async function Page({
       defaultValue: invoice.status
     },
     {
-      name: 'customerId',
-      label: 'Customer',
-      type: 'select' as const,
-      required: true,
-      options: customers.map(customer => ({
-        label: customer.name,
-        value: customer.id.toString()
-      })),
-      defaultValue: invoice.customerId.toString()
-    },
-    {
-      name: 'id',
-      type: 'hidden' as const,
-      defaultValue: invoice.id.toString()
-    },
-    {
-      name: 'organizationId',
-      type: 'hidden' as const,
-      defaultValue: params.organizationId
+      name: 'description',
+      label: 'Description',
+      type: 'text' as const
     }
   ]
 

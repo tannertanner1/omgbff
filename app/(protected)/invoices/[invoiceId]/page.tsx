@@ -37,5 +37,6 @@ export default async function Page({
     customer: result.customer
   }
 
-  return <Invoice invoice={invoice} />
+  // return <Invoice invoice={invoice} />
+  return <></>
 }

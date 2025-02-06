@@ -1,9 +1,9 @@
 'use client'
 
+import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
-import { format } from 'date-fns'
 import { STATUSES, type Status } from '@/data/invoice-statuses'
 
 export type Invoice = {
@@ -11,7 +11,7 @@ export type Invoice = {
   customerId: number
   userId: string
   value: number
-  description: string
+  description: string | null
   status: Status
   createdAt: string | Date
   updatedAt: string | Date
@@ -44,7 +44,7 @@ export function getInvoiceColumns(
       accessorKey: 'status',
       header: ({ column }) => <Header column={column} label='Status' />,
       cell: ({ row }) => {
-        const status = row.getValue('status') as Status
+        const status = row.getValue('status') as Status || 'open'
         const statusInfo = STATUSES.find(s => s.id === status)
 
         if (!statusInfo) {

@@ -1,6 +1,6 @@
 /**
 
-// USAGE 🤔 ?
+// USAGE
 const user: User = { id: '1', role: 'owner' }
 const organization: Organization = {
   id: 'o1',
@@ -125,3 +125,8 @@ export function hasPermission<Resource extends keyof Permissions>(
     ? permissionCheck
     : permissionCheck(user, data)
 }
+
+/**
+ * @see https://github.com/WebDevSimplified/permission-system/blob/main/auth-abac.ts
+ * @see https://youtu.be/5GG-VUvruzE?si=SzQTMPIyGfbsAB94
+ */

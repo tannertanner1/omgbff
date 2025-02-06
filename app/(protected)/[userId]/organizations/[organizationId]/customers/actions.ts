@@ -1,29 +1,29 @@
 'use server'
 
-import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { db } from '@/db'
-import { customers } from '@/db/schema'
 import { revalidatePath } from 'next/cache'
-import { hasPermission } from '@/lib/abac'
-import { schema } from './schema'
-import type { ActionResponse } from './types'
 import { eq } from 'drizzle-orm'
 import * as z from 'zod'
+import { db } from '@/db'
+import { customers } from '@/db/schema'
+import { hasPermission } from '@/lib/abac'
+import { verifySession } from '@/lib/dal'
+import { Action, type ActionResponse } from '@/types/forms'
 
-async function getSessionUser() {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-  return session.user
-}
+const schema = z.object({
+  organizationId: z.string().min(1, 'Organization required'),
 
-export async function createAction(
+  name: z.string().min(1, 'Name required'),
+  email: z.string().email('Email required')
+})
+
+const { FormData } = Action(schema)
+
+async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
 
   if (!hasPermission(user, 'customers', 'create')) {
     return {
@@ -75,11 +75,11 @@ export async function createAction(
   }
 }
 
-export async function updateAction(
+async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
 
   if (!hasPermission(user, 'customers', 'update')) {
     return {
@@ -133,11 +133,11 @@ export async function updateAction(
   }
 }
 
-export async function deleteAction(
+async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
   const id = Number(formData.get('id'))
   const organizationId = formData.get('organizationId') as string
 
@@ -166,3 +166,5 @@ export async function deleteAction(
     }
   }
 }
+
+export { createAction, updateAction, deleteAction }
