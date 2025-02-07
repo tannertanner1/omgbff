@@ -1,11 +1,11 @@
 export const ROUTES = [
   '/',
+  '/login',
+  '/error',
   '/contact',
   '/feedback',
   '/terms',
-  '/privacy',
-  '/login',
-  '/error'
+  '/privacy'
 ] as string[]
 
 export type Route = (typeof ROUTES)[number]

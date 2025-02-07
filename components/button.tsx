@@ -1,14 +1,17 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion } from 'motion/react'
+import { motion, type HTMLMotionProps } from 'motion/react'
 
 type Position = {
   x: number
   y: number
 }
 
-export function Button() {
+export function Button({
+  children,
+  ...props
+}: HTMLMotionProps<'button'> & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const ref = useRef<HTMLButtonElement>(null)
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
 
@@ -35,8 +38,9 @@ export function Button() {
       animate={{ x, y }}
       transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
       className='relative rounded-xl px-6 py-2 text-base font-medium text-primary'
+      {...props}
     >
-      Try again
+      {children}
     </motion.button>
   )
 }

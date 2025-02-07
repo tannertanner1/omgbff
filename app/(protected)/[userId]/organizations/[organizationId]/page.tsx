@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
+import { IconCircleX } from '@tabler/icons-react'
+import { Customers } from './customers/component'
+import { Invoices } from './invoices/component'
 import {
   getOrganizationById,
   getOrganizationCustomers,
   getOrganizationInvoices
 } from '@/db/queries'
-import { IconCircleX } from '@tabler/icons-react'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
-import { Customers } from './customers/component'
-import { Invoices } from './invoices/component'
 
 export default async function Page({
   params

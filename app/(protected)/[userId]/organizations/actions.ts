@@ -1,29 +1,26 @@
 'use server'
 
-import { auth } from '@/lib/auth'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
+import { eq, and } from 'drizzle-orm'
 import { db } from '@/db'
 import { organizations, userOrganizations } from '@/db/schema'
-import { revalidatePath } from 'next/cache'
-import { eq, and } from 'drizzle-orm'
-import { schema } from './schema'
+import { Action, type ActionResponse } from '@/types/forms'
+import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
-import type { ActionResponse } from './types'
 
-// Helper function to check session and return user
-async function getSessionUser() {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-  return session.user
-}
+const schema = z.object({
+  name: z.string().min(1, 'Name required')
+})
+
+const { FormData } = Action(schema)
 
 async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
 
   // Check if user has permission to create an organization
   if (!hasPermission(user, 'organizations', 'create')) {
@@ -80,7 +77,7 @@ async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
   const id = formData.get('id') as string
 
   console.log('Updating organization:', id, 'for user:', user.id)
@@ -160,7 +157,7 @@ async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await getSessionUser()
+  const user = await verifySession()
   const id = formData.get('id') as string
 
   if (!id) {

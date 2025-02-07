@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
-import { Button } from './button'
+import { Button } from '@/components/button'
 
 const errorMessages = {
   Configuration: 'Configuration issue',
@@ -29,7 +29,7 @@ export default function Page() {
             <span className='sr-only'>Authentication error</span>
             <h1 className='mt-6 text-4xl font-semibold'>{errorMessage}</h1>
             <Link href='/login' className='mt-6 inline-block' prefetch={false}>
-              <Button />
+              <Button>Try again</Button>
             </Link>
           </div>
         </div>

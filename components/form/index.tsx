@@ -72,7 +72,10 @@ export function Form({
             <div className='w-full max-w-sm'>
               <Card className='w-full max-w-sm border-0'>
                 {title && (
-                  <CardHeader className='-mt-8'>
+                  <CardHeader
+                    // className='-mt-8'
+                    className='-mt-3 mb-2 text-xl font-semibold'
+                  >
                     <CardTitle>{title}</CardTitle>
                   </CardHeader>
                 )}

@@ -57,7 +57,7 @@ declare module 'next-auth/jwt' {
 const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: process.env.NODE_ENV !== 'production',
+  // debug: process.env.NODE_ENV !== 'production',
   secret: process.env.AUTH_SECRET,
   pages: { signIn: '/login', error: '/error' },
   adapter: DrizzleAdapter(db, {
