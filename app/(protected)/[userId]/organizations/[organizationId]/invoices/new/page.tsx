@@ -21,6 +21,22 @@ export default async function Page({
       defaultValue: organizationId
     },
     {
+      name: 'description',
+      label: 'Description',
+      type: 'text'
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      required: true,
+      defaultValue: 'open',
+      options: STATUSES.map(status => ({
+        label: status.charAt(0).toUpperCase() + status.slice(1),
+        value: status
+      }))
+    },
+    {
       name: 'customerId',
       label: 'Customer',
       type: 'select',
@@ -35,22 +51,6 @@ export default async function Page({
       label: 'Value',
       type: 'number',
       required: true
-    },
-    {
-      name: 'status',
-      label: 'Status',
-      type: 'select',
-      required: true,
-      defaultValue: 'open',
-      options: STATUSES.map(status => ({
-        label: status.charAt(0).toUpperCase() + status.slice(1),
-        value: status
-      }))
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      type: 'text'
     }
   ]
 

@@ -24,27 +24,15 @@ export default async function Page({
       defaultValue: organizationId
     },
     {
-      name: 'customerId',
-      label: 'Customer',
-      type: 'select' as const,
-      required: true,
-      options: customers.map(customer => ({
-        label: customer.name,
-        value: customer.id
-      })),
-      defaultValue: invoice.customerId
-    },
-    {
       name: 'id',
       type: 'hidden' as const,
       defaultValue: invoice.id
     },
     {
-      name: 'value',
-      label: 'Value',
-      type: 'number' as const,
-      required: true,
-      defaultValue: invoice.value.toString()
+      name: 'description',
+      label: 'Description',
+      type: 'text' as const,
+      defaultValue: invoice.description || ''
     },
     {
       name: 'status',
@@ -58,10 +46,22 @@ export default async function Page({
       defaultValue: invoice.status
     },
     {
-      name: 'description',
-      label: 'Description',
-      type: 'text' as const,
-      defaultValue: invoice.description || ''
+      name: 'customerId',
+      label: 'Customer',
+      type: 'select' as const,
+      required: true,
+      options: customers.map(customer => ({
+        label: customer.name,
+        value: customer.id
+      })),
+      defaultValue: invoice.customerId
+    },
+    {
+      name: 'value',
+      label: 'Value',
+      type: 'number' as const,
+      required: true,
+      defaultValue: invoice.value.toString()
     }
   ]
 

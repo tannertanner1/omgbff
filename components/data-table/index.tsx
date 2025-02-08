@@ -21,7 +21,11 @@ import {
   TableRow,
   TableHeader
 } from '@/components/ui/table'
-import { IconDotsCircleHorizontal, IconCheck } from '@tabler/icons-react'
+import {
+  IconDotsCircleHorizontal,
+  IconCheck,
+  IconMoodEmpty
+} from '@tabler/icons-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -229,7 +233,9 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  <div className='flex items-center justify-center text-muted-foreground'>
+                    <IconMoodEmpty className='h-6 w-6' />
+                  </div>
                 </TableCell>
               </TableRow>
             )}

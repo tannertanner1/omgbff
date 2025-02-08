@@ -94,11 +94,12 @@ export function Form({
                           {type !== 'hidden' && label && (
                             <Label
                               htmlFor={name}
-                              className={
+                              className={cn(
+                                'mt-6',
                                 required
-                                  ? "mt-6 after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                                  ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
                                   : ''
-                              }
+                              )}
                             >
                               {label}
                             </Label>
@@ -124,8 +125,14 @@ export function Form({
                                 defaultValue || state?.inputs?.[name]
                               }
                             >
-                              <SelectTrigger>
-                                <SelectValue placeholder='Select an option' />
+                              <SelectTrigger
+                                className={cn(
+                                  state?.errors?.[name]
+                                    ? 'border-[#DB4437]'
+                                    : 'mb-7'
+                                )}
+                              >
+                                <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
                                 {options?.map(option => (
