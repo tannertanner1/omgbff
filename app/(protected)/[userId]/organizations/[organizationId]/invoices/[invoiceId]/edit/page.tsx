@@ -11,7 +11,7 @@ export default async function Page({
 }) {
   const { userId, organizationId, invoiceId } = await params
   const [invoice, customers] = await Promise.all([
-    getInvoiceById(invoiceId),
+    getInvoiceById({ invoiceId }),
     getOrganizationCustomers(organizationId)
   ])
 
@@ -30,14 +30,14 @@ export default async function Page({
       required: true,
       options: customers.map(customer => ({
         label: customer.name,
-        value: customer.id.toString()
+        value: customer.id
       })),
-      defaultValue: invoice.customerId.toString()
+      defaultValue: invoice.customerId
     },
     {
       name: 'id',
       type: 'hidden' as const,
-      defaultValue: invoice.id.toString()
+      defaultValue: invoice.id
     },
     {
       name: 'value',
@@ -52,15 +52,16 @@ export default async function Page({
       type: 'select' as const,
       required: true,
       options: STATUSES.map(status => ({
-        label: status.label,
-        value: status.id
+        label: status.charAt(0).toUpperCase() + status.slice(1),
+        value: status
       })),
       defaultValue: invoice.status
     },
     {
       name: 'description',
       label: 'Description',
-      type: 'text' as const
+      type: 'text' as const,
+      defaultValue: invoice.description || ''
     }
   ]
 

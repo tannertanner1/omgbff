@@ -27,7 +27,7 @@ export default async function Page({
       required: true,
       options: customers.map(customer => ({
         label: customer.name,
-        value: customer.id.toString()
+        value: customer.id
       }))
     },
     {
@@ -43,8 +43,8 @@ export default async function Page({
       required: true,
       defaultValue: 'open',
       options: STATUSES.map(status => ({
-        label: status.label,
-        value: status.id
+        label: status.charAt(0).toUpperCase() + status.slice(1),
+        value: status
       }))
     },
     {

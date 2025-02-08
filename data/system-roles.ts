@@ -1,22 +1,64 @@
 import { pgEnum } from 'drizzle-orm/pg-core'
 
-export const ROLES = [
+const ROLES = ['owner', 'admin', 'user'] as const
+
+type Role = (typeof ROLES)[number]
+
+const roles = pgEnum('role', ROLES)
+
+const role: Record<Role, string> = {
+  owner: 'Owner',
+  admin: 'Admin',
+  user: 'User'
+}
+
+export { ROLES, type Role, roles, role }
+
+// import { pgEnum } from 'drizzle-orm/pg-core'
+
+// export const roles = ['owner', 'admin', 'user'] as const
+// export type Role = (typeof roles)[number]
+// export const roleEnum = pgEnum('role', roles)
+
+// import { pgEnum } from 'drizzle-orm/pg-core'
+
+// const ROLES = ['owner', 'admin', 'user'] as const
+// type Role = (typeof ROLES)[number]
+// const rolesEnum = pgEnum('role', ROLES)
+
+// const role: Record<Role, string> = {
+//   owner: 'Owner',
+//   admin: 'Admin',
+//   user: 'User'
+// }
+
+// export { ROLES, type Role, rolesEnum, role }
+
+/**
+
+import { pgEnum } from 'drizzle-orm/pg-core'
+
+const ROLES = [
   { id: 'owner' as const, label: 'Owner' },
   { id: 'admin' as const, label: 'Admin' },
   { id: 'user' as const, label: 'User' }
 ] as const
 
-export type Role = (typeof ROLES)[number]['id']
+type Role = (typeof ROLES)[number]['id']
 
-export const roles = pgEnum(
+const roles = pgEnum(
   'role',
   ROLES.map(({ id }) => id) as [Role, ...Array<Role>]
 )
 
-export const role: Record<Role, string> = ROLES.reduce(
+const role: Record<Role, string> = ROLES.reduce(
   (acc, role) => {
     acc[role.id] = role.label
     return acc
   },
   {} as Record<Role, string>
 )
+
+export { ROLES, type Role, roles, role }
+
+*/

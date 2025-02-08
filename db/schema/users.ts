@@ -6,109 +6,101 @@ import {
   integer,
   uniqueIndex
 } from 'drizzle-orm/pg-core'
+import { id, createdAt, updatedAt } from '@/db/helpers'
+import { ROLES } from '@/data/system-roles'
 import { relations } from 'drizzle-orm'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { InferInsertModel } from 'drizzle-orm'
 
-const organizations = pgTable('organization', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: text('name').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow()
+const organizations = pgTable('organizations', {
+  id,
+  createdAt,
+  updatedAt,
+  /** name */
+  name: text().notNull()
 })
 
 const users = pgTable(
-  'user',
+  'users',
   {
-    id: text('id')
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    email: text('email').unique(),
-    organizationId: text('organizationId').references(() => organizations.id, {
+    id,
+    organizationId: text().references(() => organizations.id, {
       onDelete: 'set null'
     }),
-
-    role: text('role', { enum: ['owner', 'admin', 'user'] })
-      .notNull()
-      .default('user'),
-    name: text('name'),
-    emailVerified: timestamp('emailVerified', { mode: 'date' }),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
-    image: text('image')
+    role: text('role', { enum: ROLES }).notNull().default('user'),
+    emailVerified: timestamp({ mode: 'date' }),
+    createdAt,
+    updatedAt,
+    image: text(),
+    /** email, name */
+    email: text().unique(),
+    name: text()
   },
-  user => [uniqueIndex('unique_idx').on(user.email)]
+  users => [uniqueIndex().on(users.email)]
 )
 
 const userOrganizations = pgTable(
-  'user_organization',
+  'userOrganizations',
   {
-    userId: text('user_id')
+    userId: text()
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    organizationId: text('organization_id')
+    organizationId: text()
       .notNull()
       .references(() => organizations.id, { onDelete: 'cascade' }),
-    role: text('role', { enum: ['owner', 'admin', 'user'] })
-      .notNull()
-      .default('user'),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow()
+    role: text('role', { enum: ROLES }).notNull().default('user'),
+    createdAt,
+    updatedAt
   },
-  userOrganization => [
+  userOrganizations => [
     primaryKey({
-      columns: [userOrganization.userId, userOrganization.organizationId]
+      columns: [userOrganizations.userId, userOrganizations.organizationId]
     })
   ]
 )
 
 const accounts = pgTable(
-  'account',
+  'accounts',
   {
-    provider: text('provider').notNull(),
-    providerAccountId: text('providerAccountId').notNull(),
-    userId: text('userId')
+    provider: text().notNull(),
+    providerAccountId: text().notNull(),
+    userId: text()
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-
-    type: text('type').$type<AdapterAccountType>().notNull(),
-    refresh_token: text('refresh_token'),
-    access_token: text('access_token'),
-    expires_at: integer('expires_at'),
-    token_type: text('token_type'),
-    scope: text('scope'),
-    id_token: text('id_token'),
-    session_state: text('session_state')
+    type: text().$type<AdapterAccountType>().notNull(),
+    refresh_token: text(),
+    access_token: text(),
+    expires_at: integer(),
+    token_type: text(),
+    scope: text(),
+    id_token: text(),
+    session_state: text()
   },
-  account => [
+  accounts => [
     primaryKey({
-      columns: [account.provider, account.providerAccountId]
+      columns: [accounts.provider, accounts.providerAccountId]
     })
   ]
 )
 
-const sessions = pgTable('session', {
-  sessionToken: text('sessionToken').primaryKey(),
-  userId: text('userId')
+const sessions = pgTable('sessions', {
+  sessionToken: text().primaryKey(),
+  userId: text()
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-
-  expires: timestamp('expires', { mode: 'date' }).notNull()
+  expires: timestamp({ mode: 'date' }).notNull()
 })
 
 const verificationTokens = pgTable(
-  'verificationToken',
+  'verificationTokens',
   {
-    token: text('token').notNull(),
-    identifier: text('identifier').notNull(),
-
-    expires: timestamp('expires', { mode: 'date' }).notNull()
+    token: text().notNull(),
+    identifier: text().notNull(),
+    expires: timestamp({ mode: 'date' }).notNull()
   },
-  verificationToken => [
+  verificationTokens => [
     primaryKey({
-      columns: [verificationToken.identifier, verificationToken.token]
+      columns: [verificationTokens.identifier, verificationTokens.token]
     })
   ]
 )
@@ -148,4 +140,7 @@ export type NewOrganization = InferInsertModel<typeof organizations>
 export type NewUser = InferInsertModel<typeof users>
 export type NewSession = InferInsertModel<typeof sessions>
 
-/** @see https://authjs.dev/getting-started/adapters/drizzle#schemas */
+/**
+ * @see https://authjs.dev/getting-started/adapters/drizzle#schemas
+ * @see https://github.com/WebDevSimplified/course-platform/blob/082e1fce0c80dd14a0bdda44ef51b76b9a3b749e/src/drizzle/schema/user.ts
+ */

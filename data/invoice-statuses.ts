@@ -1,5 +1,30 @@
 import { pgEnum } from 'drizzle-orm/pg-core'
 
+const STATUSES = ['open', 'paid', 'void', 'uncollectible'] as const
+
+type Status = (typeof STATUSES)[number]
+
+const statuses = pgEnum('status', STATUSES)
+
+const status: Record<Status, string> = {
+  open: '#4285F4',
+  paid: '#0F9D58',
+  void: '#F4B400',
+  uncollectible: '#DB4437'
+}
+
+export { STATUSES, type Status, statuses, status }
+
+/**
+
+`/app/(protected)/[userId]/organizations/[organizationId]/invoices/actions.ts`,
+`/app/(protected)/[userId]/organizations/[organizationId]/invoices/columns.tsx`,
+`/app/(protected)/[userId]/organizations/[organizationId]/invoices/[invoiceId]/edit/page.tsx`,
+`/app/(protected)/[userId]/organizations/[organizationId]/invoices/new/page.tsx`,
+`/db/queries.ts`
+
+import { pgEnum } from 'drizzle-orm/pg-core'
+
 const STATUSES = [
   {
     id: 'open' as const,
@@ -37,5 +62,6 @@ const STATUS = pgEnum(
   STATUSES.map(({ id }) => id) as [Status, ...Array<Status>]
 )
 
-export { STATUSES, statuses, STATUS }
-export type { Status }
+export { STATUSES, type Status, statuses, STATUS }
+
+*/

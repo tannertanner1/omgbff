@@ -6,7 +6,7 @@ import { Actions } from '@/components/data-table/actions'
 import { format } from 'date-fns'
 
 export type Customer = {
-  id: number
+  id: string
   organizationId: string
   userId: string
   email: string

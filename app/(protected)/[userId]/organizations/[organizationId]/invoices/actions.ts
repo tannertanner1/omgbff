@@ -1,24 +1,20 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { invoices } from '@/db/schema'
 import * as z from 'zod'
-import { STATUS, type Status } from '@/data/invoice-statuses'
+import { STATUSES } from '@/data/invoice-statuses'
 import { Action, type ActionResponse } from '@/types/forms'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
-  customerId: z.number().int().positive('Customer required'),
+  customerId: z.string().min(1, 'Customer required'),
   value: z.number().min(0, 'Value must be positive'),
-  status: z.enum(STATUS.enumValues, {
-    required_error: 'Status required',
-    invalid_type_error: 'Invalid status'
-  }),
+  status: z.enum(STATUSES),
   description: z
     .string()
     .max(32, { message: 'Name must be at most 32 characters' })
@@ -44,7 +40,8 @@ async function createAction(
     description: formData.get('description') as string,
     value: Number(formData.get('value')),
     status: formData.get('status') as string,
-    organizationId: formData.get('organizationId') as string
+    organizationId: formData.get('organizationId') as string,
+    customerId: formData.get('customerId') as string
   }
 
   const validatedData = schema.safeParse(rawData)
@@ -98,15 +95,15 @@ async function updateAction(
   }
 
   const rawData = {
-    id: Number(formData.get('id')),
+    id: formData.get('id') as string,
     description: formData.get('description') as string,
     value: Number(formData.get('value')),
     status: formData.get('status') as string,
-    customerId: Number(formData.get('customerId')),
+    customerId: formData.get('customerId') as string,
     organizationId: formData.get('organizationId') as string
   }
 
-  const validatedData = schema.extend({ id: z.number() }).safeParse(rawData)
+  const validatedData = schema.extend({ id: z.string() }).safeParse(rawData)
 
   if (!validatedData.success) {
     return {
@@ -151,7 +148,7 @@ async function deleteAction(
   formData: FormData
 ): Promise<ActionResponse> {
   const user = await verifySession()
-  const id = Number(formData.get('id'))
+  const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
 
   if (!hasPermission(user, 'invoices', 'delete')) {

@@ -27,7 +27,7 @@ export default async function Page({
   const [organization, customers, invoices] = await Promise.all([
     getOrganizationById(organizationId),
     getOrganizationCustomers(organizationId),
-    getOrganizationInvoices(organizationId)
+    getOrganizationInvoices({ organizationId })
   ])
 
   if (organization == null) return notFound()

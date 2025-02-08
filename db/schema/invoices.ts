@@ -1,82 +1,77 @@
-import {
-  integer,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  primaryKey
-} from 'drizzle-orm/pg-core'
+import { integer, pgTable, text } from 'drizzle-orm/pg-core'
+import { customerId, invoiceId, createdAt, updatedAt } from '@/db/helpers'
 import { relations } from 'drizzle-orm'
 import { organizations, users } from './users'
 import { InferInsertModel } from 'drizzle-orm'
-import { STATUS } from '@/data/invoice-statuses'
+import { STATUSES } from '@/data/invoice-statuses'
 
-const customers = pgTable('customer', {
-  id: serial('id').primaryKey().notNull(),
-  // Optionally remove `organizationId`
-  organizationId: text('organizationId')
+const customers = pgTable('customers', {
+  id: customerId,
+  // Optionally remove organizationId
+  organizationId: text()
     .notNull()
     .references(() => organizations.id, { onDelete: 'cascade' }),
-  userId: text('userId')
+  userId: text()
     .notNull()
     .references(() => users.id),
-  email: text('email').notNull(),
-  name: text('name').notNull(),
-  createdAt: timestamp('createdAt').defaultNow().notNull(),
-  updatedAt: timestamp('updatedAt').defaultNow().notNull()
+  createdAt,
+  updatedAt,
+  /** email, name */
+  email: text().notNull(),
+  name: text().notNull()
 })
 
 // const organizationCustomers = pgTable(
-//   'organization_customer',
+//   'organizationCustomers',
 //   {
-//     organizationId: text('organization_id')
+//     organizationId: text()
 //       .notNull()
 //       .references(() => organizations.id, { onDelete: 'cascade' }),
-//     customerId: integer('customer_id')
+//     customerId: integer()
 //       .notNull()
 //       .references(() => customers.id, { onDelete: 'cascade' }),
-//     createdAt: timestamp('created_at').notNull().defaultNow(),
-//     updatedAt: timestamp('updated_at').notNull().defaultNow()
+//     createdAt,
+//     updatedAt
 //   },
-//   organizationCustomer => [
+//   organizationCustomers => [
 //     primaryKey({
 //       columns: [
-//         organizationCustomer.organizationId,
-//         organizationCustomer.customerId
+//         organizationCustomers.organizationId,
+//         organizationCustomers.customerId
 //       ]
 //     })
 //   ]
 // )
 
-const invoices = pgTable('invoice', {
-  id: serial('id').primaryKey().notNull(),
+const invoices = pgTable('invoices', {
+  id: invoiceId,
   // Optionally remove `customerId`
-  customerId: integer('customerId')
+  customerId: text()
     .notNull()
     .references(() => customers.id, { onDelete: 'cascade' }),
-  userId: text('userId')
+  userId: text()
     .notNull()
     .references(() => users.id),
-  value: integer('value').notNull(),
-  description: text('description'),
-  status: STATUS('status').notNull().default('open'),
-  createdAt: timestamp('createdAt').defaultNow().notNull(),
-  updatedAt: timestamp('updatedAt').defaultNow().notNull()
+  value: integer().notNull(),
+  description: text(),
+  status: text('status', { enum: STATUSES }).notNull().default('open'),
+  createdAt,
+  updatedAt
 })
 
-// const customerInvoices = pgTable('customer_invoice', {
-//   customerId: integer('customer_id')
+// const customerInvoices = pgTable('customerInvoices', {
+//   customerId: text()
 //     .notNull()
 //     .references(() => customers.id, { onDelete: 'cascade' }),
-//   invoiceId: integer('invoice_id')
+//   invoiceId: text()
 //     .notNull()
 //     .references(() => invoices.id, { onDelete: 'cascade' }),
-//   amount: integer('amount').notNull(),
-//   createdAt: timestamp('created_at').notNull().defaultNow(),
-//   updatedAt: timestamp('updated_at').notNull().defaultNow()
-//   }, customerInvoice => [
+//   amount: integer().notNull(),
+//   createdAt,
+//   updatedAt
+//   }, customerInvoices => [
 //     primaryKey({
-//       columns: [customerInvoice.customerId, customerInvoice.invoiceId]
+//       columns: [customerInvoices.customerId, customerInvoices.invoiceId]
 //     })
 //   ]
 // )

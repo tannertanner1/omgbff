@@ -4,11 +4,11 @@ import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
-import { STATUSES, type Status } from '@/data/invoice-statuses'
+import { type Status, status } from '@/data/invoice-statuses'
 
 export type Invoice = {
-  id: number
-  customerId: number
+  id: string
+  customerId: string
   userId: string
   value: number
   description: string | null
@@ -44,20 +44,14 @@ export function getInvoiceColumns(
       accessorKey: 'status',
       header: ({ column }) => <Header column={column} label='Status' />,
       cell: ({ row }) => {
-        const status = row.getValue('status') as Status || 'open'
-        const statusInfo = STATUSES.find(s => s.id === status)
-
-        if (!statusInfo) {
-          console.error('Missing status definition for:', status)
-          return <div className='px-4'>Unknown Status</div>
-        }
-
+        const invoiceStatus = row.getValue('status') as Status
         return (
           <div className='px-4'>
             <span
-              className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${statusInfo.color}`}
+              className={`inline-block rounded-full px-2 py-1 text-xs font-semibold text-white`}
+              style={{ backgroundColor: status[invoiceStatus] }}
             >
-              {statusInfo.label}
+              {invoiceStatus.charAt(0).toUpperCase() + invoiceStatus.slice(1)}
             </span>
           </div>
         )

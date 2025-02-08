@@ -1,6 +1,5 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { eq } from 'drizzle-orm'
 import * as z from 'zod'
@@ -12,7 +11,6 @@ import { hasPermission } from '@/lib/abac'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
-
   name: z.string().min(1, 'Name required'),
   email: z.string().email('Email required')
 })
@@ -89,13 +87,13 @@ async function updateAction(
   }
 
   const rawData = {
-    id: Number(formData.get('id')),
+    id: formData.get('id') as string,
     name: formData.get('name') as string,
     email: formData.get('email') as string,
     organizationId: formData.get('organizationId') as string
   }
 
-  const validatedData = schema.extend({ id: z.number() }).safeParse(rawData)
+  const validatedData = schema.extend({ id: z.string() }).safeParse(rawData)
 
   if (!validatedData.success) {
     return {
@@ -138,7 +136,7 @@ async function deleteAction(
   formData: FormData
 ): Promise<ActionResponse> {
   const user = await verifySession()
-  const id = Number(formData.get('id'))
+  const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
 
   if (!hasPermission(user, 'customers', 'delete')) {
