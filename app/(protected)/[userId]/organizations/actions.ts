@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { eq, and } from 'drizzle-orm'
 import { db } from '@/db'
@@ -22,7 +21,7 @@ async function createAction(
 ): Promise<ActionResponse> {
   const user = await verifySession()
 
-  // Check if user has permission to create an organization
+  // Check if user has permission to create organization
   if (!hasPermission(user, 'organizations', 'create')) {
     return {
       success: false,
@@ -90,17 +89,17 @@ async function updateAction(
     }
   }
 
-  // Check if the user is associated with the organization
-  const userOrg = await db.query.userOrganizations.findFirst({
+  // Check if user is associated with organization
+  const userOrganization = await db.query.userOrganizations.findFirst({
     where: and(
       eq(userOrganizations.userId, user.id),
       eq(userOrganizations.organizationId, id)
     )
   })
 
-  console.log('User organization relationship:', userOrg)
+  console.log('User organization relationship:', userOrganization)
 
-  if (!userOrg) {
+  if (!userOrganization) {
     return {
       success: false,
       message: 'User is not associated with this organization',
@@ -110,7 +109,7 @@ async function updateAction(
   }
 
   // Allow update if user is owner or admin
-  if (userOrg.role !== 'owner' && userOrg.role !== 'admin') {
+  if (userOrganization.role !== 'owner' && userOrganization.role !== 'admin') {
     return {
       success: false,
       message: 'Unauthorized to update this organization',
@@ -165,14 +164,17 @@ async function deleteAction(
   }
 
   // Check if the user has owner or admin role in the organization
-  const userOrg = await db.query.userOrganizations.findFirst({
+  const userOrganization = await db.query.userOrganizations.findFirst({
     where: and(
       eq(userOrganizations.userId, user.id),
       eq(userOrganizations.organizationId, id)
     )
   })
 
-  if (!userOrg || (userOrg.role !== 'owner' && userOrg.role !== 'admin')) {
+  if (
+    !userOrganization ||
+    (userOrganization.role !== 'owner' && userOrganization.role !== 'admin')
+  ) {
     return {
       success: false,
       message: 'Unauthorized to delete this organization'

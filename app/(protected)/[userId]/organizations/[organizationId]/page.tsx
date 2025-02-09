@@ -10,6 +10,8 @@ import {
 } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
+import type { Customer } from './customers/columns'
+import type { Invoice } from './invoices/columns'
 
 export default async function Page({
   params
@@ -24,13 +26,40 @@ export default async function Page({
     redirect(`/${user.id}/organizations`)
   }
 
-  const [organization, customers, invoices] = await Promise.all([
+  const [organization, customersData, invoicesData] = await Promise.all([
     getOrganizationById(organizationId),
     getOrganizationCustomers(organizationId),
     getOrganizationInvoices({ organizationId })
   ])
 
-  if (organization == null) return notFound()
+  if (!organization) return notFound()
+
+  // Ensure data matches expected types and provide default empty arrays
+  const customers: Customer[] =
+    customersData?.map(customer => ({
+      ...customer,
+      createdAt:
+        customer.createdAt instanceof Date
+          ? customer.createdAt.toISOString()
+          : customer.createdAt,
+      updatedAt:
+        customer.updatedAt instanceof Date
+          ? customer.updatedAt.toISOString()
+          : customer.updatedAt
+    })) || []
+
+  const invoices: Invoice[] =
+    invoicesData?.map(invoice => ({
+      ...invoice,
+      createdAt:
+        invoice.createdAt instanceof Date
+          ? invoice.createdAt.toISOString()
+          : invoice.createdAt,
+      updatedAt:
+        invoice.updatedAt instanceof Date
+          ? invoice.updatedAt.toISOString()
+          : invoice.updatedAt
+    })) || []
 
   return (
     <div className='flex h-fit'>

@@ -7,7 +7,7 @@ import { db } from '@/db'
 import { customers } from '@/db/schema'
 import { Action, type ActionResponse } from '@/types/forms'
 import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
+import { hasPermission, type User } from '@/lib/abac'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
@@ -21,9 +21,25 @@ async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
+  const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'customers', 'create')) {
+  const hasPermissionToCreate = await hasPermission(
+    user,
+    'customers',
+    'create',
+    {
+      id: '',
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      organizationId,
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  )
+
+  if (!hasPermissionToCreate) {
     return {
       success: false,
       message: 'Unauthorized to create customers'
@@ -77,9 +93,20 @@ async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
+  const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'customers', 'update')) {
+  if (
+    !(await hasPermission(user, 'customers', 'update', {
+      id: formData.get('id') as string,
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      organizationId: formData.get('organizationId') as string,
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }))
+  ) {
     return {
       success: false,
       message: 'Unauthorized to update customers'
@@ -135,11 +162,21 @@ async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
   const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'customers', 'delete')) {
+  if (
+    !(await hasPermission(user, 'customers', 'delete', {
+      id,
+      organizationId,
+      name: '',
+      email: '',
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }))
+  ) {
     return {
       success: false,
       message: 'Unauthorized to delete customers'

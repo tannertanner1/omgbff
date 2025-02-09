@@ -1,14 +1,13 @@
 'use server'
-
 import { revalidatePath } from 'next/cache'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { db } from '@/db'
-import { invoices } from '@/db/schema'
+import { invoices, userOrganizations } from '@/db/schema'
 import * as z from 'zod'
-import { STATUSES } from '@/data/invoice-statuses'
+import { STATUSES, type Status } from '@/data/invoice-statuses'
 import { Action, type ActionResponse } from '@/types/forms'
 import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
+import { hasPermission, type User } from '@/lib/abac'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
@@ -27,9 +26,38 @@ async function createAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
+  const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'invoices', 'create')) {
+  // Check if user is associated with organization
+  const userOrganization = await db.query.userOrganizations.findFirst({
+    where: and(
+      eq(userOrganizations.userId, user.id),
+      eq(userOrganizations.organizationId, organizationId)
+    )
+  })
+
+  if (!userOrganization) {
+    return {
+      success: false,
+      message: 'User is not associated with this organization'
+    }
+  }
+
+  // Allow invoice creation if user is associated with organization
+  const canCreateInvoice = await hasPermission(user, 'invoices', 'create', {
+    id: '',
+    customerId: formData.get('customerId') as string,
+    userId: user.id,
+    organizationId,
+    value: Number(formData.get('value')),
+    description: formData.get('description') as string,
+    status: formData.get('status') as Status,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
+
+  if (!canCreateInvoice) {
     return {
       success: false,
       message: 'Unauthorized to create invoices'
@@ -85,9 +113,22 @@ async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
+  const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'invoices', 'update')) {
+  if (
+    !(await hasPermission(user, 'invoices', 'update', {
+      id: formData.get('id') as string,
+      customerId: formData.get('customerId') as string,
+      userId: user.id,
+      organizationId: formData.get('organizationId') as string,
+      value: Number(formData.get('value')),
+      description: formData.get('description') as string,
+      status: formData.get('status') as Status,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }))
+  ) {
     return {
       success: false,
       message: 'Unauthorized to update invoices'
@@ -147,11 +188,23 @@ async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user = await verifySession()
+  const user: User = await verifySession()
   const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
 
-  if (!hasPermission(user, 'invoices', 'delete')) {
+  if (
+    !(await hasPermission(user, 'invoices', 'delete', {
+      id,
+      customerId: '',
+      userId: user.id,
+      organizationId,
+      value: 0,
+      description: '',
+      status: 'open' as Status,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }))
+  ) {
     return {
       success: false,
       message: 'Unauthorized to delete invoices'

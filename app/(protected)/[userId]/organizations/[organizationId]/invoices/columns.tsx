@@ -5,6 +5,8 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
 import { type Status, status } from '@/data/invoice-statuses'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 
 export type Invoice = {
   id: string
@@ -47,12 +49,16 @@ export function getInvoiceColumns(
         const invoiceStatus = row.getValue('status') as Status
         return (
           <div className='px-4'>
-            <span
-              className={`inline-block rounded-full px-2 py-1 text-xs font-semibold text-white`}
-              style={{ backgroundColor: status[invoiceStatus] }}
+            <Badge
+              className={cn('text-background', {
+                'bg-[#4285F4]': invoiceStatus === 'open',
+                'bg-[#0F9D58]': invoiceStatus === 'paid',
+                'bg-[#F4B400]': invoiceStatus === 'void',
+                'bg-[#DB4437]': invoiceStatus === 'uncollectible'
+              })}
             >
               {invoiceStatus.charAt(0).toUpperCase() + invoiceStatus.slice(1)}
-            </span>
+            </Badge>
           </div>
         )
       }

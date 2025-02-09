@@ -7,27 +7,29 @@ import {
   invoices
 } from '@/db/schema'
 import { hasPermission } from '@/lib/abac'
-import { auth } from '@/lib/auth'
+import { verifySession } from '@/lib/dal'
 import { notFound } from 'next/navigation'
 
 async function getUserOrganizations() {
-  const session = await auth()
-  if (!session?.user || !hasPermission(session.user, 'organizations', 'view')) {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'organizations', 'view')) {
     return []
   }
 
   return await db.query.userOrganizations.findMany({
-    where: eq(userOrganizations.userId, session.user.id),
+    where: eq(userOrganizations.userId, user.id),
     with: {
       organization: true
     },
-    orderBy: (userOrgs, { desc }) => [desc(userOrgs.createdAt)]
+    orderBy: (userOrganizations, { desc }) => [
+      desc(userOrganizations.createdAt)
+    ]
   })
 }
 
 async function getOrganizationById(organizationId: string) {
-  const session = await auth()
-  if (!session?.user || !hasPermission(session.user, 'organizations', 'view')) {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'organizations', 'view')) {
     return null
   }
 
@@ -50,8 +52,8 @@ async function getOrganizationById(organizationId: string) {
 }
 
 async function getOrganizationCustomers(organizationId: string) {
-  const session = await auth()
-  if (!session?.user || !hasPermission(session.user, 'customers', 'view')) {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'customers', 'view')) {
     return []
   }
 
@@ -68,8 +70,8 @@ async function getOrganizationInvoices({
 }: {
   organizationId: string
 }) {
-  const session = await auth()
-  if (!session?.user || !hasPermission(session.user, 'invoices', 'view')) {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'invoices', 'view')) {
     return []
   }
 
@@ -101,8 +103,8 @@ async function getCustomerById({
 }
 
 async function getInvoiceById({ invoiceId }: { invoiceId: string }) {
-  const session = await auth()
-  if (!session?.user || !hasPermission(session.user, 'invoices', 'view')) {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'invoices', 'view')) {
     return null
   }
 

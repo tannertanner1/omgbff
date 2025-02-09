@@ -17,12 +17,6 @@ export { STATUSES, type Status, statuses, status }
 
 /**
 
-`/app/(protected)/[userId]/organizations/[organizationId]/invoices/actions.ts`,
-`/app/(protected)/[userId]/organizations/[organizationId]/invoices/columns.tsx`,
-`/app/(protected)/[userId]/organizations/[organizationId]/invoices/[invoiceId]/edit/page.tsx`,
-`/app/(protected)/[userId]/organizations/[organizationId]/invoices/new/page.tsx`,
-`/db/queries.ts`
-
 import { pgEnum } from 'drizzle-orm/pg-core'
 
 const STATUSES = [
