@@ -98,12 +98,31 @@ export function DataTable<TData, TValue>({
   const currentColumn = selectedColumn ? table.getColumn(selectedColumn) : null
   const filterValue = currentColumn?.getFilterValue() as string
 
+  // Helper function to get column label
+  const getColumnLabel = (column: any) => {
+    if (typeof column.columnDef.header === 'string') {
+      return column.columnDef.header
+    }
+    if (typeof column.columnDef.header === 'function') {
+      const headerProps = { column } // Minimal props needed for the header function
+      const headerContent = column.columnDef.header(headerProps)
+      // If it's a React element with a label prop, try to extract it
+      if (headerContent?.props?.label) {
+        return headerContent.props.label
+      }
+    }
+    // Fallback to formatted column ID if no header is found
+    return column.id.charAt(0).toUpperCase() + column.id.slice(1)
+  }
+
   return (
     <div className='w-full'>
       <div className='flex items-center gap-3 py-4'>
         <Input
           placeholder={
-            selectedColumn ? `Filter by ${selectedColumn}...` : 'Filter...'
+            selectedColumn
+              ? `Filter by ${getColumnLabel(currentColumn)}...`
+              : 'Filter...'
           }
           value={filterValue ?? ''}
           onChange={event => {
@@ -151,7 +170,7 @@ export function DataTable<TData, TValue>({
                         value={column.id}
                         className='capitalize'
                       >
-                        {column.id}
+                        {getColumnLabel(column)}
                       </DropdownMenuRadioItem>
                     ))}
                 </DropdownMenuRadioGroup>
@@ -219,10 +238,12 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} className='p-0'>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      <div className='whitespace-nowrap'>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </div>
                     </TableCell>
                   ))}
                 </TableRow>

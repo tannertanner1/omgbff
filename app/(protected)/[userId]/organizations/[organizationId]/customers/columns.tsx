@@ -13,6 +13,9 @@ export type Customer = {
   name: string
   createdAt: string | Date
   updatedAt: string | Date
+  invoiceCount: number
+  invoiceTotal: number
+  invoices: Array<{ id: string; value: number }>
 }
 
 export function getCustomerColumns(
@@ -23,14 +26,47 @@ export function getCustomerColumns(
 ): ColumnDef<Customer>[] {
   return [
     {
-      accessorKey: 'name',
-      header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => <div className='px-4'>{row.getValue('name')}</div>
+      accessorKey: 'id',
+      header: ({ column }) => <Header column={column} label='ID' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>{row.getValue('id')}</div>
+      )
     },
     {
       accessorKey: 'email',
       header: ({ column }) => <Header column={column} label='Email' />,
-      cell: ({ row }) => <div className='px-4'>{row.getValue('email')}</div>
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>{row.getValue('email')}</div>
+      )
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => <Header column={column} label='Name' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>{row.getValue('name')}</div>
+      )
+    },
+    {
+      accessorKey: 'invoiceCount',
+      header: ({ column }) => <Header column={column} label='Invoices' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>
+          {row.getValue('invoiceCount')}
+        </div>
+      )
+    },
+    {
+      accessorKey: 'invoiceTotal',
+      header: ({ column }) => <Header column={column} label='Total' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>
+          $
+          {(row.getValue('invoiceTotal') as number).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })}
+        </div>
+      )
     },
     {
       accessorKey: 'createdAt',
@@ -38,7 +74,7 @@ export function getCustomerColumns(
       cell: ({ row }) => {
         const dateValue = row.getValue('createdAt')
         return (
-          <div className='px-4'>
+          <div className='whitespace-nowrap px-4'>
             {dateValue instanceof Date
               ? format(dateValue, 'MMM d, yyyy')
               : typeof dateValue === 'string'
@@ -54,7 +90,7 @@ export function getCustomerColumns(
       cell: ({ row }) => {
         const dateValue = row.getValue('updatedAt')
         return (
-          <div className='px-4'>
+          <div className='whitespace-nowrap px-4'>
             {dateValue instanceof Date
               ? format(dateValue, 'MMM d, yyyy')
               : typeof dateValue === 'string'

@@ -45,7 +45,9 @@ export default async function Page({
       updatedAt:
         customer.updatedAt instanceof Date
           ? customer.updatedAt.toISOString()
-          : customer.updatedAt
+          : customer.updatedAt,
+      invoiceCount: Number(customer.invoiceCount) || 0,
+      invoiceTotal: Number(customer.invoiceTotal) || 0
     })) || []
 
   const invoices: Invoice[] =

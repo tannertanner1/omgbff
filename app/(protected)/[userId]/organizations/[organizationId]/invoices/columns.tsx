@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
-import { type Status, status } from '@/data/invoice-statuses'
+import type { Status } from '@/data/invoice-statuses'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
@@ -17,6 +17,10 @@ export type Invoice = {
   status: Status
   createdAt: string | Date
   updatedAt: string | Date
+  customer: {
+    name: string
+    email: string
+  }
 }
 
 export function getInvoiceColumns(
@@ -27,18 +31,40 @@ export function getInvoiceColumns(
 ): ColumnDef<Invoice>[] {
   return [
     {
-      accessorKey: 'description',
-      header: ({ column }) => <Header column={column} label='Description' />,
+      accessorKey: 'id',
+      header: ({ column }) => <Header column={column} label='ID' />,
       cell: ({ row }) => (
-        <div className='px-4'>{row.getValue('description')}</div>
+        <div className='whitespace-nowrap px-4'>{row.getValue('id')}</div>
+      )
+    },
+    {
+      accessorKey: 'customer.email',
+      header: ({ column }) => <Header column={column} label='Email' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>
+          {row.original.customer.email}
+        </div>
+      )
+    },
+    {
+      accessorKey: 'customer',
+      header: ({ column }) => <Header column={column} label='Customer' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>
+          {row.original.customer.name}
+        </div>
       )
     },
     {
       accessorKey: 'value',
       header: ({ column }) => <Header column={column} label='Value' />,
       cell: ({ row }) => (
-        <div className='px-4'>
-          ${(row.getValue('value') as number).toFixed(2)}
+        <div className='whitespace-nowrap px-4'>
+          $
+          {(row.getValue('value') as number).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })}
         </div>
       )
     },
@@ -69,7 +95,7 @@ export function getInvoiceColumns(
       cell: ({ row }) => {
         const dateValue = row.getValue('createdAt')
         return (
-          <div className='px-4'>
+          <div className='whitespace-nowrap px-4'>
             {dateValue instanceof Date
               ? format(dateValue, 'MMM d, yyyy')
               : typeof dateValue === 'string'
@@ -85,7 +111,7 @@ export function getInvoiceColumns(
       cell: ({ row }) => {
         const dateValue = row.getValue('updatedAt')
         return (
-          <div className='px-4'>
+          <div className='whitespace-nowrap px-4'>
             {dateValue instanceof Date
               ? format(dateValue, 'MMM d, yyyy')
               : typeof dateValue === 'string'

@@ -20,15 +20,24 @@ export function getColumns(
 ): ColumnDef<Organization>[] {
   return [
     {
+      accessorKey: 'id',
+      header: ({ column }) => <Header column={column} label='ID' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>{row.getValue('id')}</div>
+      )
+    },
+    {
       accessorKey: 'name',
       header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => <div className='px-4'>{row.getValue('name')}</div>
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>{row.getValue('name')}</div>
+      )
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <Header column={column} label='Created' />,
       cell: ({ row }) => (
-        <div className='px-4'>
+        <div className='whitespace-nowrap px-4'>
           {format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')}
         </div>
       )
@@ -37,7 +46,7 @@ export function getColumns(
       accessorKey: 'updatedAt',
       header: ({ column }) => <Header column={column} label='Updated' />,
       cell: ({ row }) => (
-        <div className='px-4'>
+        <div className='whitespace-nowrap px-4'>
           {format(new Date(row.getValue('updatedAt')), 'MMM d, yyyy')}
         </div>
       )

@@ -15,6 +15,23 @@ import {
   DropdownMenuRadioItem
 } from '@/components/ui/dropdown-menu'
 
+// Helper function to get column label
+const getColumnLabel = (column: any) => {
+  if (typeof column.columnDef.header === 'string') {
+    return column.columnDef.header
+  }
+  if (typeof column.columnDef.header === 'function') {
+    const headerProps = { column } // Minimal props needed for the header function
+    const headerContent = column.columnDef.header(headerProps)
+    // If it's a React element with a label prop, try to extract it
+    if (headerContent?.props?.label) {
+      return headerContent.props.label
+    }
+  }
+  // Fallback to formatted column ID if no header is found
+  return column.id.charAt(0).toUpperCase() + column.id.slice(1)
+}
+
 export function Filter<TData>({ table }: { table: Table<TData> }) {
   const [selectedColumn, setSelectedColumn] = React.useState<string>('')
 
@@ -76,7 +93,7 @@ export function Filter<TData>({ table }: { table: Table<TData> }) {
                       value={column.id}
                       className='capitalize'
                     >
-                      {column.id}
+                      {getColumnLabel(column)}
                     </DropdownMenuRadioItem>
                   ))}
               </DropdownMenuRadioGroup>

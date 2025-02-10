@@ -57,12 +57,28 @@ async function getOrganizationCustomers(organizationId: string) {
     return []
   }
 
-  return await db.query.customers.findMany({
-    where: eq(customers.organizationId, organizationId),
-    with: {
-      invoices: true
-    }
-  })
+  return await db.query.customers
+    .findMany({
+      where: eq(customers.organizationId, organizationId),
+      with: {
+        invoices: {
+          columns: {
+            id: true,
+            value: true
+          }
+        }
+      }
+    })
+    .then(customers =>
+      customers.map(customer => ({
+        ...customer,
+        invoiceCount: customer.invoices.length,
+        invoiceTotal: customer.invoices.reduce(
+          (sum, invoice) => sum + invoice.value,
+          0
+        )
+      }))
+    )
 }
 
 async function getOrganizationInvoices({
