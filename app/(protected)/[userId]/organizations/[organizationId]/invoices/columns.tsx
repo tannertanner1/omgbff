@@ -57,7 +57,7 @@ export function getInvoiceColumns(
     },
     {
       accessorKey: 'value',
-      header: ({ column }) => <Header column={column} label='Value' />,
+      header: ({ column }) => <Header column={column} label='Amount' />,
       cell: ({ row }) => (
         <div className='whitespace-nowrap px-4'>
           $

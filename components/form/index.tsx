@@ -24,14 +24,25 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { Currency } from '@/components/currency'
 
 export type Field = {
   name: string
   label?: string
-  type?: 'text' | 'email' | 'number' | 'textarea' | 'hidden' | 'select'
+  type?:
+    | 'text'
+    | 'email'
+    | 'number'
+    | 'textarea'
+    | 'hidden'
+    | 'select'
+    | 'currency'
   required?: boolean
   defaultValue?: string
+  min?: number
+  step?: string
   options?: Array<{ label: string; value: string }>
+  disabled?: boolean
 }
 
 export function Form({
@@ -72,14 +83,11 @@ export function Form({
             <div className='w-full max-w-sm'>
               <Card className='w-full max-w-sm border-0'>
                 {title && (
-                  <CardHeader
-                    // className='-mt-8'
-                    className='-mt-3 mb-2 text-xl font-semibold'
-                  >
+                  <CardHeader className='-mt-3 mb-2 text-xl font-semibold'>
                     <CardTitle>{title}</CardTitle>
                   </CardHeader>
                 )}
-                <form action={formAction}>
+                <form action={formAction} noValidate>
                   <CardContent className='flex flex-col pt-4'>
                     {fields.map(
                       ({
@@ -88,7 +96,10 @@ export function Form({
                         type = 'text',
                         required,
                         defaultValue,
-                        options
+                        min,
+                        options,
+                        disabled,
+                        step
                       }) => (
                         <div key={name} className='grid gap-2'>
                           {type !== 'hidden' && label && (
@@ -117,6 +128,8 @@ export function Form({
                               defaultValue={
                                 defaultValue || state?.inputs?.[name]
                               }
+                              required={required}
+                              disabled={disabled}
                             />
                           ) : type === 'select' ? (
                             <Select
@@ -124,6 +137,8 @@ export function Form({
                               defaultValue={
                                 defaultValue || state?.inputs?.[name]
                               }
+                              required={required}
+                              disabled={disabled}
                             >
                               <SelectTrigger
                                 className={cn(
@@ -145,11 +160,29 @@ export function Form({
                                 ))}
                               </SelectContent>
                             </Select>
+                          ) : type === 'currency' ? (
+                            <Currency
+                              id={name}
+                              name={name}
+                              aria-describedby={`${name}-error`}
+                              className={cn(
+                                state?.errors?.[name]
+                                  ? 'border-[#DB4437]'
+                                  : 'mb-7'
+                              )}
+                              defaultValue={
+                                defaultValue || state?.inputs?.[name]
+                              }
+                              required={required}
+                              disabled={disabled}
+                            />
                           ) : (
                             <Input
                               id={name}
                               name={name}
                               type={type}
+                              min={min}
+                              step={step}
                               aria-describedby={`${name}-error`}
                               className={cn(
                                 state?.errors?.[name]
@@ -160,6 +193,8 @@ export function Form({
                               defaultValue={
                                 defaultValue || state?.inputs?.[name]
                               }
+                              required={required}
+                              disabled={disabled}
                             />
                           )}
                           {state?.errors?.[name] && (
