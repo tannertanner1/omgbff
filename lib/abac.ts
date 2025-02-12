@@ -128,7 +128,7 @@ const PERMISSION_RULES: {
       if (user.role === 'owner' || user.role === 'admin') return true
       if (!invoice?.organizationId) return false
 
-      // Check if user is associated with organization
+      // Check if user is associated with the organization
       const userOrganization = await db.query.userOrganizations.findFirst({
         where: and(
           eq(userOrganizations.userId, user.id),
@@ -149,20 +149,12 @@ const PERMISSION_RULES: {
         )
       })
 
+      // Users with 'user' role can update invoices but not change the status
       return !!userOrganization
     },
     delete: async (user, invoice) => {
       if (user.role === 'owner' || user.role === 'admin') return true
-      if (!invoice?.organizationId) return false
-
-      const userOrganization = await db.query.userOrganizations.findFirst({
-        where: and(
-          eq(userOrganizations.userId, user.id),
-          eq(userOrganizations.organizationId, invoice.organizationId)
-        )
-      })
-
-      return !!userOrganization
+      return false // Users with 'user' role cannot delete invoices
     }
   }
 }
