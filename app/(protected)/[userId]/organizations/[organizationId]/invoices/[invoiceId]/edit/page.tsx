@@ -42,7 +42,7 @@ export default async function Page({
       name: 'status',
       label: 'Status',
       type: 'select' as const,
-      required: true,
+      required: hasAccess, // Only required if user has access
       options: STATUSES.map(status => ({
         label: status.charAt(0).toUpperCase() + status.slice(1),
         value: status

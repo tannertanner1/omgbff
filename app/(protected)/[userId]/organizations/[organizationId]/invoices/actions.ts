@@ -14,7 +14,7 @@ const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
   customerId: z.string().min(1, 'Customer required'),
   value: z.number().min(1, 'Value must be at least $1'),
-  status: z.enum(STATUSES),
+  status: z.enum(STATUSES).optional(), // Make status optional
   description: z
     .string()
     .max(32, { message: 'Description must be at most 32 characters' })
@@ -125,6 +125,7 @@ async function updateAction(
       customerId: validatedData.data.customerId
     }
 
+    // Only update status if user has access and status was provided
     if (hasAccess && validatedData.data.status) {
       updateData.status = validatedData.data.status
     }
