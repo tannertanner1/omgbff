@@ -12,14 +12,6 @@ import { relations } from 'drizzle-orm'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { InferInsertModel } from 'drizzle-orm'
 
-const organizations = pgTable('organizations', {
-  id,
-  createdAt,
-  updatedAt,
-  /** name */
-  name: text().notNull()
-})
-
 const users = pgTable(
   'users',
   {
@@ -27,17 +19,25 @@ const users = pgTable(
     organizationId: text().references(() => organizations.id, {
       onDelete: 'set null'
     }),
-    role: text('role', { enum: ROLES }).notNull().default('user'),
     emailVerified: timestamp({ mode: 'date' }),
+    image: text(),
+    name: text(),
     createdAt,
     updatedAt,
-    image: text(),
-    /** email, name */
-    email: text().unique(),
-    name: text()
+    /** @note role, email */
+    role: text('role', { enum: ROLES }).notNull().default('user'),
+    email: text().unique()
   },
   users => [uniqueIndex().on(users.email)]
 )
+
+const organizations = pgTable('organizations', {
+  id,
+  createdAt,
+  updatedAt,
+  /** @note name */
+  name: text().notNull()
+})
 
 const userOrganizations = pgTable(
   'userOrganizations',

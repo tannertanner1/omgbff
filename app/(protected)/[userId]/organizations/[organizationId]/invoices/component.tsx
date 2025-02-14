@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Table } from '@/components/data-table/table'
-import { IconCirclePlus } from '@tabler/icons-react'
+import { IconCirclePlus, IconMoodEmpty } from '@tabler/icons-react'
 import { getInvoiceColumns, type Invoice } from './columns'
 import { useRouter } from 'next/navigation'
 import { deleteAction } from './actions'
@@ -61,6 +61,19 @@ export function Invoices({
           <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
         </Link>
       </div>
+      {/* {invoices && invoices.length > 0 ? (
+        <Table
+          data={invoices}
+          columns={columns}
+          link={row =>
+            `/${userId}/organizations/${organizationId}/invoices/${row.id}/edit`
+          }
+        />
+      ) : (
+        <div className='flex items-center justify-center text-muted-foreground'>
+          <IconMoodEmpty className='h-10 w-10' />
+        </div>
+      )} */}
       <Table
         data={invoices}
         columns={columns}

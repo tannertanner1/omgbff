@@ -20,7 +20,6 @@ export type Customer = {
 
 export function getCustomerColumns(
   userId: string,
-  organizationId: string,
   onEdit: (row: Customer) => void,
   onDelete: (row: Customer) => Promise<void>
 ): ColumnDef<Customer>[] {

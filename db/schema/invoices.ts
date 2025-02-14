@@ -16,7 +16,7 @@ const customers = pgTable('customers', {
     .references(() => users.id),
   createdAt,
   updatedAt,
-  /** email, name */
+  /** @note email, name */
   email: text().notNull(),
   name: text().notNull()
 })
@@ -45,18 +45,22 @@ const customers = pgTable('customers', {
 
 const invoices = pgTable('invoices', {
   id: invoiceId,
-  // Optionally remove `customerId`
+  // Optionally remove customerId
   customerId: text()
     .notNull()
     .references(() => customers.id, { onDelete: 'cascade' }),
+  organizationId: text()
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
   userId: text()
     .notNull()
     .references(() => users.id),
-  value: integer().notNull(),
+  createdAt,
+  updatedAt,
+  /** @note description, status, amount */
   description: text(),
   status: text('status', { enum: STATUSES }).notNull().default('open'),
-  createdAt,
-  updatedAt
+  amount: integer().notNull()
 })
 
 // const customerInvoices = pgTable('customerInvoices', {

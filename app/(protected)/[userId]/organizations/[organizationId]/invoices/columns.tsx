@@ -12,7 +12,8 @@ export type Invoice = {
   id: string
   customerId: string
   userId: string
-  value: number
+  organizationId: string
+  amount: number
   description: string | null
   status: Status
   createdAt: string | Date
@@ -56,12 +57,12 @@ export function getInvoiceColumns(
       )
     },
     {
-      accessorKey: 'value',
+      accessorKey: 'amount',
       header: ({ column }) => <Header column={column} label='Amount' />,
       cell: ({ row }) => (
         <div className='whitespace-nowrap px-4'>
           $
-          {(row.getValue('value') as number).toLocaleString('en-US', {
+          {(row.getValue('amount') as number).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           })}

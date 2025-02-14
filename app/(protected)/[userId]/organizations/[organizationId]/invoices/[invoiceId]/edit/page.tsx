@@ -62,11 +62,11 @@ export default async function Page({
       defaultValue: invoice.customerId
     },
     {
-      name: 'value',
+      name: 'amount',
       label: 'Amount',
       type: 'currency',
       required: true,
-      defaultValue: invoice.value.toFixed(2)
+      defaultValue: invoice.amount.toFixed(2)
     }
   ]
 

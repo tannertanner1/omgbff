@@ -1,29 +1,34 @@
 'use client'
 
+import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
-import { format } from 'date-fns'
+import type { Status } from '@/data/invoice-statuses'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 
-export type Customer = {
+export type Invoice = {
   id: string
-  organizationId: string
+  customerId: string
   userId: string
-  email: string
-  name: string
+  organizationId: string
+  amount: number
+  description: string | null
+  status: Status
   createdAt: string | Date
   updatedAt: string | Date
-  invoiceCount: number
-  invoiceTotal: number
-  invoices: Array<{ id: string; amount: number }>
+  customer: {
+    name: string
+    email: string
+  }
 }
 
-export function getCustomerColumns(
+export function getInvoiceColumns(
   userId: string,
-  organizationId: string,
-  onEdit: (row: Customer) => void,
-  onDelete: (row: Customer) => Promise<void>
-): ColumnDef<Customer>[] {
+  onEdit: (row: Invoice) => void,
+  onDelete: (row: Invoice) => Promise<void>
+): ColumnDef<Invoice>[] {
   return [
     {
       accessorKey: 'id',
@@ -33,40 +38,56 @@ export function getCustomerColumns(
       )
     },
     {
-      accessorKey: 'email',
+      accessorKey: 'customer.email',
       header: ({ column }) => <Header column={column} label='Email' />,
       cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('email')}</div>
-      )
-    },
-    {
-      accessorKey: 'name',
-      header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('name')}</div>
-      )
-    },
-    {
-      accessorKey: 'invoiceCount',
-      header: ({ column }) => <Header column={column} label='Invoices' />,
-      cell: ({ row }) => (
         <div className='whitespace-nowrap px-4'>
-          {row.getValue('invoiceCount')}
+          {row.original.customer.email}
         </div>
       )
     },
     {
-      accessorKey: 'invoiceTotal',
-      header: ({ column }) => <Header column={column} label='Total' />,
+      accessorKey: 'customer',
+      header: ({ column }) => <Header column={column} label='Customer' />,
+      cell: ({ row }) => (
+        <div className='whitespace-nowrap px-4'>
+          {row.original.customer.name}
+        </div>
+      )
+    },
+    {
+      accessorKey: 'amount',
+      header: ({ column }) => <Header column={column} label='Amount' />,
       cell: ({ row }) => (
         <div className='whitespace-nowrap px-4'>
           $
-          {(row.getValue('invoiceTotal') as number).toLocaleString('en-US', {
+          {(row.getValue('amount') as number).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           })}
         </div>
       )
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => <Header column={column} label='Status' />,
+      cell: ({ row }) => {
+        const invoiceStatus = row.getValue('status') as Status
+        return (
+          <div className='px-4'>
+            <Badge
+              className={cn('text-background', {
+                'bg-[#4285F4]': invoiceStatus === 'open',
+                'bg-[#0F9D58]': invoiceStatus === 'paid',
+                'bg-[#F4B400]': invoiceStatus === 'void',
+                'bg-[#DB4437]': invoiceStatus === 'uncollectible'
+              })}
+            >
+              {invoiceStatus.charAt(0).toUpperCase() + invoiceStatus.slice(1)}
+            </Badge>
+          </div>
+        )
+      }
     },
     {
       accessorKey: 'createdAt',

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Form, type Field } from '@/components/form'
 import { STATUSES } from '@/data/invoice-statuses'
-import { getOrganizationCustomers } from '@/db/queries'
+import { getAllCustomers } from '@/db/queries'
 import { createAction } from '../actions'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -11,10 +11,10 @@ import { verifySession } from '@/lib/dal'
 export default async function Page({
   params
 }: {
-  params: Promise<{ userId: string; organizationId: string }>
+  params: Promise<{ userId: string }>
 }) {
-  const { userId, organizationId } = await params
-  const customers = await getOrganizationCustomers(organizationId)
+  const { userId } = await params
+  const customers = await getAllCustomers()
 
   if (!customers) return notFound()
 
@@ -34,7 +34,7 @@ export default async function Page({
               </h1>
               <div className='mx-auto mt-6 flex w-full max-w-5xl flex-col justify-center gap-4'>
                 <Link
-                  href={`/${userId}/organizations/${organizationId}/customers/new`}
+                  href={`/${userId}/customers/new`}
                   className='w-full'
                   prefetch={false}
                 >
@@ -46,7 +46,7 @@ export default async function Page({
                   </Button>
                 </Link>
                 <Link
-                  href={`/${userId}/organizations/${organizationId}`}
+                  href={`/${userId}/invoices`}
                   className='inline-flex'
                   prefetch={false}
                 >
@@ -66,11 +66,6 @@ export default async function Page({
   }
 
   const fields: Field[] = [
-    {
-      name: 'organizationId',
-      type: 'hidden',
-      defaultValue: organizationId
-    },
     {
       name: 'description',
       label: 'Description',
@@ -94,8 +89,18 @@ export default async function Page({
       type: 'select',
       required: true,
       options: customers.map(customer => ({
-        label: customer.name,
+        label: `${customer.name} <${customer.email}>`,
         value: customer.id
+      }))
+    },
+    {
+      name: 'organizationId',
+      label: 'Organization',
+      type: 'select',
+      required: true,
+      options: customers.map(customer => ({
+        label: customer.organization.name,
+        value: customer.organization.id
       }))
     },
     {

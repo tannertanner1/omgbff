@@ -64,7 +64,7 @@ async function getOrganizationCustomers(organizationId: string) {
         invoices: {
           columns: {
             id: true,
-            value: true
+            amount: true
           }
         }
       }
@@ -74,7 +74,7 @@ async function getOrganizationCustomers(organizationId: string) {
         ...customer,
         invoiceCount: customer.invoices.length,
         invoiceTotal: customer.invoices.reduce(
-          (sum, invoice) => sum + invoice.value,
+          (sum: number, invoice: { amount: number }) => sum + invoice.amount,
           0
         )
       }))
@@ -112,7 +112,10 @@ async function getCustomerById({
   if (!customerId) return null
 
   const customer = await db.query.customers.findFirst({
-    where: eq(customers.id, customerId)
+    where: eq(customers.id, customerId),
+    with: {
+      invoices: true
+    }
   })
 
   return customer
@@ -138,11 +141,70 @@ async function getInvoiceById({ invoiceId }: { invoiceId: string }) {
   return invoice
 }
 
+async function getAllCustomers() {
+  const user = await verifySession()
+  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
+    return []
+  }
+
+  return await db.query.customers
+    .findMany({
+      with: {
+        invoices: true,
+        organization: true
+      }
+    })
+    .then(customers =>
+      customers.map(customer => ({
+        ...customer,
+        invoiceCount: customer.invoices.length,
+        invoiceTotal: customer.invoices.reduce(
+          (sum: number, invoice: { amount: number }) => sum + invoice.amount,
+          0
+        )
+      }))
+    )
+}
+
+async function getAllInvoices() {
+  const user = await verifySession()
+  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
+    return []
+  }
+
+  return await db.query.invoices.findMany({
+    with: {
+      customer: {
+        columns: {
+          name: true,
+          email: true,
+          organizationId: true
+        }
+      }
+    },
+    orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
+  })
+}
+
+async function getAllOrganizations() {
+  const user = await verifySession()
+  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
+    return []
+  }
+
+  return await db.query.organizations.findMany({
+    orderBy: (organizations, { desc }) => [desc(organizations.createdAt)]
+  })
+}
+
 export {
   getUserOrganizations,
   getOrganizationById,
   getOrganizationCustomers,
   getOrganizationInvoices,
   getCustomerById,
-  getInvoiceById
+  getInvoiceById,
+  getAllCustomers,
+  getAllInvoices,
+  getAllOrganizations
 }

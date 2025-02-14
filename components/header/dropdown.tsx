@@ -7,7 +7,8 @@ import {
   IconSend,
   IconUserCircle,
   IconPhotoCircle,
-  IconCircleFilled
+  IconCircleFilled,
+  IconRosetteDiscountCheckFilled
 } from '@tabler/icons-react'
 import {
   DropdownMenuLabel,
@@ -17,8 +18,9 @@ import {
   DropdownMenu,
   DropdownMenuContent
 } from '@/components/ui/dropdown-menu'
-import { Session } from 'next-auth'
+import type { Session } from 'next-auth'
 import { logout } from '@/actions/logout'
+import { role } from '@/data/system-roles'
 
 export function Dropdown({ session }: { session: Session | null }) {
   const handleLogout = async () => {
@@ -48,11 +50,20 @@ export function Dropdown({ session }: { session: Session | null }) {
             <>
               <DropdownMenuLabel className='font-normal'>
                 <div className='flex flex-col space-y-1'>
-                  <p className='truncate text-sm font-medium'>
-                    {session.user.email}
+                  <p className='flex items-center truncate text-sm font-medium'>
+                    {session.user.id}
+                    <span className='inline-flex items-center'>
+                      <IconRosetteDiscountCheckFilled
+                        className='ml-1.5 h-5 w-5'
+                        style={{
+                          color: role[session.user.role].color,
+                          transform: 'translateY(-1px)' // Fine-tuned alignment
+                        }}
+                      />
+                    </span>
                   </p>
                   <p className='truncate text-xs text-muted-foreground'>
-                    {session.user.id}
+                    {session.user.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
