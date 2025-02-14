@@ -41,17 +41,5 @@ export default async function Page({
     }
   }))
 
-  return (
-    <div className='flex h-fit'>
-      <div className='mx-auto w-full max-w-5xl p-4'>
-        <div className='mb-8 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Invoices</h1>
-          <Link href={`/${userId}/invoices/new`}>
-            <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
-          </Link>
-        </div>
-        <Component invoices={invoices} userId={userId} />
-      </div>
-    </div>
-  )
+  return <Component invoices={invoices} userId={userId} />
 }

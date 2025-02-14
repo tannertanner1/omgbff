@@ -1,6 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { IconCirclePlus } from '@tabler/icons-react'
 import { Table } from '@/components/data-table/table'
 import { getInvoiceColumns, type Invoice } from './columns'
 
@@ -43,12 +45,22 @@ export function Component({
   const columns = getInvoiceColumns(userId, handleEdit, handleDelete)
 
   return (
-    <Table
-      data={invoices}
-      columns={columns}
-      link={row =>
-        `/${userId}/organizations/${row.organizationId}/invoices/${row.id}/edit`
-      }
-    />
+    <div className='h-fit'>
+      <div className='mx-auto max-w-5xl p-4'>
+        <div className='-mt-3 mb-2 flex items-center justify-between'>
+          <h1 className='text-2xl font-semibold'>Invoices</h1>
+          <Link href={`/${userId}/organizations/new`}>
+            <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
+          </Link>
+        </div>
+        <Table
+          data={invoices}
+          columns={columns}
+          link={row =>
+            `/${userId}/organizations/${row.organizationId}/invoices/${row.id}/edit`
+          }
+        />
+      </div>
+    </div>
   )
 }

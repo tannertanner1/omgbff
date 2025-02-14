@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { IconCirclePlus } from '@tabler/icons-react'
 import { getAllCustomers } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
@@ -48,17 +46,5 @@ export default async function Page({
       }))
     })) || []
 
-  return (
-    <div className='flex h-fit'>
-      <div className='mx-auto w-full max-w-5xl p-4'>
-        <div className='mb-8 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Customers</h1>
-          <Link href={`/${userId}/customers/new`}>
-            <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
-          </Link>
-        </div>
-        <Component customers={customers} userId={userId} />
-      </div>
-    </div>
-  )
+  return <Component customers={customers} userId={userId} />
 }

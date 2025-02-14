@@ -230,7 +230,7 @@ export function Form({
                 <div className='mx-auto mt-[0.25rem] w-full max-w-sm px-6'>
                   <Alert
                     className={cn(
-                      'w-full',
+                      'mb-7 w-full',
                       state.success
                         ? 'border-[#0F9D58] text-[#0F9D58]'
                         : 'border-[#DB4437] text-[#DB4437]'
