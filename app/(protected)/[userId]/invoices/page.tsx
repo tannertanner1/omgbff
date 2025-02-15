@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { IconCirclePlus } from '@tabler/icons-react'
 import { getAllInvoices } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'

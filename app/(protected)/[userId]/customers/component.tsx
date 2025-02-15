@@ -49,7 +49,7 @@ export function Component({
       <div className='mx-auto max-w-5xl p-4'>
         <div className='-mt-3 mb-2 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>Customers</h1>
-          <Link href={`/${userId}/organizations/new`}>
+          <Link href={`/${userId}/customers/new`}>
             <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
           </Link>
         </div>
