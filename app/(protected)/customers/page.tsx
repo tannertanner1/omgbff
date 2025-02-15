@@ -5,17 +5,11 @@ import { hasPermission } from '@/lib/abac'
 import { Component } from './component'
 import type { Customer } from './columns'
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ userId: string }>
-}) {
+export default async function Page() {
   const user = await verifySession()
 
-  const { userId } = await params
-
   if (!hasPermission(user, 'customers', 'view')) {
-    redirect(`/${user.id}/customers`)
+    redirect('/customers')
   }
 
   if (user.role !== 'admin' && user.role !== 'owner') {
@@ -46,5 +40,5 @@ export default async function Page({
       }))
     })) || []
 
-  return <Component customers={customers} userId={userId} />
+  return <Component customers={customers} userId={user.id} />
 }

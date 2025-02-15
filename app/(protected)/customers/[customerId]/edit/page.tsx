@@ -8,17 +8,13 @@ import { hasPermission } from '@/lib/abac'
 export default async function Page({
   params
 }: {
-  params: Promise<{ userId: string; customerId: string }>
+  params: Promise<{ customerId: string }>
 }) {
   const user = await verifySession()
-  const { userId, customerId } = await params
+  const { customerId } = await params
 
   if (!hasPermission(user, 'customers', 'update')) {
-    redirect(`/${user.id}/customers`)
-  }
-
-  if (user.id !== userId) {
-    redirect(`/${user.id}/customers/${customerId}/edit`)
+    redirect('/customers')
   }
 
   const [customer, organizations] = await Promise.all([
@@ -61,5 +57,5 @@ export default async function Page({
     }
   ]
 
-  return <Form fields={fields} action={updateAction} button='Update' />
+  return <Form fields={fields} action={updateAction} button='Save' />
 }

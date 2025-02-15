@@ -9,9 +9,8 @@ export default async function Page() {
   const user = await verifySession()
 
   if (!hasPermission(user, 'users', 'view')) {
-    redirect(`/users`)
+    redirect('/')
   }
-
   if (user.role !== 'admin' && user.role !== 'owner') {
     notFound()
   }

@@ -5,20 +5,11 @@ import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 import { getAllOrganizations } from '@/db/queries'
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ userId: string }>
-}) {
+export default async function Page() {
   const user = await verifySession()
-  const { userId } = await params
 
   if (!hasPermission(user, 'customers', 'create')) {
-    redirect(`/${user.id}/customers`)
-  }
-
-  if (user.id !== userId) {
-    redirect(`/${user.id}/customers/new`)
+    redirect('/customers')
   }
 
   const organizations = await getAllOrganizations()

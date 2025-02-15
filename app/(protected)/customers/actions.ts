@@ -10,9 +10,9 @@ import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 
 const schema = z.object({
-  name: z.string().min(1, 'Name required'),
-  email: z.string().email('Valid email required'),
-  organizationId: z.string().min(1, 'Organization required')
+  name: z.string().min(1, 'Required'),
+  email: z.string().email('Required'),
+  organizationId: z.string().min(1, 'Required')
 })
 
 const { FormData } = Action(schema)
@@ -56,11 +56,11 @@ async function createAction(
       })
       .returning()
 
-    revalidatePath(`/${user.id}/customers`)
+    revalidatePath('/customers')
     return {
       success: true,
       message: 'Customer created successfully',
-      redirect: `/${user.id}/customers`
+      redirect: '/customers'
     }
   } catch (error) {
     console.error('Error creating customer:', error)
@@ -115,11 +115,11 @@ async function updateAction(
       })
       .where(eq(customers.id, id))
 
-    revalidatePath(`/${user.id}/customers`)
+    revalidatePath('/customers')
     return {
       success: true,
       message: 'Customer updated successfully',
-      redirect: `/${user.id}/customers`
+      redirect: '/customers'
     }
   } catch (error) {
     console.error('Error updating customer:', error)
@@ -148,11 +148,11 @@ async function deleteAction(
   try {
     await db.delete(customers).where(eq(customers.id, id))
 
-    revalidatePath(`/${user.id}/customers`)
+    revalidatePath('/customers')
     return {
       success: true,
       message: 'Customer deleted successfully',
-      redirect: `/${user.id}/customers`
+      redirect: '/customers'
     }
   } catch (error) {
     console.error('Error deleting customer:', error)
