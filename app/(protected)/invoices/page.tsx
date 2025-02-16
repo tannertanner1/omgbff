@@ -5,25 +5,18 @@ import { hasPermission } from '@/lib/abac'
 import { Component } from './component'
 import type { Invoice } from './columns'
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ userId: string }>
-}) {
+export default async function Page() {
   const user = await verifySession()
-  const { userId } = await params
 
   if (!hasPermission(user, 'invoices', 'view')) {
-    redirect(`/${user.id}/invoices`)
+    redirect('/invoices')
   }
-
   if (user.role !== 'admin' && user.role !== 'owner') {
     notFound()
   }
 
-  const rawInvoices = await getAllInvoices()
-
-  const invoices: Invoice[] = rawInvoices.map(invoice => ({
+  const invoiceData = await getAllInvoices()
+  const invoices: Invoice[] = invoiceData.map(invoice => ({
     ...invoice,
     createdAt:
       invoice.createdAt instanceof Date
@@ -39,5 +32,5 @@ export default async function Page({
     }
   }))
 
-  return <Component invoices={invoices} userId={userId} />
+  return <Component invoices={invoices} userId={user.id} />
 }

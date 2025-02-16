@@ -11,11 +11,11 @@ import { hasPermission } from '@/lib/abac'
 import { STATUSES, type Status } from '@/data/invoice-statuses'
 
 const schema = z.object({
-  customerId: z.string().min(1, 'Customer required'),
-  organizationId: z.string().min(1, 'Organization required'),
-  amount: z.number().min(0.01, 'Amount must be greater than 0'),
+  description: z.string().optional(),
   status: z.enum(STATUSES),
-  description: z.string().optional()
+  organizationId: z.string().min(1, 'Required'),
+  customerId: z.string().min(1, 'Required'),
+  amount: z.number().min(0.01, 'Must be greater than 1')
 })
 
 const { FormData } = Action(schema)
@@ -34,11 +34,11 @@ async function createAction(
   }
 
   const rawData = {
-    customerId: formData.get('customerId') as string,
-    organizationId: formData.get('organizationId') as string,
-    amount: Number.parseFloat(formData.get('amount') as string),
+    description: formData.get('description') as string,
     status: formData.get('status') as Status,
-    description: formData.get('description') as string
+    organizationId: formData.get('organizationId') as string,
+    customerId: formData.get('customerId') as string,
+    amount: Number.parseFloat(formData.get('amount') as string)
   }
 
   const validatedData = schema.safeParse(rawData)
@@ -61,11 +61,11 @@ async function createAction(
       })
       .returning()
 
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath('/invoices')
     return {
       success: true,
       message: 'Invoice created successfully',
-      redirect: `/${user.id}/invoices`
+      redirect: '/invoices'
     }
   } catch (error) {
     console.error('Error creating invoice:', error)
@@ -124,11 +124,11 @@ async function updateAction(
       })
       .where(eq(invoices.id, id))
 
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath('/invoices')
     return {
       success: true,
       message: 'Invoice updated successfully',
-      redirect: `/${user.id}/invoices`
+      redirect: '/invoices'
     }
   } catch (error) {
     console.error('Error updating invoice:', error)
@@ -157,11 +157,11 @@ async function deleteAction(
   try {
     await db.delete(invoices).where(eq(invoices.id, id))
 
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath('/invoices')
     return {
       success: true,
       message: 'Invoice deleted successfully',
-      redirect: `/${user.id}/invoices`
+      redirect: '/invoices'
     }
   } catch (error) {
     console.error('Error deleting invoice:', error)

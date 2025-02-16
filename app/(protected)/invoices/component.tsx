@@ -16,7 +16,7 @@ export function Component({
   const router = useRouter()
 
   const handleEdit = (row: Invoice) => {
-    router.push(`/${userId}/invoices/${row.id}/edit`)
+    router.push(`/invoices/${row.id}/edit`)
   }
 
   const handleDelete = async (row: Invoice) => {
@@ -49,7 +49,7 @@ export function Component({
       <div className='mx-auto max-w-5xl p-4'>
         <div className='-mt-3 mb-2 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>Invoices</h1>
-          <Link href={`/${userId}/invoices/new`}>
+          <Link href={'/invoices/new'}>
             <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
           </Link>
         </div>
@@ -57,7 +57,7 @@ export function Component({
           data={invoices}
           columns={columns}
           link={row =>
-            `/${userId}/organizations/${row.organizationId}/invoices/${row.id}/edit`
+            `/organizations/${row.organizationId}/invoices/${row.id}/edit`
           }
         />
       </div>

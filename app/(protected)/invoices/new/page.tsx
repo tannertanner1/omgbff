@@ -1,24 +1,19 @@
-import { notFound } from 'next/navigation'
-import { Form, type Field } from '@/components/form'
-import { STATUSES } from '@/data/invoice-statuses'
-import { getAllCustomers } from '@/db/queries'
-import { createAction } from '../actions'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { IconMoodEmpty } from '@tabler/icons-react'
+import { Form, type Field } from '@/components/form'
+import { STATUSES } from '@/data/invoice-statuses'
 import { verifySession } from '@/lib/dal'
+import { getAllCustomers } from '@/db/queries'
+import { createAction } from '../actions'
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ userId: string }>
-}) {
-  const { userId } = await params
+export default async function Page() {
+  const user = await verifySession()
   const customers = await getAllCustomers()
 
   if (!customers) return notFound()
 
-  const user = await verifySession()
   const hasAccess = user.role === 'admin' || user.role === 'owner'
 
   if (customers.length === 0) {
@@ -34,7 +29,7 @@ export default async function Page({
               </h1>
               <div className='mx-auto mt-6 flex w-full max-w-5xl flex-col justify-center gap-4'>
                 <Link
-                  href={`/${userId}/customers/new`}
+                  href={'/customers/new'}
                   className='w-full'
                   prefetch={false}
                 >
@@ -46,7 +41,7 @@ export default async function Page({
                   </Button>
                 </Link>
                 <Link
-                  href={`/${userId}/invoices`}
+                  href={'/invoices'}
                   className='inline-flex'
                   prefetch={false}
                 >
@@ -84,16 +79,6 @@ export default async function Page({
       disabled: !hasAccess
     },
     {
-      name: 'customerId',
-      label: 'Customer',
-      type: 'select',
-      required: true,
-      options: customers.map(customer => ({
-        label: `${customer.name} <${customer.email}>`,
-        value: customer.id
-      }))
-    },
-    {
       name: 'organizationId',
       label: 'Organization',
       type: 'select',
@@ -101,6 +86,16 @@ export default async function Page({
       options: customers.map(customer => ({
         label: customer.organization.name,
         value: customer.organization.id
+      }))
+    },
+    {
+      name: 'customerId',
+      label: 'Customer',
+      type: 'select',
+      required: true,
+      options: customers.map(customer => ({
+        label: `${customer.name} <${customer.email}>`,
+        value: customer.id
       }))
     },
     {

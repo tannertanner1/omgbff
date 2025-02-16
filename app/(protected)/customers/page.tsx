@@ -11,15 +11,13 @@ export default async function Page() {
   if (!hasPermission(user, 'customers', 'view')) {
     redirect('/customers')
   }
-
   if (user.role !== 'admin' && user.role !== 'owner') {
     notFound()
   }
 
-  const customersData = await getAllCustomers()
-
+  const customerData = await getAllCustomers()
   const customers: Customer[] =
-    customersData?.map(customer => ({
+    customerData?.map(customer => ({
       ...customer,
       createdAt:
         customer.createdAt instanceof Date
