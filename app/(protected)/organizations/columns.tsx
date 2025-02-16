@@ -9,8 +9,8 @@ export type Organization = {
   userId: string
   id: string
   name: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 
 export function getColumns(

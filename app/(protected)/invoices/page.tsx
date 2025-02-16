@@ -9,7 +9,7 @@ export default async function Page() {
   const user = await verifySession()
 
   if (!hasPermission(user, 'invoices', 'view')) {
-    redirect('/invoices')
+    redirect('/')
   }
   if (user.role !== 'admin' && user.role !== 'owner') {
     notFound()

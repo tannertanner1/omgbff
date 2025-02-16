@@ -6,25 +6,25 @@ import { updateAction } from '../../actions'
 export default async function Page({
   params
 }: {
-  params: Promise<{ userId: string; organizationId: string }>
+  params: Promise<{ organizationId: string }>
 }) {
-  const { userId, organizationId } = await params
+  const { organizationId } = await params
   const organization = await getOrganizationById(organizationId)
 
   if (!organization) return notFound()
 
   const fields: Field[] = [
     {
+      name: 'id',
+      type: 'hidden' as const,
+      defaultValue: organization.id
+    },
+    {
       name: 'name',
       label: 'Name',
       type: 'text' as const,
       required: true,
       defaultValue: organization.name
-    },
-    {
-      name: 'id',
-      type: 'hidden' as const,
-      defaultValue: organization.id
     }
   ]
 

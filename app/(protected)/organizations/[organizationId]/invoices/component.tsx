@@ -9,19 +9,17 @@ import { deleteAction } from './actions'
 
 export function Invoices({
   invoices,
-  userId,
-  organizationId
+  organizationId,
+  userId
 }: {
   invoices: Invoice[]
-  userId: string
   organizationId: string
+  userId: string
 }) {
   const router = useRouter()
 
   const handleEdit = (row: Invoice) => {
-    router.push(
-      `/${userId}/organizations/${organizationId}/invoices/${row.id}/edit`
-    )
+    router.push(`/organizations/${organizationId}/invoices/${row.id}/edit`)
   }
 
   const handleDelete = async (row: Invoice) => {
@@ -30,8 +28,8 @@ export function Invoices({
     }
 
     const formData = new FormData()
-    formData.append('id', row.id.toString())
     formData.append('organizationId', organizationId)
+    formData.append('id', row.id.toString())
 
     try {
       const result = await deleteAction(null, formData)
@@ -57,7 +55,7 @@ export function Invoices({
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <h2 className='text-lg font-semibold'>Invoices</h2>
-        <Link href={`/${userId}/organizations/${organizationId}/invoices/new`}>
+        <Link href={`/organizations/${organizationId}/invoices/new`}>
           <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
         </Link>
       </div>
@@ -66,7 +64,7 @@ export function Invoices({
           data={invoices}
           columns={columns}
           link={row =>
-            `/${userId}/organizations/${organizationId}/invoices/${row.id}/edit`
+            `/organizations/${organizationId}/invoices/${row.id}/edit`
           }
         />
       ) : (
@@ -77,9 +75,7 @@ export function Invoices({
       <Table
         data={invoices}
         columns={columns}
-        link={row =>
-          `/${userId}/organizations/${organizationId}/invoices/${row.id}/edit`
-        }
+        link={row => `/organizations/${organizationId}/invoices/${row.id}/edit`}
       />
     </div>
   )

@@ -6,18 +6,24 @@ import { updateAction } from '../../actions'
 export default async function Page({
   params
 }: {
-  params: Promise<{
-    userId: string
-    organizationId: string
-    customerId: string
-  }>
+  params: Promise<{ organizationId: string; customerId: string }>
 }) {
-  const { userId, organizationId, customerId } = await params
+  const { organizationId, customerId } = await params
   const customer = await getCustomerById({ customerId })
 
   if (!customer) return notFound()
 
   const fields: Field[] = [
+    {
+      name: 'organizationId',
+      type: 'hidden' as const,
+      defaultValue: organizationId
+    },
+    {
+      name: 'id',
+      type: 'hidden' as const,
+      defaultValue: customer.id
+    },
     {
       name: 'name',
       label: 'Name',
@@ -31,16 +37,6 @@ export default async function Page({
       type: 'email' as const,
       required: true,
       defaultValue: customer.email
-    },
-    {
-      name: 'id',
-      type: 'hidden' as const,
-      defaultValue: customer.id
-    },
-    {
-      name: 'organizationId',
-      type: 'hidden' as const,
-      defaultValue: organizationId
     }
   ]
 

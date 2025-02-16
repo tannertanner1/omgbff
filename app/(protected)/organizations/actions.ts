@@ -56,11 +56,11 @@ async function createAction(
       role: 'owner' // Set the creator as the owner
     })
 
-    revalidatePath(`/${user.id}/organizations`)
+    revalidatePath(`/organizations`)
     return {
       success: true,
       message: 'Organization created successfully',
-      redirect: `/${user.id}/organizations/${organization.id}`
+      redirect: `/organizations/${organization.id}`
     }
   } catch (error) {
     console.error('Error creating organization:', error)
@@ -136,11 +136,11 @@ async function updateAction(
       .set({ name: validatedData.data.name, updatedAt: new Date() })
       .where(eq(organizations.id, id))
 
-    revalidatePath(`/${user.id}/organizations`)
+    revalidatePath('/organizations')
     return {
       success: true,
       message: 'Organization updated successfully',
-      redirect: `/${user.id}/organizations`
+      redirect: '/organizations'
     }
   } catch (error) {
     console.error('Error updating organization:', error)
@@ -183,11 +183,11 @@ async function deleteAction(
 
   try {
     await db.delete(organizations).where(eq(organizations.id, id))
-    revalidatePath(`/${user.id}/organizations`)
+    revalidatePath('/organizations')
     return {
       success: true,
       message: 'Organization deleted successfully',
-      redirect: `/${user.id}/organizations`
+      redirect: '/organizations'
     }
   } catch (error) {
     console.error('Error deleting organization:', error)

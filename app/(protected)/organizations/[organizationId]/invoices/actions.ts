@@ -11,14 +11,14 @@ import { verifySession } from '@/lib/dal'
 import type { User } from '@/lib/abac'
 
 const schema = z.object({
-  organizationId: z.string().min(1, 'Organization required'),
-  customerId: z.string().min(1, 'Customer required'),
-  amount: z.number().min(1, 'Amount must be at least $1'),
-  status: z.enum(STATUSES).optional(),
+  organizationId: z.string().min(1, 'Required'),
+  customerId: z.string().min(1, 'Required'),
   description: z
     .string()
-    .max(32, { message: 'Description must be at most 32 characters' })
-    .optional()
+    .max(32, { message: 'Must be at most 32 characters' })
+    .optional(),
+  status: z.enum(STATUSES).optional(),
+  amount: z.number().min(1, 'Must be at least 1')
 })
 
 const { FormData } = Action(schema)
@@ -33,11 +33,11 @@ async function createAction(
   const hasAccess = user.role === 'admin' || user.role === 'owner'
 
   const rawData = {
-    description: formData.get('description') as string,
-    amount: Number(formData.get('amount')),
-    status: hasAccess ? (formData.get('status') as Status) : 'open',
     organizationId: formData.get('organizationId') as string,
-    customerId: formData.get('customerId') as string
+    customerId: formData.get('customerId') as string,
+    description: formData.get('description') as string,
+    status: hasAccess ? (formData.get('status') as Status) : 'open',
+    amount: Number(formData.get('amount'))
   }
 
   const validatedData = schema.safeParse(rawData)
@@ -60,13 +60,13 @@ async function createAction(
       })
       .returning()
 
-    revalidatePath(`/${user.id}/organizations/${rawData.organizationId}`)
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath(`/organizations/${rawData.organizationId}`)
+    revalidatePath('/invoices')
 
     return {
       success: true,
       message: 'Invoice created successfully',
-      redirect: `/${user.id}/organizations/${rawData.organizationId}`
+      redirect: `/organizations/${rawData.organizationId}`
     }
   } catch (error) {
     console.error('Error creating invoice:', error)
@@ -88,12 +88,12 @@ async function updateAction(
   const hasAccess = user.role === 'admin' || user.role === 'owner'
 
   const rawData = {
+    organizationId: formData.get('organizationId') as string,
+    customerId: formData.get('customerId') as string,
     id: formData.get('id') as string,
     description: formData.get('description') as string,
-    amount: Number(formData.get('amount')),
     status: hasAccess ? (formData.get('status') as Status) : undefined,
-    customerId: formData.get('customerId') as string,
-    organizationId: formData.get('organizationId') as string
+    amount: Number(formData.get('amount'))
   }
 
   const validatedData = schema.extend({ id: z.string() }).safeParse(rawData)
@@ -121,9 +121,9 @@ async function updateAction(
     }
 
     const updateData: Partial<typeof validatedData.data> = {
+      customerId: validatedData.data.customerId,
       description: validatedData.data.description,
-      amount: validatedData.data.amount,
-      customerId: validatedData.data.customerId
+      amount: validatedData.data.amount
     }
 
     if (hasAccess && validatedData.data.status) {
@@ -138,13 +138,13 @@ async function updateAction(
       })
       .where(eq(invoices.id, validatedData.data.id))
 
-    revalidatePath(`/${user.id}/organizations/${rawData.organizationId}`)
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath(`/organizations/${rawData.organizationId}`)
+    revalidatePath('/invoices')
 
     return {
       success: true,
       message: 'Invoice updated successfully',
-      redirect: `/${user.id}/organizations/${rawData.organizationId}`
+      redirect: `/organizations/${rawData.organizationId}`
     }
   } catch (error) {
     console.error('Error updating invoice:', error)
@@ -161,8 +161,8 @@ async function deleteAction(
   formData: FormData
 ): Promise<ActionResponse> {
   const user: User = await verifySession()
-  const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
+  const id = formData.get('id') as string
 
   const hasAccess = user.role === 'admin' || user.role === 'owner'
 
@@ -176,13 +176,13 @@ async function deleteAction(
   try {
     await db.delete(invoices).where(eq(invoices.id, id))
 
-    revalidatePath(`/${user.id}/organizations/${organizationId}`)
-    revalidatePath(`/${user.id}/invoices`)
+    revalidatePath(`/organizations/${organizationId}`)
+    revalidatePath('/invoices')
 
     return {
       success: true,
       message: 'Invoice deleted successfully',
-      redirect: `/${user.id}/organizations/${organizationId}`
+      redirect: `/organizations/${organizationId}`
     }
   } catch (error) {
     console.error('Error deleting invoice:', error)

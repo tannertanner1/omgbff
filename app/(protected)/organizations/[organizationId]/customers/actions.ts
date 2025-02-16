@@ -47,9 +47,9 @@ async function createAction(
   }
 
   const rawData = {
+    organizationId: formData.get('organizationId') as string,
     name: formData.get('name') as string,
-    email: formData.get('email') as string,
-    organizationId: formData.get('organizationId') as string
+    email: formData.get('email') as string
   }
 
   const validatedData = schema.safeParse(rawData)
@@ -72,12 +72,12 @@ async function createAction(
       })
       .returning()
 
-    revalidatePath(`/${user.id}/organizations/${rawData.organizationId}`)
+    revalidatePath(`/organizations/${rawData.organizationId}`)
 
     return {
       success: true,
       message: 'Customer created successfully',
-      redirect: `/${user.id}/organizations/${rawData.organizationId}`
+      redirect: `/organizations/${rawData.organizationId}`
     }
   } catch (error) {
     console.error('Error creating customer:', error)
@@ -141,12 +141,12 @@ async function updateAction(
       })
       .where(eq(customers.id, validatedData.data.id))
 
-    revalidatePath(`/${user.id}/organizations/${rawData.organizationId}`)
+    revalidatePath(`/organizations/${rawData.organizationId}`)
 
     return {
       success: true,
       message: 'Customer updated successfully',
-      redirect: `/${user.id}/organizations/${rawData.organizationId}`
+      redirect: `/organizations/${rawData.organizationId}`
     }
   } catch (error) {
     console.error('Error updating customer:', error)
@@ -186,12 +186,12 @@ async function deleteAction(
   try {
     await db.delete(customers).where(eq(customers.id, id))
 
-    revalidatePath(`/${user.id}/organizations/${organizationId}`)
+    revalidatePath(`/organizations/${organizationId}`)
 
     return {
       success: true,
       message: 'Customer deleted successfully',
-      redirect: `/${user.id}/organizations/${organizationId}`
+      redirect: `/organizations/${organizationId}`
     }
   } catch (error) {
     console.error('Error deleting customer:', error)

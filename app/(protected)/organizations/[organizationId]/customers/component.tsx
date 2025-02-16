@@ -9,19 +9,17 @@ import { deleteAction } from './actions'
 
 export function Customers({
   customers,
-  userId,
-  organizationId
+  organizationId,
+  userId
 }: {
   customers: Customer[]
-  userId: string
   organizationId: string
+  userId: string
 }) {
   const router = useRouter()
 
   const handleEdit = (row: Customer) => {
-    router.push(
-      `/${userId}/organizations/${organizationId}/customers/${row.id}/edit`
-    )
+    router.push(`/organizations/${organizationId}/customers/${row.id}/edit`)
   }
 
   const handleDelete = async (row: Customer) => {
@@ -57,7 +55,7 @@ export function Customers({
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <h2 className='text-lg font-semibold'>Customers</h2>
-        <Link href={`/${userId}/organizations/${organizationId}/customers/new`}>
+        <Link href={`/organizations/${organizationId}/customers/new`}>
           <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
         </Link>
       </div>
@@ -65,7 +63,7 @@ export function Customers({
         data={customers}
         columns={columns}
         link={row =>
-          `/${userId}/organizations/${organizationId}/customers/${row.id}/edit`
+          `/organizations/${organizationId}/customers/${row.id}/edit`
         }
       />
     </div>
