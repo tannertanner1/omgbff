@@ -34,7 +34,7 @@ export default async function Page({
               </h1>
               <div className='mx-auto mt-6 flex w-full max-w-5xl flex-col justify-center gap-4'>
                 <Link
-                  href={`/${userId}/organizations/${organizationId}/customers/new`}
+                  href={`/organizations/${organizationId}/customers/new`}
                   className='w-full'
                   prefetch={false}
                 >
@@ -46,7 +46,7 @@ export default async function Page({
                   </Button>
                 </Link>
                 <Link
-                  href={`/${userId}/organizations/${organizationId}`}
+                  href={`/organizations/${organizationId}`}
                   className='inline-flex'
                   prefetch={false}
                 >
