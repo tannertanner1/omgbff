@@ -1,64 +1,32 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { IconMoodEmpty } from '@tabler/icons-react'
 import { Form, type Field } from '@/components/form'
 import { STATUSES } from '@/data/invoice-statuses'
 import { verifySession } from '@/lib/dal'
-import { getAllCustomers } from '@/db/queries'
+import { getAllOrganizations, getAllCustomers } from '@/db/queries'
 import { createAction } from '../actions'
 
-export default async function Page() {
+export default async function Page({
+  searchParams
+}: {
+  searchParams: Promise<{ organizationId?: string }>
+}) {
   const user = await verifySession()
-  const customers = await getAllCustomers()
+  const { organizationId } = await searchParams
+  const [organizations, allCustomers] = await Promise.all([
+    getAllOrganizations(),
+    getAllCustomers()
+  ])
 
-  if (!customers) return notFound()
+  if (!organizations || !allCustomers) return notFound()
 
   const hasAccess = user.role === 'admin' || user.role === 'owner'
+  const selectedOrganizationId = organizationId
 
-  if (customers.length === 0) {
-    return (
-      <div className='flex h-fit'>
-        <div className='flex min-w-0 flex-1 flex-col'>
-          <div className='container mx-auto w-full max-w-sm'>
-            <div className='flex flex-col items-center justify-center py-12 text-center'>
-              <h1 className='mt-6 text-balance text-4xl font-semibold'>
-                <div className='flex items-center justify-center text-muted-foreground'>
-                  <IconMoodEmpty className='h-24 w-24' />
-                </div>
-              </h1>
-              <div className='mx-auto mt-6 flex w-full max-w-5xl flex-col justify-center gap-4'>
-                <Link
-                  href={'/customers/new'}
-                  className='w-full'
-                  prefetch={false}
-                >
-                  <Button
-                    variant='outline'
-                    className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
-                  >
-                    Create customer
-                  </Button>
-                </Link>
-                <Link
-                  href={'/invoices'}
-                  className='inline-flex'
-                  prefetch={false}
-                >
-                  <Button
-                    variant='outline'
-                    className='w-full border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
-                  >
-                    Go back
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const customers = selectedOrganizationId
+    ? allCustomers.filter(
+        customer => customer.organizationId === selectedOrganizationId
+      )
+    : []
 
   const fields: Field[] = [
     {
@@ -83,10 +51,11 @@ export default async function Page() {
       label: 'Organization',
       type: 'select',
       required: true,
-      options: customers.map(customer => ({
-        label: customer.organization.name,
-        value: customer.organization.id
-      }))
+      options: organizations.map(org => ({
+        label: org.name,
+        value: org.id
+      })),
+      defaultValue: selectedOrganizationId
     },
     {
       name: 'customerId',
@@ -94,9 +63,10 @@ export default async function Page() {
       type: 'select',
       required: true,
       options: customers.map(customer => ({
-        label: `${customer.name} <${customer.email}>`,
+        label: customer.name,
         value: customer.id
-      }))
+      })),
+      disabled: !selectedOrganizationId
     },
     {
       name: 'amount',
@@ -116,3 +86,70 @@ export default async function Page() {
     />
   )
 }
+
+// @note need organization and customer to match...
+
+// import Link from 'next/link'
+// import { notFound } from 'next/navigation'
+// import { Button } from '@/components/ui/button'
+// import { IconMoodEmpty } from '@tabler/icons-react'
+// import { Form, type Field } from '@/components/form'
+// import { STATUSES } from '@/data/invoice-statuses'
+// import { verifySession } from '@/lib/dal'
+// import { getAllCustomers, getAllOrganizations } from '@/db/queries'
+// import { createAction } from '../actions'
+
+// export default async function Page() {
+//   const user = await verifySession()
+//   const [customers, organizations] = await Promise.all([
+//     getAllCustomers(),
+//     getAllOrganizations()
+//   ])
+
+//   if (!customers || !organizations) return notFound()
+
+//   const hasAccess = user.role === 'admin' || user.role === 'owner'
+
+//   if (customers.length === 0) {
+//     return (
+//       <div className='flex h-fit'>
+//         <div className='flex min-w-0 flex-1 flex-col'>
+//           <div className='container mx-auto w-full max-w-sm'>
+//             <div className='flex flex-col items-center justify-center py-12 text-center'>
+//               <h1 className='mt-6 text-balance text-4xl font-semibold'>
+//                 <div className='flex items-center justify-center text-muted-foreground'>
+//                   <IconMoodEmpty className='h-24 w-24' />
+//                 </div>
+//               </h1>
+//               <div className='mx-auto mt-6 flex w-full max-w-5xl flex-col justify-center gap-4'>
+//                 <Link
+//                   href={'/customers/new'}
+//                   className='w-full'
+//                   prefetch={false}
+//                 >
+//                   <Button
+//                     variant='outline'
+//                     className='w-full border border-primary bg-background text-primary hover:bg-primary hover:text-background'
+//                   >
+//                     Create customer
+//                   </Button>
+//                 </Link>
+//                 <Link
+//                   href={'/invoices'}
+//                   className='inline-flex'
+//                   prefetch={false}
+//                 >
+//                   <Button
+//                     variant='outline'
+//                     className='w-full border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
+//                   >
+//                     Go back
+//                   </Button>
+//                 </Link>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     )
+//   }

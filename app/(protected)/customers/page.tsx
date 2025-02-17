@@ -1,5 +1,5 @@
-import { notFound, redirect } from 'next/navigation'
-import { getAllCustomers } from '@/db/queries'
+import { redirect } from 'next/navigation'
+import { getAllCustomers, getUserCustomers } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 import { Component } from './component'
@@ -11,13 +11,16 @@ export default async function Page() {
   if (!hasPermission(user, 'customers', 'view')) {
     redirect('/')
   }
-  if (user.role !== 'admin' && user.role !== 'owner') {
-    notFound()
+
+  let customersData
+  if (user.role === 'admin' || user.role === 'owner') {
+    customersData = await getAllCustomers()
+  } else {
+    customersData = await getUserCustomers({ userId: user.id })
   }
 
-  const customerData = await getAllCustomers()
   const customers: Customer[] =
-    customerData?.map(customer => ({
+    customersData?.map(customer => ({
       ...customer,
       createdAt:
         customer.createdAt instanceof Date
@@ -27,15 +30,9 @@ export default async function Page() {
         customer.updatedAt instanceof Date
           ? customer.updatedAt.toISOString()
           : customer.updatedAt,
-      invoiceCount: customer.invoices.length,
-      invoiceTotal: customer.invoices.reduce(
-        (sum, invoice) => sum + invoice.amount,
-        0
-      ),
-      invoices: customer.invoices.map(invoice => ({
-        id: invoice.id,
-        amount: invoice.amount
-      }))
+      invoiceCount: customer.invoiceCount,
+      invoiceTotal: customer.invoiceTotal,
+      invoices: customer.invoices || []
     })) || []
 
   return <Component customers={customers} userId={user.id} />

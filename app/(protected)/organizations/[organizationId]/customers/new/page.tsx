@@ -9,7 +9,7 @@ export default async function Page({
   params: Promise<{ organizationId: string }>
 }) {
   const { organizationId } = await params
-  const organization = await getOrganizationById(organizationId)
+  const organization = await getOrganizationById({ organizationId })
 
   if (!organization) return notFound()
 

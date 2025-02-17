@@ -11,10 +11,10 @@ import { verifySession } from '@/lib/dal'
 export default async function Page({
   params
 }: {
-  params: Promise<{ userId: string; organizationId: string }>
+  params: Promise<{ organizationId: string }>
 }) {
-  const { userId, organizationId } = await params
-  const customers = await getOrganizationCustomers(organizationId)
+  const { organizationId } = await params
+  const customers = await getOrganizationCustomers({ organizationId })
 
   if (!customers) return notFound()
 
