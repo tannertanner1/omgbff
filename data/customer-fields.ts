@@ -1,18 +1,18 @@
 import { pgEnum } from 'drizzle-orm/pg-core'
 
-const ADDRESS_LABELS = ['Mailing', 'Billing'] as const
-type AddressLabel = (typeof ADDRESS_LABELS)[number]
-const addressLabel = pgEnum('address_label', ADDRESS_LABELS)
+const ADDRESS = ['Mailing', 'Billing'] as const
+type Address = (typeof ADDRESS)[number]
+const address = pgEnum('address', ADDRESS)
 
-const PHONE_LABELS = ['Primary', 'Secondary'] as const
-type PhoneLabel = (typeof PHONE_LABELS)[number]
-const phoneLabel = pgEnum('phone_label', PHONE_LABELS)
+const PHONE = ['Primary', 'Secondary'] as const
+type Phone = (typeof PHONE)[number]
+const phone = pgEnum('phone', PHONE)
 
-const COUNTRIES = ['Canada', 'United States'] as const
-type Country = (typeof COUNTRIES)[number]
-const country = pgEnum('country', COUNTRIES)
+const COUNTRY = ['Canada', 'United States'] as const
+type Country = (typeof COUNTRY)[number]
+const country = pgEnum('country', COUNTRY)
 
-const US_STATES = [
+const STATE = [
   'Alabama',
   'Alaska',
   'Arizona',
@@ -65,7 +65,7 @@ const US_STATES = [
   'Wyoming'
 ] as const
 
-const CANADIAN_PROVINCES = [
+const PROVINCE = [
   'Alberta',
   'British Columbia',
   'Manitoba',
@@ -81,11 +81,11 @@ const CANADIAN_PROVINCES = [
   'Yukon'
 ] as const
 
-type Region = (typeof US_STATES)[number] | (typeof CANADIAN_PROVINCES)[number]
-const region = pgEnum('region', [...US_STATES, ...CANADIAN_PROVINCES])
+type Region = (typeof STATE)[number] | (typeof PROVINCE)[number]
+const region = pgEnum('region', [...STATE, ...PROVINCE])
 
 const getRegionsByCountry = (country: Country) => {
-  return country === 'Canada' ? CANADIAN_PROVINCES : US_STATES
+  return country === 'Canada' ? PROVINCE : STATE
 }
 
 const getPostalCodeMask = (country: Country) => {
@@ -93,17 +93,17 @@ const getPostalCodeMask = (country: Country) => {
 }
 
 export {
-  ADDRESS_LABELS,
-  PHONE_LABELS,
-  COUNTRIES,
-  US_STATES,
-  CANADIAN_PROVINCES,
-  addressLabel,
-  phoneLabel,
+  ADDRESS,
+  PHONE,
+  COUNTRY,
+  STATE,
+  PROVINCE,
+  address,
+  phone,
   country,
   region,
   getRegionsByCountry,
   getPostalCodeMask
 }
 
-export type { AddressLabel, PhoneLabel, Country, Region }
+export type { Address, Phone, Country, Region }

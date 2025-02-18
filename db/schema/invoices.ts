@@ -4,12 +4,8 @@ import { relations } from 'drizzle-orm'
 import { organizations, users } from './users'
 import { InferInsertModel } from 'drizzle-orm'
 import { STATUSES } from '@/data/invoice-statuses'
-import type {
-  AddressLabel,
-  PhoneLabel,
-  Region,
-  Country
-} from '@/data/customer-fields'
+import { ADDRESS, PHONE } from '@/data/customer-fields'
+import type { Region, Country } from '@/data/customer-fields'
 
 const customers = pgTable('customers', {
   id: customerId,
@@ -25,10 +21,10 @@ const customers = pgTable('customers', {
   /** @note email, name, streetAddress, phoneNumber */
   email: text().notNull(),
   name: text().notNull(),
-  streetAddress: jsonb()
+  address: jsonb()
     .$type<
       Array<{
-        label: AddressLabel
+        label: (typeof ADDRESS)[number]
         line1: string
         line2?: string
         city: string
@@ -38,10 +34,10 @@ const customers = pgTable('customers', {
       }>
     >()
     .default([]),
-  phoneNumber: jsonb()
+  number: jsonb()
     .$type<
       Array<{
-        label: PhoneLabel
+        label: (typeof PHONE)[number]
         number: string
       }>
     >()

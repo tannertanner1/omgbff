@@ -17,13 +17,10 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import {
-  ADDRESS_LABELS,
-  COUNTRIES,
+  ADDRESS,
+  COUNTRY,
   getRegionsByCountry,
-  getPostalCodeMask,
-  type AddressLabel,
-  type Country,
-  type Region
+  getPostalCodeMask
 } from '@/data/customer-fields'
 import { IMaskInput } from 'react-imask'
 
@@ -43,13 +40,13 @@ export function Address({
   const [streetAddresses, setStreetAddresses] = React.useState<any[]>(
     defaultValue || [
       {
-        label: 'Mailing',
+        label: ADDRESS[0],
         line1: '',
         line2: '',
         city: '',
         region: '',
         postal: '',
-        country: 'Canada'
+        country: COUNTRY[0]
       }
     ]
   )
@@ -58,19 +55,19 @@ export function Address({
     setStreetAddresses([
       ...streetAddresses,
       {
-        label: '',
+        label: ADDRESS[1],
         line1: '',
         line2: '',
         city: '',
         region: '',
         postal: '',
-        country: 'Canada'
+        country: COUNTRY[0]
       }
     ])
   }
 
   const removeAddress = (index: number) => {
-    if (index === 0) return // Prevent removing the Mailing address
+    if (index === 0) return // Prevent removing the first address
     setStreetAddresses(streetAddresses.filter((_, i) => i !== index))
   }
 
@@ -84,36 +81,26 @@ export function Address({
     <Accordion type='multiple' className='w-full'>
       {streetAddresses.map((address, index) => (
         <AccordionItem key={index} value={`address-${index}`}>
-          <AccordionTrigger>
-            {address.label || `Address ${index + 1}`}
-          </AccordionTrigger>
+          <AccordionTrigger>{address.label} Address</AccordionTrigger>
           <AccordionContent>
             <div className='space-y-4'>
-              <Select
-                name={`${name}.${index}.label`}
-                value={address.label}
-                onValueChange={value => updateAddress(index, 'label', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder='Select label' />
-                </SelectTrigger>
-                <SelectContent>
-                  {ADDRESS_LABELS.map((label: AddressLabel) => (
-                    <SelectItem key={label} value={label}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                  <SelectItem value='custom'>Custom</SelectItem>
-                </SelectContent>
-              </Select>
-              {address.label === 'custom' && (
-                <Input
-                  placeholder='Custom label'
-                  value={address.customLabel || ''}
-                  onChange={e =>
-                    updateAddress(index, 'customLabel', e.target.value)
-                  }
-                />
+              {index !== 0 && (
+                <Select
+                  name={`${name}.${index}.label`}
+                  value={address.label}
+                  onValueChange={value => updateAddress(index, 'label', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select label' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ADDRESS.map(label => (
+                      <SelectItem key={label} value={label}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
 
               <Input
@@ -157,7 +144,7 @@ export function Address({
                   <SelectValue placeholder='Select country' />
                 </SelectTrigger>
                 <SelectContent>
-                  {COUNTRIES.map((country: Country) => (
+                  {COUNTRY.map(country => (
                     <SelectItem key={country} value={country}>
                       {country}
                     </SelectItem>
@@ -171,34 +158,27 @@ export function Address({
                 onValueChange={value => updateAddress(index, 'region', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder='Select State/Province' />
+                  <SelectValue placeholder='Select region' />
                 </SelectTrigger>
                 <SelectContent>
-                  {getRegionsByCountry(address.country).map(
-                    (region: Region) => (
-                      <SelectItem key={region} value={region}>
-                        {region}
-                      </SelectItem>
-                    )
-                  )}
+                  {getRegionsByCountry(address.country).map(region => (
+                    <SelectItem key={region} value={region}>
+                      {region}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
-              <div>
-                <label htmlFor={`${name}.${index}.postal`}>
-                  ZIP/Postal Code
-                </label>
-                <IMaskInput
-                  id={`${name}.${index}.postal`}
-                  name={`${name}.${index}.postal`}
-                  placeholder='ZIP/Postal Code'
-                  value={address.postal}
-                  onAccept={value => updateAddress(index, 'postal', value)}
-                  mask={getPostalCodeMask(address.country)}
-                  required={required}
-                  disabled={disabled}
-                />
-              </div>
+              <IMaskInput
+                id={`${name}.${index}.postal`}
+                name={`${name}.${index}.postal`}
+                placeholder='Postal Code'
+                value={address.postal}
+                onAccept={value => updateAddress(index, 'postal', value)}
+                mask={getPostalCodeMask(address.country)}
+                required={required}
+                disabled={disabled}
+              />
 
               {index !== 0 && (
                 <Button
@@ -213,7 +193,7 @@ export function Address({
           </AccordionContent>
         </AccordionItem>
       ))}
-      {streetAddresses.length < 3 && (
+      {streetAddresses.length < ADDRESS.length && (
         <Button type='button' onClick={addAddress} className='mt-2'>
           Add Address
         </Button>
