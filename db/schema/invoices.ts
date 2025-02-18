@@ -1,9 +1,15 @@
-import { integer, pgTable, text } from 'drizzle-orm/pg-core'
+import { integer, pgTable, text, jsonb } from 'drizzle-orm/pg-core'
 import { customerId, invoiceId, createdAt, updatedAt } from '@/db/helpers'
 import { relations } from 'drizzle-orm'
 import { organizations, users } from './users'
 import { InferInsertModel } from 'drizzle-orm'
 import { STATUSES } from '@/data/invoice-statuses'
+import type {
+  AddressLabel,
+  PhoneLabel,
+  Region,
+  Country
+} from '@/data/customer-fields'
 
 const customers = pgTable('customers', {
   id: customerId,
@@ -16,9 +22,30 @@ const customers = pgTable('customers', {
     .references(() => users.id),
   createdAt,
   updatedAt,
-  /** @note email, name */
+  /** @note email, name, streetAddress, phoneNumber */
   email: text().notNull(),
-  name: text().notNull()
+  name: text().notNull(),
+  streetAddress: jsonb()
+    .$type<
+      Array<{
+        label: AddressLabel
+        line1: string
+        line2?: string
+        city: string
+        region: Region
+        postal: string
+        country: Country
+      }>
+    >()
+    .default([]),
+  phoneNumber: jsonb()
+    .$type<
+      Array<{
+        label: PhoneLabel
+        number: string
+      }>
+    >()
+    .default([])
 })
 
 // const organizationCustomers = pgTable(
