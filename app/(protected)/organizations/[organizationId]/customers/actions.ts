@@ -8,12 +8,45 @@ import { customers } from '@/db/schema'
 import { Action, type ActionResponse } from '@/types/forms'
 import { verifySession } from '@/lib/dal'
 import { hasPermission, type User } from '@/lib/abac'
+import {
+  ADDRESS,
+  PHONE,
+  COUNTRY,
+  STATE,
+  PROVINCE
+} from '@/data/customer-fields'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Organization required'),
   name: z.string().min(1, 'Name required'),
-  email: z.string().email('Email required')
+  email: z.string().email('Email required'),
+  address: z
+    .array(
+      z.object({
+        label: z.enum(ADDRESS),
+        line1: z.string().min(1, 'Address line 1 is required'),
+        line2: z.string().optional(),
+        city: z.string().min(1, 'City is required'),
+        region: z.union([z.enum(STATE), z.enum(PROVINCE)]),
+        postal: z.string().min(5, 'Postal code must be at least 5 characters'),
+        country: z.enum(COUNTRY)
+      })
+    )
+    .min(1, 'At least one address is required'),
+  phone: z
+    .array(
+      z.object({
+        label: z.enum(PHONE),
+        number: z.string().min(10, 'Phone number must be at least 10 digits')
+      })
+    )
+    .min(1, 'At least one phone number is required')
 })
+// const schema = z.object({
+//   organizationId: z.string().min(1, 'Organization required'),
+//   name: z.string().min(1, 'Name required'),
+//   email: z.string().email('Email required')
+// })
 
 const { FormData } = Action(schema)
 

@@ -34,7 +34,7 @@ const customers = pgTable('customers', {
       }>
     >()
     .default([]),
-  number: jsonb()
+  phone: jsonb()
     .$type<
       Array<{
         label: (typeof PHONE)[number]

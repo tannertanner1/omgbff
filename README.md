@@ -5,6 +5,10 @@
 # pnpm add eslint-plugin-react-compiler -D
 ```
 
+- The best practice approach for handling params as a Promise.
+- Proper permission checks using `verifySession` and `hasPermission`.
+- Use of `Promise.all` for concurrent requests where applicable.
+
 <div>
   <strong>Note:</strong>
     <ul>
