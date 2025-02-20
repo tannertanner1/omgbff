@@ -17,30 +17,30 @@ import {
 } from '@/data/customer-fields'
 
 const schema = z.object({
-  organizationId: z.string().min(1, 'Organization required'),
-  name: z.string().min(1, 'Name required'),
-  email: z.string().email('Email required'),
+  organizationId: z.string().min(1, 'Required'),
+  name: z.string().min(1, 'Required'),
+  email: z.string().email('Required'),
   address: z
     .array(
       z.object({
         label: z.enum(ADDRESS),
-        line1: z.string().min(1, 'Address line 1 is required'),
+        line1: z.string().min(1, 'Required'),
         line2: z.string().optional(),
-        city: z.string().min(1, 'City is required'),
+        city: z.string().min(1, 'Required'),
         region: z.union([z.enum(STATE), z.enum(PROVINCE)]),
-        postal: z.string().min(5, 'Postal code must be at least 5 characters'),
+        postal: z.string().min(5, 'Must be at least 5 characters'),
         country: z.enum(COUNTRY)
       })
     )
-    .min(1, 'At least one address is required'),
+    .min(1, 'Required'),
   phone: z
     .array(
       z.object({
         label: z.enum(PHONE),
-        number: z.string().min(10, 'Phone number must be at least 10 digits')
+        number: z.string().min(10, 'Must be at least 10 digits')
       })
     )
-    .min(1, 'At least one phone number is required')
+    .min(1, 'Required')
 })
 // const schema = z.object({
 //   organizationId: z.string().min(1, 'Organization required'),

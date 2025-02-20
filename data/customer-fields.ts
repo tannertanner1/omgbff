@@ -84,14 +84,6 @@ const PROVINCE = [
 type Region = (typeof STATE)[number] | (typeof PROVINCE)[number]
 const region = pgEnum('region', [...STATE, ...PROVINCE])
 
-const getRegionsByCountry = (country: Country) => {
-  return country === 'Canada' ? PROVINCE : STATE
-}
-
-const getPostalCodeMask = (country: Country) => {
-  return country === 'Canada' ? 'A9A 9A9' : '99999'
-}
-
 export {
   ADDRESS,
   PHONE,
@@ -101,9 +93,7 @@ export {
   address,
   phone,
   country,
-  region,
-  getRegionsByCountry,
-  getPostalCodeMask
+  region
 }
 
 export type { Address, Phone, Country, Region }

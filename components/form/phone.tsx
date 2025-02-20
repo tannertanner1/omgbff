@@ -1,22 +1,80 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
+import { Badge } from '@/components/ui/badge'
+import { ChevronDown } from 'lucide-react'
 import { PHONE } from '@/data/customer-fields'
+import { cn } from '@/lib/utils'
 import { IMaskInput } from 'react-imask'
+
+const Section = ({
+  title,
+  summary,
+  children,
+  onRemove
+}: {
+  title: string
+  summary: string
+  children: React.ReactNode
+  onRemove?: () => void
+}) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  return (
+    <div className='overflow-hidden rounded-lg border bg-background shadow-sm'>
+      <button
+        type='button'
+        className='flex w-full items-center justify-between px-4 py-3 text-left'
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className='mr-4 flex min-w-0 flex-1 items-center'>
+          <Badge className='shrink-0 border border-accent bg-accent text-primary'>
+            {title}
+          </Badge>
+          <div className='ml-2 min-w-0 flex-1'>
+            <span className='block truncate text-sm text-muted-foreground'>
+              {summary}
+            </span>
+          </div>
+        </div>
+        <ChevronDown
+          className={cn(
+            'h-5 w-5 shrink-0 transition-transform duration-200',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.2 }}
+            className='overflow-hidden'
+          >
+            <div className='space-y-4 p-4'>
+              {children}
+              {onRemove && (
+                <Button
+                  type='button'
+                  variant='destructive'
+                  onClick={onRemove}
+                  className='w-full border border-[#DB4437] bg-background text-[#DB4437] hover:bg-[#DB4437] hover:text-background'
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export function Phone({
   id,
@@ -31,78 +89,71 @@ export function Phone({
   required?: boolean
   disabled?: boolean
 }) {
-  const [phoneNumbers, setPhoneNumbers] = React.useState<any[]>(
+  const [phones, setPhones] = React.useState<any[]>(
     defaultValue || [{ label: PHONE[0], number: '' }]
   )
 
   const addPhone = () => {
-    setPhoneNumbers([...phoneNumbers, { label: PHONE[1], number: '' }])
+    if (phones.length < PHONE.length) {
+      setPhones([...phones, { label: PHONE[phones.length], number: '' }])
+    }
   }
 
   const removePhone = (index: number) => {
-    if (index === 0) return // Prevent removing the first phone number
-    setPhoneNumbers(phoneNumbers.filter((_, i) => i !== index))
+    if (index === 0) return // Prevent removing primary phone
+    setPhones(phones.filter((_, i) => i !== index))
   }
 
-  const updatePhone = (index: number, field: string, value: string) => {
-    const newPhoneNumbers = [...phoneNumbers]
-    newPhoneNumbers[index][field] = value
-    setPhoneNumbers(newPhoneNumbers)
+  const updatePhone = (index: number, value: string) => {
+    const newPhones = [...phones]
+    newPhones[index] = { ...newPhones[index], number: value }
+    setPhones(newPhones)
   }
 
   return (
-    <Accordion type='multiple' className='w-full'>
-      {phoneNumbers.map((phone, index) => (
-        <AccordionItem key={index} value={`phone-${index}`}>
-          <AccordionTrigger>{phone.label} Phone</AccordionTrigger>
-          <AccordionContent>
-            <div className='space-y-4'>
-              {index !== 0 && (
-                <Select
-                  name={`${name}.${index}.label`}
-                  value={phone.label}
-                  onValueChange={value => updatePhone(index, 'label', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select label' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PHONE.filter(label => label !== PHONE[0]).map(label => (
-                      <SelectItem key={label} value={label}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+    <div className='space-y-4'>
+      {phones.map((phone, index) => (
+        <Section
+          key={index}
+          title={phone.label}
+          summary={phone.number || ''}
+          onRemove={index > 0 ? () => removePhone(index) : undefined}
+        >
+          <input
+            type='hidden'
+            name={`${name}.${index}.label`}
+            value={phone.label}
+          />
+
+          <div className=''>
+            <div className={cn('-mt-4 grid gap-2')}>
+              <Label htmlFor={`${id}-${index}-number`}>Number</Label>
               <IMaskInput
-                id={`${name}.${index}.number`}
+                id={`${id}-${index}-number`}
                 name={`${name}.${index}.number`}
-                placeholder='Phone Number'
                 value={phone.number}
-                onAccept={value => updatePhone(index, 'number', value)}
+                onAccept={value => updatePhone(index, value)}
                 mask='(000) 000-0000'
                 required={required}
                 disabled={disabled}
+                className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
               />
-              {index !== 0 && (
-                <Button
-                  type='button'
-                  onClick={() => removePhone(index)}
-                  variant='destructive'
-                >
-                  Remove Phone
-                </Button>
-              )}
             </div>
-          </AccordionContent>
-        </AccordionItem>
+          </div>
+        </Section>
       ))}
-      {phoneNumbers.length < PHONE.length && (
-        <Button type='button' onClick={addPhone} className='mt-2'>
-          Add Phone
+
+      {phones.length < PHONE.length && (
+        <Button
+          type='button'
+          variant='outline'
+          className='w-full border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
+          onClick={addPhone}
+          disabled={disabled}
+        >
+          Add
         </Button>
       )}
-    </Accordion>
+    </div>
   )
 }
