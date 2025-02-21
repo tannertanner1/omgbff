@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { IconPaw } from '@tabler/icons-react'
 import { auth } from '@/lib/auth'
 import { Menu } from '@/components/menu'
+import { Heatmap } from '@/components/heatmap'
 
 export default async function Page() {
   const session = await auth()
@@ -17,12 +18,13 @@ export default async function Page() {
             </div>
           ) : (
             <div className='flex flex-col items-center py-12'>
-              <Link
+              {/* <Link
                 href='/login'
                 className='flex items-center gap-2 self-center font-medium'
               >
                 <IconPaw className='h-12 w-12' aria-hidden='true' />
-              </Link>
+              </Link> */}
+              <Heatmap />
             </div>
           )}
         </div>
