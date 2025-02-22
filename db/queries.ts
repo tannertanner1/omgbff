@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { eq, inArray } from 'drizzle-orm'
 import { db } from '@/db'
 import {
@@ -7,9 +8,8 @@ import {
   invoices,
   type users
 } from '@/db/schema'
-import { hasPermission } from '@/lib/abac'
 import { verifySession } from '@/lib/dal'
-import { notFound } from 'next/navigation'
+import { hasPermission } from '@/lib/abac'
 
 async function getAllUsers(): Promise<(typeof users.$inferSelect)[] | []> {
   const user = await verifySession()
@@ -26,13 +26,23 @@ async function getAllOrganizations(): Promise<
   (typeof organizations.$inferSelect)[] | []
 > {
   const user = await verifySession()
-  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
-    return []
+  if (user.role === 'admin' || user.role === 'owner') {
+    return await db.query.organizations.findMany({
+      orderBy: (organizations, { desc }) => [desc(organizations.createdAt)]
+    })
+  } else {
+    return await db.query.userOrganizations
+      .findMany({
+        where: eq(userOrganizations.userId, user.id),
+        with: {
+          organization: true
+        },
+        orderBy: (userOrganizations, { desc }) => [
+          desc(userOrganizations.createdAt)
+        ]
+      })
+      .then(results => results.map(result => result.organization))
   }
-
-  return await db.query.organizations.findMany({
-    orderBy: (organizations, { desc }) => [desc(organizations.createdAt)]
-  })
 }
 
 async function getAllCustomers(): Promise<
@@ -44,12 +54,10 @@ async function getAllCustomers(): Promise<
   | []
 > {
   const user = await verifySession()
-  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
-    return []
-  }
+  let customersQuery
 
-  return await db.query.customers
-    .findMany({
+  if (user.role === 'admin' || user.role === 'owner') {
+    customersQuery = db.query.customers.findMany({
       with: {
         invoices: {
           columns: {
@@ -60,17 +68,32 @@ async function getAllCustomers(): Promise<
         organization: true
       }
     })
-    .then(customers =>
-      customers.map(customer => ({
-        ...customer,
-        invoiceCount: customer.invoices.length,
-        invoiceTotal: customer.invoices.reduce(
-          (sum: number, invoice: { amount: number }) => sum + invoice.amount,
-          0
-        ),
-        invoices: customer.invoices
-      }))
-    )
+  } else {
+    customersQuery = db.query.customers.findMany({
+      where: eq(customers.userId, user.id),
+      with: {
+        invoices: {
+          columns: {
+            id: true,
+            amount: true
+          }
+        },
+        organization: true
+      }
+    })
+  }
+
+  return customersQuery.then(customers =>
+    customers.map(customer => ({
+      ...customer,
+      invoiceCount: customer.invoices.length,
+      invoiceTotal: customer.invoices.reduce(
+        (sum: number, invoice: { amount: number }) => sum + invoice.amount,
+        0
+      ),
+      invoices: customer.invoices
+    }))
+  )
 }
 
 async function getAllInvoices(): Promise<
@@ -80,91 +103,34 @@ async function getAllInvoices(): Promise<
   | []
 > {
   const user = await verifySession()
-  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
-    return []
-  }
-
-  return await db.query.invoices.findMany({
-    with: {
-      customer: {
-        columns: {
-          name: true,
-          email: true,
-          organizationId: true
-        }
-      }
-    },
-    orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
-  })
-}
-
-async function getUserOrganizations(): Promise<
-  | (typeof userOrganizations.$inferSelect & {
-      organization: typeof organizations.$inferSelect
-    })[]
-  | []
-> {
-  const user = await verifySession()
-  if (!user || !hasPermission(user, 'organizations', 'view')) {
-    return []
-  }
-
-  return await db.query.userOrganizations.findMany({
-    where: eq(userOrganizations.userId, user.id),
-    with: {
-      organization: true
-    },
-    orderBy: (userOrganizations, { desc }) => [
-      desc(userOrganizations.createdAt)
-    ]
-  })
-}
-
-async function getUserCustomers({ userId }: { userId: string }): Promise<
-  (typeof customers.$inferSelect & {
-    invoiceCount: number
-    invoiceTotal: number
-    invoices: { id: string; amount: number }[]
-  })[]
-> {
-  return await db.query.customers
-    .findMany({
-      where: eq(customers.userId, userId),
+  if (user.role === 'admin' || user.role === 'owner') {
+    return await db.query.invoices.findMany({
       with: {
-        invoices: {
+        customer: {
           columns: {
-            id: true,
-            amount: true
+            name: true,
+            email: true,
+            organizationId: true
           }
         }
-      }
+      },
+      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
     })
-    .then(customers =>
-      customers.map(customer => ({
-        ...customer,
-        invoiceCount: customer.invoices.length,
-        invoiceTotal: customer.invoices.reduce(
-          (sum: number, invoice: { amount: number }) => sum + invoice.amount,
-          0
-        ),
-        invoices: customer.invoices
-      }))
-    )
-}
-
-async function getUserInvoices({
-  userId
-}: {
-  userId: string
-}): Promise<
-  (typeof invoices.$inferSelect & { customer: typeof customers.$inferSelect })[]
-> {
-  return await db.query.invoices.findMany({
-    where: eq(invoices.userId, userId),
-    with: {
-      customer: true
-    }
-  })
+  } else {
+    return await db.query.invoices.findMany({
+      where: eq(invoices.userId, user.id),
+      with: {
+        customer: {
+          columns: {
+            name: true,
+            email: true,
+            organizationId: true
+          }
+        }
+      },
+      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
+    })
+  }
 }
 
 async function getOrganizationById({
@@ -321,16 +287,10 @@ async function getInvoiceById({
 }
 
 export {
-  // All
   getAllUsers,
   getAllOrganizations,
   getAllCustomers,
   getAllInvoices,
-  // User
-  getUserOrganizations,
-  getUserCustomers,
-  getUserInvoices,
-  // Organization
   getOrganizationById,
   getOrganizationCustomers,
   getOrganizationInvoices,

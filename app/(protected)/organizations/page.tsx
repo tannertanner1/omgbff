@@ -11,9 +11,9 @@ export default async function Page() {
     redirect('/')
   }
 
-  const organizationsData = await getAllOrganizations()
+  const data = await getAllOrganizations()
 
-  const organizations = organizationsData.map(organization => ({
+  const organizations = data.map(organization => ({
     ...organization,
     userId: user.id,
     createdAt:
