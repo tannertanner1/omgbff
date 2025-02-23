@@ -1,5 +1,28 @@
 <h3><strong>❤️OMGBFF❤️<strong></h3>
 
+```ts
+/**
+
+// Form Components
+  // `components/form/index.tsx`
+  // `components/form/address.tsx`
+  // `components/form/phone.tsx`
+
+// Server Actions
+  // `app/(protected)/organizations/[organizationId]/customers/actions.ts`
+  // `app/(protected)/customers/actions.ts`
+
+// `/customers` Form Pages
+  // `app/(protected)/customers/new/page.tsx
+  // `app/(protected)/customers/[customerId]/edit/page.tsx`
+
+// `/organizations/[organizationId]/customers` Form Pages
+  // `app/(protected)/organizations/[organizationId]/customers/[customerId]/edit/page.tsx`
+  // `app/(protected)/organizations/[organizationId]/customers/new/page.tsx`
+
+*/
+```
+
 ```bash
 # pnpm add babel-plugin-react-compiler
 # pnpm add eslint-plugin-react-compiler -D

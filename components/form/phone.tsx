@@ -1,84 +1,148 @@
 'use client'
 
-import * as React from 'react'
-import { Label } from '@/components/ui/label'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { IMaskInput } from 'react-imask'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { PHONE } from '@/data/customer-fields'
 import { Section } from './section'
+import { IMaskInput } from 'react-imask'
+import { cn } from '@/lib/utils'
+import type { NestedFieldErrors } from '@/types/forms'
 
 export function Phone({
-  id,
   name,
-  defaultValue,
-  required,
-  disabled
+  required
 }: {
-  id: string
   name: string
-  defaultValue?: any
   required?: boolean
-  disabled?: boolean
 }) {
-  const [phones, setPhones] = React.useState<any[]>(
-    defaultValue || [{ label: PHONE[0], number: '' }]
-  )
+  const {
+    control,
+    register,
+    formState: { errors },
+    watch,
+    setValue
+  } = useFormContext()
 
-  const addPhone = () => {
-    if (phones.length < PHONE.length) {
-      setPhones([...phones, { label: PHONE[phones.length], number: '' }])
-    }
-  }
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name
+  })
 
-  const removePhone = (index: number) => {
-    if (index === 0) return // Prevent removing primary phone
-    setPhones(phones.filter((_, i) => i !== index))
-  }
+  const watchFieldArray = watch(name)
+  const controlledFields = fields.map((field, index) => ({
+    ...field,
+    ...watchFieldArray[index]
+  }))
 
-  const updatePhone = (index: number, value: string) => {
-    const newPhones = [...phones]
-    newPhones[index] = { ...newPhones[index], number: value }
-    setPhones(newPhones)
-  }
+  const fieldErrors = errors[name] as NestedFieldErrors | undefined
+
+  // Get currently used labels
+  const usedLabels = controlledFields.map(field => field.label)
 
   return (
-    <div className='space-y-4'>
-      {phones.map((phone, index) => (
-        <Section
-          key={index}
-          title={phone.label}
-          summary={phone.number || ''}
-          onRemove={index > 0 ? () => removePhone(index) : undefined}
-        >
-          <input
-            type='hidden'
-            name={`${name}.${index}.label`}
-            value={phone.label}
-          />
-          <div className={cn('-mt-4 grid gap-2')}>
-            <Label htmlFor={`${id}-${index}-number`}>Number</Label>
-            <IMaskInput
-              id={`${id}-${index}-number`}
-              name={`${name}.${index}.number`}
-              value={phone.number}
-              onAccept={value => updatePhone(index, value)}
-              mask='(000) 000-0000'
-              required={required}
-              disabled={disabled}
-              className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
-            />
-          </div>
-        </Section>
-      ))}
+    <div className='w-full max-w-[338px] space-y-4'>
+      <Label
+        className={cn(
+          'mt-6',
+          required
+            ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+            : ''
+        )}
+      >
+        Phone
+      </Label>
+      {controlledFields.map((field, index) => {
+        const error = fieldErrors?.[index] as NestedFieldErrors | undefined
+        const hasErrors = !!error
 
-      {phones.length < PHONE.length && (
+        return (
+          <Section
+            key={field.id}
+            title={`${field.label || PHONE[index] || 'Phone'}`}
+            summary={field.number || ''}
+            onRemove={index > 0 ? () => remove(index) : undefined}
+            error={
+              hasErrors
+                ? {
+                    type: 'validation',
+                    message: 'Please complete all required fields'
+                  }
+                : undefined
+            }
+            defaultOpen={hasErrors}
+          >
+            <div className='space-y-4'>
+              <div>
+                <Label>Label</Label>
+                <Select
+                  onValueChange={value => {
+                    const event = {
+                      target: { name: `${name}.${index}.label`, value }
+                    }
+                    register(`${name}.${index}.label`).onChange(event)
+                  }}
+                  value={field.label || ''}
+                >
+                  <SelectTrigger
+                    className={cn(error?.label ? 'border-[#DB4437]' : 'mb-7')}
+                  >
+                    <SelectValue placeholder='Select label' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PHONE.filter(
+                      label =>
+                        !usedLabels.includes(label) || field.label === label
+                    ).map(label => (
+                      <SelectItem key={label} value={label}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Number</Label>
+                <IMaskInput
+                  {...register(`${name}.${index}.number`)}
+                  mask='(000) 000-0000'
+                  definitions={{
+                    '0': /[0-9]/
+                  }}
+                  className={cn(
+                    'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                    error?.number ? 'border-[#DB4437]' : 'mb-7'
+                  )}
+                  value={field.number || ''}
+                  onAccept={value => {
+                    setValue(`${name}.${index}.number`, value)
+                  }}
+                />
+              </div>
+            </div>
+          </Section>
+        )
+      })}
+
+      {fields.length < PHONE.length && (
         <Button
           type='button'
           variant='outline'
-          className='w-full border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
-          onClick={addPhone}
-          disabled={disabled}
+          className='w-full max-w-[338px] border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
+          onClick={() =>
+            append({
+              label: PHONE[fields.length],
+              number: ''
+            })
+          }
         >
           Add
         </Button>
@@ -87,83 +151,291 @@ export function Phone({
   )
 }
 
+// @note
+
 // 'use client'
 
-// import * as React from 'react'
-// import { motion, AnimatePresence } from 'framer-motion'
-// import { Label } from '@/components/ui/label'
+// import { useFieldArray, useFormContext } from 'react-hook-form'
 // import { Button } from '@/components/ui/button'
-// import { Badge } from '@/components/ui/badge'
-// import { ChevronDown } from 'lucide-react'
+// import { Input } from '@/components/ui/input'
+// import { Label } from '@/components/ui/label'
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue
+// } from '@/components/ui/select'
 // import { PHONE } from '@/data/customer-fields'
+// import { Section } from './section'
 // import { cn } from '@/lib/utils'
-// import { IMaskInput } from 'react-imask'
+// import type { NestedFieldErrors } from '@/types/forms'
 
-// const Section = ({
-//   title,
-//   summary,
-//   children,
-//   onRemove
-// }: {
-//   title: string
-//   summary: string
-//   children: React.ReactNode
-//   onRemove?: () => void
-// }) => {
-//   const [isOpen, setIsOpen] = React.useState(false)
+// export function Phone({ name }: { name: string }) {
+//   const {
+//     control,
+//     register,
+//     formState: { errors },
+//     watch,
+//     setValue
+//   } = useFormContext()
+
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name
+//   })
+
+//   const watchFieldArray = watch(name)
+//   const controlledFields = fields.map((field, index) => ({
+//     ...field,
+//     ...watchFieldArray[index]
+//   }))
+
+//   const fieldErrors = errors[name] as NestedFieldErrors | undefined
 
 //   return (
-//     <div className='overflow-hidden rounded-lg border bg-background shadow-sm'>
-//       <button
-//         type='button'
-//         className='flex w-full items-center justify-between px-4 py-3 text-left'
-//         onClick={() => setIsOpen(!isOpen)}
-//       >
-//         <div className='mr-4 flex min-w-0 flex-1 items-center'>
-//           <Badge className='shrink-0 border border-accent bg-accent text-primary'>
-//             {title}
-//           </Badge>
-//           <div className='ml-2 min-w-0 flex-1'>
-//             <span className='block truncate text-sm text-muted-foreground'>
-//               {summary}
-//             </span>
-//           </div>
-//         </div>
-//         <ChevronDown
-//           className={cn(
-//             'h-5 w-5 shrink-0 transition-transform duration-200',
-//             isOpen && 'rotate-180'
-//           )}
-//         />
-//       </button>
-//       <AnimatePresence>
-//         {isOpen && (
-//           <motion.div
-//             initial={{ height: 0 }}
-//             animate={{ height: 'auto' }}
-//             exit={{ height: 0 }}
-//             transition={{ duration: 0.2 }}
-//             className='overflow-hidden'
+//     <div className='space-y-4'>
+//       {controlledFields.map((field, index) => {
+//         const error = fieldErrors?.[index] as NestedFieldErrors | undefined
+//         const hasErrors = !!error
+
+//         return (
+//           <Section
+//             key={field.id}
+//             title={`${field.label || PHONE[index] || 'Phone'}`}
+//             summary={field.number || 'No number'}
+//             onRemove={index > 0 ? () => remove(index) : undefined}
+//             error={
+//               hasErrors
+//                 ? {
+//                     type: 'validation',
+//                     message: 'Please complete all required fields'
+//                   }
+//                 : undefined
+//             }
+//             defaultOpen={hasErrors}
 //           >
-//             <div className='space-y-4 p-4'>
-//               {children}
-//               {onRemove && (
-//                 <Button
-//                   type='button'
-//                   variant='destructive'
-//                   onClick={onRemove}
-//                   className='w-full border border-[#DB4437] bg-background text-[#DB4437] hover:bg-[#DB4437] hover:text-background'
+//             <div className='space-y-4'>
+//               <div>
+//                 <Label>Label</Label>
+//                 <Select
+//                   onValueChange={value => {
+//                     const event = {
+//                       target: { name: `${name}.${index}.label`, value }
+//                     }
+//                     register(`${name}.${index}.label`).onChange(event)
+//                   }}
+//                   value={field.label || ''}
 //                 >
-//                   Remove
-//                 </Button>
-//               )}
+//                   <SelectTrigger
+//                     className={cn(error?.label && 'border-[#DB4437]')}
+//                   >
+//                     <SelectValue placeholder='Select label' />
+//                   </SelectTrigger>
+//                   <SelectContent>
+//                     {PHONE.map(label => (
+//                       <SelectItem key={label} value={label}>
+//                         {label}
+//                       </SelectItem>
+//                     ))}
+//                   </SelectContent>
+//                 </Select>
+//                 {error?.label && (
+//                   <p className='text-xs text-[#DB4437]'>
+//                     {error.label.message as string}
+//                   </p>
+//                 )}
+//               </div>
+
+//               <div>
+//                 <Label>Number</Label>
+//                 <Input
+//                   {...register(`${name}.${index}.number`)}
+//                   className={cn(error?.number && 'border-[#DB4437]')}
+//                   placeholder='(555) 555-5555'
+//                   onBlur={e => {
+//                     const value = e.target.value
+//                     const formatted = value
+//                       .replace(/[^0-9]/g, '')
+//                       .match(/^(\d{3})(\d{3})(\d{4})$/)
+//                     if (formatted) {
+//                       setValue(
+//                         `${name}.${index}.number`,
+//                         `(${formatted[1]}) ${formatted[2]}-${formatted[3]}`
+//                       )
+//                     }
+//                   }}
+//                 />
+//                 {error?.number && (
+//                   <p className='text-xs text-[#DB4437]'>
+//                     {error.number.message as string}
+//                   </p>
+//                 )}
+//               </div>
 //             </div>
-//           </motion.div>
-//         )}
-//       </AnimatePresence>
+//           </Section>
+//         )
+//       })}
+
+//       {fields.length < PHONE.length && (
+//         <Button
+//           type='button'
+//           variant='outline'
+//           onClick={() =>
+//             append({
+//               label: PHONE[fields.length],
+//               number: ''
+//             })
+//           }
+//         >
+//           Add
+//         </Button>
+//       )}
 //     </div>
 //   )
 // }
+
+// @note
+
+// 'use client'
+
+// import {
+//   useFormContext,
+//   useFieldArray,
+//   type FieldError,
+//   type ArrayPath
+// } from 'react-hook-form'
+// import { Label } from '@/components/ui/label'
+// import { Button } from '@/components/ui/button'
+// import { IMaskInput } from 'react-imask'
+// import { PHONE } from '@/data/customer-fields'
+// import { Section } from './section'
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue
+// } from '@/components/ui/select'
+// import { cn } from '@/lib/utils'
+
+// type PhoneField = {
+//   label: (typeof PHONE)[number]
+//   number: string
+// }
+
+// type FormValues = {
+//   [key: string]: PhoneField[]
+// }
+
+// export function Phone({
+//   id,
+//   name,
+//   defaultValue,
+//   required,
+//   disabled
+// }: {
+//   id: string
+//   name: string
+//   defaultValue?: any
+//   required?: boolean
+//   disabled?: boolean
+// }) {
+//   const {
+//     control,
+//     formState: { errors }
+//   } = useFormContext<FormValues>()
+
+//   const { fields, append, remove } = useFieldArray<FormValues>({
+//     control,
+//     name: name as ArrayPath<FormValues>
+//   })
+
+//   return (
+//     <div className='space-y-4'>
+//       {fields.map((field, index) => (
+//         <Section
+//           key={field.id}
+//           title={field.label}
+//           summary={field.number}
+//           onRemove={index > 0 ? () => remove(index) : undefined}
+//           error={errors[name]?.[index] as FieldError | undefined}
+//         >
+//           <div className='space-y-4'>
+//             <div>
+//               <Label htmlFor={`${name}.${index}.label`}>Type</Label>
+//               <Select
+//                 name={`${name}.${index}.label`}
+//                 defaultValue={field.label}
+//               >
+//                 <SelectTrigger>
+//                   <SelectValue placeholder='Select phone type' />
+//                 </SelectTrigger>
+//                 <SelectContent>
+//                   {PHONE.map(type => (
+//                     <SelectItem key={type} value={type}>
+//                       {type}
+//                     </SelectItem>
+//                   ))}
+//                 </SelectContent>
+//               </Select>
+//             </div>
+
+//             <div>
+//               <Label htmlFor={`${name}.${index}.number`}>Number</Label>
+//               <IMaskInput
+//                 id={`${name}.${index}.number`}
+//                 name={`${name}.${index}.number`}
+//                 className={cn(
+//                   'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+//                   errors[name]?.[index]?.number && 'border-destructive'
+//                 )}
+//                 mask='(000) 000-0000'
+//                 placeholder=''
+//                 defaultValue={field.number}
+//               />
+//               {/* <IMaskInput
+//                 id={`${name}.${index}.number`}
+//                 name={`${name}.${index}.number`}
+//                 mask='(000) 000-0000'
+//                 placeholder='(555) 555-5555'
+//                 defaultValue={field.number}
+//               /> */}
+//             </div>
+//           </div>
+//         </Section>
+//       ))}
+
+//       {fields.length < PHONE.length && (
+//         <Button
+//           type='button'
+//           variant='outline'
+//           className='w-full border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
+//           onClick={() =>
+//             append({
+//               label: PHONE[fields.length],
+//               number: ''
+//             })
+//           }
+//         >
+//           Add
+//         </Button>
+//       )}
+//     </div>
+//   )
+// }
+
+// @note
+
+// 'use client'
+
+// import * as React from 'react'
+// import { Label } from '@/components/ui/label'
+// import { Button } from '@/components/ui/button'
+// import { cn } from '@/lib/utils'
+// import { IMaskInput } from 'react-imask'
+// import { PHONE } from '@/data/customer-fields'
+// import { Section } from './section'
 
 // export function Phone({
 //   id,
@@ -213,21 +485,18 @@ export function Phone({
 //             name={`${name}.${index}.label`}
 //             value={phone.label}
 //           />
-
-//           <div className=''>
-//             <div className={cn('-mt-4 grid gap-2')}>
-//               <Label htmlFor={`${id}-${index}-number`}>Number</Label>
-//               <IMaskInput
-//                 id={`${id}-${index}-number`}
-//                 name={`${name}.${index}.number`}
-//                 value={phone.number}
-//                 onAccept={value => updatePhone(index, value)}
-//                 mask='(000) 000-0000'
-//                 required={required}
-//                 disabled={disabled}
-//                 className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
-//               />
-//             </div>
+//           <div className={cn('-mt-4 grid gap-2')}>
+//             <Label htmlFor={`${id}-${index}-number`}>Number</Label>
+//             <IMaskInput
+//               id={`${id}-${index}-number`}
+//               name={`${name}.${index}.number`}
+//               value={phone.number}
+//               onAccept={value => updatePhone(index, value)}
+//               mask='(000) 000-0000'
+//               required={required}
+//               disabled={disabled}
+//               className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
+//             />
 //           </div>
 //         </Section>
 //       ))}
