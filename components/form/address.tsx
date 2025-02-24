@@ -50,10 +50,10 @@ export function Address({
   const usedLabels = controlledFields.map(field => field.label)
 
   return (
-    <div className='w-full max-w-[338px] space-y-4'>
+    <div className='w-full max-w-[338px] pt-4'>
       <Label
         className={cn(
-          'mt-6',
+          '',
           required
             ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
             : ''
@@ -93,8 +93,17 @@ export function Address({
             defaultOpen={hasErrors}
           >
             <div className='space-y-4'>
-              <div>
-                <Label>Label</Label>
+              <div className='pt-4'>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  Label
+                </Label>
                 <Select
                   onValueChange={value => {
                     const event = {
@@ -123,7 +132,16 @@ export function Address({
               </div>
 
               <div>
-                <Label>Street line 1</Label>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  Street line 1
+                </Label>
                 <Input
                   {...register(`${name}.${index}.line1`)}
                   className={cn(error?.line1 ? 'border-[#DB4437]' : 'mb-7')}
@@ -131,7 +149,16 @@ export function Address({
               </div>
 
               <div>
-                <Label>Street line 2</Label>
+                <Label
+                // className={cn(
+                //   '',
+                //   required
+                //     ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                //     : ''
+                // )}
+                >
+                  Street line 2
+                </Label>
                 <Input
                   {...register(`${name}.${index}.line2`)}
                   className={cn(error?.line2 ? 'border-[#DB4437]' : 'mb-7')}
@@ -139,15 +166,31 @@ export function Address({
               </div>
 
               <div>
-                <Label>City</Label>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  City
+                </Label>
                 <Input
                   {...register(`${name}.${index}.city`)}
                   className={cn(error?.city ? 'border-[#DB4437]' : 'mb-7')}
                 />
               </div>
 
-              <div>
-                <Label>
+              <div className='pt-4'>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
                   {selectedCountry === 'Canada' ? 'Province' : 'State'}
                 </Label>
                 <Select
@@ -180,8 +223,15 @@ export function Address({
               </div>
 
               <div>
-                <Label>
-                  {selectedCountry === 'Canada' ? 'Postal Code' : 'ZIP Code'}
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  {selectedCountry === 'Canada' ? 'Postal code' : 'ZIP code'}
                 </Label>
                 <IMaskInput
                   {...register(`${name}.${index}.postal`)}
@@ -201,8 +251,17 @@ export function Address({
                 />
               </div>
 
-              <div>
-                <Label>Country</Label>
+              <div className='pt-2'>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  Country
+                </Label>
                 <Select
                   onValueChange={value => {
                     const event = {

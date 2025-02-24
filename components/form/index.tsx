@@ -84,30 +84,28 @@ export function Form({
         acc[field.name] = z
           .array(
             z.object({
-              label: z.string().min(1, 'Label is required'),
-              line1: z.string().min(1, 'Street is required'),
+              label: z.string().min(1, 'Required'),
+              line1: z.string().min(1, 'Required'),
               line2: z.string().optional(),
-              city: z.string().min(1, 'City is required'),
-              region: z.string().min(1, 'State/Province is required'),
-              postal: z.string().min(1, 'Postal code is required'),
-              country: z.string().min(1, 'Country is required')
+              city: z.string().min(1, 'Required'),
+              region: z.string().min(1, 'Required'),
+              postal: z.string().min(1, 'Required'),
+              country: z.string().min(1, 'Required')
             })
           )
-          .min(1, 'At least one address is required')
+          .min(1, 'Invalid')
       } else if (field.type === 'phone') {
         acc[field.name] = z
           .array(
             z.object({
-              label: z.string().min(1, 'Label is required'),
-              number: z
-                .string()
-                .min(10, 'Phone number must be at least 10 digits')
+              label: z.string().min(1, 'Required'),
+              number: z.string().min(10, 'Invalid')
             })
           )
-          .min(1, 'At least one phone number is required')
+          .min(1, 'Invalid')
       } else {
         acc[field.name] = field.required
-          ? z.string().min(1, `${field.label} is required`)
+          ? z.string().min(1, 'Required') // ? z.string().min(1, `${field.label} is required`)
           : z.string().optional()
       }
       return acc
@@ -157,7 +155,11 @@ export function Form({
                 )}
 
                 <FormProvider {...methods}>
-                  <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+                  <form
+                    onSubmit={methods.handleSubmit(onSubmit)}
+                    // action={formAction}
+                    noValidate
+                  >
                     <CardContent className='flex flex-col pt-4'>
                       {fields.map(field => (
                         <div key={field.name} className='grid gap-2'>
@@ -170,8 +172,8 @@ export function Form({
                             <div
                               className={cn(
                                 state?.errors?.[field.name]
-                                  ? 'mb-0 border-[#DB4437]'
-                                  : 'mb-7'
+                                  ? 'border-[#DB4437]'
+                                  : '' // mb-7
                               )}
                             >
                               <Phone
@@ -201,8 +203,8 @@ export function Form({
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     state?.errors?.[field.name]
-                                      ? 'mb-0 border-[#DB4437]'
-                                      : 'mb-7'
+                                      ? 'border-[#DB4437]'
+                                      : '' // mb-7
                                   )}
                                   defaultValue={
                                     field.defaultValue ||
@@ -228,8 +230,8 @@ export function Form({
                                   <SelectTrigger
                                     className={cn(
                                       state?.errors?.[field.name]
-                                        ? 'mb-0 border-[#DB4437]'
-                                        : 'mb-7'
+                                        ? 'border-[#DB4437]'
+                                        : '' // mb-7
                                     )}
                                   >
                                     <SelectValue />
@@ -252,8 +254,8 @@ export function Form({
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     state?.errors?.[field.name]
-                                      ? 'mb-0 border-[#DB4437]'
-                                      : 'mb-7'
+                                      ? 'border-[#DB4437]'
+                                      : '' // mb-7
                                   )}
                                   defaultValue={
                                     field.defaultValue ||
@@ -271,8 +273,8 @@ export function Form({
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     state?.errors?.[field.name]
-                                      ? 'mb-0 border-[#DB4437]'
-                                      : 'mb-7',
+                                      ? 'border-[#DB4437]'
+                                      : '', // mb-7
                                     field.type === 'hidden' ? 'hidden' : ''
                                   )}
                                   defaultValue={
@@ -285,7 +287,10 @@ export function Form({
                             </>
                           )}
                           {methods.formState.errors[field.name] && (
-                            <p className='mb-7 text-sm text-[#DB4437]'>
+                            <p
+                              id={`${field.name}-error`}
+                              className='text-sm text-[#DB4437]'
+                            >
                               {
                                 methods.formState.errors[field.name]
                                   ?.message as string

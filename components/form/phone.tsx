@@ -48,10 +48,10 @@ export function Phone({
   const usedLabels = controlledFields.map(field => field.label)
 
   return (
-    <div className='w-full max-w-[338px] space-y-4'>
+    <div className='w-full max-w-[338px] pt-4'>
       <Label
         className={cn(
-          'mt-6',
+          '',
           required
             ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
             : ''
@@ -80,8 +80,17 @@ export function Phone({
             defaultOpen={hasErrors}
           >
             <div className='space-y-4'>
-              <div>
-                <Label>Label</Label>
+              <div className='pt-4'>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  Label
+                </Label>
                 <Select
                   onValueChange={value => {
                     const event = {
@@ -94,7 +103,7 @@ export function Phone({
                   <SelectTrigger
                     className={cn(error?.label ? 'border-[#DB4437]' : 'mb-7')}
                   >
-                    <SelectValue placeholder='Select label' />
+                    <SelectValue placeholder='' />
                   </SelectTrigger>
                   <SelectContent>
                     {PHONE.filter(
@@ -110,7 +119,16 @@ export function Phone({
               </div>
 
               <div>
-                <Label>Number</Label>
+                <Label
+                  className={cn(
+                    '',
+                    required
+                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                      : ''
+                  )}
+                >
+                  Number
+                </Label>
                 <IMaskInput
                   {...register(`${name}.${index}.number`)}
                   mask='(000) 000-0000'
@@ -118,8 +136,8 @@ export function Phone({
                     '0': /[0-9]/
                   }}
                   className={cn(
-                    'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-                    error?.number ? 'border-[#DB4437]' : 'mb-7'
+                    'mb-7 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                    error?.number ? 'border-[#DB4437]' : ''
                   )}
                   value={field.number || ''}
                   onAccept={value => {

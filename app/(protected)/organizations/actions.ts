@@ -10,7 +10,7 @@ import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 
 const schema = z.object({
-  name: z.string().min(1, 'Name required')
+  name: z.string().min(1, 'Required')
 })
 
 const { FormData } = Action(schema)
@@ -25,7 +25,7 @@ async function createAction(
   if (!hasPermission(user, 'organizations', 'create')) {
     return {
       success: false,
-      message: 'Unauthorized to create an organization',
+      message: 'Unauthorized to create',
       errors: {},
       inputs: { name: formData.get('name') as string }
     }
@@ -112,7 +112,7 @@ async function updateAction(
   if (userOrganization.role !== 'owner' && userOrganization.role !== 'admin') {
     return {
       success: false,
-      message: 'Unauthorized to update this organization',
+      message: 'Unauthorized to update',
       errors: {},
       inputs: { name: formData.get('name') as string }
     }
@@ -177,7 +177,7 @@ async function deleteAction(
   ) {
     return {
       success: false,
-      message: 'Unauthorized to delete this organization'
+      message: 'Unauthorized to delete'
     }
   }
 

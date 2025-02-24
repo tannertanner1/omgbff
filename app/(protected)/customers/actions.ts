@@ -18,25 +18,25 @@ import {
 
 const addressSchema = z.object({
   label: z.enum(ADDRESS),
-  line1: z.string().min(1, 'Street is required'),
+  line1: z.string().min(1, 'Required'),
   line2: z.string().optional(),
-  city: z.string().min(1, 'City is required'),
+  city: z.string().min(1, 'Required'),
   region: z.union([z.enum(STATE), z.enum(PROVINCE)]),
-  postal: z.string().min(1, 'Postal code is required'),
+  postal: z.string().min(1, 'Required'),
   country: z.enum(COUNTRY)
 })
 
 const phoneSchema = z.object({
   label: z.enum(PHONE),
-  number: z.string().min(10, 'Phone number must be at least 10 digits')
+  number: z.string().min(10, 'Invalid')
 })
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Required'),
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  name: z.string().min(2, 'Invalid'),
   email: z.string().email('Required'),
-  address: z.array(addressSchema).min(1, 'At least one address is required'),
-  phone: z.array(phoneSchema).min(1, 'At least one phone is required')
+  address: z.array(addressSchema).min(1, 'Required'),
+  phone: z.array(phoneSchema).min(1, 'Required')
 })
 
 const { FormData } = Action(schema)
@@ -50,7 +50,7 @@ async function createAction(
   if (!hasPermission(user, 'customers', 'create')) {
     return {
       success: false,
-      message: 'Unauthorized to create customers'
+      message: 'Unauthorized to create'
     }
   }
 
@@ -109,7 +109,7 @@ async function updateAction(
   if (!hasPermission(user, 'customers', 'update')) {
     return {
       success: false,
-      message: 'Unauthorized to update customers'
+      message: 'Unauthorized to update'
     }
   }
 
@@ -172,7 +172,7 @@ async function deleteAction(
   if (!hasPermission(user, 'customers', 'delete')) {
     return {
       success: false,
-      message: 'Unauthorized to delete customers'
+      message: 'Unauthorized to delete'
     }
   }
 
