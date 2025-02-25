@@ -3,6 +3,7 @@ import { getAllOrganizations } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
 import { Component } from './component'
+import type { Organization } from './columns'
 
 export default async function Page() {
   const user = await verifySession()
@@ -13,9 +14,10 @@ export default async function Page() {
 
   const data = await getAllOrganizations()
 
-  const organizations = data.map(organization => ({
+  const organizations: Organization[] = data.map(organization => ({
     ...organization,
     userId: user.id,
+    organizationId: organization.id,
     createdAt:
       organization.createdAt instanceof Date
         ? organization.createdAt.toISOString()
