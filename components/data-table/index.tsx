@@ -41,6 +41,7 @@ import { Input } from '@/components/ui/input'
 import { Options } from './options'
 import { Pagination } from './pagination'
 import { cn } from '@/lib/utils'
+import { usePathname, useRouter } from 'next/navigation'
 
 export function DataTable<TData, TValue>({
   columns,
@@ -60,6 +61,9 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({})
   const [selectedColumn, setSelectedColumn] = React.useState('')
   const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
+
+  const pathname = usePathname()
+  const router = useRouter()
 
   const table = useReactTable({
     data,
@@ -232,7 +236,9 @@ export function DataTable<TData, TValue>({
                       !target.closest('[role="menuitem"]') &&
                       link
                     ) {
-                      window.location.href = link(row.original)
+                      const url = link(row.original)
+                      const returnTo = encodeURIComponent(pathname)
+                      router.push(`${url}?returnTo=${returnTo}`)
                     }
                   }}
                 >

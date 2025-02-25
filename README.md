@@ -5,6 +5,7 @@
 
 // Form Components
   // `components/form/index.tsx`
+  // `components/form/section.tsx`
   // `components/form/address.tsx`
   // `components/form/phone.tsx`
 
@@ -13,8 +14,8 @@
   // `app/(protected)/customers/actions.ts`
 
 // `/customers` Form Pages
-  // `app/(protected)/customers/new/page.tsx
-  // `app/(protected)/customers/[customerId]/edit/page.tsx`
+  // `app/(protected)/customers/new/page.tsx`
+  // `app/(protected)/customers/[customerId]/edit/page.tsx` /// @note DELETE
 
 // `/organizations/[organizationId]/customers` Form Pages
   // `app/(protected)/organizations/[organizationId]/customers/[customerId]/edit/page.tsx`

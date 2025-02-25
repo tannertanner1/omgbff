@@ -5,14 +5,21 @@ import { getCustomerById } from '@/db/queries'
 import { updateAction } from '../../actions'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
+import { ADDRESS, PHONE } from '@/data/customer-fields'
 
 export default async function Page({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ organizationId: string; customerId: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const user = await verifySession()
   const { organizationId, customerId } = await params
+  const resolvedSearchParams = await searchParams
+  const returnTo =
+    (resolvedSearchParams.returnTo as string) ||
+    `/organizations/${organizationId}/customers`
 
   if (!hasPermission(user, 'customers', 'update')) {
     redirect(`/organizations/${organizationId}/customers`)
@@ -36,6 +43,11 @@ export default async function Page({
       defaultValue: customer.id
     },
     {
+      name: 'returnTo',
+      type: 'hidden',
+      defaultValue: returnTo
+    },
+    {
       name: 'name',
       label: 'Name',
       type: 'text',
@@ -51,24 +63,37 @@ export default async function Page({
     },
     {
       name: 'address',
-      label: 'Address',
       type: 'address',
       required: true,
-      defaultValue: customer.address
+      defaultValue: customer.address || [
+        {
+          label: ADDRESS[0],
+          line1: '',
+          line2: '',
+          city: '',
+          region: 'British Columbia',
+          postal: '',
+          country: 'Canada'
+        }
+      ]
     },
     {
       name: 'phone',
-      label: 'Phone',
       type: 'phone',
       required: true,
-      defaultValue: customer.phone
+      defaultValue: customer.phone || [
+        {
+          label: PHONE[0],
+          number: ''
+        }
+      ]
     }
   ]
 
   return <Form fields={fields} action={updateAction} button='Save' />
 }
 
-// @note ...
+// @note
 
 // import { notFound, redirect } from 'next/navigation'
 // import { Form } from '@/components/form'
@@ -77,6 +102,7 @@ export default async function Page({
 // import { updateAction } from '../../actions'
 // import { verifySession } from '@/lib/dal'
 // import { hasPermission } from '@/lib/abac'
+// import { ADDRESS, PHONE, COUNTRY } from '@/data/customer-fields'
 
 // export default async function Page({
 //   params
@@ -95,6 +121,30 @@ export default async function Page({
 //   if (!customer) {
 //     return notFound()
 //   }
+
+//   // Ensure address and phone arrays exist with at least one item
+//   const defaultAddress = customer.address?.length
+//     ? customer.address
+//     : [
+//         {
+//           label: ADDRESS[0],
+//           line1: '',
+//           line2: '',
+//           city: '',
+//           region: '',
+//           postal: '',
+//           country: COUNTRY[0]
+//         }
+//       ]
+
+//   const defaultPhone = customer.phone?.length
+//     ? customer.phone
+//     : [
+//         {
+//           label: PHONE[0],
+//           number: ''
+//         }
+//       ]
 
 //   const fields: Field[] = [
 //     {
@@ -126,14 +176,29 @@ export default async function Page({
 //       label: 'Address',
 //       type: 'address',
 //       required: true,
-//       defaultValue: customer.address
+//       defaultValue: customer.address || [
+//         {
+//           label: ADDRESS[0],
+//           line1: '',
+//           line2: '',
+//           city: '',
+//           region: '',
+//           postal: '',
+//           country: COUNTRY[0]
+//         }
+//       ]
 //     },
 //     {
 //       name: 'phone',
 //       label: 'Phone',
 //       type: 'phone',
 //       required: true,
-//       defaultValue: customer.phone
+//       defaultValue: customer.phone || [
+//         {
+//           label: PHONE[0],
+//           number: ''
+//         }
+//       ]
 //     }
 //   ]
 

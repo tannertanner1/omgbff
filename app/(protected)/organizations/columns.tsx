@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 export type Organization = {
   userId: string
   id: string
+  organizationId: string
   name: string
   createdAt: Date | string
   updatedAt: Date | string

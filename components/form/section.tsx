@@ -5,11 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { IconCircleX } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 
-interface SectionProps {
+export function Section({
+  title,
+  summary,
+  children,
+  onRemove,
+  error,
+  defaultOpen = false
+}: {
   title: string
   summary: string
   children: React.ReactNode
@@ -19,16 +24,7 @@ interface SectionProps {
     message?: string
   } | null
   defaultOpen?: boolean
-}
-
-export function Section({
-  title,
-  summary,
-  children,
-  onRemove,
-  error,
-  defaultOpen = false
-}: SectionProps) {
+}) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen)
 
   return (
@@ -70,27 +66,13 @@ export function Section({
             transition={{ duration: 0.2 }}
             className='overflow-hidden'
           >
-            <div
-              // className='space-y-4'
-              className={cn('space-y-4', error && '')}
-            >
+            <div className='space-y-4'>
               {children}
-              {/* {error?.message && (
-                <Alert className='border-[#DB4437] text-[#DB4437]'>
-                  <div className='flex items-start gap-2'>
-                    <IconCircleX className='mt-0.5 h-4 w-4 flex-shrink-0 font-bold text-[#DB4437]' />
-                    <AlertDescription className='text-[#DB4437]'>
-                      {error.message}
-                    </AlertDescription>
-                  </div>
-                </Alert>
-              )} */}
               {onRemove && (
                 <div className='py-2'>
                   <Button
                     type='button'
                     variant='outline'
-                    // className='w-full border border-[#DB4437] bg-background text-[#DB4437] hover:bg-[#DB4437] hover:text-background'
                     className='w-full border border-[#DB4437] bg-[#DB4437] text-background hover:bg-background hover:text-[#DB4437]'
                     onClick={onRemove}
                   >
@@ -105,6 +87,116 @@ export function Section({
     </div>
   )
 }
+
+// @note
+
+// 'use client'
+
+// import * as React from 'react'
+// import { motion, AnimatePresence } from 'framer-motion'
+// import { Button } from '@/components/ui/button'
+// import { ChevronDown } from 'lucide-react'
+// import { Badge } from '@/components/ui/badge'
+// import { Alert, AlertDescription } from '@/components/ui/alert'
+// import { IconCircleX } from '@tabler/icons-react'
+// import { cn } from '@/lib/utils'
+
+// interface SectionProps {
+//   title: string
+//   summary: string
+//   children: React.ReactNode
+//   onRemove?: () => void
+//   error?: {
+//     type: string
+//     message?: string
+//   } | null
+//   defaultOpen?: boolean
+// }
+
+// export function Section({
+//   title,
+//   summary,
+//   children,
+//   onRemove,
+//   error,
+//   defaultOpen = false
+// }: SectionProps) {
+//   const [isOpen, setIsOpen] = React.useState(defaultOpen)
+
+//   return (
+//     <div
+//       className={cn('overflow-hidden rounded-lg bg-background', error && '')}
+//     >
+//       <button
+//         type='button'
+//         className='flex w-full items-center justify-between py-3 text-left'
+//         onClick={() => setIsOpen(!isOpen)}
+//       >
+//         <div className={cn('flex items-center gap-2')}>
+//           <Badge
+//             className={cn(
+//               'border border-accent bg-accent text-primary',
+//               error && 'border-[#DB4437] bg-background text-[#DB4437]'
+//             )}
+//           >
+//             {title}
+//           </Badge>
+//           <span className='truncate text-sm text-muted-foreground'>
+//             {summary}
+//           </span>
+//         </div>
+//         <ChevronDown
+//           className={cn(
+//             'h-5 w-5 transition-transform duration-200',
+//             isOpen && 'rotate-180'
+//           )}
+//         />
+//       </button>
+
+//       <AnimatePresence>
+//         {isOpen && (
+//           <motion.div
+//             initial={{ height: 0 }}
+//             animate={{ height: 'auto' }}
+//             exit={{ height: 0 }}
+//             transition={{ duration: 0.2 }}
+//             className='overflow-hidden'
+//           >
+//             <div
+//               // className='space-y-4'
+//               className={cn('space-y-4', error && '')}
+//             >
+//               {children}
+//               {/* {error?.message && (
+//                 <Alert className='border-[#DB4437] text-[#DB4437]'>
+//                   <div className='flex items-start gap-2'>
+//                     <IconCircleX className='mt-0.5 h-4 w-4 flex-shrink-0 font-bold text-[#DB4437]' />
+//                     <AlertDescription className='text-[#DB4437]'>
+//                       {error.message}
+//                     </AlertDescription>
+//                   </div>
+//                 </Alert>
+//               )} */}
+//               {onRemove && (
+//                 <div className='py-2'>
+//                   <Button
+//                     type='button'
+//                     variant='outline'
+//                     // className='w-full border border-[#DB4437] bg-background text-[#DB4437] hover:bg-[#DB4437] hover:text-background'
+//                     className='w-full border border-[#DB4437] bg-[#DB4437] text-background hover:bg-background hover:text-[#DB4437]'
+//                     onClick={onRemove}
+//                   >
+//                     Remove
+//                   </Button>
+//                 </div>
+//               )}
+//             </div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </div>
+//   )
+// }
 
 // @note
 

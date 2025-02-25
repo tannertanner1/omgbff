@@ -99,68 +99,68 @@ async function createAction(
   }
 }
 
-async function updateAction(
-  _: ActionResponse | null,
-  formData: FormData
-): Promise<ActionResponse> {
-  const user = await verifySession()
-  const id = formData.get('id') as string
+// async function updateAction(
+//   _: ActionResponse | null,
+//   formData: FormData
+// ): Promise<ActionResponse> {
+//   const user = await verifySession()
+//   const id = formData.get('id') as string
 
-  if (!hasPermission(user, 'customers', 'update')) {
-    return {
-      success: false,
-      message: 'Unauthorized to update'
-    }
-  }
+//   if (!hasPermission(user, 'customers', 'update')) {
+//     return {
+//       success: false,
+//       message: 'Unauthorized to update'
+//     }
+//   }
 
-  const rawData = {
-    id,
-    organizationId: formData.get('organizationId') as string,
-    name: formData.get('name') as string,
-    email: formData.get('email') as string,
-    address: JSON.parse(formData.get('address') as string),
-    phone: JSON.parse(formData.get('phone') as string)
-  }
+//   const rawData = {
+//     id,
+//     organizationId: formData.get('organizationId') as string,
+//     name: formData.get('name') as string,
+//     email: formData.get('email') as string,
+//     address: JSON.parse(formData.get('address') as string),
+//     phone: JSON.parse(formData.get('phone') as string)
+//   }
 
-  const validatedData = schema.extend({ id: z.string() }).safeParse(rawData)
+//   const validatedData = schema.extend({ id: z.string() }).safeParse(rawData)
 
-  if (!validatedData.success) {
-    const errors = validatedData.error.flatten().fieldErrors
-    return {
-      success: false,
-      message: 'Please fix the errors in the form',
-      errors,
-      inputs: rawData
-    }
-  }
+//   if (!validatedData.success) {
+//     const errors = validatedData.error.flatten().fieldErrors
+//     return {
+//       success: false,
+//       message: 'Please fix the errors in the form',
+//       errors,
+//       inputs: rawData
+//     }
+//   }
 
-  try {
-    await db
-      .update(customers)
-      .set({
-        name: validatedData.data.name,
-        email: validatedData.data.email,
-        address: validatedData.data.address,
-        phone: validatedData.data.phone,
-        updatedAt: new Date()
-      })
-      .where(eq(customers.id, id))
+//   try {
+//     await db
+//       .update(customers)
+//       .set({
+//         name: validatedData.data.name,
+//         email: validatedData.data.email,
+//         address: validatedData.data.address,
+//         phone: validatedData.data.phone,
+//         updatedAt: new Date()
+//       })
+//       .where(eq(customers.id, id))
 
-    revalidatePath('/customers')
-    return {
-      success: true,
-      message: 'Customer updated successfully',
-      redirect: '/customers'
-    }
-  } catch (error) {
-    console.error('Error updating customer:', error)
-    return {
-      success: false,
-      message: 'An unexpected error occurred. Please try again.',
-      inputs: rawData
-    }
-  }
-}
+//     revalidatePath('/customers')
+//     return {
+//       success: true,
+//       message: 'Customer updated successfully',
+//       redirect: '/customers'
+//     }
+//   } catch (error) {
+//     console.error('Error updating customer:', error)
+//     return {
+//       success: false,
+//       message: 'An unexpected error occurred. Please try again.',
+//       inputs: rawData
+//     }
+//   }
+// }
 
 async function deleteAction(
   _: ActionResponse | null,
@@ -194,7 +194,7 @@ async function deleteAction(
   }
 }
 
-export { createAction, updateAction, deleteAction }
+export { createAction, deleteAction }
 
 // @note
 

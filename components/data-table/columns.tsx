@@ -4,7 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
 
-export function Columns<T extends object>(
+export function Columns<T extends { id: string }>(
   data: T[],
   options?: {
     onEdit?: (row: T) => void
