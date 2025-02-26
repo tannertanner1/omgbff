@@ -16,8 +16,11 @@ export function Tabs({
   const [isHover, setHover] = useState<number | null>(null)
 
   return (
-    <div className='mx-auto w-full max-w-5xl px-6'>
-      <nav className='flex gap-2'>
+    <div className='mx-auto w-full max-w-5xl'>
+      <nav
+        // items-center justify-center
+        className='flex gap-2'
+      >
         {tabs.map((tab, index) => {
           const active = isActive === index
           const hover = active || (isHover === index && !active)
@@ -49,7 +52,7 @@ export function Tabs({
           )
         })}
       </nav>
-      <div className='mt-8 px-4'>
+      <div className='mt-8'>
         <AnimatePresence mode='wait' initial={false}>
           <motion.div
             key={isActive}

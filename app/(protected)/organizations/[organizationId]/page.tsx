@@ -12,6 +12,7 @@ import { Customers } from './customers/component'
 import type { Customer } from './customers/columns'
 import { Invoices } from './invoices/component'
 import type { Invoice } from './invoices/columns'
+// import { Tabs } from '@/components/tabs'
 
 export default async function Page({
   params
@@ -68,6 +69,29 @@ export default async function Page({
           : invoice.updatedAt
     })) || []
 
+  // const tabs = [
+  //   {
+  //     title: 'Customers',
+  //     content: (
+  //       <Customers
+  //         customers={customers}
+  //         userId={user.id}
+  //         organizationId={organizationId}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     title: 'Invoices',
+  //     content: (
+  //       <Invoices
+  //         invoices={invoices}
+  //         userId={user.id}
+  //         organizationId={organizationId}
+  //       />
+  //     )
+  //   }
+  // ]
+
   return (
     <div className='flex h-fit'>
       <div className='mx-auto w-full max-w-5xl p-4'>
@@ -90,6 +114,7 @@ export default async function Page({
             organizationId={organizationId}
           />
         </div>
+        {/* <Tabs tabs={tabs} /> */}
       </div>
     </div>
   )
