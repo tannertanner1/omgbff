@@ -3,6 +3,31 @@ import { IconPaw } from '@tabler/icons-react'
 import { auth } from '@/lib/auth'
 import { Menu } from '@/components/menu'
 import { Heatmap } from '@/components/heatmap'
+import { Tabs } from '@/components/tabs'
+
+const tabs = [
+  {
+    title: 'Customers',
+    content: (
+      <div>
+        <h2 className='mb-2 text-xl font-semibold'>Customers</h2>
+        <p>
+          Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
+          consectetur, adipisci velit...
+        </p>
+      </div>
+    )
+  },
+  {
+    title: 'Invoices',
+    content: (
+      <div>
+        <h2 className='mb-2 text-xl font-semibold'>Invoices</h2>
+        <p>Lorem ipsum dolor sit amet...</p>
+      </div>
+    )
+  }
+]
 
 export default async function Page() {
   const session = await auth()
@@ -13,7 +38,6 @@ export default async function Page() {
         <div className='mx-auto w-full max-w-5xl'>
           {session ? (
             <div className='mb-8 flex flex-col items-center px-4'>
-              {/* <Menu id={session.user.id} /> */}
               <Menu />
             </div>
           ) : (
@@ -25,6 +49,7 @@ export default async function Page() {
                 <IconPaw className='h-12 w-12' aria-hidden='true' />
               </Link> */}
               <Heatmap />
+              {/* <Tabs tabs={tabs} /> */}
             </div>
           )}
         </div>
