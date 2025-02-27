@@ -50,7 +50,7 @@ export function Phone({
     <div className='w-full max-w-[338px] pt-4'>
       <Label
         className={cn(
-          '',
+          'mb-2',
           required
             ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
             : ''
@@ -72,7 +72,7 @@ export function Phone({
               hasErrors
                 ? {
                     type: 'validation',
-                    message: 'Please complete all required fields'
+                    message: 'Required'
                   }
                 : undefined
             }
@@ -82,7 +82,7 @@ export function Phone({
               <div className='pt-4'>
                 <Label
                   className={cn(
-                    '',
+                    'mb-2',
                     required
                       ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
                       : ''
@@ -100,7 +100,10 @@ export function Phone({
                   value={field.label || ''}
                 >
                   <SelectTrigger
-                    className={cn(error?.label ? 'border-[#DB4437]' : 'mb-7')}
+                    className={cn(
+                      'mb-1',
+                      error?.label ? 'border-[#DB4437]' : ''
+                    )}
                   >
                     <SelectValue placeholder='' />
                   </SelectTrigger>
@@ -120,7 +123,7 @@ export function Phone({
               <div>
                 <Label
                   className={cn(
-                    '',
+                    'mb-2',
                     required
                       ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
                       : ''
@@ -135,7 +138,7 @@ export function Phone({
                     '0': /[0-9]/
                   }}
                   className={cn(
-                    'mb-7 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                    'mb-1 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
                     error?.number ? 'border-[#DB4437]' : ''
                   )}
                   value={field.number || ''}
@@ -170,6 +173,181 @@ export function Phone({
     </div>
   )
 }
+
+// @note
+
+// 'use client'
+
+// import { useFieldArray, useFormContext } from 'react-hook-form'
+// import { Button } from '@/components/ui/button'
+// import { Label } from '@/components/ui/label'
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue
+// } from '@/components/ui/select'
+// import { PHONE } from '@/data/customer-fields'
+// import { Section } from './section'
+// import { IMaskInput } from 'react-imask'
+// import { cn } from '@/lib/utils'
+// import type { NestedFieldErrors } from '@/types/forms'
+
+// export function Phone({
+//   name,
+//   required
+// }: {
+//   name: string
+//   required?: boolean
+// }) {
+//   const {
+//     control,
+//     register,
+//     formState: { errors },
+//     watch,
+//     setValue
+//   } = useFormContext()
+
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name,
+//     keyName: 'fieldId' // Important: Use a different key name to avoid conflicts
+//   })
+
+//   const watchFieldArray = watch(name)
+//   const controlledFields = fields.map((field, index) => ({
+//     ...field,
+//     ...watchFieldArray[index]
+//   }))
+
+//   const fieldErrors = errors[name] as NestedFieldErrors | undefined
+//   const usedLabels = controlledFields.map(field => field.label)
+
+//   return (
+//     <div className='w-full max-w-[338px] pt-4'>
+//       <Label
+//         className={cn(
+//           '',
+//           required
+//             ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+//             : ''
+//         )}
+//       >
+//         Phone
+//       </Label>
+//       {controlledFields.map((field, index) => {
+//         const error = fieldErrors?.[index] as NestedFieldErrors | undefined
+//         const hasErrors = !!error
+
+//         return (
+//           <Section
+//             key={field.fieldId}
+//             title={`${field.label || PHONE[index] || 'Phone'}`}
+//             summary={field.number || ''}
+//             onRemove={index > 0 ? () => remove(index) : undefined}
+//             error={
+//               hasErrors
+//                 ? {
+//                     type: 'validation',
+//                     message: 'Please complete all required fields'
+//                   }
+//                 : undefined
+//             }
+//             defaultOpen={hasErrors}
+//           >
+//             <div className='space-y-4'>
+//               <div className='pt-4'>
+//                 <Label
+//                   className={cn(
+//                     '',
+//                     required
+//                       ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+//                       : ''
+//                   )}
+//                 >
+//                   Label
+//                 </Label>
+//                 <Select
+//                   onValueChange={value => {
+//                     setValue(`${name}.${index}.label`, value, {
+//                       shouldValidate: true,
+//                       shouldDirty: true
+//                     })
+//                   }}
+//                   value={field.label || ''}
+//                 >
+//                   <SelectTrigger
+//                     className={cn(error?.label ? 'border-[#DB4437]' : 'mb-7')}
+//                   >
+//                     <SelectValue placeholder='' />
+//                   </SelectTrigger>
+//                   <SelectContent>
+//                     {PHONE.filter(
+//                       label =>
+//                         !usedLabels.includes(label) || field.label === label
+//                     ).map(label => (
+//                       <SelectItem key={label} value={label}>
+//                         {label}
+//                       </SelectItem>
+//                     ))}
+//                   </SelectContent>
+//                 </Select>
+//               </div>
+
+//               <div>
+//                 <Label
+//                   className={cn(
+//                     '',
+//                     required
+//                       ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+//                       : ''
+//                   )}
+//                 >
+//                   Number
+//                 </Label>
+//                 <IMaskInput
+//                   {...register(`${name}.${index}.number`)}
+//                   mask='(000) 000-0000'
+//                   definitions={{
+//                     '0': /[0-9]/
+//                   }}
+//                   className={cn(
+//                     'mb-7 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+//                     error?.number ? 'border-[#DB4437]' : ''
+//                   )}
+//                   value={field.number || ''}
+//                   onAccept={value => {
+//                     setValue(`${name}.${index}.number`, value, {
+//                       shouldValidate: true,
+//                       shouldDirty: true
+//                     })
+//                   }}
+//                 />
+//               </div>
+//             </div>
+//           </Section>
+//         )
+//       })}
+
+//       {fields.length < PHONE.length && (
+//         <Button
+//           type='button'
+//           variant='outline'
+//           className='w-full max-w-[338px] border border-accent bg-accent text-primary hover:border-primary hover:bg-primary hover:text-background'
+//           onClick={() =>
+//             append({
+//               label: PHONE[fields.length],
+//               number: ''
+//             })
+//           }
+//         >
+//           Add
+//         </Button>
+//       )}
+//     </div>
+//   )
+// }
 
 // @note
 

@@ -3,23 +3,22 @@
 ```ts
 /**
 
-// Form Components
-  // `components/form/index.tsx`
-  // `components/form/section.tsx`
-  // `components/form/address.tsx`
-  // `components/form/phone.tsx`
+// (CUSTOMER) form related...
 
-// Server Actions
-  // `app/(protected)/organizations/[organizationId]/customers/actions.ts`
-  // `app/(protected)/customers/actions.ts`
+  // Components
+    // `components/form/index.tsx`
+    // `components/form/section.tsx`
+    // `components/form/address.tsx`
+    // `components/form/phone.tsx`
 
-// `/customers` Form Pages
-  // `app/(protected)/customers/new/page.tsx`
-  // `app/(protected)/customers/[customerId]/edit/page.tsx` /// @note DELETE
+  // Actions
+    // `app/(protected)/customers/actions.ts`
+    // `app/(protected)/organizations/[organizationId]/customers/actions.ts`
 
-// `/organizations/[organizationId]/customers` Form Pages
-  // `app/(protected)/organizations/[organizationId]/customers/[customerId]/edit/page.tsx`
-  // `app/(protected)/organizations/[organizationId]/customers/new/page.tsx`
+  // Pages
+    `app/(protected)/customers/new/page.tsx`,
+    `app/(protected)/organizations/[organizationId]/customers/new/page.tsx`,
+    `app/(protected)/organizations/[organizationId]/customers/[customerId]/edit/page.tsx`
 
 */
 ```

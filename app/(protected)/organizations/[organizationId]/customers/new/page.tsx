@@ -62,7 +62,7 @@ export default async function Page({
     }
   ]
 
-  return <Form fields={fields} action={createAction} button='Save' />
+  return <Form fields={fields} action={createAction} button='Create' />
 }
 
 // @note ...
