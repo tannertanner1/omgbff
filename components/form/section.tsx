@@ -73,7 +73,7 @@ export function Section({
                   <Button
                     type='button'
                     variant='outline'
-                    className='w-full border border-[#DB4437] bg-[#DB4437] text-background hover:bg-background hover:text-[#DB4437]'
+                    className='mt-6 w-full border border-[#DB4437] bg-[#DB4437] text-background hover:bg-background hover:text-[#DB4437]'
                     onClick={onRemove}
                   >
                     Remove
