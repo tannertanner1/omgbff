@@ -18,6 +18,12 @@ const template = (
 })
 
 export const emails = {
+  invite: template(
+    'You’ve been invited!',
+    'You have been invited to join an organization. Click the button below to accept the invitation.',
+    'Accept invite',
+    "If you weren't expecting this invitation, you can safely ignore this email."
+  ),
   invoice: template(
     'New invoice ready',
     'Your invoice is due for payment.',
