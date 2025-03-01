@@ -18,7 +18,7 @@ const schema = z.object({
     .max(32, { message: 'Must be at most 32 characters' })
     .optional(),
   status: z.enum(STATUSES).optional(),
-  amount: z.number().min(1, 'Must be at least 1')
+  amount: z.number().min(1, 'Must be at least 1 dollar')
 })
 
 const { FormData } = Action(schema)

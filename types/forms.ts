@@ -5,9 +5,9 @@ export type FieldError = {
   message: string
 }
 
-export type NestedFieldErrors = {
-  [key: string]: FieldError | NestedFieldErrors
-  [index: number]: FieldError | NestedFieldErrors
+export type FieldErrors = {
+  [key: string]: FieldError | FieldErrors
+  [index: number]: FieldError | FieldErrors
 }
 
 export type FormData = Record<string, unknown>
@@ -16,7 +16,7 @@ export type ActionResponse<T extends FormData = FormData> = {
   success: boolean
   message: string
   errors?: {
-    [K in keyof T]?: string[] | NestedFieldErrors
+    [K in keyof T]?: string[] | FieldErrors
   }
   inputs?: Partial<T>
   redirect?: string
@@ -28,24 +28,3 @@ export function Action<T extends FormData = FormData>(schema: z.ZodType<T>) {
     ActionResponse: {} as ActionResponse<T>
   }
 }
-
-// import { z } from 'zod'
-
-// export type FormData = Record<string, unknown>
-
-// export type ActionResponse<T extends FormData = FormData> = {
-//   success: boolean
-//   message: string
-//   errors?: {
-//     [K in keyof T]?: string[]
-//   }
-//   inputs?: Partial<T>
-//   redirect?: string
-// }
-
-// export function Action<T extends FormData = FormData>(schema: z.ZodType<T>) {
-//   return {
-//     FormData: {} as T,
-//     ActionResponse: {} as ActionResponse<T>
-//   }
-// }
