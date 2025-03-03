@@ -24,6 +24,9 @@ const users = pgTable(
     name: text(),
     createdAt,
     updatedAt,
+    status: text('status', { enum: ['active', 'pending'] })
+      .notNull()
+      .default('pending'),
     /** @note role, email */
     role: text('role', { enum: ROLES }).notNull().default('user'),
     email: text().unique()
@@ -58,6 +61,23 @@ const userOrganizations = pgTable(
     })
   ]
 )
+
+const invitations = pgTable('invitations', {
+  id,
+  userId: text()
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  organizationId: text()
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
+  token: text().notNull(),
+  expiresAt: timestamp({ mode: 'date' }).notNull(),
+  createdAt,
+  updatedAt,
+  /** @note role, email */
+  role: text('role', { enum: ROLES }).notNull().default('user'),
+  email: text().notNull()
+})
 
 const accounts = pgTable(
   'accounts',
@@ -106,11 +126,13 @@ const verificationTokens = pgTable(
 )
 
 const usersRelations = relations(users, ({ many }) => ({
-  userOrganizations: many(userOrganizations)
+  userOrganizations: many(userOrganizations),
+  invitations: many(invitations)
 }))
 
 const organizationsRelations = relations(organizations, ({ many }) => ({
-  userOrganizations: many(userOrganizations)
+  userOrganizations: many(userOrganizations),
+  invitations: many(invitations)
 }))
 
 const userOrganizationsRelations = relations(userOrganizations, ({ one }) => ({
@@ -124,21 +146,35 @@ const userOrganizationsRelations = relations(userOrganizations, ({ one }) => ({
   })
 }))
 
+const invitationsRelations = relations(invitations, ({ one }) => ({
+  user: one(users, {
+    fields: [invitations.userId],
+    references: [users.id]
+  }),
+  organization: one(organizations, {
+    fields: [invitations.organizationId],
+    references: [organizations.id]
+  })
+}))
+
 export {
   organizations,
   users,
   userOrganizations,
+  invitations,
   accounts,
   sessions,
   verificationTokens,
   usersRelations,
   organizationsRelations,
-  userOrganizationsRelations
+  userOrganizationsRelations,
+  invitationsRelations
 }
 
 export type NewOrganization = InferInsertModel<typeof organizations>
 export type NewUser = InferInsertModel<typeof users>
 export type NewSession = InferInsertModel<typeof sessions>
+export type NewInvitation = InferInsertModel<typeof invitations>
 
 /**
  * @see https://authjs.dev/getting-started/adapters/drizzle#schemas

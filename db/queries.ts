@@ -4,6 +4,7 @@ import { db } from '@/db'
 import {
   organizations,
   userOrganizations,
+  invitations,
   customers,
   invoices,
   type users
@@ -166,6 +167,44 @@ async function getOrganizationById({
   return organization
 }
 
+async function getOrganizationUsers({
+  organizationId
+}: {
+  organizationId: string
+}): Promise<
+  | (typeof userOrganizations.$inferSelect & {
+      user: typeof users.$inferSelect
+    })[]
+  | []
+> {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'users', 'view')) {
+    return []
+  }
+
+  return await db.query.userOrganizations.findMany({
+    where: eq(userOrganizations.organizationId, organizationId),
+    with: {
+      user: true
+    }
+  })
+}
+
+async function getOrganizationInvitations({
+  organizationId
+}: {
+  organizationId: string
+}): Promise<(typeof invitations.$inferSelect)[] | []> {
+  const user = await verifySession()
+  if (!user || !hasPermission(user, 'users', 'view')) {
+    return []
+  }
+
+  return await db.query.invitations.findMany({
+    where: eq(invitations.organizationId, organizationId)
+  })
+}
+
 async function getOrganizationCustomers({
   organizationId
 }: {
@@ -292,6 +331,8 @@ export {
   getAllCustomers,
   getAllInvoices,
   getOrganizationById,
+  getOrganizationUsers,
+  getOrganizationInvitations,
   getOrganizationCustomers,
   getOrganizationInvoices,
   getCustomerById,
