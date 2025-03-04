@@ -7,7 +7,7 @@ import {
   invitations,
   customers,
   invoices,
-  type users
+  users
 } from '@/db/schema'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
@@ -134,6 +134,27 @@ async function getAllInvoices(): Promise<
   }
 }
 
+async function getUserById({
+  userId
+}: {
+  userId: string
+}): Promise<typeof users.$inferSelect | null> {
+  const currentUser = await verifySession()
+  if (!currentUser || !hasPermission(currentUser, 'users', 'view')) {
+    return null
+  }
+
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId)
+  })
+
+  if (!user) {
+    notFound()
+  }
+
+  return user
+}
+
 async function getOrganizationById({
   organizationId
 }: {
@@ -171,23 +192,20 @@ async function getOrganizationUsers({
   organizationId
 }: {
   organizationId: string
-}): Promise<
-  | (typeof userOrganizations.$inferSelect & {
-      user: typeof users.$inferSelect
-    })[]
-  | []
-> {
-  const user = await verifySession()
-  if (!user || !hasPermission(user, 'users', 'view')) {
+}): Promise<(typeof users.$inferSelect)[] | []> {
+  const currentUser = await verifySession()
+  if (!currentUser || !hasPermission(currentUser, 'users', 'view')) {
     return []
   }
 
-  return await db.query.userOrganizations.findMany({
+  const organizationUsers = await db.query.userOrganizations.findMany({
     where: eq(userOrganizations.organizationId, organizationId),
     with: {
       user: true
     }
   })
+
+  return organizationUsers.map(ou => ou.user)
 }
 
 async function getOrganizationInvitations({
@@ -195,8 +213,8 @@ async function getOrganizationInvitations({
 }: {
   organizationId: string
 }): Promise<(typeof invitations.$inferSelect)[] | []> {
-  const user = await verifySession()
-  if (!user || !hasPermission(user, 'users', 'view')) {
+  const currentUser = await verifySession()
+  if (!currentUser || !hasPermission(currentUser, 'invitations', 'view')) {
     return []
   }
 
@@ -330,6 +348,7 @@ export {
   getAllOrganizations,
   getAllCustomers,
   getAllInvoices,
+  getUserById,
   getOrganizationById,
   getOrganizationUsers,
   getOrganizationInvitations,
