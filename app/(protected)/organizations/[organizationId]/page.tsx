@@ -4,15 +4,17 @@ import { IconCircleX } from '@tabler/icons-react'
 import {
   getOrganizationById,
   getOrganizationCustomers,
-  getOrganizationInvoices
+  getOrganizationInvoices,
+  getOrganizationUsers
 } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
 import { hasPermission } from '@/lib/abac'
+import { Users } from './users/component'
 import { Customers } from './customers/component'
 import type { Customer } from './customers/columns'
 import { Invoices } from './invoices/component'
 import type { Invoice } from './invoices/columns'
-// import { Tabs } from '@/components/tabs'
+import type { User } from './users/columns'
 
 export default async function Page({
   params
@@ -26,13 +28,37 @@ export default async function Page({
     redirect('/')
   }
 
-  const [organization, customersData, invoicesData] = await Promise.all([
-    getOrganizationById({ organizationId }),
-    getOrganizationCustomers({ organizationId }),
-    getOrganizationInvoices({ organizationId })
-  ])
+  const [organization, customersData, invoicesData, usersData] =
+    await Promise.all([
+      getOrganizationById({ organizationId }),
+      getOrganizationCustomers({ organizationId }),
+      getOrganizationInvoices({ organizationId }),
+      getOrganizationUsers({ organizationId })
+    ])
 
   if (!organization) return notFound()
+
+  const users: User[] =
+    usersData?.map(user => ({
+      ...user,
+      email: user.email || '', // Ensure email is never null
+      createdAt:
+        user.createdAt instanceof Date
+          ? user.createdAt
+          : new Date(user.createdAt),
+      updatedAt:
+        user.updatedAt instanceof Date
+          ? user.updatedAt
+          : new Date(user.updatedAt),
+      emailVerified:
+        user.emailVerified instanceof Date
+          ? user.emailVerified
+          : user.emailVerified
+            ? new Date(user.emailVerified)
+            : null,
+      status: user.status as 'active' | 'pending',
+      role: user.role as 'owner' | 'admin' | 'user'
+    })) || []
 
   // Ensure data matches expected types and provide default empty arrays
   const customers: Customer[] =
@@ -69,29 +95,6 @@ export default async function Page({
           : invoice.updatedAt
     })) || []
 
-  // const tabs = [
-  //   {
-  //     title: 'Customers',
-  //     content: (
-  //       <Customers
-  //         customers={customers}
-  //         userId={user.id}
-  //         organizationId={organizationId}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     title: 'Invoices',
-  //     content: (
-  //       <Invoices
-  //         invoices={invoices}
-  //         userId={user.id}
-  //         organizationId={organizationId}
-  //       />
-  //     )
-  //   }
-  // ]
-
   return (
     <div className='flex h-fit'>
       <div className='mx-auto w-full max-w-5xl p-4'>
@@ -103,6 +106,11 @@ export default async function Page({
         </div>
 
         <div className='space-y-8'>
+          <Users
+            users={users}
+            organizationId={organizationId}
+            userId={user.id}
+          />
           <Customers
             customers={customers}
             userId={user.id}
@@ -114,7 +122,6 @@ export default async function Page({
             organizationId={organizationId}
           />
         </div>
-        {/* <Tabs tabs={tabs} /> */}
       </div>
     </div>
   )

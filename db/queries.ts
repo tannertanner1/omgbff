@@ -192,7 +192,7 @@ async function getOrganizationUsers({
   organizationId
 }: {
   organizationId: string
-}): Promise<(typeof users.$inferSelect)[] | []> {
+}): Promise<(typeof users.$inferSelect & { role: string })[]> {
   const currentUser = await verifySession()
   if (!currentUser || !hasPermission(currentUser, 'users', 'view')) {
     return []
@@ -205,7 +205,10 @@ async function getOrganizationUsers({
     }
   })
 
-  return organizationUsers.map(ou => ou.user)
+  return organizationUsers.map(ou => ({
+    ...ou.user,
+    role: ou.role
+  }))
 }
 
 async function getOrganizationInvitations({
