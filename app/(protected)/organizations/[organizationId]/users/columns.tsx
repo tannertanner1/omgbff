@@ -71,7 +71,7 @@ export function getUserColumns(
         return (
           <div className='px-4'>
             <Badge
-              className={cn('text-background', {
+              className={cn('capitalize text-background', {
                 'bg-green-500': status === 'active',
                 'bg-yellow-500': status === 'pending',
                 'bg-red-500': status === 'inactive'
