@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Table } from '@/components/data-table/table'
 import { getUserColumns, type User } from './columns'
+import { deleteAction } from './actions'
 
 export function Component({
   users,
@@ -14,6 +16,7 @@ export function Component({
   userId: string
 }) {
   const router = useRouter()
+  const [data, setData] = useState<User[]>(users)
 
   const handleEdit = (row: User) => {
     router.push(`/users/${row.id}/edit`)
@@ -28,17 +31,18 @@ export function Component({
     formData.append('id', row.id)
 
     try {
-      const response = await fetch(`/api/users/${row.id}`, {
-        method: 'DELETE'
-      })
-      if (response.ok) {
+      const response = await deleteAction(null, formData)
+
+      if (response.success) {
+        setData(data.filter(user => user.id !== row.id))
         router.refresh()
       } else {
-        alert('Failed to delete user')
+        console.error('Failed to delete:', response.message)
+        alert(response.message || 'Failed to delete user')
       }
     } catch (error) {
-      console.error('Failed to delete:', error)
-      alert('Failed to delete user')
+      console.error('Error in delete handler:', error)
+      alert('An error occurred while deleting the user')
     }
   }
 
@@ -54,7 +58,7 @@ export function Component({
           </Link>
         </div>
         <Table
-          data={users}
+          data={data}
           columns={columns}
           link={row => `/users/${row.id}/edit`}
         />
