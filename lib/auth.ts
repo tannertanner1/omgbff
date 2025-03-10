@@ -16,6 +16,8 @@ import LoginEmail from '@/emails/login-email'
 import { ROUTES } from '@/data/public-routes'
 import { JWT } from 'next-auth/jwt'
 
+import crypto from 'crypto'
+
 import type { Role } from '@/data/system-roles'
 
 interface DatabaseUser {
@@ -226,6 +228,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   }
 })
+
+// Add a function to create verification/login tokens that work with NextAuth
+export async function createToken({
+  email,
+  user,
+  expires
+}: {
+  email: string
+  user?: { id: string }
+  expires: Date
+}) {
+  // Generate a secure random token
+  const token = crypto.randomBytes(32).toString('hex')
+
+  // Store the token in the verification tokens table
+  await db.insert(verificationTokens).values({
+    identifier: email,
+    token,
+    expires
+  })
+
+  return token
+}
 
 // @note
 
