@@ -1,259 +1,3 @@
-// import NextAuth, { DefaultSession } from 'next-auth'
-// import { Adapter } from 'next-auth/adapters'
-// import { DrizzleAdapter } from '@auth/drizzle-adapter'
-// import { db } from '@/db'
-// import {
-//   sessions,
-//   users,
-//   accounts,
-//   verificationTokens
-// } from '@/db/schema/users'
-// import { eq, and, sql } from 'drizzle-orm'
-// import { Resend as ResendClient } from 'resend'
-// import Resend from 'next-auth/providers/resend'
-// import VerifyEmail from '@/emails/verify-email'
-// import LoginEmail from '@/emails/login-email'
-// import { ROUTES } from '@/data/public-routes'
-// import { JWT } from 'next-auth/jwt'
-
-// import crypto from 'crypto'
-
-// import type { Role } from '@/data/system-roles'
-
-// interface DatabaseUser {
-//   id: string
-//   email: string | null
-//   role: Role
-//   name: string | null
-//   emailVerified: Date | null
-//   createdAt: Date
-//   updatedAt: Date
-//   image: string | null
-// }
-
-// declare module 'next-auth' {
-//   interface Session extends DefaultSession {
-//     user: {
-//       id: string
-//       email: string
-//       role: Role
-//       name: string | null
-//       emailVerified: Date | null
-//       image: string | null
-//     }
-//   }
-//   interface User extends DatabaseUser {}
-// }
-
-// declare module 'next-auth/jwt' {
-//   interface JWT {
-//     id: string
-//     email: string
-//     name: string | null
-//     image: string | null
-//     role: Role
-//     emailVerified: Date | null
-//   }
-// }
-
-// const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
-
-// export const { handlers, auth, signIn, signOut } = NextAuth({
-//   // debug: process.env.NODE_ENV !== 'production',
-//   secret: process.env.AUTH_SECRET,
-//   pages: { signIn: '/login', error: '/error' },
-//   adapter: DrizzleAdapter(db, {
-//     usersTable: users,
-//     accountsTable: accounts,
-//     sessionsTable: sessions,
-//     verificationTokensTable: verificationTokens
-//   }) as Adapter,
-//   session: { strategy: 'jwt' },
-//   providers: [
-//     Resend({
-//       apiKey: process.env.AUTH_RESEND_KEY,
-//       from: process.env.AUTH_RESEND_EMAIL,
-//       async sendVerificationRequest({ identifier: email, url }) {
-//         const user = await db.query.users.findFirst({
-//           where: (users, { eq }) => eq(users.email, email)
-//         })
-
-//         // If user exists and has pending status, update to active
-//         if (user && user.status === 'pending') {
-//           await db
-//             .update(users)
-//             .set({
-//               status: 'active',
-//               updatedAt: new Date()
-//             })
-//             .where(eq(users.id, user.id))
-//         }
-
-//         await resend.emails.send({
-//           from: process.env.AUTH_RESEND_EMAIL!,
-//           to: email,
-//           subject: 'tannertanner.me',
-//           // subject: user?.emailVerified
-//           //   ? 'Sign in to your account'
-//           //   : 'Verify your email',
-//           react: user?.emailVerified
-//             ? LoginEmail({ url })
-//             : VerifyEmail({ url })
-//         })
-//       }
-//     })
-//   ],
-//   callbacks: {
-//     async jwt({ token, user }) {
-//       if (user) {
-//         const dbUser = await db.query.users.findFirst({
-//           where: and(
-//             eq(users.id, sql`${user.id}::text`),
-//             sql`${users.id} IS NOT NULL`
-//           )
-//         })
-
-//         if (dbUser) {
-//           ;(token.id = dbUser.id),
-//             (token.email = dbUser.email || ''),
-//             (token.role = dbUser.role),
-//             (token.name = dbUser.name),
-//             (token.emailVerified = dbUser.emailVerified),
-//             (token.image = dbUser.image)
-//         }
-//       }
-//       return token
-//     },
-//     async session({ session, token }) {
-//       if (token && token.id) {
-//         const dbUser = await db.query.users.findFirst({
-//           where: and(
-//             eq(users.id, sql`${token.id}::text`),
-//             sql`${users.id} IS NOT NULL`
-//           )
-//         })
-//         if (!dbUser) {
-//           throw new Error('User not found')
-//         }
-
-//         // If user has pending status, update to active
-//         if (dbUser.status === 'pending') {
-//           await db
-//             .update(users)
-//             .set({
-//               status: 'active',
-//               updatedAt: new Date()
-//             })
-//             .where(eq(users.id, dbUser.id))
-
-//           // Update the dbUser object to reflect the change
-//           dbUser.status = 'active'
-//         }
-
-//         return {
-//           ...session,
-//           user: {
-//             id: dbUser.id,
-//             email: dbUser.email || '',
-//             role: dbUser.role,
-//             name: dbUser.name,
-//             emailVerified: dbUser.emailVerified,
-//             image: dbUser.image
-//           }
-//         }
-//       }
-//       return session
-//     },
-//     authorized: async ({ auth, request }) => {
-//       const { pathname } = request.nextUrl
-//       // Allow access to public routes
-//       if (ROUTES.includes(pathname)) {
-//         return true
-//       }
-//       // Require authentication for all other routes
-//       return !!auth
-//     }
-//   },
-//   events: {
-//     async createUser({ user }) {
-//       if (user.id) {
-//         await db
-//           .update(users)
-//           .set({
-//             role: 'user' as Role,
-//             updatedAt: new Date()
-//           })
-//           .where(
-//             and(
-//               eq(users.id, sql`${user.id}::text`),
-//               sql`${users.id} IS NOT NULL`
-//             )
-//           )
-//       }
-//     },
-//     async linkAccount({ user }) {
-//       if (user.id) {
-//         // Set status to active when account is linked
-//         await db
-//           .update(users)
-//           .set({
-//             emailVerified: new Date(),
-//             status: 'active',
-//             updatedAt: new Date()
-//           })
-//           .where(
-//             and(
-//               eq(users.id, sql`${user.id}::text`),
-//               sql`${users.id} IS NOT NULL`
-//             )
-//           )
-//       }
-//     },
-//     async signIn({ user }) {
-//       if (user.id) {
-//         // Update user status to active when they sign in
-//         await db
-//           .update(users)
-//           .set({
-//             status: 'active',
-//             updatedAt: new Date()
-//           })
-//           .where(
-//             and(
-//               eq(users.id, sql`${user.id}::text`),
-//               sql`${users.id} IS NOT NULL`
-//             )
-//           )
-//       }
-//     }
-//   }
-// })
-
-// // Add a function to create verification/login tokens that work with NextAuth
-// export async function createToken({
-//   email,
-//   user,
-//   expires
-// }: {
-//   email: string
-//   user?: { id: string }
-//   expires: Date
-// }) {
-//   // Generate a secure random token
-//   const token = crypto.randomBytes(32).toString('hex')
-
-//   // Store the token in the verification tokens table
-//   await db.insert(verificationTokens).values({
-//     identifier: email,
-//     token,
-//     expires
-//   })
-
-//   return token
-// }
-
-// @note
-
 import NextAuth, { DefaultSession } from 'next-auth'
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
@@ -271,6 +15,8 @@ import VerifyEmail from '@/emails/verify-email'
 import LoginEmail from '@/emails/login-email'
 import { ROUTES } from '@/data/public-routes'
 import { JWT } from 'next-auth/jwt'
+
+import crypto from 'crypto'
 
 import type { Role } from '@/data/system-roles'
 
@@ -332,6 +78,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: (users, { eq }) => eq(users.email, email)
         })
 
+        // If user exists and has pending status, update to active
+        if (user && user.status === 'pending') {
+          await db
+            .update(users)
+            .set({
+              status: 'active',
+              updatedAt: new Date()
+            })
+            .where(eq(users.id, user.id))
+        }
+
         await resend.emails.send({
           from: process.env.AUTH_RESEND_EMAIL!,
           to: email,
@@ -376,8 +133,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           )
         })
         if (!dbUser) {
-          throw new Error('User not found')
+          console.error(`User ${token.id} not found`)
+          // Return a minimal session instead of throwing an error
+          return {
+            ...session,
+            user: {
+              id: token.id,
+              email: token.email || '',
+              role: 'user',
+              name: token.name,
+              emailVerified: token.emailVerified,
+              image: token.image
+            }
+          }
         }
+
+        // If user has pending status, update to active
+        if (dbUser.status === 'pending') {
+          await db
+            .update(users)
+            .set({
+              status: 'active',
+              updatedAt: new Date()
+            })
+            .where(eq(users.id, dbUser.id))
+
+          // Update the dbUser object to reflect the change
+          dbUser.status = 'active'
+        }
+
         return {
           ...session,
           user: {
@@ -392,6 +176,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
+    // async session({ session, token }) {
+    //   if (token && token.id) {
+    //     const dbUser = await db.query.users.findFirst({
+    //       where: and(
+    //         eq(users.id, sql`${token.id}::text`),
+    //         sql`${users.id} IS NOT NULL`
+    //       )
+    //     })
+    //     if (!dbUser) {
+    //       throw new Error('User not found')
+    //     }
+
+    //     // If user has pending status, update to active
+    //     if (dbUser.status === 'pending') {
+    //       await db
+    //         .update(users)
+    //         .set({
+    //           status: 'active',
+    //           updatedAt: new Date()
+    //         })
+    //         .where(eq(users.id, dbUser.id))
+
+    //       // Update the dbUser object to reflect the change
+    //       dbUser.status = 'active'
+    //     }
+
+    //     return {
+    //       ...session,
+    //       user: {
+    //         id: dbUser.id,
+    //         email: dbUser.email || '',
+    //         role: dbUser.role,
+    //         name: dbUser.name,
+    //         emailVerified: dbUser.emailVerified,
+    //         image: dbUser.image
+    //       }
+    //     }
+    //   }
+    //   return session
+    // },
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
       // Allow access to public routes
@@ -421,10 +245,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async linkAccount({ user }) {
       if (user.id) {
+        // Set status to active when account is linked
         await db
           .update(users)
           .set({
             emailVerified: new Date(),
+            status: 'active',
+            updatedAt: new Date()
+          })
+          .where(
+            and(
+              eq(users.id, sql`${user.id}::text`),
+              sql`${users.id} IS NOT NULL`
+            )
+          )
+      }
+    },
+    async signIn({ user }) {
+      if (user.id) {
+        // Update user status to active when they sign in
+        await db
+          .update(users)
+          .set({
+            status: 'active',
             updatedAt: new Date()
           })
           .where(
@@ -437,6 +280,215 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   }
 })
+
+// Add a function to create verification/login tokens that work with NextAuth
+export async function createToken({
+  email,
+  user,
+  expires
+}: {
+  email: string
+  user?: { id: string }
+  expires: Date
+}) {
+  // Generate a secure random token
+  const token = crypto.randomBytes(32).toString('hex')
+
+  // Store the token in the verification tokens table
+  await db.insert(verificationTokens).values({
+    identifier: email,
+    token,
+    expires
+  })
+
+  return token
+}
+
+// @note
+
+// import NextAuth, { DefaultSession } from 'next-auth'
+// import { Adapter } from 'next-auth/adapters'
+// import { DrizzleAdapter } from '@auth/drizzle-adapter'
+// import { db } from '@/db'
+// import {
+//   sessions,
+//   users,
+//   accounts,
+//   verificationTokens
+// } from '@/db/schema/users'
+// import { eq, and, sql } from 'drizzle-orm'
+// import { Resend as ResendClient } from 'resend'
+// import Resend from 'next-auth/providers/resend'
+// import VerifyEmail from '@/emails/verify-email'
+// import LoginEmail from '@/emails/login-email'
+// import { ROUTES } from '@/data/public-routes'
+// import { JWT } from 'next-auth/jwt'
+
+// import type { Role } from '@/data/system-roles'
+
+// interface DatabaseUser {
+//   id: string
+//   email: string | null
+//   role: Role
+//   name: string | null
+//   emailVerified: Date | null
+//   createdAt: Date
+//   updatedAt: Date
+//   image: string | null
+// }
+
+// declare module 'next-auth' {
+//   interface Session extends DefaultSession {
+//     user: {
+//       id: string
+//       email: string
+//       role: Role
+//       name: string | null
+//       emailVerified: Date | null
+//       image: string | null
+//     }
+//   }
+//   interface User extends DatabaseUser {}
+// }
+
+// declare module 'next-auth/jwt' {
+//   interface JWT {
+//     id: string
+//     email: string
+//     name: string | null
+//     image: string | null
+//     role: Role
+//     emailVerified: Date | null
+//   }
+// }
+
+// const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
+
+// export const { handlers, auth, signIn, signOut } = NextAuth({
+//   // debug: process.env.NODE_ENV !== 'production',
+//   secret: process.env.AUTH_SECRET,
+//   pages: { signIn: '/login', error: '/error' },
+//   adapter: DrizzleAdapter(db, {
+//     usersTable: users,
+//     accountsTable: accounts,
+//     sessionsTable: sessions,
+//     verificationTokensTable: verificationTokens
+//   }) as Adapter,
+//   session: { strategy: 'jwt' },
+//   providers: [
+//     Resend({
+//       apiKey: process.env.AUTH_RESEND_KEY,
+//       from: process.env.AUTH_RESEND_EMAIL,
+//       async sendVerificationRequest({ identifier: email, url }) {
+//         const user = await db.query.users.findFirst({
+//           where: (users, { eq }) => eq(users.email, email)
+//         })
+
+//         await resend.emails.send({
+//           from: process.env.AUTH_RESEND_EMAIL!,
+//           to: email,
+//           subject: 'tannertanner.me',
+//           // subject: user?.emailVerified
+//           //   ? 'Sign in to your account'
+//           //   : 'Verify your email',
+//           react: user?.emailVerified
+//             ? LoginEmail({ url })
+//             : VerifyEmail({ url })
+//         })
+//       }
+//     })
+//   ],
+//   callbacks: {
+//     async jwt({ token, user }) {
+//       if (user) {
+//         const dbUser = await db.query.users.findFirst({
+//           where: and(
+//             eq(users.id, sql`${user.id}::text`),
+//             sql`${users.id} IS NOT NULL`
+//           )
+//         })
+
+//         if (dbUser) {
+//           ;(token.id = dbUser.id),
+//             (token.email = dbUser.email || ''),
+//             (token.role = dbUser.role),
+//             (token.name = dbUser.name),
+//             (token.emailVerified = dbUser.emailVerified),
+//             (token.image = dbUser.image)
+//         }
+//       }
+//       return token
+//     },
+//     async session({ session, token }) {
+//       if (token && token.id) {
+//         const dbUser = await db.query.users.findFirst({
+//           where: and(
+//             eq(users.id, sql`${token.id}::text`),
+//             sql`${users.id} IS NOT NULL`
+//           )
+//         })
+//         if (!dbUser) {
+//           throw new Error('User not found')
+//         }
+//         return {
+//           ...session,
+//           user: {
+//             id: dbUser.id,
+//             email: dbUser.email || '',
+//             role: dbUser.role,
+//             name: dbUser.name,
+//             emailVerified: dbUser.emailVerified,
+//             image: dbUser.image
+//           }
+//         }
+//       }
+//       return session
+//     },
+//     authorized: async ({ auth, request }) => {
+//       const { pathname } = request.nextUrl
+//       // Allow access to public routes
+//       if (ROUTES.includes(pathname)) {
+//         return true
+//       }
+//       // Require authentication for all other routes
+//       return !!auth
+//     }
+//   },
+//   events: {
+//     async createUser({ user }) {
+//       if (user.id) {
+//         await db
+//           .update(users)
+//           .set({
+//             role: 'user' as Role,
+//             updatedAt: new Date()
+//           })
+//           .where(
+//             and(
+//               eq(users.id, sql`${user.id}::text`),
+//               sql`${users.id} IS NOT NULL`
+//             )
+//           )
+//       }
+//     },
+//     async linkAccount({ user }) {
+//       if (user.id) {
+//         await db
+//           .update(users)
+//           .set({
+//             emailVerified: new Date(),
+//             updatedAt: new Date()
+//           })
+//           .where(
+//             and(
+//               eq(users.id, sql`${user.id}::text`),
+//               sql`${users.id} IS NOT NULL`
+//             )
+//           )
+//       }
+//     }
+//   }
+// })
 
 // @note
 
