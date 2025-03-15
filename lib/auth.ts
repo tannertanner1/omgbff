@@ -1,4 +1,5 @@
 import NextAuth, { DefaultSession } from 'next-auth'
+// Database adapter
 import { Adapter } from 'next-auth/adapters'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@/db'
@@ -9,16 +10,17 @@ import {
   verificationTokens
 } from '@/db/schema/users'
 import { eq, and, sql } from 'drizzle-orm'
+// Auth provider
 import { Resend as ResendClient } from 'resend'
 import Resend from 'next-auth/providers/resend'
 import VerifyEmail from '@/emails/verify-email'
 import LoginEmail from '@/emails/login-email'
+import type { Role } from '@/data/system-roles'
 import { ROUTES } from '@/data/public-routes'
+// Session strategy
 import { JWT } from 'next-auth/jwt'
 
 import crypto from 'crypto'
-
-import type { Role } from '@/data/system-roles'
 
 interface DatabaseUser {
   id: string
@@ -31,6 +33,7 @@ interface DatabaseUser {
   image: string | null
 }
 
+// TypeScript module augmentation
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
@@ -176,46 +179,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
-    // async session({ session, token }) {
-    //   if (token && token.id) {
-    //     const dbUser = await db.query.users.findFirst({
-    //       where: and(
-    //         eq(users.id, sql`${token.id}::text`),
-    //         sql`${users.id} IS NOT NULL`
-    //       )
-    //     })
-    //     if (!dbUser) {
-    //       throw new Error('User not found')
-    //     }
-
-    //     // If user has pending status, update to active
-    //     if (dbUser.status === 'pending') {
-    //       await db
-    //         .update(users)
-    //         .set({
-    //           status: 'active',
-    //           updatedAt: new Date()
-    //         })
-    //         .where(eq(users.id, dbUser.id))
-
-    //       // Update the dbUser object to reflect the change
-    //       dbUser.status = 'active'
-    //     }
-
-    //     return {
-    //       ...session,
-    //       user: {
-    //         id: dbUser.id,
-    //         email: dbUser.email || '',
-    //         role: dbUser.role,
-    //         name: dbUser.name,
-    //         emailVerified: dbUser.emailVerified,
-    //         image: dbUser.image
-    //       }
-    //     }
-    //   }
-    //   return session
-    // },
     authorized: async ({ auth, request }) => {
       const { pathname } = request.nextUrl
       // Allow access to public routes
