@@ -41,6 +41,7 @@ export async function login(
     })
 
     if (result?.error) {
+      console.error('Sign in error:', result.error)
       return {
         success: false,
         message: 'Failed to send authentication email'
