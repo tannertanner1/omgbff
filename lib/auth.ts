@@ -62,7 +62,7 @@ declare module 'next-auth/jwt' {
 const resend = new ResendClient(process.env.AUTH_RESEND_KEY)
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: process.env.NODE_ENV !== 'production',
+  // debug: process.env.NODE_ENV !== 'production',
   secret: process.env.AUTH_SECRET,
   pages: { signIn: '/login', error: '/error' },
   adapter: DrizzleAdapter(db, {
@@ -301,7 +301,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 // import { ROUTES } from '@/data/public-routes'
 // import { userOrganizations } from '@/db/schema/users'
 // // Session strategy
-// import { JWT } from 'next-auth/jwt' // needed for `declare module 'next-auth/jwt' { interface JWT }`
+// import { JWT } from 'next-auth/jwt'
 
 // interface DatabaseUser {
 //   id: string
