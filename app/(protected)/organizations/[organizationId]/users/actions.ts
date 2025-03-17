@@ -72,30 +72,46 @@ async function createAction(
   }
 
   try {
+    console.log(
+      'Starting user invitation process for:',
+      validatedData.data.email
+    )
+
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, validatedData.data.email)
     })
+
+    console.log('Existing user found:', existingUser ? 'Yes' : 'No')
 
     let userId: string
 
     if (existingUser) {
       userId = existingUser.id
 
-      // If user exists, just add them to the organization
+      // Check if user is already in this organization - DEBUGGING THIS PART
+      console.log(
+        'Checking if user is already in organization:',
+        validatedData.data.organizationId
+      )
+
       const existingUserOrg = await db.query.userOrganizations.findFirst({
-        where: fields =>
-          eq(fields.userId, existingUser.id) &&
-          eq(fields.organizationId, validatedData.data.organizationId)
+        where: and(
+          eq(userOrganizations.userId, existingUser.id),
+          eq(
+            userOrganizations.organizationId,
+            validatedData.data.organizationId
+          )
+        )
       })
 
-      if (!existingUserOrg) {
-        await db.insert(userOrganizations).values({
-          userId: existingUser.id,
-          organizationId: validatedData.data.organizationId,
-          role: validatedData.data.role
-        })
-      } else {
+      console.log(
+        'Existing user organization found:',
+        existingUserOrg ? 'Yes' : 'No'
+      )
+      console.log('Existing user organization details:', existingUserOrg)
+
+      if (existingUserOrg) {
         // User is already in this organization
         return {
           success: false,
@@ -103,8 +119,17 @@ async function createAction(
           inputs: rawData
         }
       }
+
+      // If user exists but is not in the organization, add them
+      console.log('Adding existing user to organization')
+      await db.insert(userOrganizations).values({
+        userId: existingUser.id,
+        organizationId: validatedData.data.organizationId,
+        role: validatedData.data.role
+      })
     } else {
       // Create new user
+      console.log('Creating new user')
       const [newUser] = await db
         .insert(users)
         .values({
@@ -119,6 +144,7 @@ async function createAction(
       userId = newUser.id
 
       // Add user to organization
+      console.log('Adding new user to organization')
       await db.insert(userOrganizations).values({
         userId: newUser.id,
         organizationId: validatedData.data.organizationId,
@@ -127,6 +153,7 @@ async function createAction(
     }
 
     // Create invitation record
+    console.log('Creating invitation record')
     const token = crypto.randomUUID()
     await db.insert(invitations).values({
       userId: currentUser.id, // This is the inviter
@@ -138,7 +165,7 @@ async function createAction(
     })
 
     // Use NextAuth's built-in email provider to send the verification/login email
-    // for both new and existing users
+    console.log('Sending email via signIn')
     await signIn('resend', {
       email: validatedData.data.email,
       redirect: false,

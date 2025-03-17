@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import * as z from 'zod'
 import { db } from '@/db'
 import { users, userOrganizations, customers, invitations } from '@/db/schema'
@@ -40,6 +40,8 @@ async function createAction(
     organizationId: formData.get('organizationId') as string
   }
 
+  console.log('Raw form data:', rawData)
+
   // Validate role based on current user's permissions
   if (
     (rawData.role === 'owner' && currentUser.role !== 'owner') ||
@@ -55,6 +57,7 @@ async function createAction(
 
   if (!validatedData.success) {
     const errors = validatedData.error.flatten().fieldErrors
+    console.log('Validation errors:', errors)
     return {
       success: false,
       message: 'Please fix the errors in the form',
@@ -64,24 +67,39 @@ async function createAction(
   }
 
   try {
+    console.log('Checking if user exists with email:', validatedData.data.email)
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, validatedData.data.email)
     })
+
+    console.log('Existing user found:', existingUser ? 'Yes' : 'No')
 
     let userId: string
 
     if (existingUser) {
       userId = existingUser.id
 
+      console.log(
+        'Checking if user is already in organization:',
+        validatedData.data.organizationId
+      )
       // Add to organization if not already a member
       const existingUserOrg = await db.query.userOrganizations.findFirst({
         where: fields =>
-          eq(fields.userId, existingUser.id) &&
-          eq(fields.organizationId, validatedData.data.organizationId)
+          and(
+            eq(fields.userId, existingUser.id),
+            eq(fields.organizationId, validatedData.data.organizationId)
+          )
       })
 
+      console.log(
+        'User already in organization:',
+        existingUserOrg ? 'Yes' : 'No'
+      )
+
       if (!existingUserOrg) {
+        console.log('Adding user to organization')
         await db.insert(userOrganizations).values({
           userId: existingUser.id,
           organizationId: validatedData.data.organizationId,
@@ -89,6 +107,7 @@ async function createAction(
         })
       } else {
         // User is already in this organization
+        console.log('User is already a member of this organization')
         return {
           success: false,
           message: 'User is already a member of this organization',
@@ -96,6 +115,7 @@ async function createAction(
         }
       }
     } else {
+      console.log('Creating new user')
       // Create new user
       const [newUser] = await db
         .insert(users)
@@ -109,7 +129,9 @@ async function createAction(
         .returning()
 
       userId = newUser.id
+      console.log('New user created with ID:', userId)
 
+      console.log('Adding user to organization')
       // Add user to organization
       await db.insert(userOrganizations).values({
         userId: newUser.id,
@@ -118,6 +140,7 @@ async function createAction(
       })
     }
 
+    console.log('Creating invitation record')
     // Create invitation record
     const token = crypto.randomUUID()
     await db.insert(invitations).values({
@@ -129,6 +152,7 @@ async function createAction(
       role: validatedData.data.role
     })
 
+    console.log('Sending invitation email')
     // Use NextAuth's built-in email provider to send the verification/login email
     // for both new and existing users
     await signIn('resend', {
@@ -137,6 +161,7 @@ async function createAction(
       redirectTo: `/organizations/${validatedData.data.organizationId}`
     })
 
+    console.log('Invitation process completed successfully')
     revalidatePath('/users')
     return {
       success: true,
@@ -171,7 +196,8 @@ async function updateAction(
     id,
     name: (formData.get('name') as string) || null,
     email: formData.get('email') as string,
-    role: formData.get('role') as (typeof ROLES)[number]
+    role: formData.get('role') as (typeof ROLES)[number],
+    organizationId: formData.get('organizationId') as string
   }
 
   // Check if the current user has permission to change to this role
