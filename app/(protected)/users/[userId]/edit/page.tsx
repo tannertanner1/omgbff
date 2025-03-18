@@ -3,43 +3,67 @@ import { Form, type Field } from '@/components/form'
 import { updateAction } from '../../actions'
 import { ROLES } from '@/data/system-roles'
 import { verifySession } from '@/lib/dal'
+import { getUserById } from '@/db/queries'
 
-export default async function Page() {
+export default async function Page({
+  params
+}: {
+  params: Promise<{ organizationId: string; userId: string }>
+}) {
   const user = await verifySession()
-  if (!user) return notFound()
+  const { userId } = await params
+
+  if (!userId) {
+    return notFound()
+  }
+
+  const userToEdit = await getUserById({ userId })
+
+  if (!userToEdit) {
+    return notFound()
+  }
+
+  // Add this logic after retrieving the user data
+  const isSelfEdit = user.id === userId
+  const canEditUser =
+    user.role === 'owner' ||
+    (user.role === 'admin' && userToEdit.role === 'user') ||
+    isSelfEdit
 
   const hasAccess = user.role === 'admin' || user.role === 'owner'
 
   const fields: Field[] = [
     {
       name: 'id',
-      type: 'hidden' as const,
-      defaultValue: user.id
+      type: 'hidden',
+      defaultValue: userToEdit.id
     },
     {
       name: 'name',
       label: 'Name',
-      type: 'text' as const,
+      type: 'text',
       required: false,
-      defaultValue: user.name || ''
+      defaultValue: userToEdit.name || '',
+      disabled: !canEditUser
     },
     {
       name: 'email',
       label: 'Email',
-      type: 'email' as const,
+      type: 'email',
       required: true,
-      defaultValue: user.email || ''
+      defaultValue: userToEdit.email || '',
+      disabled: !canEditUser
     },
     {
       name: 'role',
       label: 'Role',
-      type: 'select' as const,
+      type: 'select',
       required: true,
       options: ROLES.map(role => ({
         label: role.charAt(0).toUpperCase() + role.slice(1),
         value: role
       })),
-      defaultValue: user.role || '',
+      defaultValue: userToEdit.role || '',
       disabled: !hasAccess
     }
   ]
@@ -50,129 +74,11 @@ export default async function Page() {
       action={updateAction}
       button='Save'
       data={{
-        id: user.id,
-        name: user.name || '',
-        email: user.email || '',
-        role: user.role
+        id: userToEdit.id,
+        name: userToEdit.name || '',
+        email: userToEdit.email || '',
+        role: userToEdit.role
       }}
     />
   )
 }
-
-// @note
-
-// import { notFound } from 'next/navigation'
-// import { Form, type Field } from '@/components/form'
-// import { updateAction } from '../../actions'
-// import { ROLES } from '@/data/system-roles'
-// import { verifySession } from '@/lib/dal'
-
-// export default async function Page() {
-//   const user = await verifySession()
-//   if (!user) return notFound()
-
-//   const hasAccess = user.role === 'admin' || user.role === 'owner'
-
-//   const fields: Field[] = [
-//     {
-//       name: 'id',
-//       type: 'hidden' as const,
-//       defaultValue: user.id
-//     },
-//     {
-//       name: 'name',
-//       label: 'Name',
-//       type: 'text' as const,
-//       required: false,
-//       defaultValue: user.name || ''
-//     },
-//     {
-//       name: 'email',
-//       label: 'Email',
-//       type: 'email' as const,
-//       required: true,
-//       defaultValue: user.email || ''
-//     },
-//     {
-//       name: 'role',
-//       label: 'Role',
-//       type: 'select' as const,
-//       required: true,
-//       options: ROLES.map(role => ({
-//         label: role.charAt(0).toUpperCase() + role.slice(1),
-//         value: role
-//       })),
-//       defaultValue: user.role || '',
-//       disabled: !hasAccess
-//     }
-//   ]
-
-//   return (
-//     <Form
-//       fields={fields}
-//       action={updateAction}
-//       button='Save'
-//       data={{
-//         id: user.id,
-//         name: user.name || '',
-//         email: user.email || '',
-//         role: user.role
-//       }}
-//     />
-//   )
-// }
-
-// @note
-
-// import { notFound } from 'next/navigation'
-// import { Form, type Field } from '@/components/form'
-// import { updateAction } from '../../actions'
-// import { ROLES } from '@/data/system-roles'
-// import { verifySession } from '@/lib/dal'
-
-// export default async function Page() {
-//   const user = await verifySession()
-//   if (!user) return notFound()
-
-//   const hasAccess = user.role === 'admin' || user.role === 'owner'
-
-//   const fields: Field[] = [
-//     {
-//       name: 'email',
-//       label: 'Email',
-//       type: 'email' as const,
-//       required: true,
-//       defaultValue: user.email || ''
-//     },
-//     {
-//       name: 'role',
-//       label: 'Role',
-//       type: 'select' as const,
-//       required: true,
-//       options: ROLES.map(role => ({
-//         label: role.charAt(0).toUpperCase() + role.slice(1),
-//         value: role
-//       })),
-//       defaultValue: user.role || '',
-//       disabled: !hasAccess
-//     },
-//     {
-//       name: 'id',
-//       type: 'hidden' as const,
-//       defaultValue: user.id
-//     }
-//   ]
-
-//   return (
-//     <Form
-//       fields={fields}
-//       action={updateAction}
-//       button='Save'
-//       data={{
-//         id: user.id,
-//         email: user.email || '',
-//         role: user.role
-//       }}
-//     />
-//   )
-// }
