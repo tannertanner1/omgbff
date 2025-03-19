@@ -13,7 +13,8 @@ export default async function Page() {
         <div className='mx-auto w-full max-w-5xl'>
           {session ? (
             <div className='mb-8 flex flex-col items-center px-4'>
-              <Menu />
+              {/* <Menu /> */}
+              <Menu user={session.user} />
             </div>
           ) : (
             <div className='flex flex-col items-center py-12'>

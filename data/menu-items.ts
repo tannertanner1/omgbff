@@ -21,6 +21,10 @@ type Item = {
   title: string
   description: string
   href: string
+  permission?: {
+    resource: string
+    action: string
+  }
 }
 
 export const ITEMS: Item[] = [
@@ -28,7 +32,11 @@ export const ITEMS: Item[] = [
     icon: IconAt,
     title: 'Users',
     description: 'Manage Users',
-    href: '/users'
+    href: '/users',
+    permission: {
+      resource: 'users',
+      action: 'view'
+    }
   },
   {
     icon: IconFolder,

@@ -7,7 +7,7 @@ import {
   IconSend,
   IconUserCircle,
   IconPhotoCircle,
-  IconCircleFilled,
+  IconCircle,
   IconRosetteDiscountCheckFilled
 } from '@tabler/icons-react'
 import {
@@ -37,7 +37,7 @@ export function Dropdown({ session }: { session: Session | null }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button className='rounded-full'>
-            <IconCircleFilled className='h-6 w-6 cursor-pointer' />
+            <IconCircle className='h-6 w-6 cursor-pointer' />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent

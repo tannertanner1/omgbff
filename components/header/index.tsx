@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { auth } from '@/lib/auth'
-import { IconCircle } from '@tabler/icons-react'
+import { IconCircleFilled } from '@tabler/icons-react'
 import { Dropdown } from './dropdown'
 import { Toggle } from './toggle'
 
@@ -13,7 +13,7 @@ export async function Header() {
       <div className='flex items-center'>
         <Link href='/'>
           <div>
-            <IconCircle className='h-6 w-6' />
+            <IconCircleFilled className='h-6 w-6' />
           </div>
         </Link>
       </div>
