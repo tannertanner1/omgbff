@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { Resend } from 'resend'
 import { Action, type ActionResponse } from '@/types/forms'
+import { DOMAIN } from '@/data/public-routes'
 
 const schema = z.object({
   name: z
@@ -45,9 +46,7 @@ export async function contact(
     const { name, email, message } = validatedData.data
 
     const replyTo = name ? `${name} <${email}>` : email
-    const subject = name
-      ? `Message from ${name}`
-      : 'Message from tannertanner.me'
+    const subject = name ? `Message from ${name}` : `Message from ${DOMAIN}`
 
     // Send email
     await resend.emails.send({

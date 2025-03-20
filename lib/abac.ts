@@ -3,16 +3,19 @@ import { and, eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { userOrganizations } from '@/db/schema'
 import type { Status } from '@/data/invoice-statuses'
+import type { ADDRESS, PHONE, Country, Region } from '@/data/customer-fields'
 
-type Organization = {
+export type Organization = {
+  userId: string
   id: string
+  organizationId?: string
   name: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 
 // User type matching session user object
-type User = {
+export type User = {
   id: string
   email: string | null
   role: Role
@@ -22,37 +25,58 @@ type User = {
   organizationId?: string | null
   createdAt?: Date
   updatedAt?: Date
+  invitedBy?: string | null
 }
 
-type Customer = {
-  id: string
-  name: string
-  email: string
-  organizationId: string
-  userId: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-type Invoice = {
-  id: string
-  customerId: string
-  userId: string
-  organizationId: string
-  value: number
-  description: string | null
-  status: Status
-  createdAt: Date
-  updatedAt: Date
-}
-
-type Invitation = {
+export type Invitation = {
   id: string
   email: string
   role: Role
   organizationId: string
   createdAt: Date
   updatedAt: Date
+}
+
+export type Customer = {
+  id: string
+  organizationId: string
+  userId: string
+  email: string
+  name: string
+  invoiceCount: number
+  invoiceTotal: number
+  invoices: Array<{ id: string; amount: number }>
+  address: Array<{
+    label: (typeof ADDRESS)[number]
+    line1: string
+    line2?: string
+    city: string
+    region: Region
+    postal: string
+    country: Country
+  }> | null
+  phone: Array<{
+    label: (typeof PHONE)[number]
+    number: string
+  }> | null
+  createdAt: string | Date
+  updatedAt: string | Date
+}
+
+export type Invoice = {
+  id: string
+  customerId: string
+  userId: string
+  organizationId: string
+  amount: number
+  description: string | null
+  status: Status
+  createdAt: string | Date
+  updatedAt: string | Date
+  customer: {
+    name: string
+    email: string
+  }
 }
 
 type PermissionCheck<T> =
@@ -200,7 +224,7 @@ async function hasPermission<Resource extends keyof Permissions>(
     : await permissionCheck(user, data)
 }
 
-export { hasPermission, type User }
+export { hasPermission }
 
 /**
  * @see https://github.com/WebDevSimplified/permission-system/blob/main/auth-abac.ts

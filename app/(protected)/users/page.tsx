@@ -1,9 +1,8 @@
 import { notFound, redirect } from 'next/navigation'
-import { getAllUsers } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
+import { hasPermission, type User } from '@/lib/abac'
 import { Component } from './component'
-import type { User } from './columns'
+import { getAllUsers } from '@/db/queries'
 
 export default async function Page() {
   const user = await verifySession()
@@ -17,21 +16,37 @@ export default async function Page() {
 
   const usersData = await getAllUsers()
 
-  const users: User[] =
-    usersData?.map(user => ({
-      ...user,
-      createdAt:
-        user.createdAt instanceof Date
-          ? user.createdAt.toISOString()
-          : user.createdAt,
-      updatedAt:
-        user.updatedAt instanceof Date
-          ? user.updatedAt.toISOString()
-          : user.updatedAt,
-      email: user.email || '',
-      role: user.role,
-      name: user.name || ''
-    })) || []
+  const users =
+    usersData?.map(userData => {
+      // Access the invitation data using type assertion
+      // TypeScript doesn't know about invitations but it's in the data
+      const rawUserData = userData as any
+      const invitation = rawUserData.invitations?.[0]
+
+      // Extract the inviter's name or email
+      const invitedBy = invitation?.user?.name || invitation?.user?.email || ''
+
+      return {
+        ...userData,
+        email: userData.email || '',
+        name: userData.name || '',
+        createdAt:
+          userData.createdAt instanceof Date
+            ? userData.createdAt
+            : new Date(userData.createdAt),
+        updatedAt:
+          userData.updatedAt instanceof Date
+            ? userData.updatedAt
+            : new Date(userData.updatedAt),
+        emailVerified:
+          userData.emailVerified instanceof Date
+            ? userData.emailVerified
+            : userData.emailVerified
+              ? new Date(userData.emailVerified)
+              : null,
+        invitedBy
+      } as User
+    }) || []
 
   return <Component users={users} userId={user.id} />
 }

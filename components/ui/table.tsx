@@ -23,7 +23,12 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <thead
     ref={ref}
-    className={cn('[&_tr]:border-b [&_tr]:hover:bg-transparent', className)}
+    className={cn(
+      // Make the selector more specific to override any other hover styles
+      '[&>tr]:border-b [&>tr]:hover:!bg-transparent',
+      // '[&_tr]:border-b [&_tr]:hover:bg-transparent',
+      className
+    )}
     {...props}
   />
 ))
@@ -63,7 +68,10 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      // 'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      'border-b transition-colors data-[state=selected]:bg-muted',
+      // Only apply hover effect if the row is not inside a cell with colSpan and not inside a thead element
+      '[&:not(:has(>td[colSpan])):not(thead *)]:hover:bg-muted/50',
       className
     )}
     {...props}
@@ -78,7 +86,8 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      'h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      // 'h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      'h-8 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
       className
     )}
     {...props}
@@ -93,7 +102,8 @@ const TableCell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      // 'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+      'px-2 py-1 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
       className
     )}
     {...props}
@@ -123,6 +133,8 @@ export {
   TableCell,
   TableCaption
 }
+
+// @note
 
 // import * as React from "react"
 

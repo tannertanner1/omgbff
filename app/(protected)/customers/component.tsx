@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Table } from '@/components/data-table/table'
-import { getCustomerColumns, type Customer } from './columns'
+import { getColumns } from './columns'
+import type { Customer } from '@/lib/abac'
 
 export function Component({
   customers,
@@ -14,8 +15,9 @@ export function Component({
   userId: string
 }) {
   const router = useRouter()
+
   const handleEdit = (row: Customer) => {
-    router.push(`/customers/${row.id}/edit`)
+    router.push(`/${userId}/customers/${row.id}/edit`)
   }
 
   const handleDelete = async (row: Customer) => {
@@ -41,14 +43,14 @@ export function Component({
     }
   }
 
-  const columns = getCustomerColumns(userId, handleEdit, handleDelete)
+  const columns = getColumns(userId, handleEdit, handleDelete)
 
   return (
     <div className='h-fit'>
       <div className='mx-auto max-w-5xl p-4'>
         <div className='-mt-3 mb-2 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold'>Customers</h1>
-          <Link href={'/customers/new'}>
+          <Link href={`/${userId}/customers/new`}>
             <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
           </Link>
         </div>
@@ -56,7 +58,7 @@ export function Component({
           data={customers}
           columns={columns}
           link={row =>
-            `/organizations/${row.organizationId}/customers/${row.id}/edit`
+            `/${userId}/organizations/${row.organizationId}/customers/${row.id}/edit`
           }
         />
       </div>

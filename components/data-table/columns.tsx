@@ -22,9 +22,7 @@ export function Columns<T extends { id: string }>(
         label={key.charAt(0).toUpperCase() + key.slice(1)}
       />
     ),
-    cell: ({ row }) => (
-      <div className='px-4'>{row.getValue(key)?.toString()}</div>
-    )
+    cell: ({ row }) => row.getValue(key)?.toString()
   }))
 
   columns.push({

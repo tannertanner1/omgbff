@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { eq, inArray } from 'drizzle-orm'
+import { eq, inArray, desc } from 'drizzle-orm'
 import { db } from '@/db'
 import {
   organizations,
@@ -19,7 +19,15 @@ async function getAllUsers(): Promise<(typeof users.$inferSelect)[] | []> {
   }
 
   return await db.query.users.findMany({
-    orderBy: (users, { desc }) => [desc(users.createdAt)]
+    with: {
+      invitations: {
+        with: {
+          user: true // This is the inviter/referrer
+        },
+        limit: 1
+      }
+    },
+    orderBy: [desc(users.createdAt)]
   })
 }
 

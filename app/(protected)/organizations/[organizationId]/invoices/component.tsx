@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { Table } from '@/components/data-table/table'
-import { IconCirclePlus, IconMoodEmpty } from '@tabler/icons-react'
-import { getInvoiceColumns, type Invoice } from './columns'
 import { useRouter } from 'next/navigation'
+import { IconCirclePlus, IconMoodEmpty } from '@tabler/icons-react'
+import { Table } from '@/components/data-table/table'
 import { deleteAction } from './actions'
+import { getInvoiceColumns } from './columns'
+import type { Invoice } from '@/lib/abac'
 
 export function Invoices({
   invoices,
@@ -44,12 +45,7 @@ export function Invoices({
     }
   }
 
-  const columns = getInvoiceColumns(
-    userId,
-    organizationId,
-    handleEdit,
-    handleDelete
-  )
+  const columns = getInvoiceColumns(organizationId, handleEdit, handleDelete)
 
   return (
     <div className='space-y-4'>

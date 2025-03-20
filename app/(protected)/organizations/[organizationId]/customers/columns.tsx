@@ -5,38 +5,8 @@ import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import {
-  ADDRESS,
-  PHONE,
-  type Country,
-  type Region
-} from '@/data/customer-fields'
-
-export type Customer = {
-  id: string
-  organizationId: string
-  userId: string
-  email: string
-  name: string
-  invoiceCount: number
-  invoiceTotal: number
-  invoices: Array<{ id: string; amount: number }>
-  address: Array<{
-    label: (typeof ADDRESS)[number]
-    line1: string
-    line2?: string
-    city: string
-    region: Region
-    postal: string
-    country: Country
-  }> | null
-  phone: Array<{
-    label: (typeof PHONE)[number]
-    number: string
-  }> | null
-  createdAt: string | Date
-  updatedAt: string | Date
-}
+import { ADDRESS, PHONE } from '@/data/customer-fields'
+import type { Customer } from '@/lib/abac'
 
 export function getCustomerColumns(
   userId: string,
@@ -48,44 +18,34 @@ export function getCustomerColumns(
     {
       accessorKey: 'id',
       header: ({ column }) => <Header column={column} label='ID' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('id')}</div>
-      )
+      cell: ({ row }) => row.getValue('id')
     },
     {
       accessorKey: 'email',
       header: ({ column }) => <Header column={column} label='Email' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('email')}</div>
-      )
+      cell: ({ row }) => row.getValue('email')
     },
     {
       accessorKey: 'name',
       header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('name')}</div>
-      )
+      cell: ({ row }) => row.getValue('name')
     },
     {
       accessorKey: 'invoiceCount',
       header: ({ column }) => <Header column={column} label='Invoices' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>
-          {row.getValue('invoiceCount')}
-        </div>
-      )
+      cell: ({ row }) => row.getValue('invoiceCount')
     },
     {
       accessorKey: 'invoiceTotal',
       header: ({ column }) => <Header column={column} label='Total' />,
       cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>
+        <>
           $
           {(row.getValue('invoiceTotal') as number).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           })}
-        </div>
+        </>
       )
     },
     {
@@ -97,13 +57,11 @@ export function getCustomerColumns(
           addr => addr.label === ADDRESS[0]
         )
         return (
-          <div className='px-4'>
-            <Badge className='bg-primary text-primary-foreground'>
-              {mailingAddress
-                ? `${mailingAddress.line1}${mailingAddress.line2 ? `, ${mailingAddress.line2}` : ''}, ${mailingAddress.city}, ${mailingAddress.region} ${mailingAddress.postal}, ${mailingAddress.country}`
-                : 'N/A'}
-            </Badge>
-          </div>
+          <Badge className='bg-primary text-primary-foreground'>
+            {mailingAddress
+              ? `${mailingAddress.line1}${mailingAddress.line2 ? `, ${mailingAddress.line2}` : ''}, ${mailingAddress.city}, ${mailingAddress.region} ${mailingAddress.postal}, ${mailingAddress.country}`
+              : 'N/A'}
+          </Badge>
         )
       }
     },
@@ -116,11 +74,9 @@ export function getCustomerColumns(
           phone => phone.label === PHONE[0]
         )
         return (
-          <div className='px-4'>
-            <Badge className='bg-primary text-primary-foreground'>
-              {primaryPhone ? primaryPhone.number : 'N/A'}
-            </Badge>
-          </div>
+          <Badge className='bg-primary text-primary-foreground'>
+            {primaryPhone ? primaryPhone.number : 'N/A'}
+          </Badge>
         )
       }
     },
@@ -129,15 +85,11 @@ export function getCustomerColumns(
       header: ({ column }) => <Header column={column} label='Created' />,
       cell: ({ row }) => {
         const dateValue = row.getValue('createdAt')
-        return (
-          <div className='whitespace-nowrap px-4'>
-            {dateValue instanceof Date
-              ? format(dateValue, 'MMM d, yyyy')
-              : typeof dateValue === 'string'
-                ? format(new Date(dateValue), 'MMM d, yyyy')
-                : 'Invalid Date'}
-          </div>
-        )
+        return dateValue instanceof Date
+          ? format(dateValue, 'MMM d, yyyy')
+          : typeof dateValue === 'string'
+            ? format(new Date(dateValue), 'MMM d, yyyy')
+            : 'Invalid Date'
       }
     },
     {
@@ -145,15 +97,11 @@ export function getCustomerColumns(
       header: ({ column }) => <Header column={column} label='Updated' />,
       cell: ({ row }) => {
         const dateValue = row.getValue('updatedAt')
-        return (
-          <div className='whitespace-nowrap px-4'>
-            {dateValue instanceof Date
-              ? format(dateValue, 'MMM d, yyyy')
-              : typeof dateValue === 'string'
-                ? format(new Date(dateValue), 'MMM d, yyyy')
-                : 'Invalid Date'}
-          </div>
-        )
+        return dateValue instanceof Date
+          ? format(dateValue, 'MMM d, yyyy')
+          : typeof dateValue === 'string'
+            ? format(new Date(dateValue), 'MMM d, yyyy')
+            : 'Invalid Date'
       }
     },
     {

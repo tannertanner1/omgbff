@@ -1,20 +1,18 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { IconCircleX } from '@tabler/icons-react'
-import {
-  getOrganizationById,
-  getOrganizationCustomers,
-  getOrganizationInvoices,
-  getOrganizationUsers
-} from '@/db/queries'
 import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
 import { Users } from './users/component'
 import { Customers } from './customers/component'
-import type { Customer } from './customers/columns'
 import { Invoices } from './invoices/component'
-import type { Invoice } from './invoices/columns'
-import type { User } from './users/columns'
+import { hasPermission } from '@/lib/abac'
+import type { User, Customer, Invoice } from '@/lib/abac'
+import {
+  getOrganizationById,
+  getOrganizationUsers,
+  getOrganizationCustomers,
+  getOrganizationInvoices
+} from '@/db/queries'
 
 export default async function Page({
   params
@@ -38,61 +36,84 @@ export default async function Page({
 
   if (!organization) return notFound()
 
-  const users: User[] =
-    usersData?.map(user => ({
-      ...user,
-      email: user.email || '', // Ensure email is never null
-      createdAt:
-        user.createdAt instanceof Date
-          ? user.createdAt
-          : new Date(user.createdAt),
-      updatedAt:
-        user.updatedAt instanceof Date
-          ? user.updatedAt
-          : new Date(user.updatedAt),
-      emailVerified:
-        user.emailVerified instanceof Date
-          ? user.emailVerified
-          : user.emailVerified
-            ? new Date(user.emailVerified)
-            : null,
-      status: user.status as 'active' | 'pending',
-      role: user.role as 'owner' | 'admin' | 'user'
-    })) || []
+  // Process users data
+  const users =
+    usersData?.map(userData => {
+      // Use type assertion to access invitations data that TypeScript doesn't know about
+      const rawUserData = userData as any
+      const invitation = rawUserData.invitations?.[0]
 
-  // Ensure data matches expected types and provide default empty arrays
+      // Ensure Date objects
+      const createdAt =
+        userData.createdAt instanceof Date
+          ? userData.createdAt
+          : new Date(userData.createdAt)
+
+      // For invited users who haven't accepted yet, leave updatedAt blank
+      const updatedAt =
+        invitation && !userData.emailVerified
+          ? null
+          : userData.updatedAt instanceof Date
+            ? userData.updatedAt
+            : new Date(userData.updatedAt)
+
+      const emailVerified =
+        userData.emailVerified instanceof Date
+          ? userData.emailVerified
+          : userData.emailVerified
+            ? new Date(userData.emailVerified)
+            : null
+
+      // Create a user object that matches the User type, WITHOUT status field
+      return {
+        id: userData.id,
+        email: userData.email || '',
+        name: userData.name || '',
+        role: userData.role,
+        emailVerified,
+        image: userData.image,
+        createdAt,
+        updatedAt,
+        // No status field as per requirements
+        invitedBy: invitation?.user?.name || invitation?.user?.email || ''
+      } as User
+    }) || []
+
+  // Process customers data
   const customers: Customer[] =
     customersData?.map(customer => ({
       ...customer,
       createdAt:
         customer.createdAt instanceof Date
-          ? customer.createdAt.toISOString()
-          : customer.createdAt,
+          ? customer.createdAt
+          : new Date(customer.createdAt),
       updatedAt:
         customer.updatedAt instanceof Date
-          ? customer.updatedAt.toISOString()
-          : customer.updatedAt,
+          ? customer.updatedAt
+          : new Date(customer.updatedAt),
       invoiceCount: Number(customer.invoiceCount) || 0,
       invoiceTotal: Number(customer.invoiceTotal) || 0,
-      invoices: customer.invoices.map(invoice => ({
-        id: invoice.id,
-        amount: invoice.amount
-      })),
+      invoices:
+        customer.invoices?.map(invoice => ({
+          id: invoice.id,
+          amount: invoice.amount
+        })) || [],
       address: customer.address || null,
       phone: customer.phone || null
     })) || []
 
+  // Process invoices data
   const invoices: Invoice[] =
     invoicesData?.map(invoice => ({
       ...invoice,
       createdAt:
         invoice.createdAt instanceof Date
-          ? invoice.createdAt.toISOString()
-          : invoice.createdAt,
+          ? invoice.createdAt
+          : new Date(invoice.createdAt),
       updatedAt:
         invoice.updatedAt instanceof Date
-          ? invoice.updatedAt.toISOString()
-          : invoice.updatedAt
+          ? invoice.updatedAt
+          : new Date(invoice.updatedAt)
     })) || []
 
   return (

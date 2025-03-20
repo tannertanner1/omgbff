@@ -243,13 +243,11 @@ export function DataTable<TData, TValue>({
                   }}
                 >
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} className='p-0'>
-                      <div className='whitespace-nowrap'>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </div>
+                    <TableCell key={cell.id} className='px-4 py-1'>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>

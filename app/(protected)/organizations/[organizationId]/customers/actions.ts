@@ -7,7 +7,7 @@ import { db } from '@/db'
 import { customers } from '@/db/schema'
 import { Action, type ActionResponse } from '@/types/forms'
 import { verifySession } from '@/lib/dal'
-import { hasPermission, type User } from '@/lib/abac'
+import { hasPermission, type Customer } from '@/lib/abac'
 import { ADDRESS, PHONE } from '@/data/customer-fields'
 import { STATE, PROVINCE, COUNTRY } from '@/data/customer-fields'
 
@@ -103,21 +103,35 @@ async function updateAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user: User = await verifySession()
+  const user = await verifySession()
   const organizationId = formData.get('organizationId') as string
   const id = formData.get('id') as string
   const returnTo = formData.get('returnTo') as string
 
+  // Create a complete Customer object for permission check with all required properties
+  const customerForPermissionCheck: Customer = {
+    id,
+    name: formData.get('name') as string,
+    email: formData.get('email') as string,
+    organizationId,
+    userId: user.id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    // Add the missing properties
+    invoiceCount: 0,
+    invoiceTotal: 0,
+    invoices: [],
+    address: JSON.parse(formData.get('address') as string),
+    phone: JSON.parse(formData.get('phone') as string)
+  }
+
   if (
-    !(await hasPermission(user, 'customers', 'update', {
-      id,
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      organizationId,
-      userId: user.id,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }))
+    !(await hasPermission(
+      user,
+      'customers',
+      'update',
+      customerForPermissionCheck
+    ))
   ) {
     return {
       success: false,
@@ -162,14 +176,14 @@ async function updateAction(
     revalidatePath('/customers')
     revalidatePath(`/organizations/${organizationId}/customers`)
 
-    const returnTo =
+    const returnPath =
       (formData.get('returnTo') as string) ||
       `/organizations/${organizationId}/customers`
 
     return {
       success: true,
       message: 'Customer updated successfully',
-      redirect: returnTo
+      redirect: returnPath
     }
   } catch (error) {
     console.error('Error updating customer:', error)
@@ -185,20 +199,34 @@ async function deleteAction(
   _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
-  const user: User = await verifySession()
+  const user = await verifySession()
   const id = formData.get('id') as string
   const organizationId = formData.get('organizationId') as string
 
+  // Create a complete Customer object for permission check with all required properties
+  const customerForPermissionCheck: Customer = {
+    id,
+    organizationId,
+    name: '',
+    email: '',
+    userId: user.id,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    // Add the missing properties
+    invoiceCount: 0,
+    invoiceTotal: 0,
+    invoices: [],
+    address: null,
+    phone: null
+  }
+
   if (
-    !(await hasPermission(user, 'customers', 'delete', {
-      id,
-      organizationId,
-      name: '',
-      email: '',
-      userId: user.id,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }))
+    !(await hasPermission(
+      user,
+      'customers',
+      'delete',
+      customerForPermissionCheck
+    ))
   ) {
     return {
       success: false,

@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Table } from '@/components/data-table/table'
-import { getUserColumns, type User } from './columns'
+import type { User } from '@/lib/abac'
+import { getColumns } from './columns'
 import { deleteAction } from './actions'
 
 export function Component({
@@ -46,7 +47,7 @@ export function Component({
     }
   }
 
-  const columns = getUserColumns(userId, handleEdit, handleDelete)
+  const columns = getColumns(userId, handleEdit, handleDelete)
 
   return (
     <div className='flex h-fit'>

@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, gt } from 'drizzle-orm'
 import * as z from 'zod'
 import { db } from '@/db'
 import { users, userOrganizations, customers, invitations } from '@/db/schema'
@@ -68,6 +68,18 @@ async function createAction(
 
   try {
     console.log('Checking if user exists with email:', validatedData.data.email)
+
+    // First, clean up any existing expired invitations for this email and organization
+    await db
+      .delete(invitations)
+      .where(
+        and(
+          eq(invitations.email, validatedData.data.email),
+          eq(invitations.organizationId, validatedData.data.organizationId),
+          eq(invitations.expiresAt, new Date())
+        )
+      )
+
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, validatedData.data.email)
@@ -84,7 +96,7 @@ async function createAction(
         'Checking if user is already in organization:',
         validatedData.data.organizationId
       )
-      // Add to organization if not already a member
+      // Check if user is already in organization
       const existingUserOrg = await db.query.userOrganizations.findFirst({
         where: fields =>
           and(
@@ -98,14 +110,7 @@ async function createAction(
         existingUserOrg ? 'Yes' : 'No'
       )
 
-      if (!existingUserOrg) {
-        console.log('Adding user to organization')
-        await db.insert(userOrganizations).values({
-          userId: existingUser.id,
-          organizationId: validatedData.data.organizationId,
-          role: validatedData.data.role
-        })
-      } else {
+      if (existingUserOrg) {
         // User is already in this organization
         console.log('User is already a member of this organization')
         return {
@@ -114,6 +119,30 @@ async function createAction(
           inputs: rawData
         }
       }
+
+      // Check if there's a pending invitation
+      const pendingInvitation = await db.query.invitations.findFirst({
+        where: and(
+          eq(invitations.email, validatedData.data.email),
+          eq(invitations.organizationId, validatedData.data.organizationId),
+          gt(invitations.expiresAt, new Date()) // Not expired
+        )
+      })
+
+      if (pendingInvitation) {
+        return {
+          success: false,
+          message: 'User has already been invited to this organization',
+          inputs: rawData
+        }
+      }
+
+      console.log('Adding user to organization')
+      await db.insert(userOrganizations).values({
+        userId: existingUser.id,
+        organizationId: validatedData.data.organizationId,
+        role: validatedData.data.role
+      })
     } else {
       console.log('Creating new user')
       // Create new user
@@ -327,6 +356,13 @@ async function deleteAction(
           message: 'Users can only delete their own account'
         }
       }
+    }
+
+    // Delete any pending invitations for this user
+    if (userToDelete.email) {
+      await db
+        .delete(invitations)
+        .where(eq(invitations.email, userToDelete.email))
     }
 
     // Delete in the correct order to handle foreign key constraints

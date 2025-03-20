@@ -1,4 +1,11 @@
-export const ROUTES = [
+const DOMAIN = 'omgbff.com'
+
+const URL =
+  process.env.NODE_ENV === 'production'
+    ? `https://${DOMAIN}`
+    : 'http://localhost:3000'
+
+const ROUTES = [
   '/',
   '/login',
   '/error',
@@ -8,4 +15,6 @@ export const ROUTES = [
   '/privacy'
 ] as string[]
 
-export type Route = (typeof ROUTES)[number]
+type Route = (typeof ROUTES)[number]
+
+export { DOMAIN, URL, ROUTES, type Route }

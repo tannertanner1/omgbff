@@ -4,15 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { Header } from '@/components/data-table/header'
 import { Actions } from '@/components/data-table/actions'
 import { format } from 'date-fns'
-
-export type Organization = {
-  userId: string
-  id: string
-  organizationId: string
-  name: string
-  createdAt: Date | string
-  updatedAt: Date | string
-}
+import type { Organization } from '@/lib/abac'
 
 export function getColumns(
   userId: string,
@@ -23,34 +15,24 @@ export function getColumns(
     {
       accessorKey: 'id',
       header: ({ column }) => <Header column={column} label='ID' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('id')}</div>
-      )
+      cell: ({ row }) => row.getValue('id')
     },
     {
       accessorKey: 'name',
       header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>{row.getValue('name')}</div>
-      )
+      cell: ({ row }) => row.getValue('name')
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <Header column={column} label='Created' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>
-          {format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')}
-        </div>
-      )
+      cell: ({ row }) =>
+        format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')
     },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <Header column={column} label='Updated' />,
-      cell: ({ row }) => (
-        <div className='whitespace-nowrap px-4'>
-          {format(new Date(row.getValue('updatedAt')), 'MMM d, yyyy')}
-        </div>
-      )
+      cell: ({ row }) =>
+        format(new Date(row.getValue('updatedAt')), 'MMM d, yyyy')
     },
     {
       id: 'actions',

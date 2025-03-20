@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation'
-import { getAllInvoices } from '@/db/queries'
 import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
 import { Component } from './component'
-import type { Invoice } from './columns'
+import { hasPermission, type Invoice } from '@/lib/abac'
+import { getAllInvoices } from '@/db/queries'
 
 export default async function Page() {
   const user = await verifySession()

@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { IconCirclePlus } from '@tabler/icons-react'
 import { Table } from '@/components/data-table/table'
-import { getInvoiceColumns, type Invoice } from './columns'
+import { getColumns } from './columns'
+import type { Invoice } from '@/lib/abac.ts'
 
 export function Component({
   invoices,
@@ -42,7 +43,7 @@ export function Component({
     }
   }
 
-  const columns = getInvoiceColumns(userId, handleEdit, handleDelete)
+  const columns = getColumns(userId, handleEdit, handleDelete)
 
   return (
     <div className='h-fit'>

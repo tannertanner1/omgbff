@@ -1,15 +1,15 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, gt } from 'drizzle-orm'
 import * as z from 'zod'
 import { db } from '@/db'
 import { users, userOrganizations, invitations } from '@/db/schema'
 import { Action, type ActionResponse } from '@/types/forms'
+import { signIn } from '@/lib/auth'
+import { ROLES } from '@/data/system-roles'
 import { verifySession } from '@/lib/dal'
 import { hasPermission, type User } from '@/lib/abac'
-import { ROLES } from '@/data/system-roles'
-import { signIn } from '@/lib/auth'
 
 const schema = z.object({
   organizationId: z.string().min(1, 'Required'),
@@ -77,6 +77,17 @@ async function createAction(
       validatedData.data.email
     )
 
+    // First, clean up any existing expired invitations for this email and organization
+    await db
+      .delete(invitations)
+      .where(
+        and(
+          eq(invitations.email, validatedData.data.email),
+          eq(invitations.organizationId, validatedData.data.organizationId),
+          eq(invitations.expiresAt, new Date())
+        )
+      )
+
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, validatedData.data.email)
@@ -109,13 +120,29 @@ async function createAction(
         'Existing user organization found:',
         existingUserOrg ? 'Yes' : 'No'
       )
-      console.log('Existing user organization details:', existingUserOrg)
 
       if (existingUserOrg) {
         // User is already in this organization
         return {
           success: false,
           message: 'User is already a member of this organization',
+          inputs: rawData
+        }
+      }
+
+      // Check if there's a pending invitation
+      const pendingInvitation = await db.query.invitations.findFirst({
+        where: and(
+          eq(invitations.email, validatedData.data.email),
+          eq(invitations.organizationId, validatedData.data.organizationId),
+          gt(invitations.expiresAt, new Date()) // Not expired
+        )
+      })
+
+      if (pendingInvitation) {
+        return {
+          success: false,
+          message: 'User has already been invited to this organization',
           inputs: rawData
         }
       }
@@ -329,6 +356,18 @@ async function deleteAction(
         success: false,
         message: 'Unauthorized to remove users with higher roles'
       }
+    }
+
+    // Delete any pending invitations for this user in this organization
+    if (userToDelete.user.email) {
+      await db
+        .delete(invitations)
+        .where(
+          and(
+            eq(invitations.email, userToDelete.user.email),
+            eq(invitations.organizationId, organizationId)
+          )
+        )
     }
 
     await db

@@ -22,3 +22,8 @@ const role: Record<Role, { label: string; color: string }> = {
 }
 
 export { ROLES, type Role, roles, role }
+
+/**
+ * @see https://help.x.com/en/rules-and-policies/profile-labels
+ * @see https://partnermarketinghub.withgoogle.com/brands/google-play/visual-identity/color-palette
+ */

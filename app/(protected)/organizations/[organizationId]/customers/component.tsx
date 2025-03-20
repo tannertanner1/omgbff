@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { Table } from '@/components/data-table/table'
-import { IconCirclePlus } from '@tabler/icons-react'
-import { getCustomerColumns, type Customer } from './columns'
 import { useRouter } from 'next/navigation'
+import { IconCirclePlus } from '@tabler/icons-react'
+import { Table } from '@/components/data-table/table'
 import { deleteAction } from './actions'
+import { getCustomerColumns } from './columns'
+import type { Customer } from '@/lib/abac'
 
 export function Customers({
   customers,

@@ -7,7 +7,7 @@ import { Header } from '@/components/header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'OMGBFF',
+  title: 'omg bff',
   description: 'PNPM, React 19, Next, TypeScript, Tailwind CSS, shadcn UI'
 }
 
