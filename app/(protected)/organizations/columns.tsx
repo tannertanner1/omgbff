@@ -23,16 +23,16 @@ export function getColumns(
       cell: ({ row }) => row.getValue('name')
     },
     {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
-      cell: ({ row }) =>
-        format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')
-    },
-    {
       accessorKey: 'updatedAt',
       header: ({ column }) => <Header column={column} label='Updated' />,
       cell: ({ row }) =>
         format(new Date(row.getValue('updatedAt')), 'MMM d, yyyy')
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <Header column={column} label='Created' />,
+      cell: ({ row }) =>
+        format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')
     },
     {
       id: 'actions',

@@ -28,19 +28,6 @@ export function getUserColumns(
       header: ({ column }) => <Header column={column} label='Name' />,
       cell: ({ row }) => row.getValue('name') || ''
     },
-    // Removed 'role' column as per requirements
-    {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
-      cell: ({ row }) => {
-        const dateValue = row.getValue('createdAt')
-        return dateValue instanceof Date
-          ? format(dateValue, 'MMM d, yyyy')
-          : typeof dateValue === 'string'
-            ? format(new Date(dateValue), 'MMM d, yyyy')
-            : 'Invalid Date'
-      }
-    },
     {
       accessorKey: 'updatedAt',
       header: ({ column }) => <Header column={column} label='Updated' />,
@@ -49,6 +36,18 @@ export function getUserColumns(
         // If updatedAt is null (for invited users who haven't accepted), show blank
         if (!dateValue) return ''
 
+        return dateValue instanceof Date
+          ? format(dateValue, 'MMM d, yyyy')
+          : typeof dateValue === 'string'
+            ? format(new Date(dateValue), 'MMM d, yyyy')
+            : 'Invalid Date'
+      }
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <Header column={column} label='Created' />,
+      cell: ({ row }) => {
+        const dateValue = row.getValue('createdAt')
         return dateValue instanceof Date
           ? format(dateValue, 'MMM d, yyyy')
           : typeof dateValue === 'string'

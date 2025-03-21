@@ -88,10 +88,10 @@ export function getColumns(
       }
     },
     {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
+      accessorKey: 'updatedAt',
+      header: ({ column }) => <Header column={column} label='Updated' />,
       cell: ({ row }) => {
-        const dateValue = row.getValue('createdAt')
+        const dateValue = row.getValue('updatedAt')
         return dateValue instanceof Date
           ? format(dateValue, 'MMM d, yyyy')
           : typeof dateValue === 'string'
@@ -100,10 +100,10 @@ export function getColumns(
       }
     },
     {
-      accessorKey: 'updatedAt',
-      header: ({ column }) => <Header column={column} label='Updated' />,
+      accessorKey: 'createdAt',
+      header: ({ column }) => <Header column={column} label='Created' />,
       cell: ({ row }) => {
-        const dateValue = row.getValue('updatedAt')
+        const dateValue = row.getValue('createdAt')
         return dateValue instanceof Date
           ? format(dateValue, 'MMM d, yyyy')
           : typeof dateValue === 'string'

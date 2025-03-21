@@ -45,18 +45,6 @@ export function getColumns(
       }
     },
     {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
-      cell: ({ row }) => {
-        const dateValue = row.getValue('createdAt')
-        return dateValue instanceof Date
-          ? format(dateValue, 'MMM d, yyyy')
-          : typeof dateValue === 'string'
-            ? format(new Date(dateValue), 'MMM d, yyyy')
-            : 'Invalid Date'
-      }
-    },
-    {
       accessorKey: 'updatedAt',
       header: ({ column }) => <Header column={column} label='Updated' />,
       cell: ({ row }) => {
@@ -72,8 +60,20 @@ export function getColumns(
       }
     },
     {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <Header column={column} label='Created' />,
+      cell: ({ row }) => {
+        const dateValue = row.getValue('createdAt')
+        return dateValue instanceof Date
+          ? format(dateValue, 'MMM d, yyyy')
+          : typeof dateValue === 'string'
+            ? format(new Date(dateValue), 'MMM d, yyyy')
+            : 'Invalid Date'
+      }
+    },
+    {
       accessorKey: 'invitedBy',
-      header: ({ column }) => <Header column={column} label='Referral' />,
+      header: ({ column }) => <Header column={column} label='Invited' />,
       cell: ({ row }) => {
         const user = row.original
         return (user as any).invitedBy || ''
