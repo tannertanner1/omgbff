@@ -9,10 +9,6 @@ pnpm dev
 
 ---
 
-<div>
-  <details>
-    <summary><code>.env.local</code></summary>
-
 ```bash
 AUTH_SECRET=""        # https://authjs.dev/reference/nextjs
 AUTH_DRIZZLE_URL=""   # https://neon.tech/docs/guides/nextjs

@@ -8,6 +8,10 @@ body {
 
 @layer base {
   :root {
+    /* --font-serif: 'Vollkorn', serif;
+    --font-sans: 'Montserrat', sans-serif;
+    --font-mono: 'Roboto_Mono', monospace; */
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -83,11 +87,8 @@ body {
     scroll-behavior: smooth;
   }
   html {
-    /*
-    font-family:
-    var(--font-serif) var(--font-sans),
-    var(--font-mono);
-    */
+    /* font-family: var(--font-serif), var(--font-sans), var(--font-mono); */
+
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-behavior: smooth;
