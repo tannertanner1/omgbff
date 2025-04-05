@@ -6,6 +6,7 @@ import { Dots } from './background'
 import { Fade } from './background'
 import { STEPS } from '@/data/marketing-content'
 import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 
 type Tab = (typeof STEPS.items)[number]
 
@@ -25,7 +26,7 @@ function Step({
   return (
     <button
       className={cn(
-        'group relative flex w-full flex-col items-start rounded-lg p-5 text-left transition-all duration-300',
+        'group relative flex w-full flex-col items-start rounded-lg p-4 text-left transition-all duration-300',
         isActive ? 'bg-muted' : 'hover:bg-accent/50'
       )}
       onClick={onClick}
@@ -97,9 +98,17 @@ function Steps() {
   }, [])
 
   return (
-    <div ref={sectionRef} className='bg-background py-16'>
+    <div ref={sectionRef} className='bg-background pt-12'>
       <div className='mx-auto max-w-5xl px-4 md:px-6'>
-        <div className='text-center'>
+        <div className='items-start justify-start text-start md:items-center md:justify-center md:text-center'>
+          <Badge
+            variant='outline'
+            className='mb-8 bg-background text-sm text-muted-foreground'
+          >
+            <label className='cursor-pointer select-none after:absolute after:inset-0'>
+              How it works
+            </label>
+          </Badge>
           <h2
             ref={headingRef}
             className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl'
@@ -124,7 +133,6 @@ function Steps() {
               />
             ))}
           </div>
-
           {/* Image */}
           <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
             {STEPS.items.map((item, index) => (
@@ -152,6 +160,26 @@ function Steps() {
               </div>
             ))}
           </div>
+          {/* <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
+            {STEPS.items.map((item, index) => (
+              <div
+                key={index}
+                className={`bg-background absolute inset-0 transition-opacity duration-300 ease-in-out ${
+                  activeStep === index ? 'z-10 opacity-100' : 'z-0 opacity-0'
+                }`}
+              >
+                <Dots key={index}>
+                  <Fade
+                    src={item.image || '/placeholder.svg'}
+                    alt={item.title}
+                    direction='bottom'
+                    fadePercentage={20}
+                    className='h-full w-full'
+                  />
+                </Dots>
+              </div>
+            ))}
+          </div> */}
         </div>
       </div>
     </div>

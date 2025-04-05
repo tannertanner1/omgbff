@@ -202,7 +202,13 @@ function generateContributionData() {
   return { contributions, months, totalColumns: weekIndex }
 }
 
-/** @see https://examples.motion.dev/react/scroll-container */
+/**
+ * @see https://examples.motion.dev/react/scroll-container
+ * @see https://craft.mxkaske.dev/post/activity-calendar
+ * @see https://github.com/mxkaske/mxkaske.dev/blob/main/components/craft/activity-calendar/activity-calendar.tsx
+ * @see https://docs.github.com/en/rest/commits/comments?apiVersion=2022-11-28#list-commit-comments
+ * @see https://github.com/shadcn-ui/taxonomy/blob/main/app/(marketing)/page.tsx#L8
+ */
 
 // @note
 

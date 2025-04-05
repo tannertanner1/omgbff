@@ -1,11 +1,8 @@
 import type React from 'react'
 import {
-  IconRosetteDiscountCheck,
-  IconFolderHeart,
-  IconCoin,
   IconRosetteDiscountCheckFilled,
-  IconDashboardFilled,
-  IconCashBanknoteFilled
+  IconClockFilled,
+  IconCoinFilled
 } from '@tabler/icons-react'
 import {
   ReactIcon,
@@ -23,16 +20,17 @@ import {
 } from '@/components/landing/icons'
 
 const HERO = {
-  title: 'One App. Two Dashboards.',
+  // section: '🚀 Announcing public beta',
+  title: 'One app. Two dashboards.',
   description:
-    'A client portal your customers actually want. An admin dashboard your team will use. From onboarding to billing — efficiency, without compromise',
-  buttonText: 'Get Started',
-  buttonUrl: '/login',
+    'A client portal your customers actually want. An admin dashboard your team will use. From seamless onboarding to effortless invoicing.',
+  link: '/login',
+  button: 'Get started',
   image: 'https://placehold.co/1920x1200/transparent/transparent'
 }
 
 const STEPS = {
-  title: 'Modern Solutions, Less Overhead',
+  title: 'Modern solutions, less overhead.',
   description: 'Faster workflows. Less admin. More control.',
   items: [
     {
@@ -46,14 +44,14 @@ const STEPS = {
       title: 'Streamline Management',
       description:
         'Let clients manage their info, invoices, and groups—all in one place. With built-in activity logs and history, you stay in the loop without lifting a finger.',
-      icon: IconDashboardFilled,
+      icon: IconClockFilled,
       image: 'https://placehold.co/1920x1200/transparent/transparent'
     },
     {
       title: 'Automate Billing',
       description:
         'Invoices send themselves. Payments update automatically. Everything’s tracked, so you can skip the spreadsheets and focus on what matters.',
-      icon: IconCashBanknoteFilled,
+      icon: IconCoinFilled,
       image: 'https://placehold.co/1920x1200/transparent/transparent'
     }
   ]
@@ -65,6 +63,9 @@ type Tech = {
   url: string
 }
 const TECH: Tech[] = [
+  // section: 'Everything you need',
+  // title: 'Built with industry standard tools',
+  // description: '',
   {
     name: 'React',
     icon: ReactIcon,
@@ -128,129 +129,134 @@ const TECH: Tech[] = [
 ]
 
 const DEMOS = {
-  title: 'App walkthrough',
+  // section: 'Feature walkthrough roadmap',
+  title: 'Shipped and shipping',
   description:
     'Discover the tools and workflows that make managing your accounts and operations simple and efficient.',
   items: [
     {
       title: 'Client Portal',
       description:
-        'Easily manage your household and business accounts. Submit income and deduction details, track filings, and handle invoices – all in one place.',
+        'Manage individual and business accounts, oversee services, and handle invoices through a secure, centralized portal.',
       items: [
         {
+          status: '',
           title: 'Creating an account',
           description: 'Quick setup for new users',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          title: 'Verifying your account',
-          description: 'Secure your accounts',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
-        },
-        {
+          status: '',
           title: 'Logging in',
           description: 'Access your client portal',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Adding entities',
-          description: 'Manage households and businesses',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Manage individuals and businesses',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Setting up accounts',
-          description: 'Organize accounts for each entity',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Organize by client or service type',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Sending invites',
-          description: 'Manage account access',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Share access with collaborators',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Updating account info',
-          description: 'Keep details current',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Keep details accurate and up to date',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Submitting forms',
-          description: 'Provide required information',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Request a service or upload info',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Making payments',
-          description: 'Handle invoices securely',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Review and pay invoices securely',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         }
       ]
     },
     {
       title: 'Admin Dashboard',
       description:
-        'Effortlessly manage operations. From user activity to task management, invoicing, and payroll, discover streamlined workflows to keep the team organized and efficient.',
+        'Manage users, track work, and send invoices with full visibility across your operations.',
       items: [
         {
+          status: '',
           title: 'Getting started',
-          description: 'Admin setup and onboarding',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Set up your team and workspace',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          title: 'Exploring features',
-          description: 'Overview of admin tools',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          status: '',
+          title: 'Dashboard overview',
+          description: 'Navigate and access tools fast',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          title: 'Dashboard navigation',
-          description: 'Find your way around',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
-        },
-        {
+          status: '',
           title: 'Monitoring user activity',
-          description: 'Track entities and accounts',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Track accounts and service usage',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Sending templates',
-          description: 'Communicate with users',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Send forms, messages, and updates',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Managing tasks',
-          description: 'Streamline workflows',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Trigger and track internal work',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Organizing worklogs',
-          description: 'Log work and set reminders',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Keep notes and log activity',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
+          status: '',
           title: 'Publishing invoices',
-          description: 'Process and send invoices',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          description: 'Create and send client invoices',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          title: 'Automating payroll',
-          description: 'Simplify financial management',
-          videoUrl: '#',
-          thumbnailUrl: '/placeholder.svg?height=180&width=320'
+          status: '',
+          title: 'Managing payments',
+          description: 'Track payment status and history',
+          video: '#',
+          thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         }
       ]
     }
@@ -258,7 +264,9 @@ const DEMOS = {
 }
 
 const CTA = {
-  title: 'Get started',
+  // section: 'Get started faster',
+  title: '100% open-source & free',
+  description: '',
   buttons: [
     {
       label: 'GitHub',
@@ -269,4 +277,4 @@ const CTA = {
   ]
 }
 
-export { HERO, STEPS, TECH, DEMOS, CTA }
+export { HERO, TECH, STEPS, DEMOS, CTA }

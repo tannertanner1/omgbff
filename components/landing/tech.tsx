@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { inView } from 'motion'
 import { TECH } from '@/data/marketing-content'
+import { Badge } from '@/components/ui/badge'
 
 export function Tech() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null)
@@ -62,17 +63,26 @@ export function Tech() {
   return (
     <section
       ref={sectionRef}
-      className='flex min-h-[50vh] w-full items-center justify-center py-16 md:py-24'
+      className='flex min-h-[50vh] w-full py-16 md:py-24'
       id='tech-stack'
     >
       <div className='container px-4 md:px-6'>
-        <div className='mx-auto flex max-w-4xl flex-col items-center space-y-12'>
+        <div className='mx-auto mb-4 flex max-w-4xl flex-col items-start justify-start space-y-12 text-start md:items-center md:justify-center md:text-center'>
+          <Badge
+            variant='outline'
+            className='mb-8 bg-background text-sm text-muted-foreground'
+          >
+            <label className='cursor-pointer select-none after:absolute after:inset-0'>
+              Everything you need
+            </label>
+          </Badge>
           <h2
             ref={headingRef}
-            className='text-balance text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'
+            className='text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'
           >
             Built with industry standard tools
           </h2>
+          <p className='mb-8 max-w-[42rem] text-balance text-lg leading-normal text-muted-foreground sm:leading-8 md:text-xl'></p>
 
           <div ref={iconsContainerRef} className='w-full max-w-4xl'>
             <div className='grid grid-cols-3 justify-items-center gap-6 md:grid-cols-4 md:gap-8 lg:grid-cols-6'>
