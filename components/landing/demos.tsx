@@ -3,9 +3,9 @@
 import { motion } from 'motion/react'
 import { IconPlayerPlayFilled } from '@tabler/icons-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Section } from './background'
 import { DEMOS } from '@/data/marketing-content'
 import { Badge } from '@/components/ui/badge'
+import { Section } from './section'
 
 type Clip = (typeof DEMOS.items)[number]['items'][number]
 
@@ -19,10 +19,7 @@ function Demo({ item, index }: { item: Clip; index: number }) {
     >
       <div className='relative mb-4 aspect-video overflow-hidden rounded-lg bg-gradient-to-br from-muted/50 to-muted/10'>
         <img
-          src={
-            item.thumbnail ||
-            'https://placehold.co/180x320/transparent/transparent'
-          }
+          src={item.thumbnail || '/placeholder.svg?height=180&width=320'}
           alt={item.title}
           className='absolute inset-0 h-full w-full object-cover'
         />
@@ -44,40 +41,33 @@ function Demo({ item, index }: { item: Clip; index: number }) {
 
 function Demos() {
   return (
-    <motion.div
-      className='mb-24 w-full'
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-    >
-      <div className='container mx-auto mb-8 max-w-5xl items-start justify-start space-y-12 px-4 text-start md:items-center md:justify-center md:text-center'>
+    <div className='py-16 md:py-24'>
+      <Section className='mb-8'>
         <Badge
           variant='outline'
           className='mb-8 bg-background text-sm text-muted-foreground'
         >
-          <label className='cursor-pointer select-none after:absolute after:inset-0'>
-            {/* There is more */}
-            Feature walkthrough roadmap
-          </label>
+          <span className='cursor-pointer select-none'>{DEMOS.section}</span>
         </Badge>
-        <h2 className='mb-4 text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>
-          Shipped and shipping
+
+        <h2 className='text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>
+          {DEMOS.title}
         </h2>
-        <h2 className='text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'></h2>
-        <p className='mx-auto mb-12 max-w-3xl text-lg text-muted-foreground'>
+
+        <p className='mt-4 max-w-3xl text-lg text-muted-foreground'>
           {DEMOS.description}
         </p>
-      </div>
+      </Section>
 
       <div className='space-y-20'>
         {DEMOS.items.map(demo => (
           <div key={demo.title} className='space-y-8'>
-            <div className='container mx-auto max-w-5xl px-4'>
-              <h3 className='mb-4 text-2xl font-bold'>{demo.title}</h3>
+            <Section>
+              <h3 className='text-2xl font-bold'>{demo.title}</h3>
               <p className='max-w-3xl text-lg text-muted-foreground'>
                 {demo.description}
               </p>
-            </div>
+            </Section>
 
             <div className='w-full'>
               <ScrollArea className='w-full'>
@@ -92,7 +82,7 @@ function Demos() {
           </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   )
 }
 

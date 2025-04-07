@@ -2,7 +2,7 @@ import { Hero } from './hero'
 import { Steps } from './steps'
 import { Tech } from './tech'
 import { Demos } from './demos'
-import { CTA } from './cta'
+import { Cta } from './cta'
 
 function Landing() {
   return (
@@ -11,7 +11,7 @@ function Landing() {
       <Tech />
       <Steps />
       <Demos />
-      <CTA />
+      <Cta />
     </>
   )
 }

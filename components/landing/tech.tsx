@@ -5,10 +5,11 @@ import { cn } from '@/lib/utils'
 import { inView } from 'motion'
 import { TECH } from '@/data/marketing-content'
 import { Badge } from '@/components/ui/badge'
+import { Section } from './section'
 
 export function Tech() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const iconsContainerRef = useRef<HTMLDivElement>(null)
 
@@ -19,11 +20,9 @@ export function Tech() {
     inView(sectionRef.current, () => {
       // Animate heading if it exists
       if (headingRef.current) {
-        // Use standard DOM animations instead of motion library
         headingRef.current.style.opacity = '0'
         headingRef.current.style.transform = 'translateY(20px)'
 
-        // Use setTimeout to create a staggered effect
         setTimeout(() => {
           headingRef.current!.style.transition =
             'opacity 0.6s ease, transform 0.6s ease'
@@ -39,7 +38,6 @@ export function Tech() {
         )
 
         if (techItems.length > 0) {
-          // Use standard DOM animations with staggered timeouts
           techItems.forEach((item, index) => {
             const element = item as HTMLElement
             element.style.opacity = '0'
@@ -61,78 +59,75 @@ export function Tech() {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className='flex min-h-[50vh] w-full py-16 md:py-24'
-      id='tech-stack'
-    >
-      <div className='container px-4 md:px-6'>
-        <div className='mx-auto mb-4 flex max-w-4xl flex-col items-start justify-start space-y-12 text-start md:items-center md:justify-center md:text-center'>
-          <Badge
-            variant='outline'
-            className='mb-8 bg-background text-sm text-muted-foreground'
-          >
-            <label className='cursor-pointer select-none after:absolute after:inset-0'>
-              Everything you need
-            </label>
-          </Badge>
-          <h2
-            ref={headingRef}
-            className='text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'
-          >
-            Built with industry standard tools
-          </h2>
-          <p className='mb-8 max-w-[42rem] text-balance text-lg leading-normal text-muted-foreground sm:leading-8 md:text-xl'></p>
+    <div ref={sectionRef} className='w-full py-16 md:py-24' id='tech-stack'>
+      <Section>
+        <Badge
+          variant='outline'
+          className='mb-8 bg-background text-sm text-muted-foreground'
+        >
+          <span className='cursor-pointer select-none'>{TECH.section}</span>
+        </Badge>
 
-          <div ref={iconsContainerRef} className='w-full max-w-4xl'>
-            <div className='grid grid-cols-3 justify-items-center gap-6 md:grid-cols-4 md:gap-8 lg:grid-cols-6'>
-              {TECH.map(tech => {
-                const isHovered = hoveredIcon === tech.name
+        <h2
+          ref={headingRef}
+          className='text-balance text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'
+        >
+          {TECH.title}
+        </h2>
 
-                return (
-                  <a
-                    key={tech.name}
-                    href={tech.url}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='tech-item group flex flex-col items-center gap-2'
-                    onMouseEnter={() => setHoveredIcon(tech.name)}
-                    onMouseLeave={() => setHoveredIcon(null)}
-                  >
-                    <div className='relative flex h-16 w-16 items-center justify-center md:h-20 md:w-20'>
-                      <tech.icon
-                        className={cn(
-                          'h-12 w-12 transition-all duration-300 md:h-16 md:w-16',
-                          isHovered
-                            ? 'text-blue-500 transition-colors'
-                            : 'text-primary'
-                        )}
-                        style={{
-                          transform: isHovered
-                            ? 'rotateX(10deg) rotateY(10deg) scale(1.05)'
-                            : 'rotateX(0deg) rotateY(0deg) scale(1)',
-                          transition: 'transform 0.3s ease',
-                          filter: isHovered
-                            ? 'drop-shadow(0 0 2px rgba(var(--primary), 0.3))'
-                            : 'none'
-                        }}
-                      />
-                    </div>
-                    <span
+        {TECH.description && (
+          <p className='mt-4 text-lg text-muted-foreground'>
+            {TECH.description}
+          </p>
+        )}
+
+        <div ref={iconsContainerRef} className='mt-12 w-full max-w-4xl'>
+          <div className='grid grid-cols-3 justify-items-center gap-6 md:grid-cols-4 md:gap-8 lg:grid-cols-6'>
+            {TECH.items.map(tech => {
+              const isHovered = hoveredIcon === tech.name
+
+              return (
+                <a
+                  key={tech.name}
+                  href={tech.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='tech-item group flex flex-col items-center gap-2'
+                  onMouseEnter={() => setHoveredIcon(tech.name)}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                >
+                  <div className='relative flex h-16 w-16 items-center justify-center md:h-20 md:w-20'>
+                    <tech.icon
                       className={cn(
-                        'text-center font-mono text-xs transition-colors duration-300 md:text-sm',
-                        isHovered ? 'text-primary' : 'text-foreground/80'
+                        'h-12 w-12 transition-all duration-300 md:h-16 md:w-16',
+                        'transition-colors duration-200 hover:text-blue-500',
+                        isHovered ? 'text-blue-500' : 'text-primary'
                       )}
-                    >
-                      {tech.name}
-                    </span>
-                  </a>
-                )
-              })}
-            </div>
+                      style={{
+                        transform: isHovered
+                          ? 'rotateX(10deg) rotateY(10deg) scale(1.05)'
+                          : 'rotateX(0deg) rotateY(0deg) scale(1)',
+                        transition: 'transform 0.3s ease',
+                        filter: isHovered
+                          ? 'drop-shadow(0 0 2px rgba(var(--primary), 0.3))'
+                          : 'none'
+                      }}
+                    />
+                  </div>
+                  <span
+                    className={cn(
+                      'text-center font-mono text-xs transition-colors duration-300 md:text-sm',
+                      isHovered ? 'text-blue-500' : 'text-foreground/80'
+                    )}
+                  >
+                    {tech.name}
+                  </span>
+                </a>
+              )
+            })}
           </div>
         </div>
-      </div>
-    </section>
+      </Section>
+    </div>
   )
 }

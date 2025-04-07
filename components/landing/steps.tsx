@@ -2,11 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { Dots } from './background'
-import { Fade } from './background'
 import { STEPS } from '@/data/marketing-content'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Section } from './section'
 
 type Tab = (typeof STEPS.items)[number]
 
@@ -32,7 +30,9 @@ function Step({
       onClick={onClick}
     >
       <div className='mb-3 flex items-center gap-3'>
-        <Icon className='h-8 w-8 text-primary' />
+        <div className='rounded-lg bg-background/50 p-1.5'>
+          <Icon className='h-5 w-5 text-primary' />
+        </div>
         <div className='text-base font-semibold'>{item.title}</div>
       </div>
       <p className='z-10 m-0 text-sm leading-relaxed text-muted-foreground'>
@@ -98,27 +98,25 @@ function Steps() {
   }, [])
 
   return (
-    <div ref={sectionRef} className='bg-background pt-12'>
-      <div className='mx-auto max-w-5xl px-4 md:px-6'>
-        <div className='items-start justify-start text-start md:items-center md:justify-center md:text-center'>
-          <Badge
-            variant='outline'
-            className='mb-8 bg-background text-sm text-muted-foreground'
-          >
-            <label className='cursor-pointer select-none after:absolute after:inset-0'>
-              How it works
-            </label>
-          </Badge>
-          <h2
-            ref={headingRef}
-            className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl'
-          >
-            {STEPS.title}
-          </h2>
-          <p className='mt-4 text-lg text-muted-foreground'>
-            {STEPS.description}
-          </p>
-        </div>
+    <div ref={sectionRef} className='bg-background py-16 md:py-24'>
+      <Section>
+        <Badge
+          variant='outline'
+          className='mb-8 bg-background text-sm text-muted-foreground'
+        >
+          <span className='cursor-pointer select-none'>{STEPS.section}</span>
+        </Badge>
+
+        <h2
+          ref={headingRef}
+          className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'
+        >
+          {STEPS.title}
+        </h2>
+
+        <p className='mt-4 text-lg text-muted-foreground'>
+          {STEPS.description}
+        </p>
 
         <div ref={contentRef} className='mt-12'>
           {/* Tab */}
@@ -133,6 +131,7 @@ function Steps() {
               />
             ))}
           </div>
+
           {/* Image */}
           <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
             {STEPS.items.map((item, index) => (
@@ -152,36 +151,22 @@ function Steps() {
                     )}
                   />
                   <img
-                    src={item.image || '/placeholder.svg'}
+                    src={item.image || '/placeholder.svg?height=400&width=800'}
                     alt={item.title}
                     className='relative z-10 h-full w-full object-cover'
+                    style={{
+                      maskImage:
+                        'linear-gradient(to top, transparent, black 20%)',
+                      WebkitMaskImage:
+                        'linear-gradient(to top, transparent, black 20%)'
+                    }}
                   />
                 </div>
               </div>
             ))}
           </div>
-          {/* <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
-            {STEPS.items.map((item, index) => (
-              <div
-                key={index}
-                className={`bg-background absolute inset-0 transition-opacity duration-300 ease-in-out ${
-                  activeStep === index ? 'z-10 opacity-100' : 'z-0 opacity-0'
-                }`}
-              >
-                <Dots key={index}>
-                  <Fade
-                    src={item.image || '/placeholder.svg'}
-                    alt={item.title}
-                    direction='bottom'
-                    fadePercentage={20}
-                    className='h-full w-full'
-                  />
-                </Dots>
-              </div>
-            ))}
-          </div> */}
         </div>
-      </div>
+      </Section>
     </div>
   )
 }

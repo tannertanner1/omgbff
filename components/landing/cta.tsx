@@ -1,43 +1,51 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { IconBrandGithub } from '@tabler/icons-react'
+import { CTA } from '@/data/marketing-content'
+import { motion } from 'motion/react'
+import { Section } from './section'
 
-const CTA = () => (
-  <div className='w-full py-20 lg:py-40'>
-    <div className='container mx-auto'>
-      <div className='flex flex-col items-center gap-8 rounded-md p-4 text-center lg:p-14'>
+export function Cta() {
+  const Icon = CTA.button.icon
+
+  return (
+    <div className='py-16 md:py-24'>
+      <Section>
         <Badge
           variant='outline'
-          className='bg-background text-muted-foreground mb-8 text-sm'
+          className='mb-8 bg-background text-sm text-muted-foreground'
         >
-          <label className='cursor-pointer select-none after:absolute after:inset-0'>
-            Get started faster
-          </label>
+          <span className='cursor-pointer select-none'>{CTA.section}</span>
         </Badge>
-        <div className='flex flex-col gap-2'>
-          <h3 className='font-regular max-w-xl text-3xl tracking-tighter md:text-5xl'>
-            100% open-source & free
-          </h3>
-          <p className='text-muted-foreground max-w-xl text-lg leading-relaxed tracking-tight'></p>
-        </div>
-        <div className='flex flex-row gap-4'>
+
+        <h2 className='text-3xl font-bold tracking-tighter md:text-5xl'>
+          {CTA.title}
+        </h2>
+
+        {CTA.description && (
+          <p className='mt-4 max-w-[42rem] text-lg leading-relaxed text-muted-foreground'>
+            {CTA.description}
+          </p>
+        )}
+
+        <motion.div
+          className='mt-8 flex flex-row gap-4'
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        >
           <Button
-            // variant='outline'
-            className='bg-background text-primary border-primary rounded-xl border-1 py-2 font-sans text-sm font-medium'
+            variant='outline'
+            className='flex items-center gap-2 rounded-lg border-primary px-4 py-2 text-sm font-medium'
+            asChild
           >
-            <IconBrandGithub
-              className='text-muted-foreground'
-              size={16}
-              aria-hidden='true'
-            />
-            GitHub
+            <a href={CTA.button.href} target='_blank' rel='noopener noreferrer'>
+              {Icon && <Icon className='h-4 w-4' />}
+              {CTA.button.text}
+            </a>
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </Section>
     </div>
-  </div>
-)
-
-export { CTA }
-
-/** @see https://www.twblocks.com/blocks/ctas/cta1 */
+  )
+}
