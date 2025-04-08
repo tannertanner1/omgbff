@@ -183,7 +183,7 @@ function AuthjsIcon(props: React.SVGProps<SVGSVGElement>) {
       width='210'
       height='232'
       viewBox='0 0 210 232'
-      fill='none'
+      fill='fill-(--primary)'
       stroke='none'
       strokeWidth='2'
       strokeLinecap='round'
@@ -191,13 +191,11 @@ function AuthjsIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <defs>
         <mask id='a' x='0' y='0' width='210' height='232'>
-          <path fill='#fff' d='M0 0h210v232H0z' />
-          <circle
-            cx='104.905'
-            cy='114.209'
-            r='47.48'
-            className='fill-current dark:fill-(--background)'
+          <path
+            className='bg-(--primary) fill-(--background) dark:bg-(--background) dark:fill-(--primary)'
+            d='M0 0h210v232H0z'
           />
+          <circle cx='104.905' cy='114.209' r='47.48' />
         </mask>
       </defs>
       <g mask='url(#a)' fill='currentColor'>

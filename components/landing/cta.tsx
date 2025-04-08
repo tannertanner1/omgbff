@@ -1,12 +1,12 @@
 'use client'
 
+import { motion } from 'motion/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { CTA } from '@/data/marketing-content'
-import { motion } from 'motion/react'
 import { Section } from './section'
+import { CTA } from '@/data/landing-content'
 
-export function Cta() {
+function Cta() {
   const Icon = CTA.button.icon
 
   return (
@@ -49,3 +49,5 @@ export function Cta() {
     </div>
   )
 }
+
+export { Cta }

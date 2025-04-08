@@ -1,11 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
 import { motion } from 'motion/react'
-import { HERO } from '@/data/marketing-content'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Section } from './section'
+import { HERO } from '@/data/landing-content'
 
 function Hero() {
   return (
@@ -26,38 +28,25 @@ function Hero() {
       </p>
 
       <div className='mb-12 flex flex-wrap gap-4'>
-        <Link href={HERO.link || '#'}>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className='rounded-xl bg-primary px-6 py-2 font-sans text-sm font-medium text-background'
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            {HERO.button || 'Get Started'}
-          </motion.button>
-        </Link>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        >
+          <Button size='lg' variant='outline' asChild>
+            <Link href={HERO.link}>{HERO.button}</Link>
+          </Button>
+        </motion.div>
       </div>
 
-      <div className='w-full max-w-4xl overflow-hidden rounded-lg border border-border shadow-lg'>
-        <div className='relative h-[250px] md:h-[350px]'>
-          <div
-            className={cn(
-              'absolute inset-0',
-              '[background-size:40px_40px]',
-              '[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]',
-              'dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]'
-            )}
-          />
-          <img
-            src={HERO.image || '/placeholder.svg?height=350&width=700'}
-            alt='Dashboard preview'
-            className='h-full w-full object-cover'
-            style={{
-              maskImage: 'linear-gradient(to top, transparent, black 20%)',
-              WebkitMaskImage: 'linear-gradient(to top, transparent, black 20%)'
-            }}
-          />
-        </div>
-      </div>
+      <Card
+        className={cn(
+          'inset-shadow-border inset-shadow-sm w-full max-w-4xl overflow-hidden rounded-[2rem] border-border bg-secondary'
+        )}
+      >
+        <CardContent className='p-0'>
+          <div className='relative h-[300px] md:h-[400px]' />
+        </CardContent>
+      </Card>
     </Section>
   )
 }

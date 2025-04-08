@@ -1,7 +1,7 @@
 import type React from 'react'
 import { cn } from '@/lib/utils'
 
-export function Section({
+function Section({
   children,
   className
 }: {
@@ -16,3 +16,5 @@ export function Section({
     </div>
   )
 }
+
+export { Section }

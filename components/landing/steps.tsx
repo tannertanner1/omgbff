@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { STEPS } from '@/data/marketing-content'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import { Section } from './section'
+import { STEPS } from '@/data/landing-content'
 
 type Tab = (typeof STEPS.items)[number]
 
@@ -30,9 +31,10 @@ function Step({
       onClick={onClick}
     >
       <div className='mb-3 flex items-center gap-3'>
-        <div className='rounded-lg bg-background/50 p-1.5'>
-          <Icon className='h-5 w-5 text-primary' />
-        </div>
+        {/* <div className='bg-background/50 rounded-lg p-1.5'>
+          <Icon className='text-primary h-5 w-5' />
+        </div> */}
+        <Icon className='h-8 w-8 text-primary' />
         <div className='text-base font-semibold'>{item.title}</div>
       </div>
       <p className='z-10 m-0 text-sm leading-relaxed text-muted-foreground'>
@@ -133,6 +135,11 @@ function Steps() {
           </div>
 
           {/* Image */}
+          {/* <Card
+            className={cn(
+              'bg-background inset-shadow-background w-full max-w-4xl overflow-hidden rounded-[2rem] border-0 shadow-none inset-shadow-sm'
+            )}
+          > */}
           <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
             {STEPS.items.map((item, index) => (
               <div
@@ -165,6 +172,7 @@ function Steps() {
               </div>
             ))}
           </div>
+          {/* </Card> */}
         </div>
       </Section>
     </div>

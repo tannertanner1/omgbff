@@ -1,6 +1,6 @@
 import { Hero } from './hero'
-import { Steps } from './steps'
 import { Tech } from './tech'
+import { Steps } from './steps'
 import { Demos } from './demos'
 import { Cta } from './cta'
 

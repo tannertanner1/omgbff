@@ -1,13 +1,13 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { cn } from '@/lib/utils'
 import { inView } from 'motion'
-import { TECH } from '@/data/marketing-content'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import { Section } from './section'
+import { TECH } from '@/data/landing-content'
 
-export function Tech() {
+function Tech() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -131,3 +131,5 @@ export function Tech() {
     </div>
   )
 }
+
+export { Tech }

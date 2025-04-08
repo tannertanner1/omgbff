@@ -1,4 +1,3 @@
-import type { FC, SVGProps } from 'react'
 import {
   IconRosetteDiscountCheckFilled,
   IconClockFilled,
@@ -18,7 +17,7 @@ import {
   ResendIcon,
   StripeIcon,
   VercelIcon
-} from '@/components/landing/icons'
+} from '@/components/icons'
 
 const HERO = {
   section: '🚀 Announcing public beta',
@@ -264,13 +263,12 @@ const DEMOS = {
   ]
 }
 
-type IconComponent = FC<SVGProps<SVGSVGElement>>
 const CTA = {
   section: 'Get started faster',
   title: '100% open-source & free',
   description: '',
   button: {
-    icon: IconBrandGithub as IconComponent,
+    icon: IconBrandGithub,
     text: 'GitHub',
     href: 'https://github.com/yourusername/omgbff'
   }
