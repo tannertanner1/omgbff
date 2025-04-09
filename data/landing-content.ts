@@ -126,7 +126,7 @@ const STEPS = {
   ]
 }
 
-const STATUSES = ['done', 'in-progress', 'coming-soon', 'planned'] as const
+const STATUSES = ['live', 'soon', 'planned'] as const
 type Status = (typeof STATUSES)[number]
 const DEMOS = {
   section: 'Feature walkthrough roadmap',
@@ -140,49 +140,49 @@ const DEMOS = {
         'Manage individual and business accounts, oversee services, and handle invoices through a secure, centralized portal.',
       items: [
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Creating an account',
           description: 'Quick setup for new users',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Logging in',
           description: 'Access your client portal',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Adding entities',
           description: 'Manage individuals and businesses',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Setting up accounts',
           description: 'Organize by client or service type',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Sending invites',
           description: 'Share access with collaborators',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Updating account info',
           description: 'Keep details accurate and up to date',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'coming-soon' satisfies Status,
+          status: 'soon' satisfies Status,
           title: 'Submitting forms',
           description: 'Request a service or upload info',
           video: '#',
@@ -203,21 +203,21 @@ const DEMOS = {
         'Manage users, track work, and send invoices with full visibility across your operations.',
       items: [
         {
-          status: 'done' satisfies Status,
+          status: 'live' satisfies Status,
           title: 'Getting started',
           description: 'Set up your team and workspace',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'in-progress' satisfies Status,
+          status: 'soon' satisfies Status,
           title: 'Dashboard overview',
           description: 'Navigate and access tools fast',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'coming-soon' satisfies Status,
+          status: 'soon' satisfies Status,
           title: 'Monitoring user activity',
           description: 'Track accounts and service usage',
           video: '#',
@@ -245,14 +245,14 @@ const DEMOS = {
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'in-progress' satisfies Status,
+          status: 'soon' satisfies Status,
           title: 'Publishing invoices',
           description: 'Create and send client invoices',
           video: '#',
           thumbnail: 'https://placehold.co/180x320/transparent/transparent'
         },
         {
-          status: 'coming-soon' satisfies Status,
+          status: 'soon' satisfies Status,
           title: 'Managing payments',
           description: 'Track payment status and history',
           video: '#',

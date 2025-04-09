@@ -5,6 +5,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import Providers from '@/app/providers'
 import { ActiveThemeProvider } from '@/components/theme/active-theme'
+import { Header } from '@/components/header'
 
 const fontSans = Geist({
   variable: '--font-sans',
@@ -87,7 +88,7 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          'overscroll-none bg-background font-mono antialiased',
+          'overscroll-none bg-background font-sans antialiased',
           activeThemeValue ? `theme-${activeThemeValue}` : '',
           isScaled ? 'theme-scaled' : '',
           fontSans.variable,
@@ -96,6 +97,7 @@ export default async function RootLayout({
       >
         <Providers>
           <ActiveThemeProvider initialTheme={activeThemeValue}>
+            <Header />
             {children}
           </ActiveThemeProvider>
         </Providers>

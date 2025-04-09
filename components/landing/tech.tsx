@@ -24,8 +24,7 @@ function Tech() {
         headingRef.current.style.transform = 'translateY(20px)'
 
         setTimeout(() => {
-          headingRef.current!.style.transition =
-            'opacity 0.6s ease, transform 0.6s ease'
+          headingRef.current!.style.transition = 'opacity 0.6s ease, transform 0.6s ease'
           headingRef.current!.style.opacity = '1'
           headingRef.current!.style.transform = 'translateY(0)'
         }, 100)
@@ -33,9 +32,7 @@ function Tech() {
 
       // Animate tech icons with stagger if container exists
       if (iconsContainerRef.current) {
-        const techItems = Array.from(
-          iconsContainerRef.current.querySelectorAll('.tech-item')
-        )
+        const techItems = Array.from(iconsContainerRef.current.querySelectorAll('.tech-item'))
 
         if (techItems.length > 0) {
           techItems.forEach((item, index) => {
@@ -45,8 +42,7 @@ function Tech() {
 
             setTimeout(
               () => {
-                element.style.transition =
-                  'opacity 0.5s ease, transform 0.5s ease'
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease'
                 element.style.opacity = '1'
                 element.style.transform = 'translateY(0)'
               },
@@ -61,10 +57,7 @@ function Tech() {
   return (
     <div ref={sectionRef} className='w-full py-16 md:py-24' id='tech-stack'>
       <Section>
-        <Badge
-          variant='outline'
-          className='mb-8 bg-background text-sm text-muted-foreground'
-        >
+        <Badge variant='outline' className='mb-8 bg-background text-sm text-muted-foreground'>
           <span className='cursor-pointer select-none'>{TECH.section}</span>
         </Badge>
 
@@ -76,9 +69,7 @@ function Tech() {
         </h2>
 
         {TECH.description && (
-          <p className='mt-4 text-lg text-muted-foreground'>
-            {TECH.description}
-          </p>
+          <p className='mt-4 text-lg text-muted-foreground'>{TECH.description}</p>
         )}
 
         <div ref={iconsContainerRef} className='mt-12 w-full max-w-4xl'>

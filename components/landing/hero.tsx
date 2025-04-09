@@ -12,10 +12,7 @@ import { HERO } from '@/data/landing-content'
 function Hero() {
   return (
     <Section className='py-12 md:py-24'>
-      <Badge
-        variant='outline'
-        className='mb-8 bg-background text-sm text-muted-foreground'
-      >
+      <Badge variant='outline' className='mb-8 bg-background text-sm text-muted-foreground'>
         <span className='cursor-pointer select-none'>{HERO.section}</span>
       </Badge>
 

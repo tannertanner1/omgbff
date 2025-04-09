@@ -12,16 +12,11 @@ function Cta() {
   return (
     <div className='py-16 md:py-24'>
       <Section>
-        <Badge
-          variant='outline'
-          className='mb-8 bg-background text-sm text-muted-foreground'
-        >
+        <Badge variant='outline' className='mb-8 bg-background text-sm text-muted-foreground'>
           <span className='cursor-pointer select-none'>{CTA.section}</span>
         </Badge>
 
-        <h2 className='text-3xl font-bold tracking-tighter md:text-5xl'>
-          {CTA.title}
-        </h2>
+        <h2 className='text-3xl font-bold tracking-tighter md:text-5xl'>{CTA.title}</h2>
 
         {CTA.description && (
           <p className='mt-4 max-w-[42rem] text-lg leading-relaxed text-muted-foreground'>

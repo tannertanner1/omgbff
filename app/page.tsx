@@ -3,7 +3,6 @@ import { Menu } from '@/components/menu'
 // import Link from 'next/link'
 // import { IconPaw } from '@tabler/icons-react'
 
-import { Header } from '@/components/header'
 import { Landing } from '@/components/landing'
 
 export default async function Page() {
@@ -33,34 +32,35 @@ export default async function Page() {
     //   </div>
     // </div>
     <>
-      <div className='relative min-h-screen'>
-        <div className='inset-ring-background inset-ring relative flex min-h-screen flex-col'>
-          <Header />
-          <main className='container mx-auto w-full max-w-5xl flex-grow px-6'>
-            {/* <div className='py-10'>
+      {/* <div className='relative min-h-screen'>
+        <div className='inset-ring-background inset-ring relative flex min-h-screen flex-col'> */}
+      <main className='container mx-auto w-full max-w-5xl flex-grow px-6'>
+        {/* <div className='py-10'>
               <div className='space-y-32'>
                 <Landing />
               </div>
             </div> */}
-            {session ? (
-              <div className='mb-8 flex flex-col items-center px-4'>
-                {/* <Menu /> */}
-                <Menu user={session.user} />
-              </div>
-            ) : (
-              <div className='flex flex-col items-center py-12'>
-                {/* <Link
+        {session ? (
+          <div className='mb-8 flex flex-col items-center px-4'>
+            {/* <Menu /> */}
+            <Menu user={session.user} />
+          </div>
+        ) : (
+          <div className='flex flex-col items-center py-12'>
+            {/* <Link
                 href='/login'
                 className='flex items-center gap-2 self-center font-medium'
               >
                 <IconPaw className='h-12 w-12' aria-hidden='true' />
               </Link> */}
-                <div className='space-y-32'>{/* <Landing /> */}</div>
-              </div>
-            )}
-          </main>
-        </div>
-      </div>
+            <div className='space-y-32'>
+              <Landing />
+            </div>
+          </div>
+        )}
+      </main>
+      {/* </div>
+      </div> */}
     </>
   )
 }

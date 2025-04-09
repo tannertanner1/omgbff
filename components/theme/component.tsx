@@ -55,11 +55,7 @@ function Component() {
             : 'light'
           : value
 
-      setMetaColor(
-        newResolvedTheme === 'dark'
-          ? META_THEME_COLORS.dark
-          : META_THEME_COLORS.light
-      )
+      setMetaColor(newResolvedTheme === 'dark' ? META_THEME_COLORS.dark : META_THEME_COLORS.light)
     },
     [setTheme, setMetaColor]
   )
@@ -84,14 +80,8 @@ function Component() {
           size='icon'
           className='group/toggle rounded-full bg-transparent text-primary hover:bg-transparent'
         >
-          <IconPercentage50
-            aria-hidden='true'
-            className='dark:rotate-360 h-12 w-12 dark:hidden'
-          />
-          <IconPercentage50
-            aria-hidden='true'
-            className='rotate-360 hidden h-12 w-12 dark:block'
-          />
+          <IconPercentage50 aria-hidden='true' className='dark:rotate-360 h-12 w-12 dark:hidden' />
+          <IconPercentage50 aria-hidden='true' className='rotate-360 hidden h-12 w-12 dark:block' />
           <span className='sr-only'>Theme settings</span>
         </Button>
       </DropdownMenuTrigger>
@@ -99,10 +89,7 @@ function Component() {
       <DropdownMenuContent align='end' className='w-56'>
         <DropdownMenuLabel>Mode</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuRadioGroup
-            value={theme}
-            onValueChange={handleThemeChange}
-          >
+          <DropdownMenuRadioGroup value={theme} onValueChange={handleThemeChange}>
             <DropdownMenuRadioItem value='light'>Light</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value='dark'>Dark</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value='system'>System</DropdownMenuRadioItem>
@@ -113,10 +100,7 @@ function Component() {
 
         <DropdownMenuLabel>Vibe</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuRadioGroup
-            value={activeTheme}
-            onValueChange={handleStyleChange}
-          >
+          <DropdownMenuRadioGroup value={activeTheme} onValueChange={handleStyleChange}>
             {THEMES.map(item => (
               <DropdownMenuRadioItem key={item.value} value={item.value}>
                 {item.name}

@@ -123,8 +123,6 @@ body {
     @apply font-sans;
   }
   body {
-    @apply bg-background font-sans text-foreground;
-    /*
     @apply bg-background text-foreground;
     line-height: 1.6;
     min-height: 100%;
@@ -132,7 +130,6 @@ body {
     color: var(--foreground);
     background: var(--background);
     font-synthesis: none;
-    */
   }
   body,
   p {
@@ -229,3 +226,12 @@ body {
     }
   }
 }
+
+/*
+[data-slot='button'] {
+  border-radius: 9999px;
+}
+
+[data-slot='badge'] {
+  border-radius: 9999px;
+} */

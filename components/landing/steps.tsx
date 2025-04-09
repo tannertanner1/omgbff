@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Section } from './section'
 import { STEPS } from '@/data/landing-content'
@@ -31,15 +30,10 @@ function Step({
       onClick={onClick}
     >
       <div className='mb-3 flex items-center gap-3'>
-        {/* <div className='bg-background/50 rounded-lg p-1.5'>
-          <Icon className='text-primary h-5 w-5' />
-        </div> */}
         <Icon className='h-8 w-8 text-primary' />
         <div className='text-base font-semibold'>{item.title}</div>
       </div>
-      <p className='z-10 m-0 text-sm leading-relaxed text-muted-foreground'>
-        {item.description}
-      </p>
+      <p className='z-10 m-0 text-sm leading-relaxed text-muted-foreground'>{item.description}</p>
     </button>
   )
 }
@@ -64,8 +58,7 @@ function Steps() {
               headingRef.current.style.transform = 'translateY(20px)'
 
               setTimeout(() => {
-                headingRef.current!.style.transition =
-                  'opacity 0.6s ease, transform 0.6s ease'
+                headingRef.current!.style.transition = 'opacity 0.6s ease, transform 0.6s ease'
                 headingRef.current!.style.opacity = '1'
                 headingRef.current!.style.transform = 'translateY(0)'
               }, 100)
@@ -77,8 +70,7 @@ function Steps() {
               contentRef.current.style.transform = 'translateY(20px)'
 
               setTimeout(() => {
-                contentRef.current!.style.transition =
-                  'opacity 0.6s ease, transform 0.6s ease'
+                contentRef.current!.style.transition = 'opacity 0.6s ease, transform 0.6s ease'
                 contentRef.current!.style.opacity = '1'
                 contentRef.current!.style.transform = 'translateY(0)'
               }, 200)
@@ -102,10 +94,7 @@ function Steps() {
   return (
     <div ref={sectionRef} className='bg-background py-16 md:py-24'>
       <Section>
-        <Badge
-          variant='outline'
-          className='mb-8 bg-background text-sm text-muted-foreground'
-        >
+        <Badge variant='outline' className='mb-8 bg-background text-sm text-muted-foreground'>
           <span className='cursor-pointer select-none'>{STEPS.section}</span>
         </Badge>
 
@@ -116,9 +105,7 @@ function Steps() {
           {STEPS.title}
         </h2>
 
-        <p className='mt-4 text-lg text-muted-foreground'>
-          {STEPS.description}
-        </p>
+        <p className='mt-4 text-lg text-muted-foreground'>{STEPS.description}</p>
 
         <div ref={contentRef} className='mt-12'>
           {/* Tab */}
@@ -134,12 +121,6 @@ function Steps() {
             ))}
           </div>
 
-          {/* Image */}
-          {/* <Card
-            className={cn(
-              'bg-background inset-shadow-background w-full max-w-4xl overflow-hidden rounded-[2rem] border-0 shadow-none inset-shadow-sm'
-            )}
-          > */}
           <div className='relative h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]'>
             {STEPS.items.map((item, index) => (
               <div
@@ -162,17 +143,14 @@ function Steps() {
                     alt={item.title}
                     className='relative z-10 h-full w-full object-cover'
                     style={{
-                      maskImage:
-                        'linear-gradient(to top, transparent, black 20%)',
-                      WebkitMaskImage:
-                        'linear-gradient(to top, transparent, black 20%)'
+                      maskImage: 'linear-gradient(to top, transparent, black 20%)',
+                      WebkitMaskImage: 'linear-gradient(to top, transparent, black 20%)'
                     }}
                   />
                 </div>
               </div>
             ))}
           </div>
-          {/* </Card> */}
         </div>
       </Section>
     </div>

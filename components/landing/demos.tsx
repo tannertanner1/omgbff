@@ -2,50 +2,32 @@
 
 import * as React from 'react'
 import { motion } from 'motion/react'
-import { IconPlayerPlayFilled } from '@tabler/icons-react'
+import {
+  IconPlayerPlayFilled,
+  IconCircle,
+  IconCircleDashed,
+  IconCircleDotted
+} from '@tabler/icons-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { Expand } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { type Status, statusConfig } from '@/data/roadmap-statuses'
 import { DEMOS } from '@/data/landing-content'
 
-// Define the type for a video item
-type VideoItem = (typeof DEMOS.items)[number]['items'][number]
+type Clip = (typeof DEMOS.items)[number]['items'][number]
 
-function StatusBadge({ status }: { status: Status }) {
-  const config = statusConfig[status]
-
-  return (
-    <Badge
-      variant='outline'
-      className={cn('ml-2 h-5 py-0 text-xs font-normal', 'border-0')}
-      style={{
-        backgroundColor: config.bgColor,
-        color: config.color,
-        borderColor: config.borderColor
-      }}
-    >
-      {config.label}
-    </Badge>
-  )
-}
-
-function VideoThumbnail({
+function Demo({
   item,
   index,
   isPlaying,
   onPlay,
   onFullscreen
 }: {
-  item: VideoItem
+  item: Clip
   index: number
   isPlaying: boolean
   onPlay: () => void
-  onFullscreen: (
-    e: React.MouseEvent,
-    videoElement: HTMLVideoElement | null
-  ) => void
+  onFullscreen: (e: React.MouseEvent, videoElement: HTMLVideoElement | null) => void
 }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
 
@@ -97,11 +79,49 @@ function VideoThumbnail({
       <div className='-mr-4 space-y-2'>
         <div className='flex items-center'>
           <h3 className='line-clamp-1 font-semibold'>{item.title}</h3>
-          <StatusBadge status={item.status} />
+          <Badge
+            variant='outline'
+            className={cn('ml-2 h-5 rounded-full border-0 py-0 text-xs font-medium', {
+              'bg-[#ceead6] text-[#34a853]': item.status === 'live',
+              'bg-[#feefc3] text-[#fbbc04]': item.status === 'soon',
+              'bg-[#d2e3fc] text-[#4285f4]': item.status === 'planned'
+            })}
+          >
+            {item.status === 'live' && 'Live'}
+            {item.status === 'soon' && 'Soon'}
+            {item.status === 'planned' && 'Planned'}
+          </Badge>
+          {/* <Badge
+            variant='outline'
+            className={cn('ml-2 h-5 rounded-full border-0 py-0 text-xs font-medium', {
+              'bg-[#ceead6] text-[#34a853]': item.status === 'live',
+              'bg-[#feefc3] text-[#fbbc04]': item.status === 'soon',
+              'bg-[#d2e3fc] text-[#4285f4]': item.status === 'planned'
+            })}
+          >
+            <span className='flex items-center gap-1'>
+              {item.status === 'live' && (
+                <>
+                  <IconCircle className='h-3 w-3' />
+                  <span>Live</span>
+                </>
+              )}
+              {item.status === 'soon' && (
+                <>
+                  <IconCircleDashed className='h-3 w-3' />
+                  <span>Soon</span>
+                </>
+              )}
+              {item.status === 'planned' && (
+                <>
+                  <IconCircleDotted className='h-3 w-3' />
+                  <span>Planned</span>
+                </>
+              )}
+            </span>
+          </Badge> */}
         </div>
-        <p className='line-clamp-2 text-sm text-muted-foreground'>
-          {item.description}
-        </p>
+        <p className='line-clamp-2 text-sm text-muted-foreground'>{item.description}</p>
       </div>
     </motion.div>
   )
@@ -112,18 +132,13 @@ export function Demos() {
   const [isFullscreen, setIsFullscreen] = React.useState(false)
 
   // Handle fullscreen toggle
-  const toggleFullscreen = (
-    e: React.MouseEvent,
-    videoElement: HTMLVideoElement | null
-  ) => {
+  const toggleFullscreen = (e: React.MouseEvent, videoElement: HTMLVideoElement | null) => {
     e.stopPropagation()
     if (!videoElement) return
 
     if (!document.fullscreenElement) {
       videoElement.requestFullscreen().catch(err => {
-        console.error(
-          `Error attempting to enable full-screen mode: ${err.message}`
-        )
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`)
       })
     } else {
       document.exitFullscreen()
@@ -137,8 +152,7 @@ export function Demos() {
     }
 
     document.addEventListener('fullscreenchange', handleFullscreenChange)
-    return () =>
-      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
   }, [])
 
   return (
@@ -155,9 +169,7 @@ export function Demos() {
           {DEMOS.title}
         </h2>
 
-        <p className='mx-auto max-w-3xl text-lg text-muted-foreground'>
-          {DEMOS.description}
-        </p>
+        <p className='mx-auto max-w-3xl text-lg text-muted-foreground'>{DEMOS.description}</p>
       </div>
 
       <div className='mt-16 space-y-20'>
@@ -165,16 +177,14 @@ export function Demos() {
           <div key={demo.title} className='space-y-8'>
             <div className='container mx-auto px-4 text-left'>
               <h3 className='text-2xl font-bold'>{demo.title}</h3>
-              <p className='max-w-3xl text-lg text-muted-foreground'>
-                {demo.description}
-              </p>
+              <p className='max-w-3xl text-lg text-muted-foreground'>{demo.description}</p>
             </div>
 
             <div className='relative w-full overflow-hidden'>
               <ScrollArea className='w-full'>
                 <div className='flex space-x-6 pb-6 pl-[max(1rem,calc((100vw-80rem)/2+1rem))] pr-8'>
                   {demo.items.map((item, index) => (
-                    <VideoThumbnail
+                    <Demo
                       key={item.title}
                       item={item}
                       index={index}
