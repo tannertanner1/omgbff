@@ -5,6 +5,9 @@ import { IconCircleFilled } from '@tabler/icons-react'
 import { Dropdown } from './dropdown'
 import { Toggle } from './toggle'
 
+// import { AppSidebar } from '@/components/app-sidebar'
+// import { Theme } from '@/components/theme'
+
 export async function Header() {
   const session = await auth()
 
@@ -22,5 +25,15 @@ export async function Header() {
         <Toggle />
       </div>
     </div>
+    // <header className='sticky top-0 z-50 px-4 py-4'>
+    //   <div className='relative mx-auto flex max-w-5xl items-center justify-between px-6'>
+    //     <div className='group'>
+    //       <AppSidebar />
+    //     </div>
+    //     <div className='group'>
+    //       <Theme />
+    //     </div>
+    //   </div>
+    // </header>
   )
 }

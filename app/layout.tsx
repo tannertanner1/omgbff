@@ -1,13 +1,19 @@
 import type { Metadata, Viewport } from 'next'
 import { cookies } from 'next/headers'
-
-import { fontVariables } from '@/lib/fonts'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/sonner'
-
+import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
-import { ActiveThemeProvider } from '@/components/active-theme'
+import Providers from '@/app/providers'
+import { ActiveThemeProvider } from '@/components/theme/active-theme'
+
+const fontSans = Geist({
+  variable: '--font-sans',
+  subsets: ['latin']
+})
+const fontMono = Geist_Mono({
+  variable: '--font-mono',
+  subsets: ['latin']
+})
 
 const META_THEME_COLORS = {
   light: '#ffffff',
@@ -58,13 +64,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Get active theme from cookies
   const cookieStore = await cookies()
-  const activeThemeValue = cookieStore.get('active_theme')?.value
+  const activeThemeValue = cookieStore.get('active_theme')?.value || 'default'
   const isScaled = activeThemeValue?.endsWith('-scaled')
 
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        {/* This script runs before React hydration to prevent flash of wrong theme */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -82,21 +90,15 @@ export default async function RootLayout({
           'overscroll-none bg-background font-mono antialiased',
           activeThemeValue ? `theme-${activeThemeValue}` : '',
           isScaled ? 'theme-scaled' : '',
-          fontVariables
+          fontSans.variable,
+          fontMono.variable
         )}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-          enableColorScheme
-        >
+        <Providers>
           <ActiveThemeProvider initialTheme={activeThemeValue}>
             {children}
-            <Toaster />
           </ActiveThemeProvider>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useThemeConfig } from '@/components/active-theme'
+import { useThemeConfig } from '@/components/theme/active-theme'
 import {
   Select,
   SelectContent,

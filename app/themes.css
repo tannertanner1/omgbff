@@ -67,19 +67,6 @@
 }
 
 .theme-neobrutalism {
-  --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
-  --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
-  --shadow-sm:
-    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
-  --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
-  --shadow-md:
-    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
-  --shadow-lg:
-    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
-  --shadow-xl:
-    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
-  --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
-
   --background: oklch(1 0 0);
   --foreground: oklch(0.26 0 0);
   --card: oklch(1 0 0);
@@ -113,21 +100,20 @@
   --sidebar-border: oklch(0.94 0 0);
   --sidebar-ring: oklch(0.77 0 0);
 
-  @variant dark {
-    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
-    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
-    --shadow-sm:
-      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
-    --shadow:
-      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
-    --shadow-md:
-      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
-    --shadow-lg:
-      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
-    --shadow-xl:
-      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
-    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
+  --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+  --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+  --shadow-sm:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+  --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+  --shadow-md:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+  --shadow-lg:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+  --shadow-xl:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+  --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
 
+  @variant dark {
     --background: oklch(0.2 0 0);
     --foreground: oklch(0.98 0 0);
     --card: oklch(0.14 0 285.82);
@@ -160,6 +146,20 @@
     --sidebar-accent-foreground: oklch(0.97 0 286.38);
     --sidebar-border: oklch(0.27 0.01 286.03);
     --sidebar-ring: oklch(0.87 0.01 286.29);
+
+    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-sm:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow-md:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+    --shadow-lg:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+    --shadow-xl:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
   }
 
   @theme inline {
