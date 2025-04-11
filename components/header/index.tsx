@@ -21,7 +21,7 @@ export async function Header() {
     //     </div>
     //   </div>
     // </header>
-    <div className='mx-auto flex h-14 max-w-5xl flex-grow items-center justify-between px-4'>
+    <div className='mx-auto flex h-14 max-w-5xl grow items-center justify-between px-4'>
       <div className='flex items-center'>
         <Link href='/'>
           <div>

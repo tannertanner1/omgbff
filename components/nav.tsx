@@ -50,7 +50,7 @@ export function Nav({
           </Button>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className='flex items-center gap-1 outline-none'>
+            <DropdownMenuTrigger className='flex items-center gap-1 outline-hidden'>
               {organization.name}
               <IconSelector className='h-4 w-4' />
             </DropdownMenuTrigger>
@@ -72,7 +72,7 @@ export function Nav({
             <span className='text-muted-foreground/60'>/</span>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className='flex items-center gap-1 outline-none'>
+              <DropdownMenuTrigger className='flex items-center gap-1 outline-hidden'>
                 {customer?.name ?? 'Select Customer'}
                 <IconSelector className='h-4 w-4' />
               </DropdownMenuTrigger>

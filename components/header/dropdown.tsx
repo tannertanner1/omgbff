@@ -43,7 +43,7 @@ export function Dropdown({ session }: { session: Session | null }) {
         <DropdownMenuContent
           align='end'
           className={
-            session ? 'w-[200px]' : 'w-[--radix-dropdown-menu-trigger-width]'
+            session ? 'w-[200px]' : 'w-(--radix-dropdown-menu-trigger-width)'
           }
         >
           {session && (

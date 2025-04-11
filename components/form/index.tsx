@@ -348,9 +348,9 @@ export function Form({
                   >
                     <div className='flex items-start gap-2'>
                       {state.success ? (
-                        <IconCircleCheck className='mt-0.5 h-4 w-4 flex-shrink-0 font-bold text-[#0F9D58]' />
+                        <IconCircleCheck className='mt-0.5 h-4 w-4 shrink-0 font-bold text-[#0F9D58]' />
                       ) : (
-                        <IconCircleX className='mt-0.5 h-4 w-4 flex-shrink-0 font-bold text-[#DB4437]' />
+                        <IconCircleX className='mt-0.5 h-4 w-4 shrink-0 font-bold text-[#DB4437]' />
                       )}
                       <AlertDescription
                         className={cn(

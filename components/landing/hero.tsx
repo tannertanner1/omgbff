@@ -37,7 +37,7 @@ function Hero() {
 
       <Card
         className={cn(
-          'inset-shadow-border inset-shadow-sm w-full max-w-4xl overflow-hidden rounded-[2rem] border-border bg-secondary'
+          'inset-shadow-border inset-shadow-xs w-full max-w-4xl overflow-hidden rounded-[2rem] border-border bg-secondary'
         )}
       >
         <CardContent className='p-0'>
