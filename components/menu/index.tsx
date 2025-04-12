@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { ITEMS } from '@/data/menu-items'
 import { Component } from './component'
 import type { User } from '@/lib/abac'
@@ -24,7 +24,7 @@ export function Menu({ user }: { user: User }) {
 
   return (
     <motion.div
-      className='min-w-sm -pt-2 w-full space-y-4 pb-2'
+      className='-pt-2 w-full min-w-sm space-y-4 pb-2'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

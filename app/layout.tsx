@@ -5,6 +5,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import Providers from '@/app/providers'
 import { ActiveThemeProvider } from '@/components/theme/active-theme'
+// import { Header } from '@/components/header'
 
 const fontSans = Geist({
   variable: '--font-sans',
@@ -95,7 +96,10 @@ export default async function RootLayout({
         )}
       >
         <Providers>
-          <ActiveThemeProvider initialTheme={activeThemeValue}>{children}</ActiveThemeProvider>
+          <ActiveThemeProvider initialTheme={activeThemeValue}>
+            {/* <Header /> */}
+            {children}
+          </ActiveThemeProvider>
         </Providers>
       </body>
     </html>

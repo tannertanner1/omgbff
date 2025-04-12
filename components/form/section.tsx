@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -28,9 +28,7 @@ export function Section({
   const [isOpen, setIsOpen] = React.useState(defaultOpen)
 
   return (
-    <div
-      className={cn('overflow-hidden rounded-lg bg-background', error && '')}
-    >
+    <div className={cn('bg-background overflow-hidden rounded-lg', error && '')}>
       <button
         type='button'
         className='flex w-full items-center justify-between py-3 text-left'
@@ -39,21 +37,16 @@ export function Section({
         <div className={cn('flex items-center gap-2')}>
           <Badge
             className={cn(
-              'border border-accent bg-accent text-primary',
-              error && 'border-[#DB4437] bg-background text-[#DB4437]'
+              'border-accent bg-accent text-primary border',
+              error && 'bg-background border-[#DB4437] text-[#DB4437]'
             )}
           >
             {title}
           </Badge>
-          <span className='truncate text-sm text-muted-foreground'>
-            {summary}
-          </span>
+          <span className='text-muted-foreground truncate text-sm'>{summary}</span>
         </div>
         <ChevronDown
-          className={cn(
-            'h-5 w-5 transition-transform duration-200',
-            isOpen && 'rotate-180'
-          )}
+          className={cn('h-5 w-5 transition-transform duration-200', isOpen && 'rotate-180')}
         />
       </button>
 
@@ -73,7 +66,7 @@ export function Section({
                   <Button
                     type='button'
                     variant='outline'
-                    className='mt-6 w-full border border-[#DB4437] bg-[#DB4437] text-background hover:bg-background hover:text-[#DB4437]'
+                    className='text-background hover:bg-background mt-6 w-full border border-[#DB4437] bg-[#DB4437] hover:text-[#DB4437]'
                     onClick={onRemove}
                   >
                     Remove

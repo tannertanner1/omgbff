@@ -5,7 +5,5 @@ public/
 *.config.js
 *.config.mjs
 
-/.history/
-.history/*
-.history
 _private
+components/ui/**/*
