@@ -1,7 +1,7 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
-@import './themes.css';
+@import "./themes.css";
 
 :root {
   --radius: 1.25rem;
@@ -44,12 +44,12 @@
     --text-sm: 0.8rem;
     --spacing: 0.222222rem;
   }
-  [data-slot='card'] {
+  [data-slot="card"] {
     --spacing: 0.16rem;
   }
-  [data-slot='card-header'] *,
-  [data-slot='card-content'] *,
-  [data-slot='card-footer'] * {
+  [data-slot="card-header"] *,
+  [data-slot="card-content"] *,
+  [data-slot="card-footer"] * {
     --spacing: 0.222222rem;
   }
 }
@@ -194,12 +194,12 @@
   p {
     @apply leading-7;
   }
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  input[type='number'] {
+  input[type="number"] {
     -moz-appearance: textfield;
   }
   textarea {
@@ -211,10 +211,141 @@
   }
 }
 
-[data-slot='button'] {
+[data-slot="button"] {
   border-radius: 9999px;
 }
 
 * {
   @apply focus:border-border focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0;
 }
+
+/* Hide scrollbars but keep functionality */
+.overflow-auto,
+.overflow-y-auto {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  display: none !important;
+}
+/* Force override sidebar component spacing */
+[data-sidebar="header"] {
+  padding-top: 10px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  background-color: oklch(var(--sidebar)) !important;
+}
+
+/* @note before... */
+
+/*
+// Custom styles for sidebar using data-slot selectors
+[data-sidebar="inset"] {
+  @apply bg-sidebar;
+}
+// Target the header inside the inset
+[data-sidebar="inset"] > header {
+  @apply bg-sidebar border-sidebar-border;
+}
+// Ensure dropdown menu stays within sidebar width
+[data-slot="dropdown-menu-content"][data-side="top"] {
+  @apply w-full max-w-[calc(var(--sidebar-width)-theme(spacing.4))] mx-auto;
+}
+*/
+
+/*
+* {
+  box-shadow: none !important;
+}
+.bg-sidebar-background {
+  background-color: oklch(var(--sidebar)) !important;
+}
+[data-slot="sidebar-inset"] {
+  background-color: oklch(var(--sidebar)) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+[data-slot="header-container"],
+[data-slot="header"] {
+  background-color: oklch(var(--sidebar)) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+[data-slot="content-wrapper"] {
+  background-color: oklch(var(--sidebar)) !important;
+  box-shadow: none !important;
+  padding-top: 0 !important;
+  height: calc(100% - 60px) !important;
+  margin-bottom: 0 !important;
+}
+[data-slot="content-container"] {
+  background-color: oklch(var(--background)) !important;
+  border: 1px solid oklch(var(--border)) !important;
+  box-shadow: none !important;
+  margin-top: 0 !important;
+  height: 100% !important;
+}
+[data-slot="sidebar-trigger"] {
+  color: oklch(var(--sidebar-foreground));
+}
+[data-slot="dropdown-footer"] {
+  transform-origin: bottom center !important;
+}
+.peer {
+  box-shadow: none !important;
+}
+.shadow-sm,
+.shadow,
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl {
+  box-shadow: none !important;
+}
+[data-slot="content-container"] > div {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+[data-slot="content-container"] > div::-webkit-scrollbar {
+  display: none !important;
+}
+.overflow-auto {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.overflow-auto::-webkit-scrollbar {
+  display: none !important;
+}
+[data-sidebar="header"] {
+  padding-top: 10px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  background-color: oklch(var(--sidebar)) !important;
+}
+[data-sidebar="group"] {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+[data-sidebar="content"] {
+  padding-top: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+}
+[data-slot="sidebar-trigger"]:hover {
+  background-color: oklch(var(--sidebar-accent)) !important;
+}
+[data-sidebar="footer"] {
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+}
+html,
+body {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+*/
