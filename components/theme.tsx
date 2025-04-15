@@ -141,10 +141,7 @@ function Theme() {
         size="icon"
         className="group/toggle text-primary rounded-full"
       >
-        <IconCircleHalf
-          aria-hidden="true"
-          className="h-12 w-12 text-shadow-lg"
-        />
+        <IconCircleHalf aria-hidden="true" className="h-5 w-5 text-shadow-lg" />
         <span className="sr-only">Theme settings</span>
       </Button>
     )
@@ -160,11 +157,11 @@ function Theme() {
         >
           <IconPercentage50
             aria-hidden="true"
-            className="h-12 w-12 text-shadow-lg dark:hidden dark:rotate-360"
+            className="text-shadow-lg dark:hidden dark:rotate-360"
           />
           <IconPercentage50
             aria-hidden="true"
-            className="hidden h-12 w-12 rotate-360 text-shadow-lg dark:block"
+            className="hidden rotate-360 text-shadow-lg dark:block"
           />
           <span className="sr-only">Theme settings</span>
         </Button>

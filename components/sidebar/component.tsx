@@ -26,7 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   IconLayoutSidebarRightFilled,
   IconLayoutSidebarFilled,
@@ -36,12 +36,12 @@ import {
   IconFolder,
   IconUser,
   IconInvoice,
-  IconSettings,
   IconMail,
   IconSend,
   IconDotsVertical,
-  IconRosetteDiscountCheck,
   IconRosetteDiscountCheckFilled,
+  IconSettings,
+  IconPhotoCircle,
   IconUserCircle,
   IconCreditCard,
   IconBell,
@@ -100,7 +100,7 @@ const data = {
   },
   footer: [
     {
-      icon: IconRosetteDiscountCheck,
+      icon: IconUserCircle,
       name: "Account",
       url: "#",
       disabled: true,
@@ -151,8 +151,8 @@ function ControlledTrigger({ className }: { className?: string }) {
 function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
-      {/* Header */}
-      <SidebarHeader>
+      {/* Header - Aligned with top of content container */}
+      <SidebarHeader className="flex h-[52px] items-center pt-[10px]">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -169,8 +169,8 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="flex flex-1 flex-col">
-        {/* Main */}
-        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        {/* Main Navigation - Aligned with top of content container */}
+        <SidebarGroup className="mt-0 pt-0 group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
               {data.main.map((item) => (
@@ -193,7 +193,10 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Secondary */}
+        {/* Spacer to push secondary menu and footer to bottom */}
+        <div className="flex-1"></div>
+
+        {/* Secondary Navigation - Now at bottom */}
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
@@ -211,8 +214,8 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarFooter>
-          {/* User */}
+        {/* Footer - Now at bottom of SidebarContent */}
+        <SidebarFooter className="h-[60px] max-h-[60px] min-h-[60px]">
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
@@ -226,7 +229,6 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-medium">
-                        {/* {data.user.id} */}
                         <span className="inline-flex items-center">
                           {data.user.id}
                           <IconRosetteDiscountCheckFilled className="ml-1.5 h-5 w-5 text-shadow-lg" />
@@ -265,27 +267,19 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       </div>
                     </div>
                   </DropdownMenuLabel>
-                  {/* Footer */}
                   <DropdownMenuSeparator />
-                  {/* {data.footer.map((item) => ( ... ))} */}
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <IconRosetteDiscountCheck />
-                      {data.footer[0]?.name || "Account"}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <IconCreditCard />
-                      {data.footer[1]?.name || "Billing"}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <IconBell />
-                      {data.footer[2]?.name || "Notifications"}
-                    </DropdownMenuItem>
+                    {data.footer.slice(0, 3).map((item, index) => (
+                      <DropdownMenuItem key={index}>
+                        <item.icon className="mr-2 h-4 w-4" />
+                        {item.name}
+                      </DropdownMenuItem>
+                    ))}
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <IconLogout />
-                    {data.footer[3]?.name || "Logout"}
+                    <IconPhotoCircle className="mr-2 h-4 w-4" />
+                    {data.footer[3]?.name || "Sign out"}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

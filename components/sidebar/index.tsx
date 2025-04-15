@@ -22,22 +22,25 @@ function Sidebar({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider open={open} onOpenChange={setOpen}>
       <AppSidebar variant="inset" collapsible="offcanvas" />
-      <SidebarInset className="flex h-[100svh] flex-col overflow-hidden">
-        <header className="bg-sidebar flex h-[52px] items-center gap-2 px-4">
-          <ControlledTrigger className="-ml-1" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Active</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-
-          <Theme />
+      <SidebarInset className="flex h-[98svh] flex-col overflow-hidden">
+        <header className="bg-sidebar flex h-[52px] items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <ControlledTrigger className="-ml-1" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Active</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+          <div className="flex items-center">
+            <Theme />
+          </div>
         </header>
         <div className="bg-sidebar flex flex-1 flex-col overflow-hidden p-4">
           <div className="border-border bg-background flex flex-1 flex-col overflow-hidden rounded-xl border">
