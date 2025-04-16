@@ -41,11 +41,11 @@ import {
   IconDotsVertical,
   IconRosetteDiscountCheckFilled,
   IconSettings,
-  IconPhotoCircle,
   IconUserCircle,
   IconCreditCard,
   IconBell,
   IconLogout,
+  IconPhotoCircle,
 } from "@tabler/icons-react"
 
 const data = {
@@ -58,22 +58,22 @@ const data = {
     {
       icon: IconAt,
       name: "Users",
-      url: "#",
+      url: "/users",
     },
     {
       icon: IconFolder,
       name: "Organizations",
-      url: "#",
+      url: "/organizations",
     },
     {
       icon: IconUser,
       name: "Customers",
-      url: "#",
+      url: "/customers",
     },
     {
       icon: IconInvoice,
       name: "Invoices",
-      url: "#",
+      url: "/invoices",
     },
   ],
   secondary: [
@@ -169,7 +169,6 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="flex flex-1 flex-col">
-        {/* Main Navigation - Aligned with top of content container */}
         <SidebarGroup className="mt-0 pt-0 group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
@@ -181,8 +180,15 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
-                  <SidebarMenuAction showOnHover>
-                    <Link href={`${item.url}/new`}>
+
+                  <SidebarMenuAction
+                    showOnHover
+                    className="flex items-center justify-center"
+                  >
+                    <Link
+                      href={`${item.url}/new`}
+                      className="flex items-center justify-center"
+                    >
                       <IconPlus className="h-4 w-4" />{" "}
                       <span className="sr-only">Create {item.name}</span>
                     </Link>
@@ -193,10 +199,8 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Spacer to push secondary menu and footer to bottom */}
         <div className="flex-1"></div>
 
-        {/* Secondary Navigation - Now at bottom */}
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
@@ -214,7 +218,6 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Footer - Now at bottom of SidebarContent */}
         <SidebarFooter className="h-[60px] max-h-[60px] min-h-[60px]">
           <SidebarMenu>
             <SidebarMenuItem>

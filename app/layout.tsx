@@ -5,12 +5,6 @@ import "./globals.css"
 import { cn } from "@/lib/utils"
 import Providers from "@/app/providers"
 import { ActiveThemeProvider } from "@/components/theme"
-
-// import {
-//   SidebarProvider,
-//   SidebarTrigger,
-//   SidebarInset,
-// } from "@/components/ui/sidebar"
 import { Sidebar } from "@/components/sidebar"
 
 const fontSans = Geist({
@@ -105,15 +99,6 @@ export default async function RootLayout({
       >
         <Providers>
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            {/* <SidebarProvider>
-              <AppSidebar />
-              <SidebarInset>
-                <main>
-                  <SidebarTrigger />
-                  {children}
-                </main>
-              </SidebarInset>
-            </SidebarProvider> */}
             <Sidebar>{children}</Sidebar>
           </ActiveThemeProvider>
         </Providers>

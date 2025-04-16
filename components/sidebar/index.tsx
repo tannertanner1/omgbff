@@ -26,7 +26,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
         <header className="bg-sidebar flex h-[52px] items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <ControlledTrigger className="-ml-1" />
-            <Breadcrumb>
+            {/* <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
@@ -36,7 +36,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                   <BreadcrumbPage>Active</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
-            </Breadcrumb>
+            </Breadcrumb> */}
           </div>
           <div className="flex items-center">
             <Theme />

@@ -1,8 +1,8 @@
-import { Hero } from './hero'
-import { Tech } from './tech'
-import { Steps } from './steps'
-import { Demos } from './demos'
-import { Cta } from './cta'
+import { Hero } from "./hero"
+import { Tech } from "./tech"
+import { Steps } from "./steps"
+import { Demos } from "./demos"
+import { Cta } from "./cta"
 
 function Landing() {
   return (
