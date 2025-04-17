@@ -81,7 +81,6 @@ function Tech() {
           </p>
         )}
 
-        {/* Fix alignment on smaller screens by using px-0 on mobile */}
         <div ref={iconsContainerRef} className="mt-12 w-full max-w-4xl px-0">
           <div className="grid grid-cols-3 justify-items-center gap-6 md:grid-cols-4 md:gap-8 lg:grid-cols-6">
             {TECH.items.map((tech) => {

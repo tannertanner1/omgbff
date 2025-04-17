@@ -17,7 +17,7 @@ const fontMono = Geist_Mono({
 })
 
 const META_THEME_COLORS = {
-  light: "#ffffff",
+  light: "#f9fafb",
   dark: "#09090b",
 }
 

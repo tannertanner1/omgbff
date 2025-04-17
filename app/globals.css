@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 @import "./themes.css";
+@import "tailwindcss" important;
 
 :root {
   --radius: 1.25rem;
@@ -28,7 +29,8 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
+  /* gray-50; --sidebar: oklch(0.985 0 0); */
+  --sidebar: oklch(0.98 0 248);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
   --sidebar-primary: oklch(0.21 0.006 285.885);
   --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -79,7 +81,8 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
+  /* zinc-950; --sidebar: oklch(0.21 0.006 285.885); */
+  --sidebar: oklch(0.14 0 286);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -158,7 +161,7 @@
   * {
     @apply border-border outline-ring/50;
     scroll-behavior: smooth;
-    text-wrap: balance;
+    /* text-wrap: balance; */
   }
   html {
     @apply scroll-smooth;
@@ -174,7 +177,7 @@
   h2,
   h3,
   h4 {
-    @apply scroll-m-20 tracking-tight;
+    @apply scroll-m-20 tracking-tight text-pretty;
   }
   h1,
   h2,
@@ -185,7 +188,7 @@
     font-family: var(--font-sans), system-ui, sans-serif;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-balance;
     font-family: var(--font-mono), monospace;
     line-height: 1.6;
     min-height: 100%;
@@ -220,7 +223,6 @@
   @apply focus:border-border focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0;
 }
 
-/* Hide scrollbars but keep functionality */
 .overflow-auto,
 .overflow-y-auto {
   -ms-overflow-style: none !important;
@@ -230,45 +232,11 @@
 .overflow-y-auto::-webkit-scrollbar {
   display: none !important;
 }
-
-/*
- html,
- body {
-   height: 100%;
-   overflow: hidden;
- } */
-.sidebar-layout-container {
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.content-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  padding-top: 0;
-  overflow: hidden;
-}
-.scroll-area-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
-  /* background-color: var(--background); */
-  overflow: hidden;
-  /* inset-shadow: sm; */
-}
 .scroll-area-viewport {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
 }
-/* .card-hover {
-  transition: all 150ms;
-} */
 .card-hover:hover {
   inset-ring: 2px var(--ring);
   transform: scale(1.005);
@@ -283,10 +251,16 @@ body {
   border-color: var(--border);
   opacity: 0.1;
 }
-[data-sidebar="menu-button"] {
-  height: 2.25rem !important;
-}
 .h-\[98svh\] {
   height: 98vh;
   height: 98svh;
+}
+@media screen and (max-width: 767px) {
+  html,
+  body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 }

@@ -106,21 +106,21 @@ const STEPS = {
       icon: IconRosetteDiscountCheckFilled,
       title: "Simplify Onboarding",
       description:
-        "Clients sign up using just their email—no passwords, no paper forms. They choose the services they need, make updates anytime, and securely hand off accounts when needed.",
+        "Quick email signup, self-serve setup, and effortless account handoff.",
       image: "https://placehold.co/1920x1200/transparent/transparent",
     },
     {
       icon: IconClockFilled,
       title: "Streamline Management",
       description:
-        "Let clients manage their info, invoices, and groups—all in one place. With built-in activity logs and history, you stay in the loop without lifting a finger.",
+        "Centralized info, real-time activity, and no manual check-ins.",
       image: "https://placehold.co/1920x1200/transparent/transparent",
     },
     {
       icon: IconCoinFilled,
       title: "Automate Billing",
       description:
-        "Invoices send themselves. Payments update automatically. Everything’s tracked, so you can skip the spreadsheets and focus on what matters.",
+        "Scheduled invoices, real-time payments, and clean reporting—automatically.",
       image: "https://placehold.co/1920x1200/transparent/transparent",
     },
   ],
