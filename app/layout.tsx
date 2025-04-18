@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
 import { Geist, Geist_Mono } from "next/font/google"
-import "./globals.css"
-import { cn } from "@/lib/utils"
 import Providers from "@/app/providers"
 import { ActiveThemeProvider } from "@/components/theme"
 import { Sidebar } from "@/components/sidebar"
+import { cn } from "@/lib/utils"
+import "./globals.css"
 
 const fontSans = Geist({
   variable: "--font-sans",

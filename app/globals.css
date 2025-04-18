@@ -215,14 +215,6 @@
   }
 }
 
-[data-slot="button"] {
-  border-radius: 9999px;
-}
-
-* {
-  @apply focus:border-border focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0;
-}
-
 .overflow-auto,
 .overflow-y-auto {
   -ms-overflow-style: none !important;
@@ -263,4 +255,12 @@ body {
     height: 100%;
     overflow: hidden;
   }
+}
+
+[data-slot="button"] {
+  border-radius: 9999px;
+}
+
+* {
+  @apply focus:border-border focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0;
 }

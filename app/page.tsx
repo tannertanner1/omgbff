@@ -10,7 +10,8 @@ export default async function Page() {
       <div className="inset-ring-background relative flex min-h-fit flex-col inset-ring">
         <main className="mx-auto w-full max-w-5xl grow">
           {/* <div className="flex flex-1 flex-col gap-12 p-4">
-            {Array.from({ length: 24 }).map((_, index) => (
+            {Array.from({ lengt
+            h: 24 }).map((_, index) => (
               <div
                 key={index}
                 className="bg-sidebar aspect-video h-12 w-full rounded-lg"
