@@ -1,12 +1,12 @@
 import * as React from "react"
 import { useTheme } from "next-themes"
 
-export const META_THEME_COLORS = {
-  light: "#f9fafb",
-  dark: "#09090b",
+const META_THEME_COLORS = {
+  light: "#fbfbfb",
+  dark: "#18181b",
 }
 
-export function useMetaColor() {
+function useMetaColor() {
   const { resolvedTheme } = useTheme()
 
   const metaColor = React.useMemo(() => {
@@ -26,3 +26,5 @@ export function useMetaColor() {
     setMetaColor,
   }
 }
+
+export { META_THEME_COLORS, useMetaColor }

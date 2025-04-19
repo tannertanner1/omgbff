@@ -12,7 +12,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-import { ControlledTrigger, AppSidebar } from "./component"
+// import { ControlledTrigger, AppSidebar } from "./component"
+import { ControlledTrigger, AppSidebar } from "@/components/app-sidebar"
+
 import { Theme } from "@/components/theme"
 
 function Sidebar({ children }: { children: React.ReactNode }) {

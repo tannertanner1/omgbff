@@ -40,7 +40,9 @@ function Hero() {
 
       <Card
         className={cn(
-          "inset-shadow-border border-border bg-secondary w-full max-w-4xl overflow-hidden rounded-[2rem] inset-shadow-xs"
+          "bg-secondary/50 w-full max-w-4xl overflow-hidden rounded-2xl",
+          "inset-ring-2"
+          // "inset-shadow-border inset-shadow inset-shadow-2xs"
         )}
       >
         <CardContent className="p-0">
