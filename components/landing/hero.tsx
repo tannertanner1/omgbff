@@ -40,9 +40,12 @@ function Hero() {
 
       <Card
         className={cn(
-          "bg-secondary/50 w-full max-w-4xl overflow-hidden rounded-2xl",
-          "inset-ring-2"
-          // "inset-shadow-border inset-shadow inset-shadow-2xs"
+          "bg-border/10 w-full max-w-4xl overflow-hidden rounded-2xl",
+          // "inset-shadow-background inset-shadow -inset-shadow-sm",
+          "inset-ring-background -inset-ring-2"
+          // "inset-ring-[1px] inset-ring-zinc-400/20",
+          // "inset-shadow-[0_1px_3px_0_rgb(0_0_0/0.1),_0_1px_2px_-1px_rgb(0_0_0/0.1)]",
+          // "bg-zinc-100 dark:bg-zinc-800"
         )}
       >
         <CardContent className="p-0">

@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
 import { Geist, Geist_Mono } from "next/font/google"
-import Providers from "@/app/providers"
-import { ActiveThemeProvider } from "@/components/theme"
-import { Sidebar } from "@/components/sidebar"
+// import Providers from "@/app/providers"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ActiveThemeProvider } from "@/components/active-theme"
+import { Layout } from "@/components/layout"
+import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
@@ -16,10 +18,7 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const META_THEME_COLORS = {
-  light: "#f9fafb",
-  dark: "#09090b",
-}
+const META_THEME_COLORS = { light: "#fbfbfb", dark: "#18181b" }
 
 export const metadata: Metadata = {
   title: "omgbff",
@@ -97,11 +96,23 @@ export default async function RootLayout({
           fontMono.variable
         )}
       >
-        <Providers>
+        {/* <Providers>
           <ActiveThemeProvider initialTheme={activeThemeValue}>
             <Sidebar>{children}</Sidebar>
           </ActiveThemeProvider>
-        </Providers>
+        </Providers> */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          // enableColorScheme
+        >
+          <ActiveThemeProvider initialTheme={activeThemeValue}>
+            <Layout>{children}</Layout>
+            <Toaster />
+          </ActiveThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

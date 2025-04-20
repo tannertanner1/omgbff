@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { Dropdown } from "./dropdown"
 // import { Theme } from "@/components/theme"
-import { ModeSwitcher } from "@/components/mode-switcher"
+import { ModeToggle } from "@/components/mode-toggle"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -49,7 +49,7 @@ export { Header }
 // import { IconCircleFilled } from "@tabler/icons-react"
 // import { Dropdown } from "./dropdown"
 // // import { Theme } from "@/components/theme"
-// import { ModeSwitcher } from "@/components/mode"
+// import { ModeToggle } from "@/components/mode"
 // import { useState } from "react"
 // import { Button } from "@/components/ui/button"
 // import {
@@ -124,7 +124,7 @@ export { Header }
 // import { IconCircleFilled } from "@tabler/icons-react"
 // import { Dropdown } from "./dropdown"
 // // import { Toggle } from "./toggle"
-// import { ModeSwitcher } from "@/components/mode"
+// import { ModeToggle } from "@/components/mode"
 
 // import { Theme } from "@/components/theme"
 

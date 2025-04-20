@@ -1,6 +1,6 @@
 "use client"
 
-import { useThemeConfig } from "@/components/context-providers"
+import { useThemeConfig } from "@/components/active-theme"
 import {
   Select,
   SelectContent,
@@ -23,6 +23,7 @@ const THEMES = [
     value: "claymorphism",
   },
 ]
+
 type Theme = (typeof THEMES)[number]
 
 function ThemeSelector() {

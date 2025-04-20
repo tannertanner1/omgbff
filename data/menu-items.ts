@@ -2,124 +2,153 @@ import {
   IconAt,
   IconFolder,
   IconUser,
-  IconFile,
-  IconCheckbox,
   IconInvoice,
-  IconActivity,
-  IconArticle,
-  IconTag,
-  IconCloud,
-  IconChartBarPopular,
-  IconBell,
-  IconBook,
-  IconNote,
-  IconSettings
-} from '@tabler/icons-react'
+  IconMail,
+  IconSend,
+  IconUserCircle,
+  IconSettings,
+  IconLogout,
+  type Icon,
+} from "@tabler/icons-react"
 
 type Item = {
-  icon: React.ElementType
   title: string
-  description: string
-  href: string
+  url: string
+  icon: Icon // React.ElementType
+  description?: string
   permission?: {
     resource: string
     action: string
   }
 }
 
-export const ITEMS: Item[] = [
-  {
-    icon: IconAt,
-    title: 'Users',
-    description: 'Manage Users',
-    href: '/users',
-    permission: {
-      resource: 'users',
-      action: 'view'
-    }
-  },
-  {
-    icon: IconFolder,
-    title: 'Organizations',
-    description: 'Manage Organizations',
-    href: '/organizations'
-  },
-  {
-    icon: IconUser,
-    title: 'Customers',
-    description: 'Manage Customers',
-    href: '/customers'
-  },
-  // {
-  //   icon: IconFile,
-  //   title: 'Services',
-  //   description: 'Manage Services',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconCheckbox,
-  //   title: 'Tasks',
-  //   description: 'Manage Tasks',
-  //   href: '#'
-  // },
-  {
-    icon: IconInvoice,
-    title: 'Invoices',
-    description: 'Manage Invoices',
-    href: '/invoices'
-  }
-  // {
-  //   icon: IconActivity,
-  //   title: 'Activity',
-  //   description: 'Manage Activity',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconTag,
-  //   title: 'Products',
-  //   description: 'Manage Products',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconArticle,
-  //   title: 'Posts',
-  //   description: 'Manage Posts',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconChartBarPopular,
-  //   title: 'Analytics',
-  //   description: 'Manage Analytics',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconCloud,
-  //   title: 'Files',
-  //   description: 'Manage Files',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconBell,
-  //   title: 'Notifications',
-  //   description: 'Manage Notifications',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconBook,
-  //   title: 'Docs',
-  //   description: 'Manage Docs',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconNote,
-  //   title: 'Notes',
-  //   description: 'Manage Notes',
-  //   href: '#'
-  // },
-  // {
-  //   icon: IconSettings,
-  //   title: 'Settings',
-  //   description: 'Manage Settings',
-  //   href: '#'
-  // }
+export const ITEMS: Item[][] = [
+  // Main
+  [
+    {
+      title: "Users",
+      url: "/users",
+      icon: IconAt,
+      permission: {
+        resource: "users",
+        action: "view",
+      },
+    },
+    {
+      title: "Organizations",
+      url: "/organizations",
+      icon: IconFolder,
+    },
+    {
+      title: "Customers",
+      url: "/customers",
+      icon: IconUser,
+    },
+    {
+      title: "Invoices",
+      url: "/invoices",
+      icon: IconInvoice,
+    },
+  ],
+  // Secondary
+  [
+    // <ThemeSelector /> (?)
+    {
+      title: "Contact",
+      url: "/contact",
+      icon: IconMail,
+    },
+    {
+      title: "Feedback",
+      url: "/feedback",
+      icon: IconSend,
+    },
+  ],
+  // User
+  [
+    {
+      title: "Account",
+      url: "/account",
+      icon: IconUserCircle,
+    },
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: IconSettings,
+    },
+    // Preferences: Theme, Fonts (?)
+    {
+      title: "Logout",
+      url: "#",
+      icon: IconLogout,
+    },
+  ],
 ]
+
+/**
+{
+  IconFile,
+  IconActivity,
+  IconTag,
+  IconCheckbox,
+  IconChartBarPopular,
+  IconBell,
+  IconArticle,
+  IconCloud,
+  IconBook,
+  IconNote,
+}
+
+[
+  {
+    title: "Services",
+    url: "#",
+    icon: IconFile,
+  },
+  {
+    title: "Activity",
+    icon: IconActivity,
+    url: "#",
+  },
+  {
+    title: "Products",
+    icon: IconTag,
+    url: "#",
+  },
+  {
+    title: "Tasks",
+    url: "#",
+    icon: IconCheckbox,
+  },
+  {
+    title: "Analytics",
+    url: "#",
+    icon: IconChartBarPopular,
+  },
+  {
+    title: "Notifications",
+    url: "#",
+    icon: IconBell,
+  },
+  {
+    title: "Posts",
+    url: "#",
+    icon: IconArticle,
+  },
+  {
+    title: "Files",
+    url: "#",
+    icon: IconCloud,
+  },
+  {
+    title: "Docs",
+    url: "#",
+    icon: IconBook,
+  },
+  {
+    title: "Notes",
+    url: "#",
+    icon: IconNote,
+  },
+]
+*/
