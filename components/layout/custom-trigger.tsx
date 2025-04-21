@@ -17,8 +17,8 @@ function CustomTrigger({ className }: { className?: string }) {
       onClick={toggleSidebar}
       className={cn(
         "h-8 w-8 p-0",
-        // "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-        "hover:bg-transparent dark:hover:bg-transparent",
+        "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        // "hover:bg-transparent dark:hover:bg-transparent",
         className
       )}
       aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}

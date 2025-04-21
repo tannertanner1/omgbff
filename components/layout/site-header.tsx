@@ -1,6 +1,6 @@
 import { CustomTrigger } from "./custom-trigger"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Theme } from "@/components/theme"
+import { ThemeSelector } from "@/components/theme-selector"
+import { ModeToggle } from "./mode-toggle"
 
 function SiteHeader() {
   return (
@@ -21,13 +21,16 @@ function SiteHeader() {
     //   </div>
     // </header>
 
-    <header className="bg-sidebar flex h-[52px] items-center justify-between px-4">
+    <header
+      // className="bg-sidebar flex h-[52px] items-center justify-between px-4"
+      className="bg-sidebar flex h-12 shrink-0 items-center justify-between px-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
+    >
       <div className="flex items-center">
         <CustomTrigger className="-ml-1" />
       </div>
       <div className="flex items-center">
-        {/* <ModeToggle /> */}
-        <Theme />
+        <ThemeSelector />
+        <ModeToggle />
       </div>
     </header>
   )

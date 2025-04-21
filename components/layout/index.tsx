@@ -14,7 +14,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar variant="inset" />
       <SidebarInset className="flex h-[98svh] flex-col overflow-hidden">
         <SiteHeader />
-        <div className="bg-sidebar flex flex-1 flex-col overflow-hidden p-4">
+        <div className="bg-sidebar flex flex-1 flex-col overflow-hidden p-2">
           <div className="border-border bg-background flex flex-1 flex-col overflow-hidden rounded-xl border">
             <div className="flex-1 overflow-y-auto p-4">{children}</div>
           </div>

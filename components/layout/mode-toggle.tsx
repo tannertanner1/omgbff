@@ -26,8 +26,8 @@ function ModeToggle() {
       variant="ghost"
       className={cn(
         "group/toggle h-8 w-8 px-0",
-        "text-primary rounded-full",
-        "hover:bg-transparent dark:hover:bg-transparent"
+        "text-primary rounded-full"
+        // "hover:bg-transparent dark:hover:bg-transparent"
         // "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
       )}
       onClick={toggleTheme}

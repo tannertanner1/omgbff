@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth"
 import { IconCircleFilled } from "@tabler/icons-react"
 import { Dropdown } from "./dropdown"
 // import { Theme } from "@/components/theme"
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/layout/mode-toggle"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
