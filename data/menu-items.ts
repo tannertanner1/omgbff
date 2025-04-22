@@ -14,7 +14,7 @@ import {
 type Item = {
   title: string
   url: string
-  icon: Icon // React.ElementType
+  icon: Icon
   description?: string
   permission?: {
     resource: string
@@ -22,7 +22,7 @@ type Item = {
   }
 }
 
-export const ITEMS: Item[][] = [
+const ITEMS: Item[][] = [
   // Main
   [
     {
@@ -52,7 +52,6 @@ export const ITEMS: Item[][] = [
   ],
   // Secondary
   [
-    // <ThemeSelector /> (?)
     {
       title: "Contact",
       url: "/contact",
@@ -76,7 +75,6 @@ export const ITEMS: Item[][] = [
       url: "/settings",
       icon: IconSettings,
     },
-    // Preferences: Theme, Fonts (?)
     {
       title: "Logout",
       url: "#",
@@ -84,6 +82,8 @@ export const ITEMS: Item[][] = [
     },
   ],
 ]
+
+export { ITEMS, type Item }
 
 /**
 {

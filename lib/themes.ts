@@ -3,14 +3,6 @@ const THEMES = [
     name: "Default",
     value: "default",
   },
-  // {
-  //   name: "Neutral",
-  //   value: "neutral",
-  // },
-  // {
-  //   name: "Scaled",
-  //   value: "scaled",
-  // },
   {
     name: "Neobrutal",
     value: "neobrutalism",
