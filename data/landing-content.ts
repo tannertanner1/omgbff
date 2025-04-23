@@ -20,7 +20,7 @@ import {
 } from "@/components/icons"
 
 const HERO = {
-  section: "🚀 Announcing public beta",
+  section: "Announcing public beta",
   title: "One app. Two dashboards.",
   description:
     "A client portal your customers actually want. An admin dashboard your team will use. From seamless onboarding to effortless invoicing.",

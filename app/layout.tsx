@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
 import { Geist, Geist_Mono } from "next/font/google"
-// import Providers from "@/app/providers"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ActiveThemeProvider } from "@/components/active-theme"
 import { Layout } from "@/components/layout"
@@ -96,11 +95,6 @@ export default async function RootLayout({
           fontMono.variable
         )}
       >
-        {/* <Providers>
-          <ActiveThemeProvider initialTheme={activeThemeValue}>
-            <Sidebar>{children}</Sidebar>
-          </ActiveThemeProvider>
-        </Providers> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

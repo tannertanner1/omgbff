@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { IconSparkles, IconArrowRight } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Section } from "./section"
 import { HERO } from "@/data/landing-content"
@@ -12,12 +13,15 @@ import { HERO } from "@/data/landing-content"
 function Hero() {
   return (
     <Section className="py-12 md:py-24">
-      <Badge
-        variant="outline"
-        className="bg-background text-muted-foreground mb-8 text-sm"
-      >
-        <span className="cursor-pointer select-none">{HERO.section}</span>
-      </Badge>
+      <Link href="/login">
+        <Badge
+          variant="outline"
+          className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
+        >
+          <span className="cursor-pointer select-none">{HERO.section}</span>
+          <IconArrowRight className="ml-1 h-4 w-4" />
+        </Badge>
+      </Link>
 
       <h1 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl">
         {HERO.title}

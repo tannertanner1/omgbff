@@ -9,11 +9,11 @@ function Section({
   className?: string
 }) {
   return (
-    <div className={cn("mx-auto max-w-5xl", className)}>
+    <section className={cn("mx-auto max-w-5xl", className)}>
       <div className="flex flex-col items-start justify-start space-y-8 text-start md:items-center md:justify-center md:text-center">
         {children}
       </div>
-    </div>
+    </section>
   )
 }
 

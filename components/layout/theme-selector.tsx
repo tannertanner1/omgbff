@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Check } from "lucide-react"
+import { IconCheck } from "@tabler/icons-react"
 
 function ThemeSelector({ children }: { children: React.ReactNode }) {
   const { activeTheme, setActiveTheme } = useThemeConfig()
@@ -31,7 +31,7 @@ function ThemeSelector({ children }: { children: React.ReactNode }) {
             className="flex items-center justify-between"
           >
             {theme.name}
-            {activeTheme === theme.value && <Check className="h-4 w-4" />}
+            {activeTheme === theme.value && <IconCheck className="h-4 w-4" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
