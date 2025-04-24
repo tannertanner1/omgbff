@@ -4,43 +4,49 @@ import { Section } from "./section"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { STEPS } from "@/data/landing-content"
+import { cn } from "@/lib/utils"
+import { Card, CardContent } from "@/components/ui/card"
 
 const Steps = () => {
   return (
-    <section className="bg-background py-16 md:py-24">
-      <Section className="py-12 md:py-24">
-        <Badge
-          variant="outline"
-          className="bg-background text-muted-foreground mb-8 text-sm"
-        >
-          <span className="cursor-pointer select-none">{STEPS.section}</span>
-        </Badge>
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl">
-          {STEPS.title}
-        </h1>
+    <Section className="@container">
+      <Badge
+        variant="secondary"
+        className={cn(
+          "mb-8 flex w-fit",
+          "px-4 py-1.5 text-sm font-medium shadow-sm"
+        )}
+      >
+        {STEPS.section}
+      </Badge>
 
-        <p className="text-muted-foreground mb-8 max-w-[42rem] text-lg leading-normal text-balance sm:leading-8 md:text-xl">
-          {STEPS.description}
-        </p>
+      <h2 className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl">
+        {STEPS.title}
+      </h2>
+      <p className="text-muted-foreground mb-8 text-lg">{STEPS.description}</p>
 
-        <div className="mt-12 w-full max-w-4xl px-0">
-          <Tabs defaultValue="feature-1">
-            <TabsList className="bg-background flex h-auto w-full flex-col gap-2 lg:flex-row">
+      <div className="px-0">
+        <Tabs defaultValue="feature-1">
+          <div className="flex flex-col">
+            <TabsList className="bg-background mb-4 grid h-auto gap-6 @[900px]:grid-cols-3">
               {STEPS.items.map((item, index) => (
                 <TabsTrigger
                   key={`feature-${index + 1}`}
                   value={`feature-${index + 1}`}
-                  className="text-primary hover:border-primary/40 data-[state=active]:border-primary flex w-full flex-col items-start justify-start gap-1 rounded-md border p-4 text-left text-balance whitespace-normal"
+                  className={cn(
+                    "text-primary flex w-full flex-col items-start justify-start gap-1 rounded-2xl p-4 text-left text-pretty whitespace-normal",
+                    "hover:inset-ring-border hover:border-background hover:inset-ring-1",
+                    "data-[state=active]:inset-ring-border data-[state=active]:border-background data-[state=active]:inset-ring-1",
+                    "dark:inset-ring-background dark:border-border border-background"
+                  )}
                 >
-                  <div className="flex items-center gap-2 md:flex-col md:items-start lg:gap-4">
-                    <span className="bg-accent flex size-8 items-center justify-center rounded-full lg:size-10">
-                      <item.icon className="text-primary size-4" />
+                  <div className="flex flex-col gap-4">
+                    <span className="text-primary size-8">
+                      <item.icon className="text-primary size-8 text-shadow-lg" />
                     </span>
-                    <p className="text-lg font-semibold md:text-2xl lg:text-xl">
-                      {item.title}
-                    </p>
+                    <p className="text-primary text-xl">{item.title}</p>
                   </div>
-                  <p className="text-muted-foreground font-normal md:block">
+                  <p className="text-muted-foreground text-base md:block">
                     {item.description}
                   </p>
                 </TabsTrigger>
@@ -51,19 +57,24 @@ const Steps = () => {
               <TabsContent
                 key={`feature-${index + 1}`}
                 value={`feature-${index + 1}`}
-                className="border-border bg-background rounded-lg border"
+                className="flex flex-col gap-4 px-0"
               >
-                <img
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.title}
-                  className="aspect-video rounded-md object-cover"
-                />
+                <Card
+                  className={cn(
+                    "inset-ring-border dark:bg-input/30 bg-transparent inset-ring-1",
+                    "dark:inset-ring-background dark:border-border border-background"
+                  )}
+                >
+                  <CardContent className="p-0">
+                    <div className="relative h-[300px] md:h-[400px]" />
+                  </CardContent>
+                </Card>
               </TabsContent>
             ))}
-          </Tabs>
-        </div>
-      </Section>
-    </section>
+          </div>
+        </Tabs>
+      </div>
+    </Section>
   )
 }
 

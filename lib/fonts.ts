@@ -16,7 +16,7 @@ const fontMono = LXGW_WenKai_Mono_TC({
   display: "swap",
   subsets: ["latin"],
   weight: ["300", "400", "700"],
-  variable: "--font-lxgw-wenkai-mono-tc",
+  variable: "--font-mono",
 })
 
 const fontInter = Inter({

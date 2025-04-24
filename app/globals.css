@@ -9,8 +9,6 @@
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  /* --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1); */
   --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
   --shadow-md:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
@@ -18,12 +16,6 @@
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
   --shadow-xl:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  /* --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1); */
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
   --background: oklch(1 0 0);
@@ -81,8 +73,6 @@
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  /* --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1); */
   --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
   --shadow-md:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
@@ -90,12 +80,6 @@
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
   --shadow-xl:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  /* --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1); */
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
   --background: oklch(0.141 0.005 285.823);
@@ -254,6 +238,10 @@
   p {
     @apply leading-7;
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -285,24 +273,17 @@
   padding: 1rem;
   overflow-y: auto;
 }
-.card-hover:hover {
-  inset-ring: 2px var(--ring);
-  transform: scale(1.005);
-}
 body {
   background-color: var(--sidebar);
 }
 [data-slot="sidebar-inset"] {
   box-shadow: none !important;
 }
-/* .border-border\/10 {
-  border-color: var(--border);
-  opacity: 0.1;
+@supports (-webkit-touch-callout: none) {
+  .h-\[100svh\] {
+    height: -webkit-fill-available;
+  }
 }
-.h-\[98svh\] {
-  height: 98vh;
-  height: 98svh;
-} */
 @media screen and (max-width: 767px) {
   html,
   body {
@@ -312,11 +293,12 @@ body {
     overflow: hidden;
   }
 }
-
+[data-slot="badge"] {
+  border-radius: calc(infinity * 1px);
+}
 [data-slot="button"] {
   border-radius: 9999px;
 }
-
-* {
-  @apply focus:border-border focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0;
+[data-slot="card"] {
+  border-radius: 1rem;
 }

@@ -34,7 +34,7 @@ export default function Error({
             <Button
               variant="ghost"
               className={cn(
-                "shadown-none bg-background text-primary after:bg-primary relative after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0"
+                "shadown-none text-primary after:bg-primary relative bg-transparent after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0 dark:hover:bg-transparent"
               )}
               onClick={() => router.back()}
             >
@@ -45,7 +45,7 @@ export default function Error({
             <Button
               variant="ghost"
               className={cn(
-                "shadown-none bg-background text-primary after:bg-primary relative after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0"
+                "shadown-none text-primary after:bg-primary relative bg-transparent after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0 dark:hover:bg-transparent"
               )}
               onClick={() => reset()}
             >

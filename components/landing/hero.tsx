@@ -12,21 +12,20 @@ import { HERO } from "@/data/landing-content"
 
 function Hero() {
   return (
-    <Section className="py-12 md:py-24">
-      <Link href="/login">
-        <Badge
-          variant="outline"
-          className="rounded-full px-4 py-1.5 text-sm font-medium shadow-sm"
-        >
-          <span className="cursor-pointer select-none">{HERO.section}</span>
-          <IconArrowRight className="ml-1 h-4 w-4" />
-        </Badge>
-      </Link>
+    <Section>
+      <Badge
+        variant="secondary"
+        className={cn(
+          "mb-8 flex w-fit",
+          "px-4 py-1.5 text-sm font-medium shadow-sm"
+        )}
+      >
+        {HERO.section}
+      </Badge>
 
       <h1 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl">
         {HERO.title}
       </h1>
-
       <p className="text-muted-foreground mb-8 max-w-[42rem] text-lg leading-normal text-balance sm:leading-8 md:text-xl">
         {HERO.description}
       </p>
@@ -36,7 +35,7 @@ function Hero() {
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <Button size="lg" variant="outline" className="rounded-full" asChild>
+          <Button size="lg" variant="outline" asChild>
             <Link href={HERO.link}>{HERO.button}</Link>
           </Button>
         </motion.div>
@@ -44,12 +43,10 @@ function Hero() {
 
       <Card
         className={cn(
-          "bg-border/10 w-full max-w-4xl overflow-hidden rounded-2xl",
-          // "inset-shadow-background inset-shadow -inset-shadow-sm",
-          "inset-ring-background -inset-ring-2"
-          // "inset-ring-[1px] inset-ring-zinc-400/20",
-          // "inset-shadow-[0_1px_3px_0_rgb(0_0_0/0.1),_0_1px_2px_-1px_rgb(0_0_0/0.1)]",
-          // "bg-zinc-100 dark:bg-zinc-800"
+          "aspect-video object-cover",
+          "flex w-full max-w-4xl flex-col gap-4 px-0",
+          "inset-ring-border dark:bg-input/30 bg-transparent inset-ring-1",
+          "dark:inset-ring-background dark:border-border border-background"
         )}
       >
         <CardContent className="p-0">
