@@ -1,11 +1,11 @@
 "use client"
 
-import { Section } from "./section"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { STEPS } from "@/data/landing-content"
-import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
+import { STEPS } from "@/data/landing-content"
+import { Section } from "./section"
 
 const Steps = () => {
   return (

@@ -18,7 +18,7 @@ function Cta() {
           "px-4 py-1.5 text-sm font-medium shadow-sm"
         )}
       >
-        <span className="cursor-pointer select-none">{CTA.section}</span>
+        {CTA.section}
       </Badge>
 
       <h2 className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl">
