@@ -9,11 +9,12 @@ import { IconSparkles, IconArrowRight } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 import { Section } from "./section"
 import { HERO } from "@/data/landing-content"
+import { Separator } from "@/components/ui/separator"
 
 function Hero() {
   return (
     <Section>
-      <Badge
+      {/* <Badge
         variant="secondary"
         className={cn(
           "mb-8 flex w-fit",
@@ -21,6 +22,23 @@ function Hero() {
         )}
       >
         {HERO.section}
+      </Badge> */}
+      <Badge
+        variant="secondary"
+        className={cn(
+          "mb-8 flex w-fit",
+          "px-4 py-1.5 text-sm font-medium shadow-sm",
+          "cursor-not-allowed"
+        )}
+        aria-disabled="true"
+      >
+        <IconSparkles />
+        <Separator
+          orientation="vertical"
+          className="mx-2 rounded-full bg-current data-[orientation=vertical]:h-4"
+        />
+        {HERO.section}
+        <IconArrowRight className="ml-2 h-4 w-4" />
       </Badge>
 
       <h1 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl">

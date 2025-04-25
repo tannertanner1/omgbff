@@ -29,12 +29,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   IconSlash,
   IconPlus,
-  IconFlare,
   IconDotsVertical,
   IconRosetteDiscountCheckFilled,
 } from "@tabler/icons-react"
 import { ITEMS } from "@/data/menu-items"
-import { ThemeSelector } from "@/components/layout/theme-selector"
 
 function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
@@ -94,14 +92,6 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <ThemeSelector>
-                  <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                    <IconFlare className="mr-2 h-4 w-4" />
-                    <span>Theme</span>
-                  </SidebarMenuButton>
-                </ThemeSelector>
-              </SidebarMenuItem>
               {ITEMS[1].map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={isActive(item.url)}>

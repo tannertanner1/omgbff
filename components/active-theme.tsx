@@ -7,9 +7,9 @@ import {
   useEffect,
   useState,
 } from "react"
+import { THEME } from "@/lib/themes"
 
 const COOKIE_NAME = "active_theme"
-const DEFAULT_THEME = "default"
 
 function setThemeCookie(theme: string) {
   if (typeof window === "undefined") return
@@ -32,7 +32,7 @@ function ActiveThemeProvider({
   initialTheme?: string
 }) {
   const [activeTheme, setActiveTheme] = useState<string>(
-    () => initialTheme || DEFAULT_THEME
+    () => initialTheme || THEME
   )
 
   useEffect(() => {

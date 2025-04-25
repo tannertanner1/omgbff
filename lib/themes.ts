@@ -13,6 +13,8 @@ const THEMES = [
   },
 ]
 
+const THEME = "neobrutalism"
+
 type Theme = (typeof THEMES)[number]
 
-export { THEMES, type Theme }
+export { THEMES, THEME, type Theme }
