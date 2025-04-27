@@ -5,6 +5,7 @@
 
 :root {
   --radius: 1.25rem;
+
   --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-sm:
@@ -118,14 +119,12 @@
 @theme inline {
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
@@ -229,7 +228,7 @@
   }
   body {
     @apply bg-background text-foreground text-balance;
-    font-family: var(--font-mono), monospace;
+    /* font-family: var(--font-mono), monospace; */
     line-height: 1.6;
     min-height: 100%;
     font-synthesis: none;
@@ -238,10 +237,12 @@
   p {
     @apply leading-7;
   }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -250,6 +251,7 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
   textarea {
     -ms-overflow-style: none;
     scrollbar-width: none;

@@ -35,7 +35,7 @@ function Hero() {
         <IconSparkles />
         <Separator
           orientation="vertical"
-          className="mx-2 rounded-full bg-current data-[orientation=vertical]:h-4"
+          className="bg-muted-foreground mx-2 rounded-full data-[orientation=vertical]:h-4"
         />
         {HERO.section}
         <IconArrowRight className="ml-2 h-4 w-4" />
