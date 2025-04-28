@@ -83,34 +83,80 @@ function Demos() {
   return (
     <div>
       <Section>
-        <Badge
-          variant="secondary"
-          className="mb-8 flex w-fit px-4 py-1.5 text-sm font-medium shadow-sm"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
         >
-          {DEMOS.section}
-        </Badge>
+          <Badge
+            variant="outline"
+            className="mb-8 flex w-fit px-4 py-1.5 text-sm font-medium shadow-sm"
+          >
+            {DEMOS.section}
+          </Badge>
+        </motion.div>
 
-        <h2 className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl"
+        >
           {DEMOS.title}
-        </h2>
-        <p className="text-muted-foreground mb-4 text-lg">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-muted-foreground mb-4 text-lg"
+        >
           {DEMOS.description}
-        </p>
+        </motion.p>
       </Section>
 
       <div>
-        {DEMOS.items.map((demo) => (
-          <div key={demo.title} className="mb-16">
+        {DEMOS.items.map((demo, demoIndex) => (
+          <motion.div
+            key={demo.title}
+            className="mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 * demoIndex }}
+          >
             <div className="mx-auto max-w-5xl px-4">
               <div className="flex flex-col items-start justify-start text-left">
-                <h3 className="mb-2 text-2xl font-medium">{demo.title}</h3>
-                <p className="text-muted-foreground mb-4 max-w-3xl text-base">
+                <motion.h3
+                  className="mb-2 text-2xl font-medium"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 + 0.05 * demoIndex }}
+                >
+                  {demo.title}
+                </motion.h3>
+                <motion.p
+                  className="text-muted-foreground mb-4 max-w-3xl text-base"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 + 0.05 * demoIndex }}
+                >
                   {demo.description}
-                </p>
+                </motion.p>
               </div>
             </div>
 
-            <div className="relative mb-4 w-full">
+            <motion.div
+              className="relative mb-4 w-full"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 + 0.05 * demoIndex }}
+            >
               <ScrollArea className="w-full [&_[data-slot=scroll-area-thumb]]:bg-transparent">
                 <div className="mx-auto max-w-5xl px-4">
                   <div className="flex gap-8 pt-2 pb-6">
@@ -125,8 +171,8 @@ function Demos() {
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
       </div>
     </div>

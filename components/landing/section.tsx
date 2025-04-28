@@ -13,6 +13,7 @@ function Section({
     <section className={cn("py-8 md:py-12")} {...props}>
       <div
         className={cn(
+          // "@container/section",
           "mx-auto max-w-5xl",
           // "p-6 sm:p-8",
           className

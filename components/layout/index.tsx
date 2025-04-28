@@ -1,16 +1,12 @@
 "use client"
 
-import type * as React from "react"
-import { useState } from "react"
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "./app-sidebar"
 import { SiteHeader } from "./site-header"
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(true)
-
   return (
-    <SidebarProvider open={open} onOpenChange={setOpen}>
+    <>
       <AppSidebar variant="inset" />
       <SidebarInset className="flex h-[98svh] flex-col overflow-hidden">
         <SiteHeader />
@@ -20,7 +16,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </SidebarInset>
-    </SidebarProvider>
+    </>
   )
 }
 

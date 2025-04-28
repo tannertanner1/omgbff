@@ -3,6 +3,7 @@ import { cookies } from "next/headers"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ActiveThemeProvider } from "@/components/active-theme"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { Layout } from "@/components/layout"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
@@ -17,7 +18,11 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const META_THEME_COLORS = { light: "#fbfbfb", dark: "#18181b" }
+// const META_THEME_COLORS = { light: "#fbfbfb", dark: "#18181b" }
+const META_THEME_COLORS = {
+  light: "oklch(0.985 0 0)",
+  dark: "oklch(0.21 0.006 285.885)",
+}
 
 export const metadata: Metadata = {
   title: "omgbff",
@@ -56,6 +61,14 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: META_THEME_COLORS.light,
+  // themeColor: [
+  //   { media: '(prefers-color-scheme: light)', color: META_THEME_COLORS.light },
+  //   { media: '(prefers-color-scheme: dark)', color: META_THEME_COLORS.dark }
+  // ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default async function RootLayout({
@@ -103,7 +116,9 @@ export default async function RootLayout({
           // enableColorScheme
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            <Layout>{children}</Layout>
+            <SidebarProvider defaultOpen={defaultOpen}>
+              <Layout>{children}</Layout>
+            </SidebarProvider>
             <Toaster />
           </ActiveThemeProvider>
         </ThemeProvider>

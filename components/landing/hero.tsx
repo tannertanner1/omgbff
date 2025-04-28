@@ -14,63 +14,97 @@ import { Separator } from "@/components/ui/separator"
 function Hero() {
   return (
     <Section>
-      {/* <Badge
-        variant="secondary"
-        className={cn(
-          "mb-8 flex w-fit",
-          "px-4 py-1.5 text-sm font-medium shadow-sm"
-        )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        {HERO.section}
-      </Badge> */}
-      <Badge
-        variant="secondary"
-        className={cn(
-          "mb-8 flex w-fit",
-          "px-4 py-1.5 text-sm font-medium shadow-sm",
-          "cursor-not-allowed"
-        )}
-        aria-disabled="true"
-      >
-        <IconSparkles />
-        <Separator
-          orientation="vertical"
-          className="bg-muted-foreground mx-2 rounded-full data-[orientation=vertical]:h-4"
-        />
-        {HERO.section}
-        <IconArrowRight className="ml-2 h-4 w-4" />
-      </Badge>
+        <Badge
+          variant="secondary"
+          className={cn(
+            "mb-8 flex w-fit items-center",
+            "px-4 py-1.5 text-sm font-medium shadow-sm",
+            "cursor-not-allowed"
+          )}
+          aria-disabled="true"
+        >
+          <span
+            className="text-muted-foreground flex items-center justify-center"
+            style={{ transform: "scale(1.1)" }}
+          >
+            <IconSparkles className="h-4 w-4" />
+          </span>
+          <Separator
+            orientation="vertical"
+            className={cn(
+              "mx-2 rounded-full data-[orientation=vertical]:h-4",
+              // "inset-shadow inset-shadow-sm dark:inset-ring"
+              // "bg-current/30"
+              "inset-shadow-muted-foreground/50 inset-shadow-sm"
+            )}
+          />
+          {HERO.section}
+          <span
+            className="text-muted-foreground ml-1 flex items-center justify-center"
+            style={{ transform: "scale(1.1)" }}
+          >
+            <IconArrowRight className="h-4 w-4" />
+          </span>
+        </Badge>
+      </motion.div>
 
-      <h1 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl">
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl"
+      >
         {HERO.title}
-      </h1>
-      <p className="text-muted-foreground mb-8 max-w-[42rem] text-lg leading-normal text-balance sm:leading-8 md:text-xl">
+      </motion.h1>
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-muted-foreground mb-8 max-w-[42rem] text-lg leading-normal text-balance sm:leading-8 md:text-xl"
+      >
         {HERO.description}
-      </p>
+      </motion.p>
 
-      <div className="mb-12 flex flex-wrap gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mb-12 flex flex-wrap gap-4"
+      >
         <motion.div
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <Button size="lg" variant="outline" asChild>
+          <Button size="lg" variant="default" asChild>
             <Link href={HERO.link}>{HERO.button}</Link>
           </Button>
         </motion.div>
-      </div>
+      </motion.div>
 
-      <Card
-        className={cn(
-          "aspect-video object-cover",
-          "flex w-full max-w-4xl flex-col gap-4 px-0",
-          "inset-ring-border dark:bg-input/30 bg-transparent inset-ring-1",
-          "dark:inset-ring-background dark:border-border border-background"
-        )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="mx-auto w-full max-w-4xl"
       >
-        <CardContent className="p-0">
-          <div className="relative h-[300px] md:h-[400px]" />
-        </CardContent>
-      </Card>
+        <Card
+          className={cn(
+            "aspect-video object-cover",
+            "flex w-full max-w-4xl flex-col gap-4 px-0",
+            "inset-ring-border dark:bg-input/30 bg-transparent inset-ring-1",
+            "dark:inset-ring-background dark:border-border border-background"
+          )}
+        >
+          <CardContent className="p-0">
+            <div className="relative h-[300px] w-full md:h-[400px]" />
+          </CardContent>
+        </Card>
+      </motion.div>
     </Section>
   )
 }

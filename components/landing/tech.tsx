@@ -9,21 +9,42 @@ import { TECH } from "@/data/landing-content"
 function Tech() {
   return (
     <Section>
-      <Badge
-        variant="secondary"
-        className={cn(
-          "mb-8 flex w-fit",
-          "px-4 py-1.5 text-sm font-medium shadow-sm"
-        )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
       >
-        {TECH.section}
-      </Badge>
+        <Badge
+          variant="outline"
+          className={cn(
+            "mb-8 flex w-fit",
+            "px-4 py-1.5 text-sm font-medium shadow-sm"
+          )}
+        >
+          {TECH.section}
+        </Badge>
+      </motion.div>
 
-      <h2 className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="mb-4 text-3xl font-semibold tracking-tighter text-balance md:text-4xl"
+      >
         {TECH.title}
-      </h2>
+      </motion.h2>
       {TECH.description && (
-        <p className="text-muted-foreground mb-8 text-lg">{TECH.description}</p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-muted-foreground mb-8 text-lg"
+        >
+          {TECH.description}
+        </motion.p>
       )}
 
       <div className="w-full max-w-4xl px-0">
@@ -37,7 +58,8 @@ function Tech() {
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-2"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.05 * index }}
               >
                 <div className="relative flex h-16 w-16 items-center justify-center md:h-20 md:w-20">
@@ -56,3 +78,16 @@ function Tech() {
 }
 
 export { Tech }
+
+/**
+
+k so,
+
+1. i don't think i'm using `@container` query properly in `components/landing/tech` according to the new tailwind v4 docs;
+
+  - https://tailwindcss.com/docs/responsive-design#container-size-reference
+  - https://tailwindcss.com/blog/tailwindcss-v4#container-queries
+
+
+
+*/
