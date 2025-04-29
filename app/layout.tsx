@@ -18,7 +18,6 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-// const META_THEME_COLORS = { light: "#fbfbfb", dark: "#18181b" }
 const META_THEME_COLORS = {
   light: "oklch(0.985 0 0)",
   dark: "oklch(0.21 0.006 285.885)",
@@ -60,11 +59,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: META_THEME_COLORS.light,
-  // themeColor: [
-  //   { media: '(prefers-color-scheme: light)', color: META_THEME_COLORS.light },
-  //   { media: '(prefers-color-scheme: dark)', color: META_THEME_COLORS.dark }
-  // ],
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: META_THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: META_THEME_COLORS.dark },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -116,7 +114,16 @@ export default async function RootLayout({
           // enableColorScheme
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            <SidebarProvider defaultOpen={defaultOpen}>
+            <SidebarProvider
+              defaultOpen={defaultOpen}
+              style={
+                {
+                  "--sidebar-width": "16rem",
+                  "--header-height": "3rem",
+                  "--content-padding": "0",
+                } as React.CSSProperties
+              }
+            >
               <Layout>{children}</Layout>
             </SidebarProvider>
             <Toaster />

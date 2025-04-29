@@ -3,13 +3,10 @@
 import { motion } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Section } from "./section"
 import { CTA } from "@/data/landing-content"
-import { cn } from "@/lib/utils"
+import { Section } from "./section"
 
 function Cta() {
-  // const Icon = CTA.button.icon
-
   return (
     <Section>
       <motion.div
@@ -19,11 +16,8 @@ function Cta() {
         transition={{ duration: 0.5 }}
       >
         <Badge
-          variant="outline"
-          className={cn(
-            "mb-8 flex w-fit",
-            "px-4 py-1.5 text-sm font-medium shadow-sm"
-          )}
+          variant="secondary"
+          className="mb-6 -ml-1 flex w-fit px-4 py-1.5 text-sm font-medium shadow-sm @3xl:ml-1"
         >
           {CTA.section}
         </Badge>
@@ -34,7 +28,7 @@ function Cta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="mb-4 text-3xl font-semibold tracking-tighter sm:text-4xl md:text-5xl"
+        className="mb-4 text-3xl font-semibold tracking-tighter text-pretty @3xl:text-4xl"
       >
         {CTA.title}
       </motion.h2>
@@ -67,8 +61,7 @@ function Cta() {
         className="mb-22"
       >
         <Button
-          variant="secondary"
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+          className="border-primary bg-background text-primary hover:bg-primary hover:text-background border transition-colors duration-300 ease-in-out"
           asChild
         >
           <a href={CTA.button.href} target="_blank" rel="noopener noreferrer">
@@ -82,53 +75,3 @@ function Cta() {
 }
 
 export { Cta }
-
-// @note
-
-// "use client"
-
-// import { Badge } from "@/components/ui/badge"
-// import { Button } from "@/components/ui/button"
-// import { Section } from "./section"
-// import { CTA } from "@/data/landing-content"
-// import { cn } from "@/lib/utils"
-
-// function Cta() {
-//   const Icon = CTA.button.icon
-
-//   return (
-//     <Section>
-//       <Badge
-//         variant="secondary"
-//         className={cn(
-//           "mb-8 flex w-fit",
-//           "px-4 py-1.5 text-sm font-medium shadow-sm"
-//         )}
-//       >
-//         {CTA.section}
-//       </Badge>
-
-//       <h2 className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl">
-//         {CTA.title}
-//       </h2>
-//       {CTA.description ? (
-//         <p className="text-muted-foreground mb-8 text-lg">{CTA.description}</p>
-//       ) : (
-//         <div className="mb-8" />
-//       )}
-
-//       <Button
-//         variant="outline"
-//         className="border-primary mb-4 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium"
-//         asChild
-//       >
-//         <a href={CTA.button.href} target="_blank" rel="noopener noreferrer">
-//           {Icon && <Icon className="h-4 w-4" />}
-//           {CTA.button.text}
-//         </a>
-//       </Button>
-//     </Section>
-//   )
-// }
-
-// export { Cta }

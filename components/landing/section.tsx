@@ -10,16 +10,16 @@ function Section({
   className?: string
 }) {
   return (
-    <section className={cn("py-8 md:py-12")} {...props}>
+    <section className="py-8 @3xl:py-12" {...props}>
       <div
         className={cn(
-          // "@container/section",
           "mx-auto max-w-5xl",
-          // "p-6 sm:p-8",
+          "@container",
+          "px-2 @3xl:px-4",
           className
         )}
       >
-        <div className="flex flex-col items-start justify-start space-y-8 p-4 text-start md:items-center md:justify-center md:text-center">
+        <div className="flex flex-col items-start justify-start space-y-8 p-4 text-start @3xl:items-center @3xl:justify-center @3xl:text-center">
           {children}
         </div>
       </div>

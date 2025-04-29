@@ -3,11 +3,11 @@
 import * as React from "react"
 import { motion } from "motion/react"
 import { Badge } from "@/components/ui/badge"
-import { Section } from "./section"
-import { DEMOS } from "@/data/landing-content"
-import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
+import { DEMOS } from "@/data/landing-content"
+import { Section } from "./section"
 
 type Clip = (typeof DEMOS.items)[number]["items"][number]
 
@@ -17,7 +17,7 @@ function Demo({ item, index }: { item: Clip; index: number }) {
 
   return (
     <motion.div
-      className="group w-[300px] flex-none cursor-default"
+      className="group w-[256px] flex-none cursor-default"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 * index }}
@@ -53,7 +53,7 @@ function Demo({ item, index }: { item: Clip; index: number }) {
         </div>
       )}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-2">
           <h3 className="line-clamp-1 font-medium">{item.title}</h3>
           {item.status && (
             <Badge
@@ -61,9 +61,15 @@ function Demo({ item, index }: { item: Clip; index: number }) {
               className={cn(
                 "h-5 rounded-full border-0 py-0 text-xs font-medium capitalize",
                 {
-                  "bg-[#d2e3fc] text-[#4285f4]": item.status === "live",
-                  "bg-[#feefc3] text-[#fbbc04]": item.status === "soon",
-                  "bg-[#e8eaed] text-[#3c4043]": item.status === "planned",
+                  // "bg-[#d2e3fc] text-[#4285f4]": item.status === "live",
+                  // "bg-[#feefc3] text-[#fbbc04]": item.status === "soon",
+                  // "bg-[#e8eaed] text-[#3c4043]": item.status === "planned",
+                  "-inset-shadow-2xs bg-[#d2e3fc] text-[#4285f4] inset-ring-1 inset-shadow-[#d2e3fc] inset-ring-[#4285f4]/50":
+                    item.status === "live",
+                  "-inset-shadow-2xs bg-[#feefc3] text-[#fbbc04] inset-ring-1 inset-shadow-[#feefc3] inset-ring-[#fbbc04]/50":
+                    item.status === "soon",
+                  "-inset-shadow-2xs bg-[#e8eaed] text-[#3c4043] inset-ring-1 inset-shadow-[#e8eaed] inset-ring-[#3c4043]/50":
+                    item.status === "planned",
                 }
               )}
             >
@@ -71,7 +77,7 @@ function Demo({ item, index }: { item: Clip; index: number }) {
             </Badge>
           )}
         </div>
-        <p className="text-muted-foreground line-clamp-2 text-sm">
+        <p className="text-muted-foreground line-clamp-2 px-2 text-sm leading-normal">
           {item.description}
         </p>
       </div>
@@ -90,8 +96,8 @@ function Demos() {
           transition={{ duration: 0.5 }}
         >
           <Badge
-            variant="outline"
-            className="mb-8 flex w-fit px-4 py-1.5 text-sm font-medium shadow-sm"
+            variant="secondary"
+            className="mb-6 -ml-1 flex w-fit px-4 py-1.5 text-sm font-medium shadow-sm @3xl:ml-1"
           >
             {DEMOS.section}
           </Badge>
@@ -102,7 +108,7 @@ function Demos() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-4 text-3xl font-semibold tracking-tighter text-balance sm:text-4xl md:text-5xl"
+          className="mb-4 text-3xl font-semibold tracking-tighter text-balance @3xl:text-4xl"
         >
           {DEMOS.title}
         </motion.h2>
@@ -127,7 +133,7 @@ function Demos() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 * demoIndex }}
           >
-            <div className="mx-auto max-w-5xl px-4">
+            <div className="mx-auto max-w-5xl px-6">
               <div className="flex flex-col items-start justify-start text-left">
                 <motion.h3
                   className="mb-2 text-2xl font-medium"
@@ -139,7 +145,7 @@ function Demos() {
                   {demo.title}
                 </motion.h3>
                 <motion.p
-                  className="text-muted-foreground mb-4 max-w-3xl text-base"
+                  className="text-muted-foreground mb-2 text-base leading-normal text-pretty"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -158,15 +164,15 @@ function Demos() {
               transition={{ duration: 0.5, delay: 0.3 + 0.05 * demoIndex }}
             >
               <ScrollArea className="w-full [&_[data-slot=scroll-area-thumb]]:bg-transparent">
-                <div className="mx-auto max-w-5xl px-4">
+                <div className="mx-auto max-w-5xl px-6">
                   <div className="flex gap-8 pt-2 pb-6">
                     {demo.items.map((item, index) => (
                       <Demo key={item.title} item={item} index={index} />
                     ))}
                     <div
-                      className="-ml-4.25 w-0.25 flex-none"
+                      className="-ml-1.5 w-0.5 flex-none"
                       aria-hidden="true"
-                    ></div>
+                    />
                   </div>
                 </div>
                 <ScrollBar orientation="horizontal" />

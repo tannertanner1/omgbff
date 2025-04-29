@@ -7,11 +7,12 @@ export default async function Page() {
 
   return (
     <>
-      <div className="inset-ring-background relative flex min-h-fit flex-col inset-ring">
+      {/* <div className="inset-ring-background relative flex min-h-fit flex-col inset-ring">
         <main className="mx-auto w-full grow">
           <Landing />
         </main>
-      </div>
+      </div> */}
+      <Landing />
     </>
   )
 }
