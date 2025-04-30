@@ -55,7 +55,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       >
         <SiteHeader />
         <div className="content-wrapper">
-          <div className="content-container">
+          <div className="content-container @container">
             <div className="scrollable-content">{children}</div>
           </div>
         </div>
