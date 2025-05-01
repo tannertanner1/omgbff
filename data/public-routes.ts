@@ -15,6 +15,7 @@ const ROUTES = [
   "/feedback",
   "/terms",
   "/privacy",
+  "/changelog",
 ] as string[]
 
 type Route = (typeof ROUTES)[number]

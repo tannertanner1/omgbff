@@ -1,12 +1,12 @@
-'use server'
+"use server"
 
-import { redirect } from 'next/navigation'
-import { z } from 'zod'
-import { auth, signIn } from '@/lib/auth'
-import { Action, type ActionResponse } from '@/types/forms'
+import { redirect } from "next/navigation"
+import { z } from "zod"
+import { auth, signIn } from "@/lib/auth"
+import { Action, type ActionResponse } from "@/types/forms"
 
 const schema = z.object({
-  email: z.string().email('Invalid email')
+  email: z.string().email("Invalid email"),
 })
 
 const { FormData } = Action(schema)
@@ -16,11 +16,11 @@ export async function login(
   formData: FormData
 ): Promise<ActionResponse> {
   const session = await auth()
-  if (session) redirect('/')
+  if (session) redirect("/")
 
   try {
     const rawData = {
-      email: formData.get('email') as string
+      email: formData.get("email") as string,
     }
 
     const validatedData = schema.safeParse(rawData)
@@ -28,40 +28,35 @@ export async function login(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'Please fix the errors in the form',
+        message: "Please fix the errors in the form",
         errors: validatedData.error.flatten().fieldErrors,
-        inputs: rawData
+        inputs: rawData,
       }
     }
 
-    const result = await signIn('resend', {
+    const result = await signIn("resend", {
       email: validatedData.data.email,
       redirect: false,
-      redirectTo: '/'
+      redirectTo: "/",
     })
 
     if (result?.error) {
-      console.error('Sign in error:', result.error)
+      console.error("Sign in error:", result.error)
       return {
         success: false,
-        message: 'Failed to send authentication email'
+        message: "Failed to send authentication email",
       }
     }
 
     return {
       success: true,
-      message: 'Check your inbox to continue'
+      message: "Check your inbox to continue",
     }
   } catch (error) {
-    console.error('Authentication error: ', error)
+    console.error("Authentication error: ", error)
     return {
       success: false,
-      message: 'An unexpected error occurred'
+      message: "An unexpected error occurred",
     }
   }
 }
-
-/**
- * @see https://v0.dev/chat/CiFWYqPHKvT?b=b_0...&f=0
- * @see https://youtu.be/KhO4VjaYSXU?si=CWlmzn0osAe4rW2v
- */

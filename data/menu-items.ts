@@ -152,3 +152,41 @@ export { ITEMS, type Item }
   },
 ]
 */
+
+// @note
+
+// import { IconAt, IconFolder, IconUser, IconInvoice } from "@tabler/icons-react"
+
+// type Item = {
+//   icon: React.ElementType
+//   title: string
+//   description: string
+//   href: string
+// }
+
+// export const ITEMS: Item[] = [
+//   {
+//     icon: IconAt,
+//     title: "Users",
+//     description: "Manage Users",
+//     href: "/users",
+//   },
+//   {
+//     icon: IconFolder,
+//     title: "Organizations",
+//     description: "Manage Organizations",
+//     href: "/organizations",
+//   },
+//   {
+//     icon: IconUser,
+//     title: "Customers",
+//     description: "Manage Customers",
+//     href: "/customers",
+//   },
+//   {
+//     icon: IconInvoice,
+//     title: "Invoices",
+//     description: "Manage Invoices",
+//     href: "/invoices",
+//   },
+// ]

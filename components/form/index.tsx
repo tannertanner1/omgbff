@@ -183,7 +183,12 @@ export function Form({
         <div className="mx-auto w-full max-w-5xl">
           <div className="flex flex-col items-center">
             <div className="w-full max-w-sm">
-              <Card className="w-full max-w-sm border-0">
+              <Card
+                className={cn(
+                  "w-full max-w-sm border-0",
+                  "[&[data-slot=card]]:bg-transparent [&[data-slot=card]]:shadow-none"
+                )}
+              >
                 {title && (
                   <CardHeader className="-mt-3 mb-2 text-xl font-semibold">
                     <CardTitle>{title}</CardTitle>
@@ -234,11 +239,14 @@ export function Form({
                                   {...methods.register(field.name)}
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
-                                    "mb-1",
+                                    "[&[data-slot=textarea]]:bg-background mb-1",
                                     methods.formState.errors[field.name]
-                                      ? "border-[#DB4437]"
-                                      : ""
+                                      ? "border-[#DB4437] [&[data-slot=textarea]]:focus-visible:border-[#DB4437]"
+                                      : "[&[data-slot=textarea]]:focus-visible:border-input",
+                                    "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
+                                    "field-sizing-content min-h-0 resize-none overflow-hidden"
                                   )}
+                                  rows={1}
                                   disabled={field.disabled}
                                 />
                               ) : field.type === "select" ? (
@@ -296,9 +304,10 @@ export function Form({
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     methods.formState.errors[field.name]
-                                      ? "border-[#DB4437]"
-                                      : "",
-                                    field.type === "hidden" ? "hidden" : ""
+                                      ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
+                                      : "border-input [&[data-slot=input]]:focus-visible:border-input",
+                                    field.type === "hidden" ? "hidden" : "",
+                                    "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                                   )}
                                   disabled={field.disabled}
                                 />
@@ -306,7 +315,7 @@ export function Form({
                               {methods.formState.errors[field.name] && (
                                 <p
                                   id={`${field.name}-error`}
-                                  className="absolute mt-1 text-sm text-[#DB4437]"
+                                  className="absolute text-sm text-[#DB4437]"
                                 >
                                   {(methods.formState.errors[field.name]
                                     ?.message as string) || "Required"}
@@ -321,7 +330,9 @@ export function Form({
                       <Button
                         type="submit"
                         variant="outline"
-                        className="border-primary bg-background text-primary hover:bg-primary hover:text-background w-full border"
+                        className={cn(
+                          "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-background [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-primary [&[data-slot=button]]:hover:text-background mt-4 w-full border transition-colors duration-300 ease-in-out"
+                        )}
                         disabled={isPending}
                         aria-disabled={isPending}
                       >
@@ -331,39 +342,71 @@ export function Form({
                           button
                         )}
                       </Button>
+
+                      <div className="flex h-8 items-center justify-center">
+                        {state?.message && (
+                          <div className="flex items-center justify-center gap-2">
+                            {state.success ? (
+                              <IconCircleCheck className="h-5 w-5 text-[#0F9D58]" />
+                            ) : (
+                              <IconCircleX className="h-5 w-5 text-[#DB4437]" />
+                            )}
+                            <span
+                              className={cn(
+                                "text-sm",
+                                state.success
+                                  ? "text-[#0F9D58]"
+                                  : "text-[#DB4437]"
+                              )}
+                            >
+                              {state.message}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      {/* {state?.message && (
+                        <div className="mt-4 flex items-center justify-center gap-2">
+                          {state.success ? (
+                            <IconCircleCheck className="h-5 w-5 text-[#0F9D58]" />
+                          ) : (
+                            <IconCircleX className="h-5 w-5 text-[#DB4437]" />
+                          )}
+                          <span
+                            className={cn(
+                              "text-sm",
+                              state.success
+                                ? "text-[#0F9D58]"
+                                : "text-[#DB4437]"
+                            )}
+                          >
+                            {state.message}
+                          </span>
+                        </div>
+                      )} */}
+                      {/* {state?.message && (
+                        <div className="mt-4 w-full">
+                          <div
+                            className={cn(
+                              "flex items-center gap-2 rounded-full border px-6 py-4",
+                              state.success
+                                ? "border-[#0F9D58] text-[#0F9D58]"
+                                : "border-[#DB4437] text-[#DB4437]",
+                              "bg-transparent"
+                            )}
+                          >
+                            {state.success ? (
+                              <IconCircleCheck className="h-5 w-5 shrink-0" />
+                            ) : (
+                              <IconCircleX className="h-5 w-5 shrink-0" />
+                            )}
+                            <span className="text-sm">{state.message}</span>
+                          </div>
+                        </div>
+                      )} */}
                     </CardFooter>
                   </form>
                 </FormProvider>
               </Card>
-
-              {state?.message && (
-                <div className="mx-auto mt-[0.25rem] w-full max-w-sm px-6">
-                  <Alert
-                    className={cn(
-                      "w-full",
-                      state.success
-                        ? "border-[#0F9D58] text-[#0F9D58]"
-                        : "border-[#DB4437] text-[#DB4437]"
-                    )}
-                  >
-                    <div className="flex items-start gap-2">
-                      {state.success ? (
-                        <IconCircleCheck className="mt-0.5 h-4 w-4 shrink-0 font-bold text-[#0F9D58]" />
-                      ) : (
-                        <IconCircleX className="mt-0.5 h-4 w-4 shrink-0 font-bold text-[#DB4437]" />
-                      )}
-                      <AlertDescription
-                        className={cn(
-                          "w-full",
-                          state.success ? "text-[#0F9D58]" : "text-[#DB4437]"
-                        )}
-                      >
-                        {state.message}
-                      </AlertDescription>
-                    </div>
-                  </Alert>
-                </div>
-              )}
             </div>
           </div>
         </div>

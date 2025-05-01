@@ -1,30 +1,27 @@
 "use client"
 
 import { motion } from "motion/react"
+import { cn } from "@/lib/utils"
+import type { User } from "@/lib/abac"
 import { ITEMS } from "@/data/menu-items"
 import { Component } from "./component"
-import type { User } from "@/lib/abac"
 
-export function Menu({ user }: { user: User }) {
-  // Filter items based on user permissions
+function Menu({ user, className }: { user: User; className?: string }) {
   const items = ITEMS.flat().filter((item) => {
-    // If the item has a permission requirement, check it
     if (item.permission) {
       const { resource, action } = item.permission
-      // For Users menu, only show to owners and admins
       if (resource === "users" && action === "view") {
         return user.role === "owner" || user.role === "admin"
       }
-      // For other resources, we could implement more complex permission checks
       // return hasPermission(user, resource, action)
     }
-    // Items without permission requirements are shown to everyone
+    // Items without permission are visible to all user roles
     return true
   })
 
   return (
     <motion.div
-      className="-pt-2 w-full min-w-sm space-y-4 pb-2"
+      className={cn("w-full min-w-sm space-y-4 p-4 px-2", className)}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -35,3 +32,31 @@ export function Menu({ user }: { user: User }) {
     </motion.div>
   )
 }
+
+export { Menu }
+
+// @note
+
+// "use client"
+
+// import { motion } from "motion/react"
+// import { cn } from "@/lib/utils"
+// import { ITEMS } from "@/data/menu-items"
+// import { Component } from "./component"
+
+// function Menu({ className }: { className?: string }) {
+//   return (
+//     <motion.div
+//       className={cn("w-full min-w-sm space-y-4 p-4", className)}
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       transition={{ duration: 0.5 }}
+//     >
+//       {ITEMS.map((item, index) => (
+//         <Component key={item.title} {...item} index={index + 1} />
+//       ))}
+//     </motion.div>
+//   )
+// }
+
+// export { Menu }

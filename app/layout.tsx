@@ -18,10 +18,7 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-const META_THEME_COLORS = {
-  light: "oklch(0.985 0 0)",
-  dark: "oklch(0.21 0.006 285.885)",
-}
+const META_THEME_COLORS = { light: "#fbfbfb", dark: "#1c1c1c" }
 
 export const metadata: Metadata = {
   title: "omgbff",
@@ -58,16 +55,8 @@ export const metadata: Metadata = {
   },
 }
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: META_THEME_COLORS.light },
-    { media: "(prefers-color-scheme: dark)", color: META_THEME_COLORS.dark },
-  ],
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
+export const viewport: Viewport = { themeColor: META_THEME_COLORS.light }
+// export const viewport: Viewport = { themeColor: [{ media: "(prefers-color-scheme: light)", color: META_THEME_COLORS.light }, { media: "(prefers-color-scheme: dark)", color: META_THEME_COLORS.dark }], width: "device-width", initialScale: 1, maximumScale: 1, userScalable: false }
 
 export default async function RootLayout({
   children,
@@ -84,7 +73,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* This script runs before React hydration to prevent flash of wrong theme */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -99,7 +87,7 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          "bg-background overscroll-none font-sans antialiased",
+          "bg-sidebar overscroll-none font-sans antialiased",
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : "",
           fontSans.variable,

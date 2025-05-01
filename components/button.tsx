@@ -3,16 +3,15 @@
 import { useRef, useState } from "react"
 import { motion, type HTMLMotionProps } from "motion/react"
 
-type Position = {
-  x: number
-  y: number
-}
-
 function Button({
   children,
   ...props
 }: HTMLMotionProps<"button"> & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const ref = useRef<HTMLButtonElement>(null)
+  type Position = {
+    x: number
+    y: number
+  }
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
 
   const handleMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,12 +23,11 @@ function Button({
       setPosition({ x: middleX, y: middleY })
     }
   }
-
   const reset = () => {
     setPosition({ x: 0, y: 0 })
   }
-
   const { x, y } = position
+
   return (
     <motion.button
       ref={ref}
@@ -37,7 +35,7 @@ function Button({
       onMouseLeave={reset}
       animate={{ x, y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="text-primary relative rounded-xl px-6 py-2 text-base font-medium"
+      className="text-primary relative rounded-full px-6 py-2 text-base font-medium"
       {...props}
     >
       {children}
@@ -46,5 +44,3 @@ function Button({
 }
 
 export { Button }
-
-/** @see https://syntaxui.com/components/button/magnetic-button */

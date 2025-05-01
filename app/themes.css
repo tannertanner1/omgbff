@@ -43,7 +43,7 @@
     --shadow-xl: 4px 4px 0 0 hsl(0 0% 0% / 1);
     --shadow-2xl: 4px 4px 0 0 hsl(0 0% 0% / 1);
 
-    --background: oklch(0.2 0 0);
+    --background: oklch(0.18 0 0);
     --foreground: oklch(0.98 0 0);
     --card: oklch(0.14 0 285.82);
     --card-foreground: oklch(0.98 0 0);
