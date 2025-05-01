@@ -1,24 +1,14 @@
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
-import { Geist, Geist_Mono } from "next/font/google"
+import { fontVariables } from "@/lib/fonts"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ActiveThemeProvider } from "@/components/active-theme"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Layout } from "@/components/layout"
 import { Toaster } from "@/components/ui/sonner"
+import { META_THEME_COLORS } from "@/lib/themes"
 import { cn } from "@/lib/utils"
 import "./globals.css"
-
-const fontSans = Geist({
-  variable: "--font-sans",
-  subsets: ["latin"],
-})
-const fontMono = Geist_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-})
-
-const META_THEME_COLORS = { light: "#fbfbfb", dark: "#1c1c1c" }
 
 export const metadata: Metadata = {
   title: "omgbff",
@@ -56,7 +46,6 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = { themeColor: META_THEME_COLORS.light }
-// export const viewport: Viewport = { themeColor: [{ media: "(prefers-color-scheme: light)", color: META_THEME_COLORS.light }, { media: "(prefers-color-scheme: dark)", color: META_THEME_COLORS.dark }], width: "device-width", initialScale: 1, maximumScale: 1, userScalable: false }
 
 export default async function RootLayout({
   children,
@@ -64,10 +53,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const cookieStore = await cookies()
-  // Get active theme from cookies
   const activeThemeValue = cookieStore.get("active_theme")?.value || "default"
   const isScaled = activeThemeValue?.endsWith("-scaled")
-  // Get sidebar state from cookies
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
   return (
@@ -90,8 +77,7 @@ export default async function RootLayout({
           "bg-sidebar overscroll-none font-sans antialiased",
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : "",
-          fontSans.variable,
-          fontMono.variable
+          fontVariables
         )}
       >
         <ThemeProvider
@@ -99,7 +85,7 @@ export default async function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-          // enableColorScheme
+          enableColorScheme
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
             <SidebarProvider

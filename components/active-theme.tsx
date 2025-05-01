@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react"
-import { THEME } from "@/lib/themes"
+import { DEFAULT_THEME } from "@/lib/themes"
 
 const COOKIE_NAME = "active_theme"
 
@@ -32,7 +32,7 @@ function ActiveThemeProvider({
   initialTheme?: string
 }) {
   const [activeTheme, setActiveTheme] = useState<string>(
-    () => initialTheme || THEME
+    () => initialTheme || DEFAULT_THEME
   )
 
   useEffect(() => {

@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import { IconContrastFilled } from "@tabler/icons-react"
 import { useTheme } from "next-themes"
-import { META_THEME_COLORS, useMetaColor } from "@/hooks/use-meta-color"
-import { Button } from "@/components/ui/button"
+import { useMetaColor } from "@/hooks/use-meta-color"
+import { META_THEME_COLORS } from "@/lib/themes"
 import { cn } from "@/lib/utils"
 
 function ModeToggle() {

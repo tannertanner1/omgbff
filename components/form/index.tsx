@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/card"
 import { IconLoader, IconCircleCheck, IconCircleX } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
   Select,
   SelectContent,
@@ -326,12 +325,12 @@ export function Form({
                         </div>
                       ))}
                     </CardContent>
-                    <CardFooter className="flex flex-col gap-4">
+                    <CardFooter className="relative flex flex-col items-center gap-4">
                       <Button
                         type="submit"
                         variant="outline"
                         className={cn(
-                          "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-background [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-primary [&[data-slot=button]]:hover:text-background mt-4 w-full border transition-colors duration-300 ease-in-out"
+                          "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 w-full border transition-colors duration-300 ease-in-out"
                         )}
                         disabled={isPending}
                         aria-disabled={isPending}
@@ -342,30 +341,8 @@ export function Form({
                           button
                         )}
                       </Button>
-
-                      <div className="flex h-8 items-center justify-center">
-                        {state?.message && (
-                          <div className="flex items-center justify-center gap-2">
-                            {state.success ? (
-                              <IconCircleCheck className="h-5 w-5 text-[#0F9D58]" />
-                            ) : (
-                              <IconCircleX className="h-5 w-5 text-[#DB4437]" />
-                            )}
-                            <span
-                              className={cn(
-                                "text-sm",
-                                state.success
-                                  ? "text-[#0F9D58]"
-                                  : "text-[#DB4437]"
-                              )}
-                            >
-                              {state.message}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      {/* {state?.message && (
-                        <div className="mt-4 flex items-center justify-center gap-2">
+                      {state?.message && (
+                        <div className="absolute top-full right-0 left-0 mt-4 flex items-center justify-center gap-2">
                           {state.success ? (
                             <IconCircleCheck className="h-5 w-5 text-[#0F9D58]" />
                           ) : (
@@ -382,27 +359,7 @@ export function Form({
                             {state.message}
                           </span>
                         </div>
-                      )} */}
-                      {/* {state?.message && (
-                        <div className="mt-4 w-full">
-                          <div
-                            className={cn(
-                              "flex items-center gap-2 rounded-full border px-6 py-4",
-                              state.success
-                                ? "border-[#0F9D58] text-[#0F9D58]"
-                                : "border-[#DB4437] text-[#DB4437]",
-                              "bg-transparent"
-                            )}
-                          >
-                            {state.success ? (
-                              <IconCircleCheck className="h-5 w-5 shrink-0" />
-                            ) : (
-                              <IconCircleX className="h-5 w-5 shrink-0" />
-                            )}
-                            <span className="text-sm">{state.message}</span>
-                          </div>
-                        </div>
-                      )} */}
+                      )}
                     </CardFooter>
                   </form>
                 </FormProvider>
