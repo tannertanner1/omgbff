@@ -62,7 +62,7 @@ function Steps() {
                     "text-primary flex w-full flex-col items-start justify-start gap-1 rounded-2xl p-4 text-left text-pretty whitespace-normal",
                     "hover:inset-ring-border hover:border-background hover:inset-ring-1",
                     "data-[state=active]:inset-ring-border data-[state=active]:border-background data-[state=active]:inset-ring-1",
-                    "dark:inset-ring-background dark:border-border border-background"
+                    "dark:inset-ring-background border-background dark:hover:border-border"
                   )}
                 >
                   <div className="flex flex-col gap-4">

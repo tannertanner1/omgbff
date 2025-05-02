@@ -61,14 +61,11 @@ function Demo({ item, index }: { item: Clip; index: number }) {
               className={cn(
                 "h-5 rounded-full border-0 py-0 text-xs font-medium capitalize",
                 {
-                  // "bg-[#d2e3fc] text-[#4285f4]": item.status === "live",
-                  // "bg-[#feefc3] text-[#fbbc04]": item.status === "soon",
-                  // "bg-[#e8eaed] text-[#3c4043]": item.status === "planned",
-                  "-inset-shadow-2xs bg-[#d2e3fc] text-[#4285f4] inset-ring-1 inset-shadow-[#d2e3fc] inset-ring-[#4285f4]/50":
+                  "-inset-shadow-2xs bg-[#d2e3fc] text-[#4285f4] inset-ring-1 inset-shadow-[#d2e3fc] inset-ring-[#4285f4]/50 dark:bg-[#4285f4] dark:text-[#d2e3fc] dark:inset-shadow-[#d2e3fc] dark:inset-ring-[#d2e3fc]/50":
                     item.status === "live",
-                  "-inset-shadow-2xs bg-[#feefc3] text-[#fbbc04] inset-ring-1 inset-shadow-[#feefc3] inset-ring-[#fbbc04]/50":
+                  "-inset-shadow-2xs bg-[#feefc3] text-[#fbbc04] inset-ring-1 inset-shadow-[#feefc3] inset-ring-[#fbbc04]/50 dark:bg-[#fbbc04] dark:text-[#feefc3] dark:inset-shadow-[#feefc3] dark:inset-ring-[#feefc3]/50":
                     item.status === "soon",
-                  "-inset-shadow-2xs bg-[#e8eaed] text-[#3c4043] inset-ring-1 inset-shadow-[#e8eaed] inset-ring-[#3c4043]/50":
+                  "-inset-shadow-2xs bg-[#e8eaed] text-[#3c4043] inset-ring-1 inset-shadow-[#e8eaed] inset-ring-[#3c4043]/50 dark:bg-[#3c4043] dark:text-[#e8eaed] dark:inset-shadow-[#e8eaed] dark:inset-ring-[#e8eaed]/50":
                     item.status === "planned",
                 }
               )}
