@@ -1,43 +1,71 @@
-"use client"
-
 import * as React from "react"
 import Link from "next/link"
 import { auth } from "@/lib/auth"
-import { IconCircleFilled } from "@tabler/icons-react"
+import { IconCircle } from "@tabler/icons-react"
 import { Dropdown } from "./dropdown"
-// import { Theme } from "@/components/theme"
-import { ModeToggle } from "@/components/layout/mode-toggle"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import {
-  IconLayoutSidebarFilled,
-  IconLayoutSidebarRightFilled,
-  IconCircle,
-  IconCircleHalf,
-} from "@tabler/icons-react"
+import { Toggle } from "./toggle"
 
-async function Header() {
+export async function Header() {
   const session = await auth()
   return (
-    <div className="mx-auto flex h-14 max-w-5xl grow items-center justify-between px-4">
+    <div className="mx-auto flex h-14 max-w-5xl flex-grow items-center justify-between px-4">
       <div className="flex items-center">
         <Link href="/">
           <div>
-            <IconCircleFilled className="h-6 w-6" />
+            <IconCircle className="h-6 w-6" />
           </div>
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        {/* <Dropdown session={session} />
-        <Toggle /> */}
-        <IconCircle className="h-4 w-4" />
-        <IconCircleHalf className="h-4 w-4" />
+        <Dropdown session={session} />
+        <Toggle />
       </div>
     </div>
   )
 }
 
-export { Header }
+// @note fml
+
+// "use client"
+
+// import * as React from "react"
+// import Link from "next/link"
+// import { auth } from "@/lib/auth"
+// import { IconCircleFilled } from "@tabler/icons-react"
+// import { Dropdown } from "./dropdown"
+// // import { Theme } from "@/components/theme"
+// import { ModeToggle } from "@/components/layout/mode-toggle"
+// import { useState } from "react"
+// import { Button } from "@/components/ui/button"
+// import {
+//   IconLayoutSidebarFilled,
+//   IconLayoutSidebarRightFilled,
+//   IconCircle,
+//   IconCircleHalf,
+// } from "@tabler/icons-react"
+
+// async function Header() {
+//   const session = await auth()
+//   return (
+//     <div className="mx-auto flex h-14 max-w-5xl grow items-center justify-between px-4">
+//       <div className="flex items-center">
+//         <Link href="/">
+//           <div>
+//             <IconCircleFilled className="h-6 w-6" />
+//           </div>
+//         </Link>
+//       </div>
+//       <div className="flex items-center gap-2">
+//         {/* <Dropdown session={session} />
+//         <Toggle /> */}
+//         <IconCircle className="h-4 w-4" />
+//         <IconCircleHalf className="h-4 w-4" />
+//       </div>
+//     </div>
+//   )
+// }
+
+// export { Header }
 
 // @note
 
