@@ -7,7 +7,8 @@ import { ITEMS } from "@/data/menu-items"
 import { Component } from "./component"
 
 function Menu({ user, className }: { user: User; className?: string }) {
-  const items = ITEMS.flat().filter((item) => {
+  // const items = ITEMS.flat().filter((item) => {
+  const items = ITEMS[0].filter((item) => {
     if (item.permission) {
       const { resource, action } = item.permission
       if (resource === "users" && action === "view") {

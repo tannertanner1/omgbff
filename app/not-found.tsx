@@ -20,7 +20,7 @@ export default function NotFound() {
         <div className="mt-6">
           <Button
             className={cn(
-              "bg-background text-primary after:bg-primary relative text-base after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0 dark:hover:bg-transparent"
+              "bg-background text-primary after:bg-primary relative text-base shadow-none after:absolute after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out hover:bg-transparent hover:after:origin-bottom-right hover:after:scale-x-0 dark:hover:bg-transparent"
             )}
             onClick={() => router.back()}
           >

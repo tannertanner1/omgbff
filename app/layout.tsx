@@ -1,8 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import type { Session } from "next-auth"
 import { cookies } from "next/headers"
-
 import { cn } from "@/lib/utils"
 import { auth } from "@/lib/auth"
 import { fontVariables } from "@/lib/fonts"
@@ -56,9 +54,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Fetch session server-side
-  const session: Session | null = await auth()
-
+  const session = await auth()
   const cookieStore = await cookies()
   const activeThemeValue = cookieStore.get("active_theme")?.value || "default"
   const isScaled = activeThemeValue?.endsWith("-scaled")
@@ -114,115 +110,3 @@ export default async function RootLayout({
     </html>
   )
 }
-
-// @note
-
-// import type { Metadata, Viewport } from "next"
-// import { cookies } from "next/headers"
-// import { fontVariables } from "@/lib/fonts"
-// import { ThemeProvider } from "@/components/theme-provider"
-// import { ActiveThemeProvider } from "@/components/active-theme"
-// import { SidebarProvider } from "@/components/ui/sidebar"
-// import { Layout } from "@/components/layout"
-// import { Toaster } from "@/components/ui/sonner"
-// import { META_THEME_COLORS } from "@/lib/themes"
-// import { cn } from "@/lib/utils"
-// import "./globals.css"
-
-// export const metadata: Metadata = {
-//   title: "omgbff",
-//   description: "@tannertanner1",
-//   metadataBase: new URL("https://omgbff.com"),
-//   authors: [
-//     {
-//       name: "@tannertanner1",
-//       url: "https://tannertanner.me",
-//     },
-//   ],
-//   creator: "@tannertanner1",
-//   icons: { icon: [{ rel: "icon", type: "image/svg+xml", url: "/icon.svg" }] },
-//   openGraph: {
-//     type: "website",
-//     siteName: "omgbff",
-//     url: "https://omgbff.com",
-//     title: "omgbff",
-//     description: "@tannertanner1",
-//     images: [
-//       {
-//         url: "https://tannertanner.me/image.png",
-//         width: 1600,
-//         height: 800,
-//       },
-//     ],
-//   },
-//   twitter: {
-//     card: "summary_large_image",
-//     title: "omgbff",
-//     description: "@tannertanner1",
-//     images: ["https://tannertanner.me/image.png"],
-//     creator: "@tannertanner1",
-//   },
-// }
-
-// export const viewport: Viewport = { themeColor: META_THEME_COLORS.light }
-
-// export default async function RootLayout({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode
-// }>) {
-//   const cookieStore = await cookies()
-//   const activeThemeValue = cookieStore.get("active_theme")?.value || "default"
-//   const isScaled = activeThemeValue?.endsWith("-scaled")
-//   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
-
-//   return (
-//     <html lang="en" suppressHydrationWarning>
-//       <head>
-//         <script
-//           dangerouslySetInnerHTML={{
-//             __html: `
-//               try {
-//                 if (localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-//                   document.querySelector('meta[name="theme-color"]').setAttribute('content', '${META_THEME_COLORS.dark}')
-//                 }
-//               } catch (_) {}
-//             `,
-//           }}
-//         />
-//       </head>
-//       <body
-//         className={cn(
-//           "bg-sidebar overscroll-none font-sans antialiased",
-//           activeThemeValue ? `theme-${activeThemeValue}` : "",
-//           isScaled ? "theme-scaled" : "",
-//           fontVariables
-//         )}
-//       >
-//         <ThemeProvider
-//           attribute="class"
-//           defaultTheme="system"
-//           enableSystem
-//           disableTransitionOnChange
-//           enableColorScheme
-//         >
-//           <ActiveThemeProvider initialTheme={activeThemeValue}>
-//             <SidebarProvider
-//               defaultOpen={defaultOpen}
-//               style={
-//                 {
-//                   "--sidebar-width": "16rem",
-//                   "--header-height": "3rem",
-//                   "--content-padding": "0",
-//                 } as React.CSSProperties
-//               }
-//             >
-//               <Layout>{children}</Layout>
-//             </SidebarProvider>
-//             <Toaster />
-//           </ActiveThemeProvider>
-//         </ThemeProvider>
-//       </body>
-//     </html>
-//   )
-// }

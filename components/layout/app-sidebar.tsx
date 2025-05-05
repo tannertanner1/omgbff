@@ -1,6 +1,5 @@
 "use client"
 
-import type * as React from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import type { Session } from "next-auth"
@@ -19,6 +18,7 @@ import {
   SidebarMenuAction,
   SidebarFooter,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   DropdownMenuTrigger,
@@ -47,10 +47,11 @@ function AppSidebar({
 }) {
   const pathname = usePathname()
   const router = useRouter()
+  const { setOpenMobile } = useSidebar()
   const isActive = (url: string) => pathname === url
-  const isLoginPage = pathname === "/login"
 
   const handleLogout = async () => {
+    setOpenMobile(false)
     try {
       await logout()
       router.refresh()
@@ -62,14 +63,14 @@ function AppSidebar({
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       {/* Header */}
-      <SidebarHeader className="flex h-[52px] items-center pt-[10px]">
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/">
+              <Link href="/" onClick={() => setOpenMobile(false)}>
                 <IconSlash className="h-5 w-5" />
                 <span className="text-base font-semibold">omgbff</span>
               </Link>
@@ -87,7 +88,10 @@ function AppSidebar({
                 {ITEMS[0].map((item) => (
                   <SidebarMenuItem key={item.title} className="group">
                     <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                      <Link href={item.url}>
+                      <Link
+                        href={item.url}
+                        onClick={() => setOpenMobile(false)}
+                      >
                         <item.icon className="mr-2 h-4 w-4" />
                         <span>{item.title}</span>
                       </Link>
@@ -99,6 +103,7 @@ function AppSidebar({
                       <Link
                         href={`${item.url}/new`}
                         className="flex items-center justify-center"
+                        onClick={() => setOpenMobile(false)}
                       >
                         <IconPlus className="h-4 w-4" />{" "}
                         <span className="sr-only">Create {item.title}</span>
@@ -118,7 +123,7 @@ function AppSidebar({
               {ITEMS[1].map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>
@@ -142,7 +147,7 @@ function AppSidebar({
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarFallback className="bg-border rounded-lg"></AvatarFallback>
+                      <AvatarFallback className="bg-border rounded-lg" />
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-medium">
@@ -185,7 +190,7 @@ function AppSidebar({
                               className="ml-1.5 h-5 w-5"
                               style={{
                                 color: role[session.user.role].color,
-                                transform: "translateY(-1px)", // Fine-tuned alignment
+                                transform: "translateY(-1px)",
                               }}
                             />
                           </span>
@@ -197,23 +202,22 @@ function AppSidebar({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {/* {ITEMS[2].map((item, index) => (
-                    <div key={item.title}>
-                      {index === 2 && <DropdownMenuSeparator />}
-                      <DropdownMenuItem>
-                        <item.icon className="mr-2 h-4 w-4" />
-                        {item.title}
-                      </DropdownMenuItem>
-                    </div>
-                  ))} */}
                   <DropdownMenuItem asChild>
-                    <Link href="/account" className="flex items-center gap-2">
+                    <Link
+                      href="/account"
+                      className="flex items-center gap-2"
+                      onClick={() => setOpenMobile(false)}
+                    >
                       <IconUserCircle className="h-4 w-4" />
                       Account
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/settings" className="flex items-center gap-2">
+                    <Link
+                      href="/settings"
+                      className="flex items-center gap-2"
+                      onClick={() => setOpenMobile(false)}
+                    >
                       <IconSettings className="h-4 w-4" />
                       Settings
                     </Link>
@@ -235,12 +239,12 @@ function AppSidebar({
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 {pathname === "/login" ? (
-                  <Link href="/">
+                  <Link href="/" onClick={() => setOpenMobile(false)}>
                     <IconPhotoCircle className="mr-2 h-4 w-4" />
                     Go back
                   </Link>
                 ) : (
-                  <Link href="/login">
+                  <Link href="/login" onClick={() => setOpenMobile(false)}>
                     <IconUserCircle className="mr-2 h-4 w-4" />
                     Sign in
                   </Link>
@@ -250,100 +254,6 @@ function AppSidebar({
           </SidebarMenu>
         </SidebarFooter>
       )}
-      {/* {session ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="bg-border rounded-lg">
-                  {session.user?.name?.[0] ||
-                    session.user?.email?.[0] ||
-                    "U"}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  <span className="inline-flex items-center">
-                    {session.user?.id?.substring(0, 12) || "User"}
-                    <IconRosetteDiscountCheckFilled className="ml-1.5 h-5 w-5 text-shadow-lg" />
-                  </span>
-                </span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {session.user?.email || ""}
-                </span>
-              </div>
-              <IconDotsVertical className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side="top"
-            align="center"
-            sideOffset={4}
-            alignOffset={0}
-            data-slot="dropdown-footer"
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg placeholder-black/50">
-                    {session.user?.name?.[0] ||
-                      session.user?.email?.[0] ||
-                      "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    <span className="inline-flex items-center">
-                      {session.user?.id?.substring(0, 12) || "User"}
-                      <IconRosetteDiscountCheckFilled className="ml-1.5 h-5 w-5" />
-                    </span>
-                  </span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {session.user?.email || ""}
-                  </span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/contact" className="flex items-center gap-2">
-                <IconMail className="h-4 w-4" />
-                Contact
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/feedback" className="flex items-center gap-2">
-                <IconSend className="h-4 w-4" />
-                Feedback
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="gap-2">
-              <IconPhotoCircle className="h-4 w-4" />
-              Sign out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <SidebarMenuButton asChild>
-          {isLoginPage ? (
-            <Link href="/" className="flex items-center gap-2">
-              <IconPhotoCircle className="h-4 w-4" />
-              Go back
-            </Link>
-          ) : (
-            <Link href="/login" className="flex items-center gap-2">
-              <IconUserCircle className="h-4 w-4" />
-              Sign in
-            </Link>
-          )}
-        </SidebarMenuButton>
-      )} */}
-      {/* Rail */}
       <SidebarRail />
     </Sidebar>
   )
