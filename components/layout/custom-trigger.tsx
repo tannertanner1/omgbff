@@ -9,25 +9,14 @@ import {
 import { cn } from "@/lib/utils"
 
 function CustomTrigger({ className }: { className?: string }) {
-  const { state, toggleSidebar, isMobile, setOpenMobile } = useSidebar()
+  const { state, toggleSidebar } = useSidebar()
   const isExpanded = state === "expanded"
-
-  // Handle click with awareness of mobile state
-  const handleClick = () => {
-    if (isMobile) {
-      // For mobile, explicitly use setOpenMobile
-      setOpenMobile(!isExpanded)
-    } else {
-      // For desktop, use the standard toggle
-      toggleSidebar()
-    }
-  }
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={handleClick}
+      onClick={toggleSidebar}
       className={cn(
         "h-8 w-8 p-0",
         "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
