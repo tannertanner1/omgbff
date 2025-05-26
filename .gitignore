@@ -39,7 +39,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/.history/
-.history/*
-.history
 _private

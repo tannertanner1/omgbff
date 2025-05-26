@@ -13,23 +13,24 @@ import { Layout } from "@/components/layout"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "omgbff",
-  description: "@tannertanner1",
   metadataBase: new URL("https://omgbff.com"),
+  alternates: { canonical: "https://omgbff.com" },
+  title: "omgbff",
+  description: "tannertanner1",
   authors: [
     {
-      name: "@tannertanner1",
+      name: "tannertanner1",
       url: "https://tannertanner.me",
     },
   ],
-  creator: "@tannertanner1",
+  creator: "tannertanner1",
   icons: { icon: [{ rel: "icon", type: "image/svg+xml", url: "/icon.svg" }] },
   openGraph: {
     type: "website",
     siteName: "omgbff",
     url: "https://omgbff.com",
     title: "omgbff",
-    description: "@tannertanner1",
+    description: "tannertanner1",
     images: [
       {
         url: "https://tannertanner.me/image.png",
@@ -41,13 +42,113 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "omgbff",
-    description: "@tannertanner1",
+    description: "tannertanner1",
     images: ["https://tannertanner.me/image.png"],
-    creator: "@tannertanner1",
+    creator: "tannertanner1",
   },
 }
 
 export const viewport: Viewport = { themeColor: META_THEME_COLORS.light }
+
+export const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "omgbff",
+      url: "https://omgbff.com",
+      description:
+        "A full-stack e-commerce admin dashboard app created by tannertanner1 using Next.js, React, TypeScript, Tailwind CSS, Stripe for payments, and Resend for email receipts",
+      keywords: [
+        "tannertanner1",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Shadcn UI",
+        "Motion",
+        "Auth.js",
+        "Neon",
+        "Drizzle",
+        "Resend",
+        "Stripe",
+        "Vercel",
+      ],
+      author: {
+        "@type": "Person",
+        name: "tannertanner1",
+        url: "https://tannertanner.me",
+        identifier: "tannertanner1",
+        image: {
+          "@type": "ImageObject",
+          url: "https://tannertanner.me/photo.png",
+          width: 1600,
+          height: 800,
+          alt: "tannertanner1",
+        },
+        sameAs: [
+          "https://github.com/tannertanner1",
+          "https://x.com/tannertanner404",
+          "https://omgbff.com",
+          "https://ilutoo.com",
+        ],
+      },
+      image: {
+        "@type": "ImageObject",
+        url: "https://tannertanner.me/image.png",
+        width: 1600,
+        height: 800,
+        alt: "tannertanner1",
+      },
+      creator: "tannertanner1",
+      publisher: {
+        "@type": "Person",
+        name: "tannertanner1",
+        url: "https://tannertanner.me",
+      },
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      name: "omgbff",
+      codeRepository: "https://github.com/tannertanner1/omgbff",
+      programmingLanguage: "TypeScript",
+      runtimePlatform: "Node.js",
+      codeSampleType: "full-solution",
+      creator: {
+        "@type": "Person",
+        name: "tannertanner1",
+        url: "https://tannertanner.me",
+      },
+      author: {
+        "@type": "Person",
+        name: "tannertanner1",
+        url: "https://tannertanner.me",
+      },
+      description:
+        "A full-stack e-commerce admin dashboard app created by tannertanner1 using Next.js, React, TypeScript, Tailwind CSS, Stripe for payments, and Resend for email receipts",
+      about: {
+        "@type": "SoftwareApplication",
+        name: "omgbff",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        offers: {
+          "@type": "Offer",
+          availability: "ComingSoon",
+        },
+        featureList: [
+          "Passwordless authentication",
+          "Attribute based access control",
+          "Admin dashboard",
+          "CRM",
+          "Stripe payment processing",
+          "PDF email receipts via Resend",
+        ],
+      },
+      creativeWorkStatus: "Incomplete",
+      isAccessibleForFree: true,
+    },
+  ],
+}
 
 export default async function RootLayout({
   children,
@@ -63,6 +164,10 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
