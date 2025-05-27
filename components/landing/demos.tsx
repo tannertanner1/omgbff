@@ -17,7 +17,7 @@ function Demo({ item, index }: { item: Clip; index: number }) {
 
   return (
     <motion.div
-      className="group w-[256px] flex-none cursor-default"
+      className="group w-[320px] flex-none cursor-default"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 * index }}

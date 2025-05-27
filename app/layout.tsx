@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://omgbff.com"),
   alternates: { canonical: "https://omgbff.com" },
   title: "omgbff",
-  description: "tannertanner1",
+  description:
+    "All-in-one client portal and admin dashboard. Manage accounts, tasks, and billing—without spreadsheets or extra overhead.",
   authors: [
     {
       name: "tannertanner1",
@@ -30,7 +31,8 @@ export const metadata: Metadata = {
     siteName: "omgbff",
     url: "https://omgbff.com",
     title: "omgbff",
-    description: "tannertanner1",
+    description:
+      "All-in-one client portal and admin dashboard. Manage accounts, tasks, and billing—without spreadsheets or extra overhead.",
     images: [
       {
         url: "https://tannertanner.me/image.png",
@@ -42,7 +44,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "omgbff",
-    description: "tannertanner1",
+    description:
+      "All-in-one client portal and admin dashboard. Manage accounts, tasks, and billing—without spreadsheets or extra overhead.",
     images: ["https://tannertanner.me/image.png"],
     creator: "tannertanner1",
   },

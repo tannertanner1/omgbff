@@ -141,57 +141,33 @@ const DEMOS = {
       items: [
         {
           status: "live" satisfies Status,
-          title: "Creating an account",
-          description: "Quick setup for new users",
+          title: "Create and access your account",
+          description:
+            "Set up a new account in seconds or log in to your secure portal",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "live" satisfies Status,
-          title: "Logging in",
-          description: "Access your client portal",
+          title: "Manage clients and services",
+          description:
+            "Add people or businesses, organize by service type, and update info anytime",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "live" satisfies Status,
-          title: "Adding entities",
-          description: "Manage individuals and businesses",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "live" satisfies Status,
-          title: "Setting up accounts",
-          description: "Organize by client or service type",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "live" satisfies Status,
-          title: "Sending invites",
-          description: "Share access with collaborators",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "live" satisfies Status,
-          title: "Updating account info",
-          description: "Keep details accurate and up to date",
+          title: "Invite collaborators",
+          description:
+            "Share access with clients, teammates, or external partners",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "soon" satisfies Status,
-          title: "Submitting forms",
-          description: "Request a service or upload info",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "planned" satisfies Status,
-          title: "Making payments",
-          description: "Review and pay invoices securely",
+          title: "Submit forms and pay invoices",
+          description:
+            "Request services, upload documents, and make secure payments",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
@@ -204,57 +180,33 @@ const DEMOS = {
       items: [
         {
           status: "live" satisfies Status,
-          title: "Getting started",
-          description: "Set up your team and workspace",
+          title: "Set up your team and workspace",
+          description:
+            "Invite admins, define access, and configure your environment in minutes",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "soon" satisfies Status,
-          title: "Dashboard overview",
-          description: "Navigate and access tools fast",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "soon" satisfies Status,
-          title: "Monitoring user activity",
-          description: "Track accounts and service usage",
+          title: "Get visibility into usage and activity",
+          description:
+            "Track logins, user sessions, and client interactions in real time",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "planned" satisfies Status,
-          title: "Sending templates",
-          description: "Send forms, messages, and updates",
+          title: "Send updates and assign work",
+          description:
+            "Send prebuilt templates, trigger tasks, and monitor internal progress",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
         {
           status: "planned" satisfies Status,
-          title: "Managing tasks",
-          description: "Trigger and track internal work",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "planned" satisfies Status,
-          title: "Organizing worklogs",
-          description: "Keep notes and log activity",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "soon" satisfies Status,
-          title: "Publishing invoices",
-          description: "Create and send client invoices",
-          video: "#",
-          thumbnail: "https://placehold.co/180x320/transparent/transparent",
-        },
-        {
-          status: "soon" satisfies Status,
-          title: "Managing payments",
-          description: "Track payment status and history",
+          title: "Handle billing and operations",
+          description:
+            "Create invoices, track payments, and keep your records clean",
           video: "#",
           thumbnail: "https://placehold.co/180x320/transparent/transparent",
         },
