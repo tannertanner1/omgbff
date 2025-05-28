@@ -4,7 +4,7 @@ import { ModeToggle } from "./mode-toggle"
 
 function SiteHeader() {
   return (
-    <header className="site-header flex items-center justify-between px-2">
+    <header className="site-header mx-2 flex items-center justify-between">
       <div className="ml-1 flex items-center">
         <CustomTrigger />
       </div>
