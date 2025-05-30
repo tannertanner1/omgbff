@@ -1,13 +1,12 @@
-### omgbff
+## omgbff
 
-> Currently in active development.
-> Feature demos and changelog shipping soon.
+> Currently in active development.<br />Feature demos and changelog shipping soon.
 
 Client portal + admin dashboard. BYO database. Built with Next.js 15, Tailwind v4, Shadcn, and Drizzle.
 
 ---
 
-#### TL;DR
+### TL;DR
 
 Built for small service businesses who've outgrown spreadsheets, but don't want to duct tape together an overpriced auth provider, form builder, and billing platform.
 
@@ -15,7 +14,7 @@ It simplifies workflows, centralizes operations, and stays flexible enough to gr
 
 ---
 
-#### About
+### About
 
 This project abstracts the boilerplate of modern service ops, giving you modular architecture, clean UI primitives, and a flexible permission system.
 
@@ -23,25 +22,25 @@ Focused on long-term maintainability, it's not a starter, but a foundation you c
 
 ---
 
-#### Features
+### Features
 
-**Client Portal**: Self-serve setup, secure access, and support for both individuals and businesses
-**Admin Dashboard**: Track usage, assign tasks, manage users, and trigger internal workflows
-**Payments & Invoicing**: Collect payments via Stripe and auto-generate PDF receipts with Resend
-**Passwordless Auth**: Magic link login
-**ABAC-style Permissions**: Granular access control based on roles and org membership
-**Typed UI System**: Tailwind v4 + shadcn/ui + Motion—fully typed, responsive, and scalable
-**Dark Mode Aware**: Respect system theme and sync persistently across sessions
-**Postgres Native**: Built with Drizzle + PostgreSQL, typed end-to-end
+- **Client Portal**: Self-serve setup, secure access, and support for both individuals and businesses
+- **Admin Dashboard**: Track usage, assign tasks, manage users, and trigger internal workflows
+- **Payments & Invoicing**: Collect payments via Stripe and auto-generate PDF receipts with Resend
+- **Passwordless Auth**: Magic link login
+- **ABAC-style Permissions**: Granular access control based on roles and org membership
+- **Typed UI System**: Tailwind v4 + shadcn/ui + Motion—fully typed, responsive, and scalable
+- **Dark Mode Aware**: Respect system theme and sync persistently across sessions
+- **Postgres Native**: Built with Drizzle + PostgreSQL, typed end-to-end
 
 ---
 
-#### Quickstart
+### Quickstart
 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/tannertanner1/omgbff.git
-cd omgbff
+cd omgbff && code .
 
 # 2. Install dependencies
 pnpm install
@@ -57,6 +56,6 @@ pnpm dev
 
 ---
 
-#### License
+### License
 
 MIT — see [LICENSE.md](https://github.com/tannertanner1/omgbff/blob/main/LICENSE.md)
