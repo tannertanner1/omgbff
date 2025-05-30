@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: META_THEME_COLORS.light }
 
-export const jsonLd = {
+const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
