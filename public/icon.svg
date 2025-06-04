@@ -1,14 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 400" xml:space="preserve">
-  <title>@tannertanner1</title>
+  <title>tannertanner1</title>
   <desc>
-    tannertanner.me
+    Favicon for full-stack generalist tannertanner1
   </desc>
   <style>
-    /* Root: oklch(1 0 0) */
     .color {
       fill: #121212;
     }
-    /* Dark: oklch(0.145 0 0) */
     @media (prefers-color-scheme: dark) {
       .color {
         fill: #ffffff;
