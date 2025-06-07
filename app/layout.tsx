@@ -7,6 +7,7 @@ import { fontVariables } from "@/lib/fonts"
 import { META_THEME_COLORS } from "@/lib/themes"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ActiveThemeProvider } from "@/components/active-theme"
+import { Analytics } from "@/components/analytics"
 import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Layout } from "@/components/layout"
@@ -212,6 +213,7 @@ export default async function RootLayout({
               <Layout session={session}>{children}</Layout>
             </SidebarProvider>
             <Toaster />
+            <Analytics />
           </ActiveThemeProvider>
         </ThemeProvider>
       </body>
