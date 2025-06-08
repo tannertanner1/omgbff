@@ -1,18 +1,18 @@
-import { integer, pgTable, text, jsonb } from 'drizzle-orm/pg-core'
-import { customerId, invoiceId, createdAt, updatedAt } from '@/db/helpers'
-import { relations } from 'drizzle-orm'
-import { organizations, users } from './users'
-import { InferInsertModel } from 'drizzle-orm'
-import { STATUSES } from '@/data/invoice-statuses'
-import { ADDRESS, PHONE } from '@/data/customer-fields'
-import type { Region, Country } from '@/data/customer-fields'
+import { integer, pgTable, text, jsonb } from "drizzle-orm/pg-core"
+import { customerId, invoiceId, createdAt, updatedAt } from "@/db/helpers"
+import { relations } from "drizzle-orm"
+import { organizations, users } from "./users"
+import { InferInsertModel } from "drizzle-orm"
+import { STATUSES } from "@/data/invoice-statuses"
+import { ADDRESS, PHONE } from "@/data/customer-fields"
+import type { Region, Country } from "@/data/customer-fields"
 
-const customers = pgTable('customers', {
+const customers = pgTable("customers", {
   id: customerId,
   // Optionally remove organizationId
   organizationId: text()
     .notNull()
-    .references(() => organizations.id, { onDelete: 'cascade' }),
+    .references(() => organizations.id, { onDelete: "cascade" }),
   userId: text()
     .notNull()
     .references(() => users.id),
@@ -41,7 +41,7 @@ const customers = pgTable('customers', {
         number: string
       }>
     >()
-    .default([])
+    .default([]),
 })
 
 // const organizationCustomers = pgTable(
@@ -66,15 +66,15 @@ const customers = pgTable('customers', {
 //   ]
 // )
 
-const invoices = pgTable('invoices', {
+const invoices = pgTable("invoices", {
   id: invoiceId,
   // Optionally remove customerId
   customerId: text()
     .notNull()
-    .references(() => customers.id, { onDelete: 'cascade' }),
+    .references(() => customers.id, { onDelete: "cascade" }),
   organizationId: text()
     .notNull()
-    .references(() => organizations.id, { onDelete: 'cascade' }),
+    .references(() => organizations.id, { onDelete: "cascade" }),
   userId: text()
     .notNull()
     .references(() => users.id),
@@ -82,8 +82,8 @@ const invoices = pgTable('invoices', {
   updatedAt,
   /** @note description, status, amount */
   description: text(),
-  status: text('status', { enum: STATUSES }).notNull().default('open'),
-  amount: integer().notNull()
+  status: text("status", { enum: STATUSES }).notNull().default("open"),
+  amount: integer().notNull(),
 })
 
 // const customerInvoices = pgTable('customerInvoices', {
@@ -110,13 +110,13 @@ const invoices = pgTable('invoices', {
 const customersRelations = relations(customers, ({ one, many }) => ({
   organization: one(organizations, {
     fields: [customers.organizationId],
-    references: [organizations.id]
+    references: [organizations.id],
   }),
   user: one(users, {
     fields: [customers.userId],
-    references: [users.id]
+    references: [users.id],
   }),
-  invoices: many(invoices)
+  invoices: many(invoices),
 }))
 // const customersRelations = relations(customers, ({ many }) => ({
 //   invoices: many(customerInvoices),
@@ -125,21 +125,16 @@ const customersRelations = relations(customers, ({ one, many }) => ({
 const invoicesRelations = relations(invoices, ({ one }) => ({
   customer: one(customers, {
     fields: [invoices.customerId],
-    references: [customers.id]
+    references: [customers.id],
   }),
   // customers: many(customerInvoices),
   user: one(users, {
     fields: [invoices.userId],
-    references: [users.id]
-  })
+    references: [users.id],
+  }),
 }))
 
 export { customers, invoices, customersRelations, invoicesRelations }
 
 export type NewCustomer = InferInsertModel<typeof customers>
 export type NewInvoice = InferInsertModel<typeof invoices>
-
-/**
- * @see https://youtu.be/Mcw8Mp8PYUE?si=vuf6VVt5Jv-AXct3
- * @see https://github.com/colbyfayock/my-invoicing-app
- */

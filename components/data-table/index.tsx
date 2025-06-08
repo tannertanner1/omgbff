@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import * as React from 'react'
+import * as React from "react"
 import {
   flexRender,
   getCoreRowModel,
@@ -11,21 +11,21 @@ import {
   type ColumnDef,
   type SortingState,
   type ColumnFiltersState,
-  type VisibilityState
-} from '@tanstack/react-table'
+  type VisibilityState,
+} from "@tanstack/react-table"
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TableHeader
-} from '@/components/ui/table'
+  TableHeader,
+} from "@/components/ui/table"
 import {
   IconDotsCircleHorizontal,
   IconCheck,
-  IconMoodEmpty
-} from '@tabler/icons-react'
+  IconMoodEmpty,
+} from "@tabler/icons-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,18 +35,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuRadioGroup,
-  DropdownMenuRadioItem
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
-import { Options } from './options'
-import { Pagination } from './pagination'
-import { cn } from '@/lib/utils'
-import { usePathname, useRouter } from 'next/navigation'
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { Options } from "./options"
+import { Pagination } from "./pagination"
+import { cn } from "@/lib/utils"
+import { usePathname, useRouter } from "next/navigation"
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  link
+  link,
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -59,7 +59,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const [selectedColumn, setSelectedColumn] = React.useState('')
+  const [selectedColumn, setSelectedColumn] = React.useState("")
   const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
 
   const pathname = usePathname()
@@ -80,18 +80,18 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection
-    }
+      rowSelection,
+    },
   })
 
   React.useEffect(() => {
-    if (selectedColumn === '') {
+    if (selectedColumn === "") {
       const firstColumn = table
         .getAllColumns()
         .find(
-          column =>
-            typeof column.accessorFn !== 'undefined' &&
-            !['select', 'actions'].includes(column.id)
+          (column) =>
+            typeof column.accessorFn !== "undefined" &&
+            !["select", "actions"].includes(column.id)
         )
       if (firstColumn) {
         setSelectedColumn(firstColumn.id)
@@ -104,10 +104,10 @@ export function DataTable<TData, TValue>({
 
   // Helper function to get column label
   const getColumnLabel = (column: any) => {
-    if (typeof column.columnDef.header === 'string') {
+    if (typeof column.columnDef.header === "string") {
       return column.columnDef.header
     }
-    if (typeof column.columnDef.header === 'function') {
+    if (typeof column.columnDef.header === "function") {
       const headerProps = { column } // Minimal props needed for the header function
       const headerContent = column.columnDef.header(headerProps)
       // If it's a React element with a label prop, try to extract it
@@ -120,40 +120,40 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className='w-full'>
-      <div className='flex items-center gap-3 py-4'>
+    <div className="w-full">
+      <div className="flex items-center gap-3 py-4">
         <Input
           placeholder={
             selectedColumn
               ? `Filter by ${getColumnLabel(currentColumn)}...`
-              : 'Filter...'
+              : "Filter..."
           }
-          value={filterValue ?? ''}
-          onChange={event => {
+          value={filterValue ?? ""}
+          onChange={(event) => {
             if (currentColumn) {
               currentColumn.setFilterValue(event.target.value)
             }
           }}
-          className='w-full'
+          className="w-full"
         />
         <DropdownMenu open={isOptionsOpen} onOpenChange={setIsOptionsOpen}>
           <DropdownMenuTrigger asChild>
             <button
-              aria-label='Table options'
-              className={cn('group rounded-full transition-colors')}
+              aria-label="Table options"
+              className={cn("group rounded-full transition-colors")}
             >
               <IconDotsCircleHorizontal
                 className={cn(
-                  'h-6 w-6 transition-colors',
+                  "h-6 w-6 transition-colors",
                   isOptionsOpen
-                    ? 'text-primary'
-                    : 'text-muted-foreground group-hover:text-primary'
+                    ? "text-primary"
+                    : "text-muted-foreground group-hover:text-primary"
                 )}
               />
-              <span className='sr-only'>Table options</span>
+              <span className="sr-only">Table options</span>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='w-[200px]'>
+          <DropdownMenuContent align="end" className="w-[200px]">
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Filter</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -164,15 +164,15 @@ export function DataTable<TData, TValue>({
                   {table
                     .getAllColumns()
                     .filter(
-                      column =>
-                        typeof column.accessorFn !== 'undefined' &&
-                        !['select', 'actions'].includes(column.id)
+                      (column) =>
+                        typeof column.accessorFn !== "undefined" &&
+                        !["select", "actions"].includes(column.id)
                     )
-                    .map(column => (
+                    .map((column) => (
                       <DropdownMenuRadioItem
                         key={column.id}
                         value={column.id}
-                        className='capitalize'
+                        className="capitalize"
                       >
                         {getColumnLabel(column)}
                       </DropdownMenuRadioItem>
@@ -183,15 +183,15 @@ export function DataTable<TData, TValue>({
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Rows</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
-                {[10, 20, 30, 40, 50].map(pageSize => (
+                {[10, 20, 30, 40, 50].map((pageSize) => (
                   <DropdownMenuItem
                     key={pageSize}
                     onClick={() => table.setPageSize(pageSize)}
-                    className='flex items-center justify-between'
+                    className="flex items-center justify-between"
                   >
                     <span>{pageSize}</span>
                     {table.getState().pagination.pageSize === pageSize && (
-                      <IconCheck className='ml-auto h-4 w-4' />
+                      <IconCheck className="ml-auto h-4 w-4" />
                     )}
                   </DropdownMenuItem>
                 ))}
@@ -201,15 +201,15 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='rounded-md border'>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <TableHead key={header.id} className='px-4'>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="px-4">
                     {header.isPlaceholder ? null : (
-                      <div className='flex items-center'>
+                      <div className="flex items-center">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -223,16 +223,16 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className={cn(link && 'cursor-pointer hover:bg-muted')}
-                  onClick={e => {
+                  data-state={row.getIsSelected() && "selected"}
+                  className={cn(link && "hover:bg-muted cursor-pointer")}
+                  onClick={(e) => {
                     const target = e.target as HTMLElement
                     // Only navigate if not clicking an action button or its container
                     if (
-                      !target.closest('[data-action-trigger]') &&
+                      !target.closest("[data-action-trigger]") &&
                       !target.closest('[role="menuitem"]') &&
                       link
                     ) {
@@ -242,8 +242,8 @@ export function DataTable<TData, TValue>({
                     }
                   }}
                 >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} className='px-4 py-1'>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="px-4 py-1">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -256,10 +256,10 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'
+                  className="h-24 text-center"
                 >
-                  <div className='flex items-center justify-center text-muted-foreground'>
-                    <IconMoodEmpty className='h-6 w-6' />
+                  <div className="text-muted-foreground flex items-center justify-center">
+                    <IconMoodEmpty className="h-6 w-6" />
                   </div>
                 </TableCell>
               </TableRow>
@@ -271,8 +271,3 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-/**
- * @see https://github.com/sadmann7/shadcn-table/tree/8b70d2e761ca9d8f0a9302ea0e15c196086883d5/src/components/data-table
- * @see https://github.com/shadcn-ui/ui/tree/805ed4120a6a8ae6f6e9714cbd776e18eeba92c7/apps/www/app/(app)/examples/tasks/components
- */

@@ -1,29 +1,24 @@
-import { pgEnum } from 'drizzle-orm/pg-core'
+import { pgEnum } from "drizzle-orm/pg-core"
 
-const ROLES = ['owner', 'admin', 'user'] as const
+const ROLES = ["owner", "admin", "user"] as const
 
 type Role = (typeof ROLES)[number]
 
-const roles = pgEnum('role', ROLES)
+const roles = pgEnum("role", ROLES)
 
 const role: Record<Role, { label: string; color: string }> = {
   owner: {
-    label: 'Owner',
-    color: '#9AA0A6' // grey
+    label: "Owner",
+    color: "#9AA0A6", // grey
   },
   admin: {
-    label: 'Admin',
-    color: '#FBBC04' // yellow
+    label: "Admin",
+    color: "#FBBC04", // yellow
   },
   user: {
-    label: 'User',
-    color: '#4285F4' // blue
-  }
+    label: "User",
+    color: "#4285F4", // blue
+  },
 }
 
 export { ROLES, type Role, roles, role }
-
-/**
- * @see https://help.x.com/en/rules-and-policies/profile-labels
- * @see https://partnermarketinghub.withgoogle.com/brands/google-play/visual-identity/color-palette
- */
