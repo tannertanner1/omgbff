@@ -3,13 +3,13 @@
 import * as React from "react"
 import { useActionState } from "react"
 import { useRouter } from "next/navigation"
-import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { IconCircleCheck, IconCircleX, IconLoader } from "@tabler/icons-react"
+import { FormProvider, useForm } from "react-hook-form"
 import * as z from "zod"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { ADDRESS, PHONE } from "@/data/customer-fields"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Card,
   CardContent,
@@ -17,8 +17,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { IconLoader, IconCircleCheck, IconCircleX } from "@tabler/icons-react"
-import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -26,10 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Currency } from "./currency"
+import { Textarea } from "@/components/ui/textarea"
 import { Address } from "./address"
+import { Currency } from "./currency"
 import { Phone } from "./phone"
-import { ADDRESS, PHONE } from "@/data/customer-fields"
 
 export type Field = {
   name: string

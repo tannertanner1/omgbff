@@ -1,20 +1,20 @@
-'use client'
+"use client"
 
-import * as React from 'react'
+import * as React from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { IconDots, IconPencil, IconTrash } from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { IconDots, IconPencil, IconTrash } from '@tabler/icons-react'
-import { cn } from '@/lib/utils'
-import { usePathname, useRouter } from 'next/navigation'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Actions<T extends { id: string }>({
   row,
   onEdit,
-  onDelete
+  onDelete,
 }: {
   row: T
   onEdit?: (row: T) => void
@@ -43,34 +43,34 @@ export function Actions<T extends { id: string }>({
   }
 
   return (
-    <div className='px-4 text-right'>
+    <div className="px-4 text-right">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <button
             data-action-trigger
-            className='group inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors'
-            onClick={e => {
+            className="group inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors"
+            onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
             }}
           >
             <IconDots
               className={cn(
-                'h-4 w-4 transition-colors',
+                "h-4 w-4 transition-colors",
                 isOpen
-                  ? 'text-primary'
-                  : 'text-muted-foreground group-hover:text-primary'
+                  ? "text-primary"
+                  : "text-muted-foreground group-hover:text-primary"
               )}
             />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='end'>
+        <DropdownMenuContent align="end">
           {onEdit && (
             <DropdownMenuItem
               onClick={handleEdit}
-              className='hover:bg-secondary'
+              className="hover:bg-secondary"
             >
-              <IconPencil className='mr-2 h-4 w-4' />
+              <IconPencil className="mr-2 h-4 w-4" />
               Edit
             </DropdownMenuItem>
           )}
@@ -78,10 +78,10 @@ export function Actions<T extends { id: string }>({
             <DropdownMenuItem
               onClick={handleDelete}
               className={cn(
-                'text-[#DB4437] focus:bg-[#DB4437] focus:text-background'
+                "text-[#DB4437] focus:bg-[#DB4437] focus:text-background"
               )}
             >
-              <IconTrash className='mr-2 h-4 w-4' />
+              <IconTrash className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>
           )}

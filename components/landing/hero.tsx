@@ -1,14 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import { IconArrowRight, IconSparkles } from "@tabler/icons-react"
 import { motion } from "motion/react"
+import { HERO } from "@/data/landing-content"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { IconSparkles, IconArrowRight } from "@tabler/icons-react"
-import { cn } from "@/lib/utils"
-import { HERO } from "@/data/landing-content"
 import { Section } from "./section"
 
 function Hero() {

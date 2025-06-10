@@ -28,10 +28,10 @@ module.exports = {
     "^(?!.*[.]css$)[./].*$",
     ".css$"
   ],
-  importOrderSeparation: false,
-  importOrderSortSpecifiers: true,
-  importOrderBuiltinModulesToTop: true,
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
-  importOrderMergeDuplicateImports: true,
-  importOrderCombineTypeAndValueImports: true
+  // importOrderSeparation: false,
+  // importOrderSortSpecifiers: true,
+  // importOrderBuiltinModulesToTop: true,
+  // importOrderMergeDuplicateImports: true,
+  // importOrderCombineTypeAndValueImports: true
 }

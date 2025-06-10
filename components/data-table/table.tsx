@@ -1,12 +1,12 @@
-'use client'
+"use client"
 
-import { DataTable } from '.'
-import type { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from "@tanstack/react-table"
+import { DataTable } from "."
 
 export function Table<TData extends object>({
   data,
   columns,
-  link
+  link,
 }: {
   data: TData[]
   columns: ColumnDef<TData, any>[]

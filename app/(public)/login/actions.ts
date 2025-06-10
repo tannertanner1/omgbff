@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation"
 import { z } from "zod"
-import { auth, signIn } from "@/lib/auth"
 import { Action, type ActionResponse } from "@/types/forms"
+import { auth, signIn } from "@/lib/auth"
 
 const schema = z.object({
   email: z.string().email("Invalid email"),

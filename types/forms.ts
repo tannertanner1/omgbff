@@ -1,4 +1,4 @@
-import type { z } from 'zod'
+import type { z } from "zod"
 
 export type FieldError = {
   type: string
@@ -25,6 +25,6 @@ export type ActionResponse<T extends FormData = FormData> = {
 export function Action<T extends FormData = FormData>(schema: z.ZodType<T>) {
   return {
     FormData: {} as T,
-    ActionResponse: {} as ActionResponse<T>
+    ActionResponse: {} as ActionResponse<T>,
   }
 }

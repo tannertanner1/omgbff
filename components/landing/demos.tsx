@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import { motion } from "motion/react"
+import { DEMOS } from "@/data/landing-content"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { cn } from "@/lib/utils"
-import { DEMOS } from "@/data/landing-content"
 import { Section } from "./section"
 
 type Clip = (typeof DEMOS.items)[number]["items"][number]

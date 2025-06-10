@@ -1,17 +1,17 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { IconCirclePlus } from '@tabler/icons-react'
-import { Table } from '@/components/data-table/table'
-import { deleteAction } from './actions'
-import { getUserColumns } from './columns'
-import type { User } from '@/lib/abac'
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { IconCirclePlus } from "@tabler/icons-react"
+import type { User } from "@/lib/abac"
+import { Table } from "@/components/data-table/table"
+import { deleteAction } from "./actions"
+import { getUserColumns } from "./columns"
 
 export function Users({
   users,
   organizationId,
-  userId
+  userId,
 }: {
   users: User[]
   organizationId: string
@@ -26,26 +26,26 @@ export function Users({
   const handleDelete = async (row: User) => {
     if (
       !confirm(
-        'Are you sure you want to remove this user from the organization?'
+        "Are you sure you want to remove this user from the organization?"
       )
     ) {
       return
     }
 
     const formData = new FormData()
-    formData.append('id', row.id)
-    formData.append('organizationId', organizationId)
+    formData.append("id", row.id)
+    formData.append("organizationId", organizationId)
 
     try {
       const result = await deleteAction(null, formData)
       if (result.success) {
         router.refresh()
       } else {
-        alert(result.message || 'Failed to remove user from organization')
+        alert(result.message || "Failed to remove user from organization")
       }
     } catch (error) {
-      console.error('Failed to remove:', error)
-      alert('Failed to remove user from organization')
+      console.error("Failed to remove:", error)
+      alert("Failed to remove user from organization")
     }
   }
 
@@ -57,17 +57,17 @@ export function Users({
   )
 
   return (
-    <div className='space-y-4'>
-      <div className='flex items-center justify-between'>
-        <h2 className='text-lg font-semibold'>Users</h2>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Users</h2>
         <Link href={`/organizations/${organizationId}/users/new`}>
-          <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
+          <IconCirclePlus className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
         </Link>
       </div>
       <Table
         data={users}
         columns={columns}
-        link={row => `/organizations/${organizationId}/users/${row.id}/edit`}
+        link={(row) => `/organizations/${organizationId}/users/${row.id}/edit`}
       />
     </div>
   )

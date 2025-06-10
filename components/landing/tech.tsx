@@ -1,8 +1,8 @@
 "use client"
 
 import { motion } from "motion/react"
-import { Badge } from "@/components/ui/badge"
 import { TECH } from "@/data/landing-content"
+import { Badge } from "@/components/ui/badge"
 import { Section } from "./section"
 
 function Tech() {

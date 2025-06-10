@@ -1,9 +1,9 @@
-import type { Role } from "@/data/system-roles"
-import { and, eq } from "drizzle-orm"
 import { db } from "@/db"
 import { userOrganizations } from "@/db/schema"
+import { and, eq } from "drizzle-orm"
+import type { ADDRESS, Country, PHONE, Region } from "@/data/customer-fields"
 import type { Status } from "@/data/invoice-statuses"
-import type { ADDRESS, PHONE, Country, Region } from "@/data/customer-fields"
+import type { Role } from "@/data/system-roles"
 
 export type Organization = {
   userId: string

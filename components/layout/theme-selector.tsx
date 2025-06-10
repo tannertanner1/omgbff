@@ -1,7 +1,7 @@
 "use client"
 
 import { THEMES } from "@/lib/themes"
-import { useThemeConfig } from "@/components/active-theme"
+import { cn } from "@/lib/utils"
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
+import { useThemeConfig } from "@/components/active-theme"
 
 function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig()

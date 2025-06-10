@@ -1,16 +1,15 @@
+import { createdAt, id, updatedAt } from "@/db/helpers"
+import { InferInsertModel, relations } from "drizzle-orm"
 import {
-  timestamp,
-  pgTable,
-  text,
-  primaryKey,
   integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core"
-import { id, createdAt, updatedAt } from "@/db/helpers"
-import { ROLES } from "@/data/system-roles"
-import { relations } from "drizzle-orm"
 import type { AdapterAccountType } from "next-auth/adapters"
-import { InferInsertModel } from "drizzle-orm"
+import { ROLES } from "@/data/system-roles"
 
 const users = pgTable(
   "users",

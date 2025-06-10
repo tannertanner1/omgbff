@@ -1,19 +1,19 @@
-'use server'
+"use server"
 
-import { z } from 'zod'
-import { Resend } from 'resend'
-import { Action, type ActionResponse } from '@/types/forms'
-import { DOMAIN } from '@/data/public-routes'
+import { Resend } from "resend"
+import { z } from "zod"
+import { Action, type ActionResponse } from "@/types/forms"
+import { DOMAIN } from "@/data/public-routes"
 
 const schema = z.object({
   name: z
     .string()
-    .max(32, { message: 'Name must be at most 32 characters' })
+    .max(32, { message: "Name must be at most 32 characters" })
     .optional(),
   message: z
     .string()
-    .min(1, { message: 'Message required' })
-    .max(1000, { message: 'Message must be at most 1000 characters' })
+    .min(1, { message: "Message required" })
+    .max(1000, { message: "Message must be at most 1000 characters" }),
 })
 
 const { FormData } = Action(schema)
@@ -25,8 +25,8 @@ export async function feedback(
   formData: FormData
 ): Promise<ActionResponse> {
   const rawData = {
-    name: formData.get('name') as string,
-    message: formData.get('message') as string
+    name: formData.get("name") as string,
+    message: formData.get("message") as string,
   }
 
   try {
@@ -35,9 +35,9 @@ export async function feedback(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'Please fix the errors in the form',
+        message: "Please fix the errors in the form",
         errors: validatedData.error.flatten().fieldErrors,
-        inputs: rawData
+        inputs: rawData,
       }
     }
 
@@ -50,23 +50,23 @@ export async function feedback(
       from: process.env.AUTH_RESEND_EMAIL as string,
       to: [process.env.AUTH_RESEND_EMAIL as string],
       subject: subject,
-      html: `<p>${message}</p>`
+      html: `<p>${message}</p>`,
     })
 
     return {
       success: true,
-      message: 'Feedback sent successfully!',
+      message: "Feedback sent successfully!",
       inputs: {
-        name: '',
-        message: ''
-      }
+        name: "",
+        message: "",
+      },
     }
   } catch (error) {
-    console.error('Form submission error:', error)
+    console.error("Form submission error:", error)
     return {
       success: false,
-      message: 'An unexpected error occurred. Please try again.',
-      inputs: rawData
+      message: "An unexpected error occurred. Please try again.",
+      inputs: rawData,
     }
   }
 }

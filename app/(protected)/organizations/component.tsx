@@ -1,16 +1,16 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Table } from '@/components/data-table/table'
-import { IconCirclePlus } from '@tabler/icons-react'
-import { deleteAction } from './actions'
-import { getColumns } from './columns'
-import type { Organization } from '@/lib/abac'
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { IconCirclePlus } from "@tabler/icons-react"
+import type { Organization } from "@/lib/abac"
+import { Table } from "@/components/data-table/table"
+import { deleteAction } from "./actions"
+import { getColumns } from "./columns"
 
 export function Component({
   organizations,
-  userId
+  userId,
 }: {
   organizations: Organization[]
   userId: string
@@ -22,41 +22,41 @@ export function Component({
   }
 
   const handleDelete = async (row: Organization) => {
-    if (!confirm('Are you sure you want to delete this organization?')) {
+    if (!confirm("Are you sure you want to delete this organization?")) {
       return
     }
 
     const formData = new FormData()
-    formData.append('id', row.id)
+    formData.append("id", row.id)
 
     try {
       const result = await deleteAction(null, formData)
       if (result.success) {
         router.refresh()
       } else {
-        alert(result.message || 'Failed to delete organization')
+        alert(result.message || "Failed to delete organization")
       }
     } catch (error) {
-      console.error('Failed to delete:', error)
-      alert('Failed to delete organization')
+      console.error("Failed to delete:", error)
+      alert("Failed to delete organization")
     }
   }
 
   const columns = getColumns(userId, handleEdit, handleDelete)
 
   return (
-    <div className='h-fit'>
-      <div className='mx-auto max-w-5xl p-4'>
-        <div className='-mt-3 mb-2 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Organizations</h1>
-          <Link href={'/organizations/new'}>
-            <IconCirclePlus className='h-6 w-6 text-muted-foreground transition-colors hover:text-primary' />
+    <div className="h-fit">
+      <div className="mx-auto max-w-5xl p-4">
+        <div className="-mt-3 mb-2 flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Organizations</h1>
+          <Link href={"/organizations/new"}>
+            <IconCirclePlus className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
           </Link>
         </div>
         <Table
           data={organizations}
           columns={columns}
-          link={row => `/organizations/${row.id}`}
+          link={(row) => `/organizations/${row.id}`}
         />
       </div>
     </div>

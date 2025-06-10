@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, type ReactNode, useRef, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { IconX } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 function Banner({
   children,

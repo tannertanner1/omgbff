@@ -1,26 +1,26 @@
-import { contact } from './actions'
-import { Form, type Field } from '@/components/form'
+import { Form, type Field } from "@/components/form"
+import { contact } from "./actions"
 
 export default function Page() {
   const fields: Field[] = [
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text' as const
+      name: "name",
+      label: "Name",
+      type: "text" as const,
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email' as const,
-      required: true
+      name: "email",
+      label: "Email",
+      type: "email" as const,
+      required: true,
     },
     {
-      name: 'message',
-      label: 'Message',
-      type: 'textarea' as const,
-      required: true
-    }
+      name: "message",
+      label: "Message",
+      type: "textarea" as const,
+      required: true,
+    },
   ]
 
-  return <Form fields={fields} action={contact} button='Send' />
+  return <Form fields={fields} action={contact} button="Send" />
 }

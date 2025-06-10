@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "motion/react"
-import { cn } from "@/lib/utils"
-import type { User } from "@/lib/abac"
 import { ITEMS } from "@/data/menu-items"
+import type { User } from "@/lib/abac"
+import { cn } from "@/lib/utils"
 import { Component } from "./component"
 
 function Menu({ user, className }: { user: User; className?: string }) {

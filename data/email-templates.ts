@@ -14,40 +14,40 @@ const template = (
   heading,
   body,
   button,
-  footer
+  footer,
 })
 
 export const emails = {
   verify: template(
-    'Verify your email',
-    'Click the button below to verify your email.',
-    'Verify email',
+    "Verify your email",
+    "Click the button below to verify your email.",
+    "Verify email",
     "If you didn't try to sign up, you can safely ignore this email."
   ),
   login: template(
-    'Sign in to your account',
-    'Click the button below to securely sign in to your account.',
-    'Sign in',
+    "Sign in to your account",
+    "Click the button below to securely sign in to your account.",
+    "Sign in",
     "If you didn't try to sign in, you can safely ignore this email."
   ),
   invite: template(
     "You've been invited!",
-    'You have been invited to join an organization. Click the button below to accept the invitation.',
-    'Accept invite',
+    "You have been invited to join an organization. Click the button below to accept the invitation.",
+    "Accept invite",
     "If you weren't expecting this invitation, you can safely ignore this email."
   ),
   invoice: template(
-    'New invoice ready',
-    'Your invoice is due for payment.',
-    'Pay invoice',
-    'If you believe this invoice was issued in error, you can safely ignore this email.'
+    "New invoice ready",
+    "Your invoice is due for payment.",
+    "Pay invoice",
+    "If you believe this invoice was issued in error, you can safely ignore this email."
   ),
   update: template(
-    'Confirm change of email',
-    'Click the button below to confirm the update of your email.',
-    'Update email',
+    "Confirm change of email",
+    "Click the button below to confirm the update of your email.",
+    "Update email",
     "If you didn't request this change, you can safely ignore this email."
-  )
+  ),
 }
 
 /**

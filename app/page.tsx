@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth"
-import { Menu } from "@/components/menu"
 import { Landing } from "@/components/landing"
+import { Menu } from "@/components/menu"
 
 export default async function Page() {
   const session = await auth()

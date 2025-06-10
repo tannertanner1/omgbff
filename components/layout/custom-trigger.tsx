@@ -1,12 +1,12 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
 import {
-  IconLayoutSidebarRightFilled,
   IconLayoutSidebarFilled,
+  IconLayoutSidebarRightFilled,
 } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { useSidebar } from "@/components/ui/sidebar"
 
 function CustomTrigger({ className }: { className?: string }) {
   const { state, toggleSidebar } = useSidebar()

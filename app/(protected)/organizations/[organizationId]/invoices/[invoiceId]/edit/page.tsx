@@ -1,80 +1,80 @@
-import { notFound } from 'next/navigation'
-import { Form, type Field } from '@/components/form'
-import { STATUSES } from '@/data/invoice-statuses'
-import { updateAction } from '../../actions'
-import { getInvoiceById, getOrganizationCustomers } from '@/db/queries'
-import { verifySession } from '@/lib/dal'
+import { notFound } from "next/navigation"
+import { getInvoiceById, getOrganizationCustomers } from "@/db/queries"
+import { STATUSES } from "@/data/invoice-statuses"
+import { verifySession } from "@/lib/dal"
+import { Form, type Field } from "@/components/form"
+import { updateAction } from "../../actions"
 
 export default async function Page({
-  params
+  params,
 }: {
   params: Promise<{ userId: string; organizationId: string; invoiceId: string }>
 }) {
   const { userId, organizationId, invoiceId } = await params
   const [invoice, customers] = await Promise.all([
     getInvoiceById({ invoiceId }),
-    getOrganizationCustomers({ organizationId })
+    getOrganizationCustomers({ organizationId }),
   ])
 
   if (!invoice) return notFound()
 
   const user = await verifySession()
-  const hasAccess = user.role === 'admin' || user.role === 'owner'
+  const hasAccess = user.role === "admin" || user.role === "owner"
 
   const fields: Field[] = [
     {
-      name: 'organizationId',
-      type: 'hidden' as const,
-      defaultValue: organizationId
+      name: "organizationId",
+      type: "hidden" as const,
+      defaultValue: organizationId,
     },
     {
-      name: 'id',
-      type: 'hidden' as const,
-      defaultValue: invoice.id
+      name: "id",
+      type: "hidden" as const,
+      defaultValue: invoice.id,
     },
     {
-      name: 'description',
-      label: 'Description',
-      type: 'text' as const,
-      defaultValue: invoice.description || ''
+      name: "description",
+      label: "Description",
+      type: "text" as const,
+      defaultValue: invoice.description || "",
     },
     {
-      name: 'status',
-      label: 'Status',
-      type: 'select' as const,
+      name: "status",
+      label: "Status",
+      type: "select" as const,
       required: hasAccess, // Only required if user has access
-      options: STATUSES.map(status => ({
+      options: STATUSES.map((status) => ({
         label: status.charAt(0).toUpperCase() + status.slice(1),
-        value: status
+        value: status,
       })),
       defaultValue: invoice.status,
-      disabled: !hasAccess
+      disabled: !hasAccess,
     },
     {
-      name: 'customerId',
-      label: 'Customer',
-      type: 'select' as const,
+      name: "customerId",
+      label: "Customer",
+      type: "select" as const,
       required: true,
-      options: customers.map(customer => ({
+      options: customers.map((customer) => ({
         label: customer.name,
-        value: customer.id
+        value: customer.id,
       })),
-      defaultValue: invoice.customerId
+      defaultValue: invoice.customerId,
     },
     {
-      name: 'amount',
-      label: 'Amount',
-      type: 'currency',
+      name: "amount",
+      label: "Amount",
+      type: "currency",
       required: true,
-      defaultValue: invoice.amount.toFixed(2)
-    }
+      defaultValue: invoice.amount.toFixed(2),
+    },
   ]
 
   return (
     <Form
       fields={fields}
       action={updateAction}
-      button='Update'
+      button="Update"
       data={{ status: invoice.status }}
     />
   )

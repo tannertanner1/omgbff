@@ -1,28 +1,28 @@
-'use client'
+"use client"
 
-import { IconCheck } from '@tabler/icons-react'
-import { cn } from '@/lib/utils'
+import { IconCheck } from "@tabler/icons-react"
+import type { Table } from "@tanstack/react-table"
+import { cn } from "@/lib/utils"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
-} from '@/components/ui/command'
+  CommandList,
+} from "@/components/ui/command"
 import {
-  DropdownMenuSubTrigger,
   DropdownMenuSub,
-  DropdownMenuSubContent
-} from '@/components/ui/dropdown-menu'
-import type { Table } from '@tanstack/react-table'
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Helper function to get column label
 const getColumnLabel = (column: any) => {
-  if (typeof column.columnDef.header === 'string') {
+  if (typeof column.columnDef.header === "string") {
     return column.columnDef.header
   }
-  if (typeof column.columnDef.header === 'function') {
+  if (typeof column.columnDef.header === "function") {
     const headerProps = { column } // Minimal props needed for the header function
     const headerContent = column.columnDef.header(headerProps)
     // If it's a React element with a label prop, try to extract it
@@ -38,33 +38,33 @@ export function Options<TData>({ table }: { table: Table<TData> }) {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>Columns</DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className='w-[144px] p-0'>
+      <DropdownMenuSubContent className="w-[144px] p-0">
         <Command>
-          <CommandInput placeholder='Search...' className='border-0' />
+          <CommandInput placeholder="Search..." className="border-0" />
           <CommandList>
             <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup>
               {table
                 .getAllColumns()
                 .filter(
-                  column =>
-                    typeof column.accessorFn !== 'undefined' &&
+                  (column) =>
+                    typeof column.accessorFn !== "undefined" &&
                     column.getCanHide()
                 )
-                .map(column => {
+                .map((column) => {
                   return (
                     <CommandItem
                       key={column.id}
                       onSelect={() =>
                         column.toggleVisibility(!column.getIsVisible())
                       }
-                      className='capitalize'
+                      className="capitalize"
                     >
-                      <span className='truncate'>{getColumnLabel(column)}</span>
+                      <span className="truncate">{getColumnLabel(column)}</span>
                       <IconCheck
                         className={cn(
-                          'ml-auto size-4 shrink-0',
-                          column.getIsVisible() ? 'opacity-100' : 'opacity-0'
+                          "ml-auto size-4 shrink-0",
+                          column.getIsVisible() ? "opacity-100" : "opacity-0"
                         )}
                       />
                     </CommandItem>

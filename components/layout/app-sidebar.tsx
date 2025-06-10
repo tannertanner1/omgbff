@@ -2,42 +2,42 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { logout } from "@/actions/logout"
+import {
+  IconDotsVertical,
+  IconPhotoCircle,
+  IconPlus,
+  IconRosetteDiscountCheckFilled,
+  IconSettings,
+  IconSlash,
+  IconUserCircle,
+} from "@tabler/icons-react"
 import type { Session } from "next-auth"
 import { ITEMS } from "@/data/menu-items"
 import { role } from "@/data/system-roles"
-import { logout } from "@/actions/logout"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarMenuAction,
-  SidebarFooter,
-  SidebarRail,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import {
-  DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
-  IconSlash,
-  IconPlus,
-  IconDotsVertical,
-  IconRosetteDiscountCheckFilled,
-  IconPhotoCircle,
-  IconUserCircle,
-  IconSettings,
-} from "@tabler/icons-react"
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  useSidebar,
+} from "@/components/ui/sidebar"
 
 function AppSidebar({
   session,

@@ -1,11 +1,10 @@
-import { integer, pgTable, text, jsonb } from "drizzle-orm/pg-core"
-import { customerId, invoiceId, createdAt, updatedAt } from "@/db/helpers"
-import { relations } from "drizzle-orm"
-import { organizations, users } from "./users"
-import { InferInsertModel } from "drizzle-orm"
-import { STATUSES } from "@/data/invoice-statuses"
+import { createdAt, customerId, invoiceId, updatedAt } from "@/db/helpers"
+import { InferInsertModel, relations } from "drizzle-orm"
+import { integer, jsonb, pgTable, text } from "drizzle-orm/pg-core"
 import { ADDRESS, PHONE } from "@/data/customer-fields"
-import type { Region, Country } from "@/data/customer-fields"
+import type { Country, Region } from "@/data/customer-fields"
+import { STATUSES } from "@/data/invoice-statuses"
+import { organizations, users } from "./users"
 
 const customers = pgTable("customers", {
   id: customerId,

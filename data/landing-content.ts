@@ -1,21 +1,21 @@
 import {
-  IconRosetteDiscountCheckFilled,
+  IconBrandGithub,
   IconClockFilled,
   IconCoinFilled,
-  IconBrandGithub,
+  IconRosetteDiscountCheckFilled,
 } from "@tabler/icons-react"
 import {
-  ReactIcon,
-  NextjsIcon,
-  TypescriptIcon,
-  TailwindcssIcon,
-  ShadcnIcon,
-  MotionIcon,
   AuthjsIcon,
-  NeonIcon,
   DrizzleIcon,
+  MotionIcon,
+  NeonIcon,
+  NextjsIcon,
+  ReactIcon,
   ResendIcon,
+  ShadcnIcon,
   StripeIcon,
+  TailwindcssIcon,
+  TypescriptIcon,
   VercelIcon,
 } from "@/components/icons"
 

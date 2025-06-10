@@ -1,16 +1,16 @@
-import { pgEnum } from 'drizzle-orm/pg-core'
+import { pgEnum } from "drizzle-orm/pg-core"
 
-const STATUSES = ['open', 'paid', 'void', 'uncollectible'] as const
+const STATUSES = ["open", "paid", "void", "uncollectible"] as const
 
 type Status = (typeof STATUSES)[number]
 
-const statuses = pgEnum('status', STATUSES)
+const statuses = pgEnum("status", STATUSES)
 
 const status: Record<Status, string> = {
-  open: '#4285F4',
-  paid: '#0F9D58',
-  void: '#F4B400',
-  uncollectible: '#DB4437'
+  open: "#4285F4",
+  paid: "#0F9D58",
+  void: "#F4B400",
+  uncollectible: "#DB4437",
 }
 
 export { STATUSES, type Status, statuses, status }

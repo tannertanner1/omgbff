@@ -1,12 +1,12 @@
-import { notFound } from 'next/navigation'
-import { Form, type Field } from '@/components/form'
-import { updateAction } from '../../actions'
-import { ROLES } from '@/data/system-roles'
-import { verifySession } from '@/lib/dal'
-import { getUserById } from '@/db/queries'
+import { notFound } from "next/navigation"
+import { getUserById } from "@/db/queries"
+import { ROLES } from "@/data/system-roles"
+import { verifySession } from "@/lib/dal"
+import { Form, type Field } from "@/components/form"
+import { updateAction } from "../../actions"
 
 export default async function Page({
-  params
+  params,
 }: {
   params: Promise<{ organizationId: string; userId: string }>
 }) {
@@ -26,58 +26,58 @@ export default async function Page({
   // Add this logic after retrieving the user data
   const isSelfEdit = user.id === userId
   const canEditUser =
-    user.role === 'owner' ||
-    (user.role === 'admin' && userToEdit.role === 'user') ||
+    user.role === "owner" ||
+    (user.role === "admin" && userToEdit.role === "user") ||
     isSelfEdit
 
-  const hasAccess = user.role === 'admin' || user.role === 'owner'
+  const hasAccess = user.role === "admin" || user.role === "owner"
 
   const fields: Field[] = [
     {
-      name: 'id',
-      type: 'hidden',
-      defaultValue: userToEdit.id
+      name: "id",
+      type: "hidden",
+      defaultValue: userToEdit.id,
     },
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      name: "name",
+      label: "Name",
+      type: "text",
       required: false,
-      defaultValue: userToEdit.name || '',
-      disabled: !canEditUser
+      defaultValue: userToEdit.name || "",
+      disabled: !canEditUser,
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
+      name: "email",
+      label: "Email",
+      type: "email",
       required: true,
-      defaultValue: userToEdit.email || '',
-      disabled: !canEditUser
+      defaultValue: userToEdit.email || "",
+      disabled: !canEditUser,
     },
     {
-      name: 'role',
-      label: 'Role',
-      type: 'select',
+      name: "role",
+      label: "Role",
+      type: "select",
       required: true,
-      options: ROLES.map(role => ({
+      options: ROLES.map((role) => ({
         label: role.charAt(0).toUpperCase() + role.slice(1),
-        value: role
+        value: role,
       })),
-      defaultValue: userToEdit.role || '',
-      disabled: !hasAccess
-    }
+      defaultValue: userToEdit.role || "",
+      disabled: !hasAccess,
+    },
   ]
 
   return (
     <Form
       fields={fields}
       action={updateAction}
-      button='Save'
+      button="Save"
       data={{
         id: userToEdit.id,
-        name: userToEdit.name || '',
-        email: userToEdit.email || '',
-        role: userToEdit.role
+        name: userToEdit.name || "",
+        email: userToEdit.email || "",
+        role: userToEdit.role,
       }}
     />
   )

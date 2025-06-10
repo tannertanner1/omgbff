@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import type { ColumnDef } from '@tanstack/react-table'
-import { Header } from '@/components/data-table/header'
-import { Actions } from '@/components/data-table/actions'
-import { format } from 'date-fns'
-import type { Organization } from '@/lib/abac'
+import type { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
+import type { Organization } from "@/lib/abac"
+import { Actions } from "@/components/data-table/actions"
+import { Header } from "@/components/data-table/header"
 
 export function getColumns(
   userId: string,
@@ -13,32 +13,32 @@ export function getColumns(
 ): ColumnDef<Organization>[] {
   return [
     {
-      accessorKey: 'id',
-      header: ({ column }) => <Header column={column} label='ID' />,
-      cell: ({ row }) => row.getValue('id')
+      accessorKey: "id",
+      header: ({ column }) => <Header column={column} label="ID" />,
+      cell: ({ row }) => row.getValue("id"),
     },
     {
-      accessorKey: 'name',
-      header: ({ column }) => <Header column={column} label='Name' />,
-      cell: ({ row }) => row.getValue('name')
+      accessorKey: "name",
+      header: ({ column }) => <Header column={column} label="Name" />,
+      cell: ({ row }) => row.getValue("name"),
     },
     {
-      accessorKey: 'updatedAt',
-      header: ({ column }) => <Header column={column} label='Updated' />,
+      accessorKey: "updatedAt",
+      header: ({ column }) => <Header column={column} label="Updated" />,
       cell: ({ row }) =>
-        format(new Date(row.getValue('updatedAt')), 'MMM d, yyyy')
+        format(new Date(row.getValue("updatedAt")), "MMM d, yyyy"),
     },
     {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
+      accessorKey: "createdAt",
+      header: ({ column }) => <Header column={column} label="Created" />,
       cell: ({ row }) =>
-        format(new Date(row.getValue('createdAt')), 'MMM d, yyyy')
+        format(new Date(row.getValue("createdAt")), "MMM d, yyyy"),
     },
     {
-      id: 'actions',
+      id: "actions",
       cell: ({ row }) => (
         <Actions row={row.original} onEdit={onEdit} onDelete={onDelete} />
-      )
-    }
+      ),
+    },
   ]
 }

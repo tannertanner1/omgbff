@@ -1,35 +1,35 @@
-import { notFound, redirect } from 'next/navigation'
-import { verifySession } from '@/lib/dal'
-import { hasPermission, type User } from '@/lib/abac'
-import { Component } from './component'
-import { getAllUsers } from '@/db/queries'
+import { notFound, redirect } from "next/navigation"
+import { getAllUsers } from "@/db/queries"
+import { hasPermission, type User } from "@/lib/abac"
+import { verifySession } from "@/lib/dal"
+import { Component } from "./component"
 
 export default async function Page() {
   const user = await verifySession()
 
-  if (!hasPermission(user, 'users', 'view')) {
-    redirect('/')
+  if (!hasPermission(user, "users", "view")) {
+    redirect("/")
   }
-  if (user.role !== 'admin' && user.role !== 'owner') {
+  if (user.role !== "admin" && user.role !== "owner") {
     notFound()
   }
 
   const usersData = await getAllUsers()
 
   const users =
-    usersData?.map(userData => {
+    usersData?.map((userData) => {
       // Access the invitation data using type assertion
       // TypeScript doesn't know about invitations but it's in the data
       const rawUserData = userData as any
       const invitation = rawUserData.invitations?.[0]
 
       // Extract the inviter's name or email
-      const invitedBy = invitation?.user?.name || invitation?.user?.email || ''
+      const invitedBy = invitation?.user?.name || invitation?.user?.email || ""
 
       return {
         ...userData,
-        email: userData.email || '',
-        name: userData.name || '',
+        email: userData.email || "",
+        name: userData.name || "",
         createdAt:
           userData.createdAt instanceof Date
             ? userData.createdAt
@@ -44,7 +44,7 @@ export default async function Page() {
             : userData.emailVerified
               ? new Date(userData.emailVerified)
               : null,
-        invitedBy
+        invitedBy,
       } as User
     }) || []
 

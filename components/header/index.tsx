@@ -1,7 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
-import { auth } from "@/lib/auth"
 import { IconCircle } from "@tabler/icons-react"
+import { auth } from "@/lib/auth"
 import { Dropdown } from "./dropdown"
 import { Toggle } from "./toggle"
 

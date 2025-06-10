@@ -1,12 +1,12 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { Input } from '@/components/ui/input'
+import * as React from "react"
+import { Input } from "@/components/ui/input"
 
 export function Currency({
   id,
   name,
-  defaultValue = '1.00',
+  defaultValue = "1.00",
   required,
   disabled,
   ...props
@@ -20,7 +20,7 @@ export function Currency({
   }, [defaultValue])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9.]/g, '')
+    const value = e.target.value.replace(/[^0-9.]/g, "")
     let numberValue = Number.parseFloat(value)
 
     if (isNaN(numberValue) || numberValue < 1) {
@@ -35,12 +35,12 @@ export function Currency({
     <Input
       id={id}
       name={name}
-      type='text'
-      inputMode='decimal'
+      type="text"
+      inputMode="decimal"
       value={displayValue}
       onChange={handleChange}
-      min='1'
-      step='0.01'
+      min="1"
+      step="0.01"
       required={required}
       disabled={disabled}
       {...props}

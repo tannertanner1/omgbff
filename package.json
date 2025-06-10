@@ -1,6 +1,11 @@
 {
   "name": "omgbff",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "tannertanner1",
+    "url": "https://tannertanner.me"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "type-check": "tsc --noEmit",
@@ -18,8 +23,8 @@
     "push": "drizzle-kit push --config drizzle.config.ts",
     "pull": "drizzle-kit pull --config drizzle.config.ts",
     "email": "email dev --port 4000 --dir ./emails",
-    "write": "prettier --write \"**/*.{ts,tsx,css}\" --cache",
-    "check": "prettier --check \"**/*.{ts,tsx,css}\" --cache"
+    "check": "prettier --check \"**/*.{ts,tsx,css}\" --cache",
+    "write": "prettier --write \"**/*.{ts,tsx,css}\" --cache"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

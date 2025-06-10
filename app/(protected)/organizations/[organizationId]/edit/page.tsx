@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation'
-import { Form, type Field } from '@/components/form'
-import { getOrganizationById } from '@/db/queries'
-import { updateAction } from '../../actions'
+import { notFound } from "next/navigation"
+import { getOrganizationById } from "@/db/queries"
+import { Form, type Field } from "@/components/form"
+import { updateAction } from "../../actions"
 
 export default async function Page({
-  params
+  params,
 }: {
   params: Promise<{ organizationId: string }>
 }) {
@@ -15,27 +15,27 @@ export default async function Page({
 
   const fields: Field[] = [
     {
-      name: 'id',
-      type: 'hidden' as const,
-      defaultValue: organization.id
+      name: "id",
+      type: "hidden" as const,
+      defaultValue: organization.id,
     },
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text' as const,
+      name: "name",
+      label: "Name",
+      type: "text" as const,
       required: true,
-      defaultValue: organization.name
-    }
+      defaultValue: organization.name,
+    },
   ]
 
   return (
     <Form
       fields={fields}
       action={updateAction}
-      button='Save'
+      button="Save"
       data={{
         id: organization.id,
-        name: organization.name
+        name: organization.name,
       }}
     />
   )

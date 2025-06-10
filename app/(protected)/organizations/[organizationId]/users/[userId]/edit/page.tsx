@@ -1,15 +1,15 @@
-import { notFound, redirect } from 'next/navigation'
-import { Form } from '@/components/form'
-import type { Field } from '@/components/form'
-import { getUserById } from '@/db/queries'
-import { updateAction } from '../../actions'
-import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
-import { ROLES } from '@/data/system-roles'
+import { notFound, redirect } from "next/navigation"
+import { getUserById } from "@/db/queries"
+import { ROLES } from "@/data/system-roles"
+import { hasPermission } from "@/lib/abac"
+import { verifySession } from "@/lib/dal"
+import { Form } from "@/components/form"
+import type { Field } from "@/components/form"
+import { updateAction } from "../../actions"
 
 export default async function Page({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ organizationId: string; userId: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -21,7 +21,7 @@ export default async function Page({
     (resolvedSearchParams.returnTo as string) ||
     `/organizations/${organizationId}/users`
 
-  if (!hasPermission(user, 'users', 'update')) {
+  if (!hasPermission(user, "users", "update")) {
     redirect(`/organizations/${organizationId}/users`)
   }
 
@@ -32,85 +32,85 @@ export default async function Page({
   }
 
   const availableRoles =
-    user.role === 'owner'
+    user.role === "owner"
       ? ROLES
-      : user.role === 'admin'
-        ? ['user', 'admin']
-        : ['user']
+      : user.role === "admin"
+        ? ["user", "admin"]
+        : ["user"]
 
   // Add this logic after retrieving the user data
   const isSelfEdit = user.id === userId
   const canEditUser =
-    user.role === 'owner' ||
-    (user.role === 'admin' && userToEdit.role === 'user') ||
+    user.role === "owner" ||
+    (user.role === "admin" && userToEdit.role === "user") ||
     isSelfEdit
 
   // Then update the fields array to disable name and email fields when appropriate
   const fields: Field[] = [
     {
-      name: 'organizationId',
-      type: 'hidden',
-      defaultValue: organizationId
+      name: "organizationId",
+      type: "hidden",
+      defaultValue: organizationId,
     },
     {
-      name: 'id',
-      type: 'hidden',
-      defaultValue: userToEdit.id
+      name: "id",
+      type: "hidden",
+      defaultValue: userToEdit.id,
     },
     {
-      name: 'returnTo',
-      type: 'hidden',
-      defaultValue: returnTo
+      name: "returnTo",
+      type: "hidden",
+      defaultValue: returnTo,
     },
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      name: "name",
+      label: "Name",
+      type: "text",
       required: false,
       defaultValue: userToEdit.name,
-      disabled: !canEditUser
+      disabled: !canEditUser,
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
+      name: "email",
+      label: "Email",
+      type: "email",
       required: true,
       defaultValue: userToEdit.email,
-      disabled: !canEditUser
+      disabled: !canEditUser,
     },
     {
-      name: 'role',
-      label: 'Role',
-      type: 'select',
+      name: "role",
+      label: "Role",
+      type: "select",
       required: true,
-      options: availableRoles.map(role => ({
+      options: availableRoles.map((role) => ({
         label: role.charAt(0).toUpperCase() + role.slice(1),
-        value: role
+        value: role,
       })),
       defaultValue: userToEdit.role,
       disabled:
-        user.role === 'user' ||
-        (user.role === 'admin' && userToEdit.role === 'owner')
+        user.role === "user" ||
+        (user.role === "admin" && userToEdit.role === "owner"),
     },
     {
-      name: 'status',
-      label: 'Status',
-      type: 'select',
+      name: "status",
+      label: "Status",
+      type: "select",
       options: [
-        { label: 'Pending', value: 'pending' },
-        { label: 'Active', value: 'active' },
-        { label: 'Inactive', value: 'inactive' }
+        { label: "Pending", value: "pending" },
+        { label: "Active", value: "active" },
+        { label: "Inactive", value: "inactive" },
       ],
       defaultValue: userToEdit.status,
-      disabled: true
-    }
+      disabled: true,
+    },
   ]
 
   return (
     <Form
       fields={fields}
       action={updateAction}
-      button='Save'
+      button="Save"
       data={{ role: userToEdit.role }}
     />
   )

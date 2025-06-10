@@ -1,13 +1,11 @@
 "use client"
 
 // Error boundaries must be Client Components
-
-import React from "react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 export default function Error({
   error,

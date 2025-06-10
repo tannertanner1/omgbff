@@ -1,15 +1,15 @@
-import { notFound, redirect } from 'next/navigation'
-import { Form } from '@/components/form'
-import type { Field } from '@/components/form'
-import { getCustomerById } from '@/db/queries'
-import { updateAction } from '../../actions'
-import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
-import { ADDRESS, PHONE } from '@/data/customer-fields'
+import { notFound, redirect } from "next/navigation"
+import { getCustomerById } from "@/db/queries"
+import { ADDRESS, PHONE } from "@/data/customer-fields"
+import { hasPermission } from "@/lib/abac"
+import { verifySession } from "@/lib/dal"
+import { Form } from "@/components/form"
+import type { Field } from "@/components/form"
+import { updateAction } from "../../actions"
 
 export default async function Page({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ organizationId: string; customerId: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -21,7 +21,7 @@ export default async function Page({
     (resolvedSearchParams.returnTo as string) ||
     `/organizations/${organizationId}/customers`
 
-  if (!hasPermission(user, 'customers', 'update')) {
+  if (!hasPermission(user, "customers", "update")) {
     redirect(`/organizations/${organizationId}/customers`)
   }
 
@@ -33,62 +33,62 @@ export default async function Page({
 
   const fields: Field[] = [
     {
-      name: 'organizationId',
-      type: 'hidden',
-      defaultValue: organizationId
+      name: "organizationId",
+      type: "hidden",
+      defaultValue: organizationId,
     },
     {
-      name: 'id',
-      type: 'hidden',
-      defaultValue: customer.id
+      name: "id",
+      type: "hidden",
+      defaultValue: customer.id,
     },
     {
-      name: 'returnTo',
-      type: 'hidden',
-      defaultValue: returnTo
+      name: "returnTo",
+      type: "hidden",
+      defaultValue: returnTo,
     },
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      name: "name",
+      label: "Name",
+      type: "text",
       required: true,
-      defaultValue: customer.name
+      defaultValue: customer.name,
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
+      name: "email",
+      label: "Email",
+      type: "email",
       required: true,
-      defaultValue: customer.email
+      defaultValue: customer.email,
     },
     {
-      name: 'address',
-      type: 'address',
+      name: "address",
+      type: "address",
       required: true,
       defaultValue: customer.address || [
         {
           label: ADDRESS[0],
-          line1: '',
-          line2: '',
-          city: '',
-          region: 'British Columbia',
-          postal: '',
-          country: 'Canada'
-        }
-      ]
+          line1: "",
+          line2: "",
+          city: "",
+          region: "British Columbia",
+          postal: "",
+          country: "Canada",
+        },
+      ],
     },
     {
-      name: 'phone',
-      type: 'phone',
+      name: "phone",
+      type: "phone",
       required: true,
       defaultValue: customer.phone || [
         {
           label: PHONE[0],
-          number: ''
-        }
-      ]
-    }
+          number: "",
+        },
+      ],
+    },
   ]
 
-  return <Form fields={fields} action={updateAction} button='Save' />
+  return <Form fields={fields} action={updateAction} button="Save" />
 }

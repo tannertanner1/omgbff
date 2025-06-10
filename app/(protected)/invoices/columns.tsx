@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import { format } from 'date-fns'
-import type { ColumnDef } from '@tanstack/react-table'
-import { Header } from '@/components/data-table/header'
-import { Actions } from '@/components/data-table/actions'
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
-import { status, type Status } from '@/data/invoice-statuses'
-import type { Invoice } from '@/lib/abac'
+import type { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
+import { status, type Status } from "@/data/invoice-statuses"
+import type { Invoice } from "@/lib/abac"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Actions } from "@/components/data-table/actions"
+import { Header } from "@/components/data-table/header"
 
 export function getColumns(
   userId: string,
@@ -16,78 +16,78 @@ export function getColumns(
 ): ColumnDef<Invoice>[] {
   return [
     {
-      accessorKey: 'id',
-      header: ({ column }) => <Header column={column} label='ID' />,
-      cell: ({ row }) => row.getValue('id')
+      accessorKey: "id",
+      header: ({ column }) => <Header column={column} label="ID" />,
+      cell: ({ row }) => row.getValue("id"),
     },
     {
-      accessorKey: 'customer.email',
-      header: ({ column }) => <Header column={column} label='Email' />,
-      cell: ({ row }) => row.original.customer.email
+      accessorKey: "customer.email",
+      header: ({ column }) => <Header column={column} label="Email" />,
+      cell: ({ row }) => row.original.customer.email,
     },
     {
-      accessorKey: 'customer',
-      header: ({ column }) => <Header column={column} label='Customer' />,
-      cell: ({ row }) => row.original.customer.name
+      accessorKey: "customer",
+      header: ({ column }) => <Header column={column} label="Customer" />,
+      cell: ({ row }) => row.original.customer.name,
     },
     {
-      accessorKey: 'amount',
-      header: ({ column }) => <Header column={column} label='Amount' />,
+      accessorKey: "amount",
+      header: ({ column }) => <Header column={column} label="Amount" />,
       cell: ({ row }) => (
         <>
           $
-          {(row.getValue('amount') as number).toLocaleString('en-US', {
+          {(row.getValue("amount") as number).toLocaleString("en-US", {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
           })}
         </>
-      )
+      ),
     },
     {
-      accessorKey: 'status',
-      header: ({ column }) => <Header column={column} label='Status' />,
+      accessorKey: "status",
+      header: ({ column }) => <Header column={column} label="Status" />,
       cell: ({ row }) => {
-        const invoiceStatus = row.getValue('status') as Status
+        const invoiceStatus = row.getValue("status") as Status
         return (
           <Badge
-            className={cn('text-background', {
-              [`bg-[${status[invoiceStatus]}]`]: true
+            className={cn("text-background", {
+              [`bg-[${status[invoiceStatus]}]`]: true,
             })}
           >
             {invoiceStatus.charAt(0).toUpperCase() + invoiceStatus.slice(1)}
           </Badge>
         )
-      }
+      },
     },
     {
-      accessorKey: 'updatedAt',
-      header: ({ column }) => <Header column={column} label='Updated' />,
+      accessorKey: "updatedAt",
+      header: ({ column }) => <Header column={column} label="Updated" />,
       cell: ({ row }) => {
-        const dateValue = row.getValue('updatedAt')
+        const dateValue = row.getValue("updatedAt")
         return dateValue instanceof Date
-          ? format(dateValue, 'MMM d, yyyy')
-          : typeof dateValue === 'string'
-            ? format(new Date(dateValue), 'MMM d, yyyy')
-            : 'Invalid Date'
-      }
+          ? format(dateValue, "MMM d, yyyy")
+          : typeof dateValue === "string"
+            ? format(new Date(dateValue), "MMM d, yyyy")
+            : "Invalid Date"
+      },
     },
     {
-      accessorKey: 'createdAt',
-      header: ({ column }) => <Header column={column} label='Created' />,
+      accessorKey: "createdAt",
+      header: ({ column }) => <Header column={column} label="Created" />,
       cell: ({ row }) => {
-        const dateValue = row.getValue('createdAt')
+        const dateValue = row.getValue("createdAt")
         return dateValue instanceof Date
-          ? format(dateValue, 'MMM d, yyyy')
-          : typeof dateValue === 'string'
-            ? format(new Date(dateValue), 'MMM d, yyyy')
-            : 'Invalid Date'
-      }
+          ? format(dateValue, "MMM d, yyyy")
+          : typeof dateValue === "string"
+            ? format(new Date(dateValue), "MMM d, yyyy")
+            : "Invalid Date"
+      },
     },
     {
-      id: 'actions',
+      id: "actions",
       cell: ({ row }) => (
         <Actions row={row.original} onEdit={onEdit} onDelete={onDelete} />
-      )
-    }
+      ),
+    },
   ]
 }

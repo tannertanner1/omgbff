@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "motion/react"
+import { CTA } from "@/data/landing-content"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CTA } from "@/data/landing-content"
 import { Section } from "./section"
 
 function Cta() {

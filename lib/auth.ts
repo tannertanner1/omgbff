@@ -1,26 +1,26 @@
+import { db } from "@/db"
+import {
+  accounts,
+  invitations,
+  sessions,
+  users,
+  verificationTokens,
+} from "@/db/schema/users"
+import InviteEmail from "@/emails/invite-email"
+import LoginEmail from "@/emails/login-email"
+import VerifyEmail from "@/emails/verify-email"
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { and, eq, gt, sql } from "drizzle-orm"
 import NextAuth, { type DefaultSession } from "next-auth"
 // Database adapter
 import type { Adapter } from "next-auth/adapters"
-import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { db } from "@/db"
-import {
-  sessions,
-  users,
-  accounts,
-  verificationTokens,
-  invitations,
-} from "@/db/schema/users"
-import { eq, and, sql, gt } from "drizzle-orm"
-// Auth provider
-import { Resend as ResendClient } from "resend"
-import Resend from "next-auth/providers/resend"
-import VerifyEmail from "@/emails/verify-email"
-import LoginEmail from "@/emails/login-email"
-import InviteEmail from "@/emails/invite-email"
-import type { Role } from "@/data/system-roles"
-import { ROUTES, DOMAIN } from "@/data/public-routes"
 // Session strategy
 import { JWT } from "next-auth/jwt"
+import Resend from "next-auth/providers/resend"
+// Auth provider
+import { Resend as ResendClient } from "resend"
+import { DOMAIN, ROUTES } from "@/data/public-routes"
+import type { Role } from "@/data/system-roles"
 
 interface DatabaseUser {
   id: string

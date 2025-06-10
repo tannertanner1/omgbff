@@ -1,13 +1,13 @@
 import {
   IconAt,
   IconFolder,
-  IconUser,
   IconInvoice,
+  IconLogout,
   IconMail,
   IconSend,
-  IconUserCircle,
   IconSettings,
-  IconLogout,
+  IconUser,
+  IconUserCircle,
   type Icon,
 } from "@tabler/icons-react"
 

@@ -1,7 +1,7 @@
 import { cache } from "react"
 import { redirect } from "next/navigation"
-import { auth } from "@/lib/auth"
 import type { User } from "@/lib/abac"
+import { auth } from "@/lib/auth"
 
 export const verifySession = cache(async (): Promise<User> => {
   const session = await auth()

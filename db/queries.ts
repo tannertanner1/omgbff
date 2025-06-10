@@ -1,20 +1,20 @@
-import { notFound } from 'next/navigation'
-import { eq, inArray, desc } from 'drizzle-orm'
-import { db } from '@/db'
+import { notFound } from "next/navigation"
+import { db } from "@/db"
 import {
+  customers,
+  invitations,
+  invoices,
   organizations,
   userOrganizations,
-  invitations,
-  customers,
-  invoices,
-  users
-} from '@/db/schema'
-import { verifySession } from '@/lib/dal'
-import { hasPermission } from '@/lib/abac'
+  users,
+} from "@/db/schema"
+import { desc, eq, inArray } from "drizzle-orm"
+import { hasPermission } from "@/lib/abac"
+import { verifySession } from "@/lib/dal"
 
 async function getAllUsers(): Promise<(typeof users.$inferSelect)[] | []> {
   const user = await verifySession()
-  if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
+  if (!user || (user.role !== "admin" && user.role !== "owner")) {
     return []
   }
 
@@ -22,12 +22,12 @@ async function getAllUsers(): Promise<(typeof users.$inferSelect)[] | []> {
     with: {
       invitations: {
         with: {
-          user: true // This is the inviter/referrer
+          user: true, // This is the inviter/referrer
         },
-        limit: 1
-      }
+        limit: 1,
+      },
     },
-    orderBy: [desc(users.createdAt)]
+    orderBy: [desc(users.createdAt)],
   })
 }
 
@@ -35,22 +35,22 @@ async function getAllOrganizations(): Promise<
   (typeof organizations.$inferSelect)[] | []
 > {
   const user = await verifySession()
-  if (user.role === 'admin' || user.role === 'owner') {
+  if (user.role === "admin" || user.role === "owner") {
     return await db.query.organizations.findMany({
-      orderBy: (organizations, { desc }) => [desc(organizations.createdAt)]
+      orderBy: (organizations, { desc }) => [desc(organizations.createdAt)],
     })
   } else {
     return await db.query.userOrganizations
       .findMany({
         where: eq(userOrganizations.userId, user.id),
         with: {
-          organization: true
+          organization: true,
         },
         orderBy: (userOrganizations, { desc }) => [
-          desc(userOrganizations.createdAt)
-        ]
+          desc(userOrganizations.createdAt),
+        ],
       })
-      .then(results => results.map(result => result.organization))
+      .then((results) => results.map((result) => result.organization))
   }
 }
 
@@ -65,17 +65,17 @@ async function getAllCustomers(): Promise<
   const user = await verifySession()
   let customersQuery
 
-  if (user.role === 'admin' || user.role === 'owner') {
+  if (user.role === "admin" || user.role === "owner") {
     customersQuery = db.query.customers.findMany({
       with: {
         invoices: {
           columns: {
             id: true,
-            amount: true
-          }
+            amount: true,
+          },
         },
-        organization: true
-      }
+        organization: true,
+      },
     })
   } else {
     customersQuery = db.query.customers.findMany({
@@ -84,23 +84,23 @@ async function getAllCustomers(): Promise<
         invoices: {
           columns: {
             id: true,
-            amount: true
-          }
+            amount: true,
+          },
         },
-        organization: true
-      }
+        organization: true,
+      },
     })
   }
 
-  return customersQuery.then(customers =>
-    customers.map(customer => ({
+  return customersQuery.then((customers) =>
+    customers.map((customer) => ({
       ...customer,
       invoiceCount: customer.invoices.length,
       invoiceTotal: customer.invoices.reduce(
         (sum: number, invoice: { amount: number }) => sum + invoice.amount,
         0
       ),
-      invoices: customer.invoices
+      invoices: customer.invoices,
     }))
   )
 }
@@ -112,18 +112,18 @@ async function getAllInvoices(): Promise<
   | []
 > {
   const user = await verifySession()
-  if (user.role === 'admin' || user.role === 'owner') {
+  if (user.role === "admin" || user.role === "owner") {
     return await db.query.invoices.findMany({
       with: {
         customer: {
           columns: {
             name: true,
             email: true,
-            organizationId: true
-          }
-        }
+            organizationId: true,
+          },
+        },
       },
-      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
+      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)],
     })
   } else {
     return await db.query.invoices.findMany({
@@ -133,27 +133,27 @@ async function getAllInvoices(): Promise<
           columns: {
             name: true,
             email: true,
-            organizationId: true
-          }
-        }
+            organizationId: true,
+          },
+        },
       },
-      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)]
+      orderBy: (invoices, { desc }) => [desc(invoices.createdAt)],
     })
   }
 }
 
 async function getUserById({
-  userId
+  userId,
 }: {
   userId: string
 }): Promise<typeof users.$inferSelect | null> {
   const currentUser = await verifySession()
-  if (!currentUser || !hasPermission(currentUser, 'users', 'view')) {
+  if (!currentUser || !hasPermission(currentUser, "users", "view")) {
     return null
   }
 
   const user = await db.query.users.findFirst({
-    where: eq(users.id, userId)
+    where: eq(users.id, userId),
   })
 
   if (!user) {
@@ -164,7 +164,7 @@ async function getUserById({
 }
 
 async function getOrganizationById({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }): Promise<
@@ -174,7 +174,7 @@ async function getOrganizationById({
   | null
 > {
   const user = await verifySession()
-  if (!user || !hasPermission(user, 'organizations', 'view')) {
+  if (!user || !hasPermission(user, "organizations", "view")) {
     return null
   }
 
@@ -183,10 +183,10 @@ async function getOrganizationById({
     with: {
       userOrganizations: {
         with: {
-          user: true
-        }
-      }
-    }
+          user: true,
+        },
+      },
+    },
   })
 
   if (!organization) {
@@ -197,45 +197,45 @@ async function getOrganizationById({
 }
 
 async function getOrganizationUsers({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }): Promise<(typeof users.$inferSelect & { role: string })[]> {
   const currentUser = await verifySession()
-  if (!currentUser || !hasPermission(currentUser, 'users', 'view')) {
+  if (!currentUser || !hasPermission(currentUser, "users", "view")) {
     return []
   }
 
   const organizationUsers = await db.query.userOrganizations.findMany({
     where: eq(userOrganizations.organizationId, organizationId),
     with: {
-      user: true
-    }
+      user: true,
+    },
   })
 
-  return organizationUsers.map(ou => ({
+  return organizationUsers.map((ou) => ({
     ...ou.user,
-    role: ou.role
+    role: ou.role,
   }))
 }
 
 async function getOrganizationInvitations({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }): Promise<(typeof invitations.$inferSelect)[] | []> {
   const currentUser = await verifySession()
-  if (!currentUser || !hasPermission(currentUser, 'invitations', 'view')) {
+  if (!currentUser || !hasPermission(currentUser, "invitations", "view")) {
     return []
   }
 
   return await db.query.invitations.findMany({
-    where: eq(invitations.organizationId, organizationId)
+    where: eq(invitations.organizationId, organizationId),
   })
 }
 
 async function getOrganizationCustomers({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }): Promise<
@@ -247,7 +247,7 @@ async function getOrganizationCustomers({
   | []
 > {
   const user = await verifySession()
-  if (!user || !hasPermission(user, 'customers', 'view')) {
+  if (!user || !hasPermission(user, "customers", "view")) {
     return []
   }
 
@@ -258,26 +258,26 @@ async function getOrganizationCustomers({
         invoices: {
           columns: {
             id: true,
-            amount: true
-          }
-        }
-      }
+            amount: true,
+          },
+        },
+      },
     })
-    .then(customers =>
-      customers.map(customer => ({
+    .then((customers) =>
+      customers.map((customer) => ({
         ...customer,
         invoiceCount: customer.invoices.length,
         invoiceTotal: customer.invoices.reduce(
           (sum: number, invoice: { amount: number }) => sum + invoice.amount,
           0
         ),
-        invoices: customer.invoices
+        invoices: customer.invoices,
       }))
     )
 }
 
 async function getOrganizationInvoices({
-  organizationId
+  organizationId,
 }: {
   organizationId: string
 }): Promise<
@@ -287,20 +287,20 @@ async function getOrganizationInvoices({
   | []
 > {
   const user = await verifySession()
-  if (!user || !hasPermission(user, 'invoices', 'view')) {
+  if (!user || !hasPermission(user, "invoices", "view")) {
     return []
   }
 
   const organizationCustomers = await getOrganizationCustomers({
-    organizationId
+    organizationId,
   })
-  const customerIds = organizationCustomers.map(customer => customer.id)
+  const customerIds = organizationCustomers.map((customer) => customer.id)
 
   return await db.query.invoices.findMany({
     where: inArray(invoices.customerId, customerIds),
     with: {
-      customer: true
-    }
+      customer: true,
+    },
   })
 }
 
@@ -311,7 +311,7 @@ async function getCustomerById({ customerId }: { customerId: string }): Promise<
   | null
 > {
   const user = await verifySession()
-  if (!user || !hasPermission(user, 'customers', 'view')) {
+  if (!user || !hasPermission(user, "customers", "view")) {
     return null
   }
 
@@ -320,15 +320,15 @@ async function getCustomerById({ customerId }: { customerId: string }): Promise<
   const customer = await db.query.customers.findFirst({
     where: eq(customers.id, customerId),
     with: {
-      invoices: true
-    }
+      invoices: true,
+    },
   })
 
   return customer || null
 }
 
 async function getInvoiceById({
-  invoiceId
+  invoiceId,
 }: {
   invoiceId: string
 }): Promise<
@@ -336,15 +336,15 @@ async function getInvoiceById({
   | null
 > {
   const user = await verifySession()
-  if (!user || !hasPermission(user, 'invoices', 'view')) {
+  if (!user || !hasPermission(user, "invoices", "view")) {
     return null
   }
 
   const invoice = await db.query.invoices.findFirst({
     where: eq(invoices.id, invoiceId),
     with: {
-      customer: true
-    }
+      customer: true,
+    },
   })
 
   if (!invoice) {
@@ -366,5 +366,5 @@ export {
   getOrganizationCustomers,
   getOrganizationInvoices,
   getCustomerById,
-  getInvoiceById
+  getInvoiceById,
 }

@@ -1,6 +1,6 @@
 import { CustomTrigger } from "./custom-trigger"
-import { ThemeSelector } from "./theme-selector"
 import { ModeToggle } from "./mode-toggle"
+import { ThemeSelector } from "./theme-selector"
 
 function SiteHeader() {
   return (

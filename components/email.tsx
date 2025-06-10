@@ -7,8 +7,8 @@ import {
   Html,
   Preview,
   Section,
-  Text
-} from '@react-email/components'
+  Text,
+} from "@react-email/components"
 
 export const Email = ({
   preview,
@@ -16,7 +16,7 @@ export const Email = ({
   body,
   url,
   button,
-  footer
+  footer,
 }: {
   preview: string
   heading: string
@@ -27,45 +27,45 @@ export const Email = ({
 }) => {
   const styles = {
     body: {
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
-      padding: '20px'
+      padding: "20px",
     },
     container: {
-      margin: '0 auto',
-      maxWidth: '560px'
+      margin: "0 auto",
+      maxWidth: "560px",
     },
     heading: {
-      fontSize: '24px',
-      letterSpacing: '-0.5px',
-      lineHeight: '1.3',
-      fontWeight: '400',
-      color: '#000',
-      padding: '4px 0 0'
+      fontSize: "24px",
+      letterSpacing: "-0.5px",
+      lineHeight: "1.3",
+      fontWeight: "400",
+      color: "#000",
+      padding: "4px 0 0",
     },
     text: {
-      margin: '0 0 15px',
-      fontSize: '16px',
-      lineHeight: '1.4',
-      color: '#000'
+      margin: "0 0 15px",
+      fontSize: "16px",
+      lineHeight: "1.4",
+      color: "#000",
     },
     button: {
-      backgroundColor: '#000',
-      borderRadius: '3px',
-      fontWeight: '400',
-      color: '#fff',
-      fontSize: '16px',
-      textDecoration: 'none',
-      textAlign: 'center' as const,
-      display: 'block',
-      padding: '11px 23px',
-      margin: '0 auto'
+      backgroundColor: "#000",
+      borderRadius: "3px",
+      fontWeight: "400",
+      color: "#fff",
+      fontSize: "16px",
+      textDecoration: "none",
+      textAlign: "center" as const,
+      display: "block",
+      padding: "11px 23px",
+      margin: "0 auto",
     },
     footer: {
-      fontSize: '14px',
-      color: '#000'
-    }
+      fontSize: "14px",
+      color: "#000",
+    },
   }
 
   return (
