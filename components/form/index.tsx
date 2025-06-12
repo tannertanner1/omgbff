@@ -263,6 +263,7 @@ export function Form({
                                 >
                                   <SelectTrigger
                                     className={cn(
+                                      "w-full",
                                       methods.formState.errors[field.name]
                                         ? "border-[#DB4437]"
                                         : ""
