@@ -48,7 +48,7 @@ export function Actions<T extends { id: string }>({
         <DropdownMenuTrigger asChild>
           <button
             data-action-trigger
-            className="group inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors"
+            className="group inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ring-0 transition-colors outline-none focus:ring-0 focus:outline-none"
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()

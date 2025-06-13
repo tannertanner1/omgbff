@@ -201,7 +201,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border [&_[data-slot=table-row]]:hover:bg-transparent">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -227,7 +227,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={cn(link && "hover:bg-muted cursor-pointer")}
+                  className={cn(link && "cursor-pointer")}
                   onClick={(e) => {
                     const target = e.target as HTMLElement
                     // Only navigate if not clicking an action button or its container

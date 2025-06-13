@@ -330,6 +330,13 @@
   box-shadow: none !important;
   background: var(--sidebar);
 }
+[data-slot="table-container"] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+[data-slot="table-container"]::-webkit-scrollbar {
+  display: none;
+}
 
 .site-header {
   position: sticky;
