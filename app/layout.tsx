@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://omgbff.com" },
   title: "omgbff",
   description:
-    "All-in-one client portal and admin dashboard. Manage accounts, tasks, and billing—without spreadsheets or extra overhead.",
+    "All-in-one client portal and admin dashboard. Manage accounts, tasks, and billing without spreadsheets or extra overhead.",
   authors: [
     {
       name: "tannertanner1",

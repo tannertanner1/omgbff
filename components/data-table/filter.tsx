@@ -3,6 +3,7 @@
 import * as React from "react"
 import { IconDotsCircleHorizontal } from "@tabler/icons-react"
 import type { Table } from "@tanstack/react-table"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,10 +66,14 @@ export function Filter<TData>({ table }: { table: Table<TData> }) {
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="flex h-9 w-9 items-center justify-center">
-            <IconDotsCircleHorizontal className="h-6 w-6" />
-            <span className="sr-only">Filter column</span>
-          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          >
+            <IconDotsCircleHorizontal className="size-5" />
+            <span className="sr-only">More</span>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[144px]">
           <DropdownMenuSub>

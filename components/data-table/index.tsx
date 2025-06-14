@@ -20,6 +20,7 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -138,20 +139,21 @@ export function DataTable<TData, TValue>({
         />
         <DropdownMenu open={isOptionsOpen} onOpenChange={setIsOptionsOpen}>
           <DropdownMenuTrigger asChild>
-            <button
-              aria-label="Table options"
-              className={cn("group rounded-full transition-colors")}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="group hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 transition-colors"
             >
               <IconDotsCircleHorizontal
                 className={cn(
-                  "h-6 w-6 transition-colors",
+                  "size-5 transition-colors",
                   isOptionsOpen
-                    ? "text-primary"
-                    : "text-muted-foreground group-hover:text-primary"
+                    ? "text-muted-foreground group-hover:text-primary"
+                    : "text-primary"
                 )}
               />
-              <span className="sr-only">Table options</span>
-            </button>
+              <span className="sr-only">More</span>
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[200px]">
             <DropdownMenuSub>

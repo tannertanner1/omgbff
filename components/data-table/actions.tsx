@@ -58,8 +58,8 @@ export function Actions<T extends { id: string }>({
               className={cn(
                 "h-4 w-4 transition-colors",
                 isOpen
-                  ? "text-primary"
-                  : "text-muted-foreground group-hover:text-primary"
+                  ? "text-muted-foreground group-hover:text-primary"
+                  : "text-primary"
               )}
             />
           </button>
