@@ -10,6 +10,7 @@ import { IconCircleX } from "@tabler/icons-react"
 import { hasPermission } from "@/lib/abac"
 import type { Customer, Invoice, User } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
+import { Button } from "@/components/ui/button"
 import { Customers } from "./customers/component"
 import { Invoices } from "./invoices/component"
 import { Users } from "./users/component"
@@ -122,7 +123,14 @@ export default async function Page({
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">{organization.name}</h1>
           <Link href={"/organizations"}>
-            <IconCircleX className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+            >
+              <IconCircleX className="size-5" />
+              <span className="sr-only">Back</span>
+            </Button>
           </Link>
         </div>
 

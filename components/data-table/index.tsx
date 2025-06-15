@@ -147,6 +147,7 @@ export function DataTable<TData, TValue>({
               <IconDotsCircleHorizontal
                 className={cn(
                   "size-5 transition-colors",
+                  "ring-0 outline-none focus:ring-0 focus:outline-none",
                   isOptionsOpen
                     ? "text-muted-foreground group-hover:text-primary"
                     : "text-primary"

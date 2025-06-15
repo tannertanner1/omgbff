@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { IconCirclePlus } from "@tabler/icons-react"
 import type { Customer } from "@/lib/abac"
+import { Button } from "@/components/ui/button"
 import { Table } from "@/components/data-table/table"
 import { deleteAction } from "./actions"
 import { getCustomerColumns } from "./columns"
@@ -57,7 +58,14 @@ export function Customers({
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Customers</h2>
         <Link href={`/organizations/${organizationId}/customers/new`}>
-          <IconCirclePlus className="h-6 w-6 text-muted-foreground transition-colors hover:text-primary" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          >
+            <IconCirclePlus className="size-5" />
+            <span className="sr-only">Create</span>
+          </Button>
         </Link>
       </div>
       <Table
