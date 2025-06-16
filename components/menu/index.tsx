@@ -22,7 +22,10 @@ function Menu({ user, className }: { user: User; className?: string }) {
 
   return (
     <motion.div
-      className={cn("w-full min-w-sm space-y-4 p-4 px-2", className)}
+      className={cn(
+        "w-full min-w-sm space-y-3 overflow-visible p-4 px-4",
+        className
+      )}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -35,29 +38,3 @@ function Menu({ user, className }: { user: User; className?: string }) {
 }
 
 export { Menu }
-
-// @note
-
-// "use client"
-
-// import { motion } from "motion/react"
-// import { cn } from "@/lib/utils"
-// import { ITEMS } from "@/data/menu-items"
-// import { Component } from "./component"
-
-// function Menu({ className }: { className?: string }) {
-//   return (
-//     <motion.div
-//       className={cn("w-full min-w-sm space-y-4 p-4", className)}
-//       initial={{ opacity: 0 }}
-//       animate={{ opacity: 1 }}
-//       transition={{ duration: 0.5 }}
-//     >
-//       {ITEMS.map((item, index) => (
-//         <Component key={item.title} {...item} index={index + 1} />
-//       ))}
-//     </motion.div>
-//   )
-// }
-
-// export { Menu }
