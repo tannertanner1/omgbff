@@ -135,7 +135,7 @@ export function DataTable<TData, TValue>({
               currentColumn.setFilterValue(event.target.value)
             }
           }}
-          className="w-full"
+          className="border-input [&[data-slot=input]]:focus-visible:border-input [&[data-slot=input]]:dark:bg-background w-full [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
         />
         <DropdownMenu open={isOptionsOpen} onOpenChange={setIsOptionsOpen}>
           <DropdownMenuTrigger asChild>
