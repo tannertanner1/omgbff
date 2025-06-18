@@ -77,14 +77,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       apiKey: process.env.AUTH_RESEND_KEY,
       from: process.env.AUTH_RESEND_EMAIL,
       async sendVerificationRequest({ identifier: email, url }) {
-        console.log("Sending verification request to:", email)
-        console.log("URL:", url)
+        // console.log("Sending verification request to:", email)
+        // console.log("URL:", url)
 
         const user = await db.query.users.findFirst({
           where: (users, { eq }) => eq(users.email, email),
         })
 
-        console.log("User found:", user ? "Yes" : "No")
+        // console.log("User found:", user ? "Yes" : "No")
 
         // If user exists and has pending status, update to active
         if (user && user.status === "pending") {
@@ -111,7 +111,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         })
 
         const isInvitation = invitation !== undefined && invitation !== null
-        console.log("Is invitation:", isInvitation ? "Yes" : "No")
+        // console.log("Is invitation:", isInvitation ? "Yes" : "No")
 
         let subject = DOMAIN
         let emailTemplate
@@ -136,9 +136,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             subject,
             react: emailTemplate,
           })
-          console.log("Email sent successfully")
+          // console.log("Email sent successfully")
         } catch (error) {
-          console.error("Error sending email:", error)
+          // console.error("Error sending email:", error)
           throw new Error("Failed to send verification email")
         }
       },
@@ -174,7 +174,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           ),
         })
         if (!dbUser) {
-          console.error(`User ${token.id} not found`)
+          // console.error(`User ${token.id} not found`)
           // Return a minimal session instead of throwing an error
           return {
             ...session,
@@ -210,12 +210,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             await db
               .delete(invitations)
               .where(eq(invitations.email, dbUser.email))
-            console.log(
-              "Deleted any pending invitations for user:",
-              dbUser.email
-            )
+            // console.log(
+            //   "Deleted any pending invitations for user:",
+            //   dbUser.email
+            // )
           } catch (error) {
-            console.error("Error deleting invitations:", error)
+            // console.error("Error deleting invitations:", error)
           }
         }
 
@@ -298,9 +298,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // This ensures that once a user accepts an invitation, they won't receive invitation emails again
         try {
           await db.delete(invitations).where(eq(invitations.email, user.email))
-          console.log("Deleted invitations for user on sign in:", user.email)
+          // console.log("Deleted invitations for user on sign in:", user.email)
         } catch (error) {
-          console.error("Error deleting invitations on sign in:", error)
+          // console.error("Error deleting invitations on sign in:", error)
         }
       }
     },
