@@ -142,17 +142,14 @@ export function DataTable<TData, TValue>({
             <Button
               variant="ghost"
               size="icon"
-              className="group hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 transition-colors"
+              className={cn(
+                "group h-8 w-8 p-0 transition-colors",
+                "focus:ring-0 focus:outline-none",
+                "hover:bg-accent hover:text-accent-foreground",
+                isOptionsOpen && "bg-accent text-accent-foreground"
+              )}
             >
-              <IconDotsCircleHorizontal
-                className={cn(
-                  "size-5 transition-colors",
-                  "ring-0 outline-none focus:ring-0 focus:outline-none",
-                  isOptionsOpen
-                    ? "text-muted-foreground group-hover:text-primary"
-                    : "text-primary"
-                )}
-              />
+              <IconDotsCircleHorizontal className="size-5 transition-colors" />
               <span className="sr-only">More</span>
             </Button>
           </DropdownMenuTrigger>

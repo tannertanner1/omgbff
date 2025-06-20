@@ -48,20 +48,17 @@ export function Actions<T extends { id: string }>({
         <DropdownMenuTrigger asChild>
           <button
             data-action-trigger
-            className="group inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ring-0 transition-colors outline-none focus:ring-0 focus:outline-none"
+            className={cn(
+              "group inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors focus:ring-0 focus:outline-none",
+              isOpen && "bg-accent text-accent-foreground",
+              "hover:bg-accent hover:text-accent-foreground"
+            )}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
             }}
           >
-            <IconDots
-              className={cn(
-                "h-4 w-4 transition-colors",
-                isOpen
-                  ? "text-muted-foreground group-hover:text-primary"
-                  : "text-primary"
-              )}
-            />
+            <IconDots className="h-4 w-4 transition-colors" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
