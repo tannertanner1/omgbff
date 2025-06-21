@@ -49,7 +49,7 @@ export function Component({
   return (
     <div className="h-fit">
       <div className="mx-auto max-w-5xl p-4">
-        <div className="-mt-3 mb-2 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Invoices</h1>
           <Link href={"/invoices/new"}>
             <Button

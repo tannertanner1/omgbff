@@ -53,7 +53,7 @@ export function Component({
   return (
     <div className="flex h-fit">
       <div className="mx-auto w-full max-w-5xl p-4">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Users</h1>
           <Link href={`/users/new`}>
             <Button
