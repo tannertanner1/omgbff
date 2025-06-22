@@ -15,19 +15,15 @@ export function Pagination<TData>({ table }: { table: Table<TData> }) {
         <Button
           variant="ghost"
           size="icon"
-          className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 [&[data-slot=button]:disabled]:opacity-100"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
           <IconCircleChevronLeft
             className={cn(
-              "size-5 transition-colors",
-              // !table.getCanPreviousPage()
-              //   ? "text-muted-foreground/50"
-              //   : "text-muted-foreground hover:text-primary"
-              !table.getCanPreviousPage()
-                ? "text-primary"
-                : "text-primary hover:text-muted-foreground"
+              "text-primary size-5 transition-colors",
+              table.getCanPreviousPage() &&
+                "hover:bg-accent hover:text-accent-foreground"
             )}
           />
           <span className="sr-only">Prev</span>
@@ -35,19 +31,15 @@ export function Pagination<TData>({ table }: { table: Table<TData> }) {
         <Button
           variant="ghost"
           size="icon"
-          className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          className="hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 [&[data-slot=button]:disabled]:opacity-100"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
           <IconCircleChevronRight
             className={cn(
-              "size-5 transition-colors",
-              // !table.getCanNextPage()
-              //   ? "text-muted-foreground/50"
-              //   : "text-muted-foreground hover:text-primary"
-              !table.getCanNextPage()
-                ? "text-primary"
-                : "text-primary hover:text-muted-foreground"
+              "text-primary size-5 transition-colors",
+              table.getCanNextPage() &&
+                "hover:bg-accent hover:text-accent-foreground"
             )}
           />
           <span className="sr-only">Next</span>
