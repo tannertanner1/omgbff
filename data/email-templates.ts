@@ -49,13 +49,3 @@ export const emails = {
     "If you didn't request this change, you can safely ignore this email."
   ),
 }
-
-/**
-export const email = {
-  preview: '',
-  heading: '',
-  body: '',
-  button: '',
-  footer: '',
-}
-*/
