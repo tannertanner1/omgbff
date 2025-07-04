@@ -1,9 +1,25 @@
 export default async function Page() {
   return (
-    <section className="flex h-full w-full items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4 px-4 py-16">
-        <p className="text-muted-foreground text-center">Cooking.</p>
+    <div className="h-fit">
+      <div className="mx-auto max-w-5xl p-4 text-wrap">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Changelog</h1>
+            <p className="text-muted-foreground mt-2">
+              Latest updates and announcements
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <section>
+            <h2 className="mb-4 text-xl font-medium">June 2025</h2>
+            <ul className="text-muted-foreground space-y-3">
+              <li className="flex items-start">• Open-sourced omgbff.com</li>
+            </ul>
+          </section>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }
