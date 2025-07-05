@@ -15,7 +15,10 @@ export default async function Page() {
           <section>
             <h2 className="mb-4 text-xl font-medium">June 2025</h2>
             <ul className="text-muted-foreground space-y-3">
-              <li className="flex items-start">• Open-sourced omgbff.com</li>
+              <li className="flex items-start gap-2">
+                <span>•</span>
+                <span className="text-pretty">Open-sourced omgbff.com</span>
+              </li>
             </ul>
           </section>
         </div>
