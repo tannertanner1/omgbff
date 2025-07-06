@@ -19,32 +19,31 @@ function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Badge
-          variant="outline"
-          className={cn(
-            "mb-6 -ml-1 flex w-fit items-center px-4 py-1.5 text-sm font-medium shadow-sm @3xl:ml-1",
-            "cursor-not-allowed"
-          )}
-          aria-disabled="true"
-        >
-          {/* <span
-            className="text-muted-foreground flex items-center justify-center"
-            style={{ transform: "scale(1.1)" }}
+        <Link href={HERO.changelog}>
+          <Badge
+            variant="outline"
+            className="mb-6 -ml-1 flex w-fit items-center px-4 py-1.5 text-sm font-medium shadow-sm @3xl:ml-1"
+            aria-disabled="true"
           >
-            <IconSparkles className="h-4 w-4" />
-          </span>
-          <Separator
-            orientation="vertical"
-            className="inset-shadow-muted-foreground/50 mx-2 rounded-full inset-shadow-sm data-[orientation=vertical]:h-4"
-          /> */}
-          {HERO.section}
-          {/* <span
-            className="text-muted-foreground ml-1 flex items-center justify-center"
-            style={{ transform: "scale(1.1)" }}
-          >
-            <IconArrowRight className="h-4 w-4" />
-          </span> */}
-        </Badge>
+            {/* <span
+              className="text-muted-foreground flex items-center justify-center"
+              style={{ transform: "scale(1.1)" }}
+            >
+              <IconSparkles className="h-4 w-4" />
+            </span>
+            <Separator
+              orientation="vertical"
+              className="inset-shadow-muted-foreground/50 mx-2 rounded-full inset-shadow-sm data-[orientation=vertical]:h-4"
+            /> */}
+            {HERO.section}
+            {/* <span
+              className="text-muted-foreground ml-1 flex items-center justify-center"
+              style={{ transform: "scale(1.1)" }}
+            >
+              <IconArrowRight className="h-4 w-4" />
+            </span> */}
+          </Badge>
+        </Link>
       </motion.div>
 
       <motion.h1

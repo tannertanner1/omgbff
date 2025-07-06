@@ -20,6 +20,7 @@ import {
 } from "@/components/icons"
 
 const HERO = {
+  changelog: "/changelog",
   section: "Announcing public beta",
   title: "One app. Two dashboards.",
   description:
