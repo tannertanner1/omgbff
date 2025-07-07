@@ -57,10 +57,16 @@ export function getCustomerColumns(
           (addr) => addr.label === ADDRESS[0]
         )
         return (
-          <Badge className="bg-primary text-primary-foreground">
+          <Badge
+            className={
+              mailingAddress
+                ? "bg-primary text-primary-foreground"
+                : "bg-transparent"
+            }
+          >
             {mailingAddress
               ? `${mailingAddress.line1}${mailingAddress.line2 ? `, ${mailingAddress.line2}` : ""}, ${mailingAddress.city}, ${mailingAddress.region} ${mailingAddress.postal}, ${mailingAddress.country}`
-              : "N/A"}
+              : ""}
           </Badge>
         )
       },
@@ -74,8 +80,14 @@ export function getCustomerColumns(
           (phone) => phone.label === PHONE[0]
         )
         return (
-          <Badge className="bg-primary text-primary-foreground">
-            {primaryPhone ? primaryPhone.number : "N/A"}
+          <Badge
+            className={
+              primaryPhone
+                ? "bg-primary text-primary-foreground"
+                : "bg-transparent"
+            }
+          >
+            {primaryPhone ? primaryPhone.number : ""}
           </Badge>
         )
       },

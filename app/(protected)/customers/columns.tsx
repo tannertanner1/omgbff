@@ -57,9 +57,10 @@ export function getColumns(
         )
         return (
           <Badge
-            // className='bg-primary text-primary-foreground'
             className={
-              mailingAddress ? "bg-primary text-primary-foreground" : ""
+              mailingAddress
+                ? "bg-primary text-primary-foreground"
+                : "bg-transparent"
             }
           >
             {mailingAddress
@@ -79,8 +80,11 @@ export function getColumns(
         )
         return (
           <Badge
-            // className='bg-primary text-primary-foreground'
-            className={primaryPhone ? "bg-primary text-primary-foreground" : ""}
+            className={
+              primaryPhone
+                ? "bg-primary text-primary-foreground"
+                : "bg-transparent"
+            }
           >
             {primaryPhone ? primaryPhone.number : ""}
           </Badge>
