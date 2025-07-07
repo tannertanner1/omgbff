@@ -1,3 +1,5 @@
+import { LOGS } from "@/data/changelog"
+
 export default async function Page() {
   return (
     <div className="h-fit">
@@ -12,15 +14,19 @@ export default async function Page() {
         </div>
 
         <div className="space-y-8">
-          <section>
-            <h2 className="mb-4 text-xl font-medium">June 2025</h2>
-            <ul className="text-muted-foreground space-y-3">
-              <li className="flex items-start gap-2">
-                <span>•</span>
-                <span className="text-pretty">Open-sourced omgbff.com</span>
-              </li>
-            </ul>
-          </section>
+          {LOGS.map(({ date, logs }) => (
+            <section key={date}>
+              <h2 className="mb-4 text-xl font-medium">{date}</h2>
+              <ul className="text-muted-foreground space-y-3">
+                {logs.map((log, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span>•</span>
+                    <span className="text-pretty">{log}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       </div>
     </div>
