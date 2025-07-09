@@ -59,7 +59,7 @@ export function getColumns(
           <Badge
             className={
               mailingAddress
-                ? "bg-primary text-primary-foreground"
+                ? "bg-secondary text-secondary-foreground"
                 : "bg-transparent"
             }
           >
@@ -82,7 +82,7 @@ export function getColumns(
           <Badge
             className={
               primaryPhone
-                ? "bg-primary text-primary-foreground"
+                ? "bg-secondary text-secondary-foreground"
                 : "bg-transparent"
             }
           >
