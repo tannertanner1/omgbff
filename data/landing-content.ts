@@ -121,7 +121,7 @@ const STEPS = {
       icon: IconCoinFilled,
       title: "Automate Billing",
       description:
-        "Scheduled invoices, real-time payments, and clean reporting—automatically.",
+        "Scheduled invoices, real-time payments, and clean reporting, automatically.",
       image: "https://placehold.co/1920x1200/transparent/transparent",
     },
   ],
@@ -223,7 +223,7 @@ const CTA = {
   button: {
     icon: IconBrandGithub,
     text: "GitHub",
-    href: "https://github.com/yourusername/omgbff",
+    href: "https://github.com/tannertanner1/omgbff",
   },
 }
 
