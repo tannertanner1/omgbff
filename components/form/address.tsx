@@ -110,16 +110,23 @@ export function Address({
                   value={field.label || ""}
                 >
                   <SelectTrigger
-                    className={cn(error?.label ? "border-[#DB4437]" : "")}
+                    className={cn(
+                      error?.label ? "border-[#DB4437]" : "",
+                      "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                    )}
                   >
                     <SelectValue placeholder="" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                     {ADDRESS.filter(
                       (label) =>
                         !usedLabels.includes(label) || field.label === label
                     ).map((label) => (
-                      <SelectItem key={label} value={label}>
+                      <SelectItem
+                        key={label}
+                        value={label}
+                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                      >
                         {label}
                       </SelectItem>
                     ))}
@@ -214,12 +221,16 @@ export function Address({
                       : "California")
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                     {regionOptions.map((region) => (
-                      <SelectItem key={region} value={region}>
+                      <SelectItem
+                        key={region}
+                        value={region}
+                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                      >
                         {region}
                       </SelectItem>
                     ))}
@@ -246,7 +257,7 @@ export function Address({
                     "9": /[0-9]/,
                   }}
                   className={cn(
-                    "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+                    "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
                     error?.postal ? "border-[#DB4437]" : ""
                   )}
                   value={field.postal || ""}
@@ -293,13 +304,20 @@ export function Address({
                   value={field.country || "Canada"}
                 >
                   <SelectTrigger
-                    className={cn(error?.country ? "border-[#DB4437]" : "")}
+                    className={cn(
+                      error?.country ? "border-[#DB4437]" : "",
+                      "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                    )}
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                     {COUNTRY.map((country) => (
-                      <SelectItem key={country} value={country}>
+                      <SelectItem
+                        key={country}
+                        value={country}
+                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                      >
                         {country}
                       </SelectItem>
                     ))}

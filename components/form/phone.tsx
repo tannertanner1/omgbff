@@ -100,16 +100,23 @@ export function Phone({
                   value={field.label || ""}
                 >
                   <SelectTrigger
-                    className={cn(error?.label ? "border-[#DB4437]" : "")}
+                    className={cn(
+                      error?.label ? "border-[#DB4437]" : "",
+                      "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                    )}
                   >
                     <SelectValue placeholder="" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                     {PHONE.filter(
                       (label) =>
                         !usedLabels.includes(label) || field.label === label
                     ).map((label) => (
-                      <SelectItem key={label} value={label}>
+                      <SelectItem
+                        key={label}
+                        value={label}
+                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                      >
                         {label}
                       </SelectItem>
                     ))}
@@ -140,7 +147,7 @@ export function Phone({
                     "0": /[0-9]/,
                   }}
                   className={cn(
-                    "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+                    "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
                     error?.number ? "border-[#DB4437]" : ""
                   )}
                   value={field.number || ""}
