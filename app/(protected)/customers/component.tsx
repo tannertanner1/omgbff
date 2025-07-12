@@ -51,7 +51,7 @@ export function Component({
       <div className="mx-auto max-w-5xl p-4">
         <div className="mb-2 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Customers</h1>
-          <Link href={`/${userId}/customers/new`}>
+          <Link href={`/customers/new`}>
             <Button
               variant="ghost"
               size="icon"
@@ -66,7 +66,7 @@ export function Component({
           data={customers}
           columns={columns}
           link={(row) =>
-            `/${userId}/organizations/${row.organizationId}/customers/${row.id}/edit`
+            `/organizations/${row.organizationId}/customers/${row.id}/edit`
           }
         />
       </div>
