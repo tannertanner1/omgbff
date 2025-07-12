@@ -29,7 +29,12 @@ export function Section({
 
   return (
     <div
-      className={cn("bg-background overflow-hidden rounded-lg", error && "")}
+      className={cn(
+        "bg-background overflow-visible rounded-lg",
+        // Add padding to accommodate neobrutal shadows
+        "-m-1 p-1",
+        error && ""
+      )}
     >
       <button
         type="button"
@@ -64,9 +69,9 @@ export function Section({
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden"
+            className="overflow-visible"
           >
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-visible">
               {children}
               {onRemove && (
                 <div className="py-2">

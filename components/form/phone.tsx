@@ -47,7 +47,7 @@ export function Phone({
   const usedLabels = controlledFields.map((field) => field.label)
 
   return (
-    <div className="w-full max-w-[338px] pt-6">
+    <div className="w-full max-w-[338px] overflow-visible pt-6">
       <Label
         className={cn(
           "mb-2 block",
@@ -58,116 +58,118 @@ export function Phone({
       >
         Phone
       </Label>
-      {controlledFields.map((field, index) => {
-        const error = fieldErrors?.[index] as FieldErrors | undefined
-        const hasErrors = !!error
+      <div className="space-y-4 overflow-visible pr-1 pb-1">
+        {controlledFields.map((field, index) => {
+          const error = fieldErrors?.[index] as FieldErrors | undefined
+          const hasErrors = !!error
 
-        return (
-          <Section
-            key={field.fieldId}
-            title={`${field.label || PHONE[index] || "Phone"}`}
-            summary={field.number || ""}
-            onRemove={index > 0 ? () => remove(index) : undefined}
-            error={
-              hasErrors
-                ? {
-                    type: "validation",
-                    message: "Required",
-                  }
-                : undefined
-            }
-            defaultOpen={hasErrors}
-          >
-            <div>
-              <div className="relative mb-6">
-                <Label
-                  className={cn(
-                    "mb-2 block pt-6",
-                    required
-                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
-                      : ""
-                  )}
-                >
-                  Label
-                </Label>
-                <Select
-                  onValueChange={(value) => {
-                    setValue(`${name}.${index}.label`, value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }}
-                  value={field.label || ""}
-                >
-                  <SelectTrigger
+          return (
+            <Section
+              key={field.fieldId}
+              title={`${field.label || PHONE[index] || "Phone"}`}
+              summary={field.number || ""}
+              onRemove={index > 0 ? () => remove(index) : undefined}
+              error={
+                hasErrors
+                  ? {
+                      type: "validation",
+                      message: "Required",
+                    }
+                  : undefined
+              }
+              defaultOpen={hasErrors}
+            >
+              <div className="space-y-6 overflow-visible pr-1 pb-1">
+                <div className="relative">
+                  <Label
                     className={cn(
-                      error?.label ? "border-[#DB4437]" : "",
-                      "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                      "mb-2 block pt-6",
+                      required
+                        ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                        : ""
                     )}
                   >
-                    <SelectValue placeholder="" />
-                  </SelectTrigger>
-                  <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
-                    {PHONE.filter(
-                      (label) =>
-                        !usedLabels.includes(label) || field.label === label
-                    ).map((label) => (
-                      <SelectItem
-                        key={label}
-                        value={label}
-                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
-                      >
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {error?.label && (
-                  <p className="absolute mt-1 text-sm text-[#DB4437]">
-                    Required
-                  </p>
-                )}
-              </div>
+                    Label
+                  </Label>
+                  <Select
+                    onValueChange={(value) => {
+                      setValue(`${name}.${index}.label`, value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
+                    }}
+                    value={field.label || ""}
+                  >
+                    <SelectTrigger
+                      className={cn(
+                        error?.label ? "border-[#DB4437]" : "",
+                        "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                      )}
+                    >
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
+                      {PHONE.filter(
+                        (label) =>
+                          !usedLabels.includes(label) || field.label === label
+                      ).map((label) => (
+                        <SelectItem
+                          key={label}
+                          value={label}
+                          className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                        >
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {error?.label && (
+                    <p className="absolute mt-1 text-sm text-[#DB4437]">
+                      Required
+                    </p>
+                  )}
+                </div>
 
-              <div className="relative mb-6">
-                <Label
-                  className={cn(
-                    "mb-2 block pt-6",
-                    required
-                      ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
-                      : ""
+                <div className="relative">
+                  <Label
+                    className={cn(
+                      "mb-2 block pt-6",
+                      required
+                        ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']"
+                        : ""
+                    )}
+                  >
+                    Number
+                  </Label>
+                  <IMaskInput
+                    {...register(`${name}.${index}.number`)}
+                    mask="(000) 000-0000"
+                    definitions={{
+                      "0": /[0-9]/,
+                    }}
+                    className={cn(
+                      "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+                      error?.number ? "border-[#DB4437]" : ""
+                    )}
+                    value={field.number || ""}
+                    onAccept={(value) => {
+                      setValue(`${name}.${index}.number`, value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
+                    }}
+                  />
+                  {error?.number && (
+                    <p className="absolute mt-1 text-sm text-[#DB4437]">
+                      {!field.number ? "Required" : "Invalid"}
+                    </p>
                   )}
-                >
-                  Number
-                </Label>
-                <IMaskInput
-                  {...register(`${name}.${index}.number`)}
-                  mask="(000) 000-0000"
-                  definitions={{
-                    "0": /[0-9]/,
-                  }}
-                  className={cn(
-                    "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-                    error?.number ? "border-[#DB4437]" : ""
-                  )}
-                  value={field.number || ""}
-                  onAccept={(value) => {
-                    setValue(`${name}.${index}.number`, value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }}
-                />
-                {error?.number && (
-                  <p className="absolute mt-1 text-sm text-[#DB4437]">
-                    {!field.number ? "Required" : "Invalid"}
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
-          </Section>
-        )
-      })}
+            </Section>
+          )
+        })}
+      </div>
 
       {fields.length < PHONE.length && (
         <Button
