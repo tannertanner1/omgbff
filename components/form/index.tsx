@@ -263,19 +263,20 @@ export function Form({
                                 >
                                   <SelectTrigger
                                     className={cn(
-                                      "w-full",
                                       methods.formState.errors[field.name]
-                                        ? "border-[#DB4437]"
-                                        : ""
+                                        ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
+                                        : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
+                                      "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
                                     )}
                                   >
                                     <SelectValue />
                                   </SelectTrigger>
-                                  <SelectContent>
+                                  <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                                     {field.options?.map((option) => (
                                       <SelectItem
                                         key={option.value}
                                         value={option.value}
+                                        className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
                                       >
                                         {option.label}
                                       </SelectItem>

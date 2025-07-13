@@ -309,16 +309,11 @@
 [data-slot="card"] {
   border-radius: 1rem;
 }
-[data-slot="input"] {
-  border-radius: 0.625rem;
-}
+[data-slot="input"],
 [data-slot="textarea"] {
   border-radius: 0.625rem;
   resize: none !important;
   overflow: hidden !important;
-}
-[data-slot="input"],
-[data-slot="textarea"] {
   transition: all 0.2s ease;
   box-shadow: var(--shadow-xs);
 }

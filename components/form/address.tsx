@@ -112,13 +112,15 @@ export function Address({
                   >
                     <SelectTrigger
                       className={cn(
-                        error?.label ? "border-[#DB4437]" : "",
-                        "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                        error?.label
+                          ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
+                          : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
+                        "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
                       )}
                     >
                       <SelectValue placeholder="" />
                     </SelectTrigger>
-                    <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
+                    <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                       {ADDRESS.filter(
                         (label) =>
                           !usedLabels.includes(label) || field.label === label
@@ -237,10 +239,10 @@ export function Address({
                         : "California")
                     }
                   >
-                    <SelectTrigger className="w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]">
+                    <SelectTrigger className="border-input [&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
+                    <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                       {regionOptions.map((region) => (
                         <SelectItem
                           key={region}
@@ -274,10 +276,6 @@ export function Address({
                       a: /[A-Za-z]/,
                       "9": /[0-9]/,
                     }}
-                    // className={cn(
-                    //   "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-                    //   error?.postal ? "border-[#DB4437]" : ""
-                    // )}
                     className={cn(
                       "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
                       error?.postal
@@ -330,13 +328,15 @@ export function Address({
                   >
                     <SelectTrigger
                       className={cn(
-                        error?.country ? "border-[#DB4437]" : "",
-                        "w-full [&[data-slot=select-trigger]]:rounded-[0.625rem]"
+                        error?.country
+                          ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
+                          : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
+                        "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
                       )}
                     >
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
+                    <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
                       {COUNTRY.map((country) => (
                         <SelectItem
                           key={country}
