@@ -290,8 +290,9 @@ export function Form({
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     methods.formState.errors[field.name]
-                                      ? "border-[#DB4437]"
-                                      : ""
+                                      ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
+                                      : "border-input [&[data-slot=input]]:focus-visible:border-input",
+                                    "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                                   )}
                                   disabled={field.disabled}
                                 />

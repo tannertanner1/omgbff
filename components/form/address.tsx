@@ -276,8 +276,9 @@ export function Address({
                       a: /[A-Za-z]/,
                       "9": /[0-9]/,
                     }}
+                    data-slot="input"
                     className={cn(
-                      "border-input placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+                      "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
                       error?.postal
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
@@ -365,7 +366,7 @@ export function Address({
           type="button"
           variant="outline"
           className={cn(
-            "[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-6 w-full border transition-colors duration-300 ease-in-out"
+            "[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 w-full border transition-colors duration-300 ease-in-out"
           )}
           onClick={() =>
             append({
