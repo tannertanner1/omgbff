@@ -287,6 +287,7 @@ export function Form({
                                 <Currency
                                   id={field.name}
                                   {...methods.register(field.name)}
+                                  defaultValue={field.defaultValue}
                                   aria-describedby={`${field.name}-error`}
                                   className={cn(
                                     methods.formState.errors[field.name]
