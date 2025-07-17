@@ -78,7 +78,7 @@ export function Section({
                   <Button
                     type="button"
                     variant="outline"
-                    className="text-background hover:bg-background mt-6 w-full border border-[#DB4437] bg-[#DB4437] hover:text-[#DB4437]"
+                    className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background mt-4 w-full border transition-colors duration-300 ease-in-out [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
                     onClick={onRemove}
                   >
                     Remove
