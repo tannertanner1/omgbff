@@ -48,7 +48,7 @@ export function Address({
   const usedLabels = controlledFields.map((field) => field.label)
 
   return (
-    <div className="w-full max-w-[338px] overflow-visible pt-6">
+    <div className="w-[21.5rem] overflow-visible pt-6">
       <Label
         className={cn(
           "mb-2 block",
@@ -365,7 +365,7 @@ export function Address({
         <Button
           type="button"
           variant="outline"
-          className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[20.5rem]"
+          className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem]"
           onClick={() =>
             append({
               label: ADDRESS[fields.length],
