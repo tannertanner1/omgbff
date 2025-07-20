@@ -309,6 +309,7 @@
 [data-slot="card"] {
   border-radius: 1rem;
 }
+
 [data-slot="input"],
 [data-slot="textarea"] {
   border-radius: 0.625rem;
@@ -321,6 +322,13 @@
 [data-slot="textarea"]:focus {
   box-shadow: none;
 }
+[data-slot="select-trigger"][data-state="closed"] {
+  box-shadow: var(--shadow-xs);
+}
+[data-slot="select-trigger"][data-state="open"] {
+  box-shadow: none;
+}
+
 [data-slot="sidebar-inset"] {
   box-shadow: none !important;
   background: var(--sidebar);
