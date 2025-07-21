@@ -23,7 +23,7 @@ function ThemeSelector() {
         <SelectTrigger
           size="sm"
           className={cn(
-            "[&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:focus-visible:ring-0",
+            "[&[data-slot=select-trigger]]:bg-sidebar [&[data-slot=select-trigger]]:hover:bg-sidebar [&[data-slot=select-trigger]]:border-input [&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:focus-visible:ring-0",
             "w-[var(--select-width)]" // "w-32"
           )}
         >
@@ -32,6 +32,7 @@ function ThemeSelector() {
         <SelectContent
           align="end"
           className={cn(
+            "[&[data-slot=select-content]]:bg-sidebar",
             "w-[var(--select-width)]" // "min-w-32"
           )}
         >
