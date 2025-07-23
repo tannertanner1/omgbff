@@ -201,7 +201,10 @@ function AppSidebar({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem
+                    asChild
+                    className="[&[data-slot=dropdown-menu-item]]:focus:bg-sidebar-accent [&[data-slot=dropdown-menu-item]]:focus:text-sidebar-accent-foreground cursor-not-allowed"
+                  >
                     <Link
                       href="/account"
                       className="flex items-center gap-2"
@@ -211,7 +214,10 @@ function AppSidebar({
                       Account
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem
+                    asChild
+                    className="[&[data-slot=dropdown-menu-item]]:focus:bg-sidebar-accent [&[data-slot=dropdown-menu-item]]:focus:text-sidebar-accent-foreground cursor-not-allowed"
+                  >
                     <Link
                       href="/settings"
                       className="flex items-center gap-2"
@@ -222,7 +228,10 @@ function AppSidebar({
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="gap-2">
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="[&[data-slot=dropdown-menu-item]]:focus:bg-sidebar-accent [&[data-slot=dropdown-menu-item]]:focus:text-sidebar-accent-foreground gap-2"
+                  >
                     <IconPhotoCircle className="h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>

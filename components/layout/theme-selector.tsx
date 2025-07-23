@@ -37,7 +37,11 @@ function ThemeSelector() {
           )}
         >
           {THEMES.map((theme) => (
-            <SelectItem key={theme.name} value={theme.value}>
+            <SelectItem
+              key={theme.name}
+              value={theme.value}
+              className="[&[data-slot=select-item]]:focus:bg-sidebar-accent [&[data-slot=select-item]]:focus:text-sidebar-accent-foreground"
+            >
               {theme.name}
             </SelectItem>
           ))}
