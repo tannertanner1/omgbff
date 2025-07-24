@@ -3,7 +3,12 @@
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { IMaskInput } from "react-imask"
 import type { FieldErrors } from "@/types/forms"
-import { ADDRESS, COUNTRY, PROVINCE, STATE } from "@/data/customer-fields"
+import {
+  ADDRESS,
+  COUNTRY,
+  COUNTRY_CONFIG,
+  DEFAULT_COUNTRY,
+} from "@/data/customer-fields"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,8 +68,11 @@ export function Address({
         {controlledFields.map((field, index) => {
           const error = fieldErrors?.[index] as FieldErrors | undefined
           const hasErrors = !!error
-          const selectedCountry = watch(`${name}.${index}.country`) || "Canada"
-          const regionOptions = selectedCountry === "Canada" ? PROVINCE : STATE
+          const selectedCountry =
+            watch(`${name}.${index}.country`) || DEFAULT_COUNTRY
+          const countryConfig =
+            COUNTRY_CONFIG[selectedCountry as keyof typeof COUNTRY_CONFIG]
+          const regionOptions = countryConfig.regions
 
           return (
             <Section
@@ -223,7 +231,7 @@ export function Address({
                         : ""
                     )}
                   >
-                    {selectedCountry === "Canada" ? "Province" : "State"}
+                    {countryConfig.regionLabel}
                   </Label>
                   <Select
                     onValueChange={(value) => {
@@ -232,12 +240,7 @@ export function Address({
                         shouldDirty: true,
                       })
                     }}
-                    value={
-                      field.region ||
-                      (selectedCountry === "Canada"
-                        ? "British Columbia"
-                        : "California")
-                    }
+                    value={field.region || countryConfig.defaultRegion}
                   >
                     <SelectTrigger className="border-input [&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0">
                       <SelectValue />
@@ -265,13 +268,11 @@ export function Address({
                         : ""
                     )}
                   >
-                    {selectedCountry === "Canada" ? "Postal code" : "ZIP code"}
+                    {countryConfig.postalLabel}
                   </Label>
                   <IMaskInput
                     {...register(`${name}.${index}.postal`)}
-                    mask={
-                      selectedCountry === "Canada" ? "a9a 9a9" : "99999-9999"
-                    }
+                    mask={countryConfig.postalMask}
                     definitions={{
                       a: /[A-Za-z]/,
                       "9": /[0-9]/,
@@ -316,16 +317,18 @@ export function Address({
                         shouldValidate: true,
                         shouldDirty: true,
                       })
+                      const newCountryConfig =
+                        COUNTRY_CONFIG[value as keyof typeof COUNTRY_CONFIG]
                       setValue(
                         `${name}.${index}.region`,
-                        value === "Canada" ? "British Columbia" : "California",
+                        newCountryConfig.defaultRegion,
                         {
                           shouldValidate: true,
                           shouldDirty: true,
                         }
                       )
                     }}
-                    value={field.country || "Canada"}
+                    value={field.country || DEFAULT_COUNTRY}
                   >
                     <SelectTrigger
                       className={cn(
@@ -365,16 +368,16 @@ export function Address({
         <Button
           type="button"
           variant="outline"
-          className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem]"
+          className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border bg-transparent transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem]"
           onClick={() =>
             append({
               label: ADDRESS[fields.length],
               line1: "",
               line2: "",
               city: "",
-              region: "British Columbia",
+              region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
               postal: "",
-              country: "Canada",
+              country: DEFAULT_COUNTRY,
             })
           }
         >

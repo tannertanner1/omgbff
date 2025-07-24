@@ -29,7 +29,7 @@ Focused on long-term maintainability, it's not a starter, but a foundation you c
 - **Payments & Invoicing**: Collect payments via Stripe and auto-generate PDF receipts with Resend
 - **Passwordless Auth**: Magic link login
 - **ABAC-style Permissions**: Granular access control based on roles and org membership
-- **Typed UI System**: Tailwind v4 + shadcn/ui + Motion—fully typed, responsive, and scalable
+- **Typed UI System**: Tailwind v4 + shadcn/ui + Motion fully typed, responsive, and scalable
 - **Dark Mode Aware**: Respect system theme and sync persistently across sessions
 - **Postgres Native**: Built with Drizzle + PostgreSQL, typed end-to-end
 

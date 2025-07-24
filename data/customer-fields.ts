@@ -84,12 +84,33 @@ const PROVINCE = [
 type Region = (typeof STATE)[number] | (typeof PROVINCE)[number]
 const region = pgEnum("region", [...STATE, ...PROVINCE])
 
+const COUNTRY_CONFIG = {
+  Canada: {
+    defaultRegion: "British Columbia",
+    regions: PROVINCE,
+    regionLabel: "Province",
+    postalLabel: "Postal code",
+    postalMask: "a9a 9a9",
+  },
+  "United States": {
+    defaultRegion: "California",
+    regions: STATE,
+    regionLabel: "State",
+    postalLabel: "ZIP code",
+    postalMask: "99999-9999",
+  },
+} as const
+
+const DEFAULT_COUNTRY = "Canada" as const
+
 export {
   ADDRESS,
   PHONE,
   COUNTRY,
   STATE,
   PROVINCE,
+  COUNTRY_CONFIG,
+  DEFAULT_COUNTRY,
   address,
   phone,
   country,
