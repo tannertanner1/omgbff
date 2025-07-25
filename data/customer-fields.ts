@@ -8,7 +8,7 @@ const PHONE = ["Primary", "Secondary"] as const
 type Phone = (typeof PHONE)[number]
 const phone = pgEnum("phone", PHONE)
 
-const COUNTRY = ["Canada", "United States"] as const
+const COUNTRY = ["Canada", "United States", "Japan"] as const
 type Country = (typeof COUNTRY)[number]
 const country = pgEnum("country", COUNTRY)
 
@@ -81,8 +81,61 @@ const PROVINCE = [
   "Yukon",
 ] as const
 
-type Region = (typeof STATE)[number] | (typeof PROVINCE)[number]
-const region = pgEnum("region", [...STATE, ...PROVINCE])
+const PREFECTURE = [
+  "Aichi",
+  "Akita",
+  "Aomori",
+  "Chiba",
+  "Ehime",
+  "Fukui",
+  "Fukuoka",
+  "Fukushima",
+  "Gifu",
+  "Gunma",
+  "Hiroshima",
+  "Hokkaido",
+  "Hyogo",
+  "Ibaraki",
+  "Ishikawa",
+  "Iwate",
+  "Kagawa",
+  "Kagoshima",
+  "Kanagawa",
+  "Kochi",
+  "Kumamoto",
+  "Kyoto",
+  "Mie",
+  "Miyagi",
+  "Miyazaki",
+  "Nagano",
+  "Nagasaki",
+  "Nara",
+  "Niigata",
+  "Oita",
+  "Okayama",
+  "Okinawa",
+  "Osaka",
+  "Saga",
+  "Saitama",
+  "Shiga",
+  "Shimane",
+  "Shizuoka",
+  "Tochigi",
+  "Tokushima",
+  "Tokyo",
+  "Tottori",
+  "Toyama",
+  "Wakayama",
+  "Yamagata",
+  "Yamaguchi",
+  "Yamanashi",
+] as const
+
+type Region =
+  | (typeof STATE)[number]
+  | (typeof PROVINCE)[number]
+  | (typeof PREFECTURE)[number]
+const region = pgEnum("region", [...STATE, ...PROVINCE, ...PREFECTURE])
 
 const COUNTRY_CONFIG = {
   Canada: {
@@ -99,6 +152,13 @@ const COUNTRY_CONFIG = {
     postalLabel: "ZIP code",
     postalMask: "99999-9999",
   },
+  Japan: {
+    defaultRegion: "Tokyo",
+    regions: PREFECTURE,
+    regionLabel: "Prefecture",
+    postalLabel: "Postal code",
+    postalMask: "999-9999",
+  },
 } as const
 
 const DEFAULT_COUNTRY = "Canada" as const
@@ -109,6 +169,7 @@ export {
   COUNTRY,
   STATE,
   PROVINCE,
+  PREFECTURE,
   COUNTRY_CONFIG,
   DEFAULT_COUNTRY,
   address,

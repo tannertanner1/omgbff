@@ -36,7 +36,6 @@ export function Address({
     watch,
     setValue,
   } = useFormContext()
-
   const { fields, append, remove } = useFieldArray({
     control,
     name,
@@ -48,7 +47,6 @@ export function Address({
     ...field,
     ...watchFieldArray[index],
   }))
-
   const fieldErrors = errors[name] as FieldErrors | undefined
   const usedLabels = controlledFields.map((field) => field.label)
 
@@ -89,10 +87,7 @@ export function Address({
               onRemove={index > 0 ? () => remove(index) : undefined}
               error={
                 hasErrors
-                  ? {
-                      type: "validation",
-                      message: "Required",
-                    }
+                  ? { type: "validation", message: "Required" }
                   : undefined
               }
               defaultOpen={hasErrors}
@@ -110,12 +105,12 @@ export function Address({
                     Label
                   </Label>
                   <Select
-                    onValueChange={(value) => {
+                    onValueChange={(value) =>
                       setValue(`${name}.${index}.label`, value, {
                         shouldValidate: true,
                         shouldDirty: true,
                       })
-                    }}
+                    }
                     value={field.label || ""}
                   >
                     <SelectTrigger
@@ -167,7 +162,7 @@ export function Address({
                       error?.line1
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
-                      "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
+                      "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:text-sm [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
                   />
                   {error?.line1 && (
@@ -185,7 +180,7 @@ export function Address({
                       error?.line2
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
-                      "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
+                      "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:text-sm [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
                   />
                   {error?.line2 && (
@@ -234,12 +229,12 @@ export function Address({
                     {countryConfig.regionLabel}
                   </Label>
                   <Select
-                    onValueChange={(value) => {
+                    onValueChange={(value) =>
                       setValue(`${name}.${index}.region`, value, {
                         shouldValidate: true,
                         shouldDirty: true,
                       })
-                    }}
+                    }
                     value={field.region || countryConfig.defaultRegion}
                   >
                     <SelectTrigger className="border-input [&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0">
@@ -273,10 +268,7 @@ export function Address({
                   <IMaskInput
                     {...register(`${name}.${index}.postal`)}
                     mask={countryConfig.postalMask}
-                    definitions={{
-                      a: /[A-Za-z]/,
-                      "9": /[0-9]/,
-                    }}
+                    definitions={{ a: /[A-Za-z]/, "9": /[0-9]/ }}
                     data-slot="input"
                     className={cn(
                       "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
@@ -287,7 +279,12 @@ export function Address({
                     )}
                     value={field.postal || ""}
                     onAccept={(value) => {
-                      setValue(`${name}.${index}.postal`, value.toUpperCase(), {
+                      // Only uppercase for Canadian postal codes
+                      const finalValue =
+                        selectedCountry === "Canada"
+                          ? value.toUpperCase()
+                          : value
+                      setValue(`${name}.${index}.postal`, finalValue, {
                         shouldValidate: true,
                         shouldDirty: true,
                       })
