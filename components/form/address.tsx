@@ -35,6 +35,7 @@ export function Address({
     formState: { errors },
     watch,
     setValue,
+    getValues,
   } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
@@ -71,6 +72,11 @@ export function Address({
           const countryConfig =
             COUNTRY_CONFIG[selectedCountry as keyof typeof COUNTRY_CONFIG]
           const regionOptions = countryConfig.regions
+
+          // Get the original saved country from defaultValues to compare
+          const originalCountry =
+            getValues(`${name}.${index}.country`) || DEFAULT_COUNTRY
+          const savedCountry = field.country || originalCountry
 
           return (
             <Section
@@ -277,9 +283,11 @@ export function Address({
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
-                    value={field.postal || ""}
+                    // Only show postal code if country matches saved country
+                    value={
+                      selectedCountry === savedCountry ? field.postal || "" : ""
+                    }
                     onAccept={(value) => {
-                      // Only uppercase for Canadian postal codes
                       const finalValue =
                         selectedCountry === "Canada"
                           ? value.toUpperCase()
@@ -324,6 +332,11 @@ export function Address({
                           shouldDirty: true,
                         }
                       )
+                      // Clear postal code when country changes
+                      setValue(`${name}.${index}.postal`, "", {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
                     }}
                     value={field.country || DEFAULT_COUNTRY}
                   >

@@ -12,6 +12,7 @@ import {
   PHONE,
   PROVINCE,
   STATE,
+  PREFECTURE,
 } from "@/data/customer-fields"
 import { hasPermission, type Customer } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
@@ -21,7 +22,7 @@ const addressSchema = z.object({
   line1: z.string().min(1, "Required"),
   line2: z.string().optional(),
   city: z.string().min(1, "Required"),
-  region: z.union([z.enum(STATE), z.enum(PROVINCE)]),
+  region: z.union([z.enum(STATE), z.enum(PROVINCE), z.enum(PREFECTURE)]),
   postal: z.string().min(1, "Required"),
   country: z.enum(COUNTRY),
 })
@@ -48,10 +49,7 @@ async function createAction(
   const user = await verifySession()
 
   if (!hasPermission(user, "customers", "create")) {
-    return {
-      success: false,
-      message: "Unauthorized to create",
-    }
+    return { success: false, message: "Unauthorized to create" }
   }
 
   const rawData = {
@@ -138,10 +136,7 @@ async function updateAction(
       customerForPermissionCheck
     ))
   ) {
-    return {
-      success: false,
-      message: "Unauthorized to update",
-    }
+    return { success: false, message: "Unauthorized to update" }
   }
 
   const rawData = {
@@ -233,17 +228,12 @@ async function deleteAction(
       customerForPermissionCheck
     ))
   ) {
-    return {
-      success: false,
-      message: "Unauthorized to delete",
-    }
+    return { success: false, message: "Unauthorized to delete" }
   }
 
   try {
     await db.delete(customers).where(eq(customers.id, id))
-
     revalidatePath(`/organizations/${organizationId}`)
-
     return {
       success: true,
       message: "Customer deleted successfully",

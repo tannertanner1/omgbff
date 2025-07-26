@@ -1,6 +1,11 @@
 import { notFound, redirect } from "next/navigation"
 import { getCustomerById } from "@/db/queries"
-import { ADDRESS, PHONE } from "@/data/customer-fields"
+import {
+  ADDRESS,
+  PHONE,
+  COUNTRY_CONFIG,
+  DEFAULT_COUNTRY,
+} from "@/data/customer-fields"
 import { hasPermission } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
 import { Form } from "@/components/form"
@@ -32,21 +37,9 @@ export default async function Page({
   }
 
   const fields: Field[] = [
-    {
-      name: "organizationId",
-      type: "hidden",
-      defaultValue: organizationId,
-    },
-    {
-      name: "id",
-      type: "hidden",
-      defaultValue: customer.id,
-    },
-    {
-      name: "returnTo",
-      type: "hidden",
-      defaultValue: returnTo,
-    },
+    { name: "organizationId", type: "hidden", defaultValue: organizationId },
+    { name: "id", type: "hidden", defaultValue: customer.id },
+    { name: "returnTo", type: "hidden", defaultValue: returnTo },
     {
       name: "name",
       label: "Name",
@@ -71,9 +64,9 @@ export default async function Page({
           line1: "",
           line2: "",
           city: "",
-          region: "British Columbia",
+          region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
           postal: "",
-          country: "Canada",
+          country: DEFAULT_COUNTRY,
         },
       ],
     },
@@ -81,12 +74,7 @@ export default async function Page({
       name: "phone",
       type: "phone",
       required: true,
-      defaultValue: customer.phone || [
-        {
-          label: PHONE[0],
-          number: "",
-        },
-      ],
+      defaultValue: customer.phone || [{ label: PHONE[0], number: "" }],
     },
   ]
 
