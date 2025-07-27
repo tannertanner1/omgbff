@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { IMaskInput } from "react-imask"
 import type { FieldErrors } from "@/types/forms"
@@ -51,6 +52,8 @@ export function Address({
   const fieldErrors = errors[name] as FieldErrors | undefined
   const usedLabels = controlledFields.map((field) => field.label)
 
+  const postalCodeByCountry = useRef<Record<string, string>>({})
+
   return (
     <div className="w-[21.5rem] overflow-visible pt-6">
       <Label
@@ -93,7 +96,10 @@ export function Address({
               onRemove={index > 0 ? () => remove(index) : undefined}
               error={
                 hasErrors
-                  ? { type: "validation", message: "Required" }
+                  ? {
+                      type: "validation",
+                      message: "Required",
+                    }
                   : undefined
               }
               defaultOpen={hasErrors}
@@ -173,7 +179,7 @@ export function Address({
                   />
                   {error?.line1 && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
-                      Required
+                      Required ={" "}
                     </p>
                   )}
                 </div>
@@ -317,26 +323,34 @@ export function Address({
                     Country
                   </Label>
                   <Select
-                    onValueChange={(value) => {
-                      setValue(`${name}.${index}.country`, value, {
+                    onValueChange={(newCountry) => {
+                      const current = getValues(`${name}.${index}`)
+                      if (current.country && current.postal) {
+                        postalCodeByCountry.current[current.country] =
+                          current.postal
+                      }
+
+                      const newConfig =
+                        COUNTRY_CONFIG[
+                          newCountry as keyof typeof COUNTRY_CONFIG
+                        ]
+                      setValue(`${name}.${index}.country`, newCountry, {
                         shouldValidate: true,
                         shouldDirty: true,
                       })
-                      const newCountryConfig =
-                        COUNTRY_CONFIG[value as keyof typeof COUNTRY_CONFIG]
                       setValue(
                         `${name}.${index}.region`,
-                        newCountryConfig.defaultRegion,
+                        newConfig.defaultRegion,
+                        { shouldValidate: true, shouldDirty: true }
+                      )
+                      setValue(
+                        `${name}.${index}.postal`,
+                        postalCodeByCountry.current[newCountry] ?? "",
                         {
                           shouldValidate: true,
                           shouldDirty: true,
                         }
                       )
-                      // Clear postal code when country changes
-                      setValue(`${name}.${index}.postal`, "", {
-                        shouldValidate: true,
-                        shouldDirty: true,
-                      })
                     }}
                     value={field.country || DEFAULT_COUNTRY}
                   >

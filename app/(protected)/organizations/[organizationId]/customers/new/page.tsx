@@ -1,5 +1,10 @@
 import { redirect } from "next/navigation"
-import { ADDRESS, COUNTRY, PHONE } from "@/data/customer-fields"
+import {
+  ADDRESS,
+  PHONE,
+  COUNTRY_CONFIG,
+  DEFAULT_COUNTRY,
+} from "@/data/customer-fields"
 import { hasPermission } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
 import { Form } from "@/components/form"
@@ -47,9 +52,9 @@ export default async function Page({
           line1: "",
           line2: "",
           city: "",
-          region: "",
+          region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
           postal: "",
-          country: COUNTRY[0],
+          country: DEFAULT_COUNTRY,
         },
       ],
     },

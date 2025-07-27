@@ -7,7 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { IconCircleCheck, IconCircleX, IconLoader } from "@tabler/icons-react"
 import { FormProvider, useForm } from "react-hook-form"
 import * as z from "zod"
-import { ADDRESS, PHONE } from "@/data/customer-fields"
+import {
+  ADDRESS,
+  PHONE,
+  COUNTRY_CONFIG,
+  DEFAULT_COUNTRY,
+} from "@/data/customer-fields"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -124,9 +129,9 @@ export function Form({
               line1: "",
               line2: "",
               city: "",
-              region: "British Columbia",
+              region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
               postal: "",
-              country: "Canada",
+              country: DEFAULT_COUNTRY,
             },
           ]
         } else if (field.type === "phone") {

@@ -12,6 +12,7 @@ import {
   PHONE,
   PROVINCE,
   STATE,
+  PREFECTURE,
 } from "@/data/customer-fields"
 import { hasPermission } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
@@ -21,7 +22,7 @@ const addressSchema = z.object({
   line1: z.string().min(1, "Required"),
   line2: z.string().optional(),
   city: z.string().min(1, "Required"),
-  region: z.union([z.enum(STATE), z.enum(PROVINCE)]),
+  region: z.union([z.enum(STATE), z.enum(PROVINCE)], z.enum(PREFECTURE)),
   postal: z.string().min(1, "Required"),
   country: z.enum(COUNTRY),
 })

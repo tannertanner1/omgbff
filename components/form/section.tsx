@@ -44,8 +44,9 @@ export function Section({
         <div className={cn("flex items-center gap-2")}>
           <Badge
             className={cn(
-              "border-accent bg-accent text-primary border",
-              error && "bg-background border-[#DB4437] text-[#DB4437]"
+              error
+                ? "bg-background border border-[#DB4437] text-[#DB4437]"
+                : "bg-accent border-accent text-primary border"
             )}
           >
             {title}
