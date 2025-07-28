@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useRef } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { IMaskInput } from "react-imask"
 import type { FieldErrors } from "@/types/forms"

@@ -197,7 +197,7 @@ export function Form({
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
                     <CardContent className="-mt-2 flex flex-col">
-                      <pre>{JSON.stringify(methods.watch(), null, 2)}</pre>
+                      {/* <pre>{JSON.stringify(methods.watch(), null, 2)}</pre> */}
                       {fields.map((field) => (
                         <div key={field.name} className="relative mb-6">
                           {field.type === "address" ? (
