@@ -137,7 +137,7 @@ type Region =
   | (typeof PREFECTURE)[number]
 const region = pgEnum("region", [...STATE, ...PROVINCE, ...PREFECTURE])
 
-const COUNTRY_CONFIG = {
+const CONFIG = {
   Canada: {
     defaultRegion: "British Columbia",
     regions: PROVINCE,
@@ -161,8 +161,6 @@ const COUNTRY_CONFIG = {
   },
 } as const
 
-const DEFAULT_COUNTRY = "Canada" as const
-
 export {
   ADDRESS,
   PHONE,
@@ -170,8 +168,7 @@ export {
   STATE,
   PROVINCE,
   PREFECTURE,
-  COUNTRY_CONFIG,
-  DEFAULT_COUNTRY,
+  CONFIG,
   address,
   phone,
   country,

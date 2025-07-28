@@ -1,11 +1,6 @@
 import { notFound, redirect } from "next/navigation"
 import { getCustomerById } from "@/db/queries"
-import {
-  ADDRESS,
-  PHONE,
-  COUNTRY_CONFIG,
-  DEFAULT_COUNTRY,
-} from "@/data/customer-fields"
+import { ADDRESS, PHONE, COUNTRY } from "@/data/customer-fields"
 import { hasPermission } from "@/lib/abac"
 import { verifySession } from "@/lib/dal"
 import { Form } from "@/components/form"
@@ -64,9 +59,9 @@ export default async function Page({
           line1: "",
           line2: "",
           city: "",
-          region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
+          region: "",
           postal: "",
-          country: DEFAULT_COUNTRY,
+          country: COUNTRY[0],
         },
       ],
     },

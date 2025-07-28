@@ -7,12 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { IconCircleCheck, IconCircleX, IconLoader } from "@tabler/icons-react"
 import { FormProvider, useForm } from "react-hook-form"
 import * as z from "zod"
-import {
-  ADDRESS,
-  PHONE,
-  COUNTRY_CONFIG,
-  DEFAULT_COUNTRY,
-} from "@/data/customer-fields"
+import { ADDRESS, PHONE, COUNTRY } from "@/data/customer-fields"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -129,9 +124,9 @@ export function Form({
               line1: "",
               line2: "",
               city: "",
-              region: COUNTRY_CONFIG[DEFAULT_COUNTRY].defaultRegion,
+              region: "",
               postal: "",
-              country: DEFAULT_COUNTRY,
+              country: COUNTRY[0],
             },
           ]
         } else if (field.type === "phone") {
@@ -202,6 +197,7 @@ export function Form({
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
                     <CardContent className="-mt-2 flex flex-col">
+                      <pre>{JSON.stringify(methods.watch(), null, 2)}</pre>
                       {fields.map((field) => (
                         <div key={field.name} className="relative mb-6">
                           {field.type === "address" ? (

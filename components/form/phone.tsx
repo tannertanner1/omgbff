@@ -2,6 +2,7 @@
 
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { IMaskInput } from "react-imask"
+import type { FieldErrors } from "@/types/forms"
 import { PHONE } from "@/data/customer-fields"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -42,10 +43,8 @@ export function Phone({
     ...watchFieldArray[index],
   }))
 
+  const fieldErrors = errors[name] as FieldErrors | undefined
   const usedLabels = controlledFields.map((field) => field.label)
-
-  const formErrors = watch()
-  const phoneErrors = errors[name] as any
 
   return (
     <div className="w-[21.5rem] overflow-visible pt-6">
@@ -61,12 +60,11 @@ export function Phone({
       </Label>
       <div className="space-y-4 overflow-visible pr-1 pb-1">
         {controlledFields.map((field, index) => {
-          // Get errors for this specific phone index
-          const sectionErrors = phoneErrors?.[index]
-
-          // SIMPLIFIED: Check if ANY field in this phone section has an error
+          const error = fieldErrors?.[index] as FieldErrors | undefined
           const hasErrors =
-            sectionErrors && Object.keys(sectionErrors).length > 0
+            error &&
+            typeof error === "object" &&
+            Object.keys(error).some((key) => error[key])
 
           return (
             <Section
@@ -80,7 +78,7 @@ export function Phone({
                       type: "validation",
                       message: "Required",
                     }
-                  : null
+                  : undefined
               }
               defaultOpen={hasErrors}
             >
@@ -105,14 +103,7 @@ export function Phone({
                     }}
                     value={field.label || ""}
                   >
-                    <SelectTrigger
-                      className={cn(
-                        sectionErrors?.label
-                          ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
-                          : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
-                        "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
-                      )}
-                    >
+                    <SelectTrigger className="border-input [&[data-slot=select-trigger]]:focus-visible:border-input [&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0">
                       <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
@@ -130,11 +121,6 @@ export function Phone({
                       ))}
                     </SelectContent>
                   </Select>
-                  {sectionErrors?.label && (
-                    <p className="absolute mt-1 text-sm text-[#DB4437]">
-                      Required
-                    </p>
-                  )}
                 </div>
 
                 <div className="relative">
@@ -157,7 +143,7 @@ export function Phone({
                     data-slot="input"
                     className={cn(
                       "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-                      sectionErrors?.number
+                      error?.number
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
@@ -170,7 +156,7 @@ export function Phone({
                       })
                     }}
                   />
-                  {sectionErrors?.number && (
+                  {error?.number && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       {!field.number ? "Required" : "Invalid"}
                     </p>
