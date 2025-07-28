@@ -210,18 +210,10 @@ export function Form({
                               required={field.required}
                             />
                           ) : field.type === "phone" ? (
-                            <div
-                              className={cn(
-                                state?.errors?.[field.name]
-                                  ? "border-[#DB4437]"
-                                  : ""
-                              )}
-                            >
-                              <Phone
-                                name={field.name}
-                                required={field.required}
-                              />
-                            </div>
+                            <Phone
+                              name={field.name}
+                              required={field.required}
+                            />
                           ) : (
                             <>
                               {field.type !== "hidden" && field.label && (

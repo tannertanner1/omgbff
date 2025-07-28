@@ -3,7 +3,6 @@
 import { useRef } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { IMaskInput } from "react-imask"
-import type { FieldErrors } from "@/types/forms"
 import {
   ADDRESS,
   COUNTRY,
@@ -33,10 +32,11 @@ export function Address({
   const {
     control,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
     setValue,
     getValues,
+    trigger, // Add trigger to manually validate
   } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,10 +49,12 @@ export function Address({
     ...field,
     ...watchFieldArray[index],
   }))
-  const fieldErrors = errors[name] as FieldErrors | undefined
   const usedLabels = controlledFields.map((field) => field.label)
 
   const postalCodeByCountry = useRef<Record<string, string>>({})
+
+  const allFormData = watch()
+  const addressErrors = errors[name] as any
 
   return (
     <div className="w-[21.5rem] overflow-visible pt-6">
@@ -68,15 +70,20 @@ export function Address({
       </Label>
       <div className="space-y-4 overflow-visible pr-1 pb-1">
         {controlledFields.map((field, index) => {
-          const error = fieldErrors?.[index] as FieldErrors | undefined
-          const hasErrors = !!error
+          const sectionErrors = addressErrors?.[index]
+
+          const hasErrors =
+            sectionErrors && Object.keys(sectionErrors).length > 0
+
+          const formIsInvalidButNoVisibleErrors =
+            !isValid && Object.keys(errors).length === 0
+
           const selectedCountry =
             watch(`${name}.${index}.country`) || DEFAULT_COUNTRY
           const countryConfig =
             COUNTRY_CONFIG[selectedCountry as keyof typeof COUNTRY_CONFIG]
           const regionOptions = countryConfig.regions
 
-          // Get the original saved country from defaultValues to compare
           const originalCountry =
             getValues(`${name}.${index}.country`) || DEFAULT_COUNTRY
           const savedCountry = field.country || originalCountry
@@ -95,14 +102,14 @@ export function Address({
               )}
               onRemove={index > 0 ? () => remove(index) : undefined}
               error={
-                hasErrors
+                hasErrors || formIsInvalidButNoVisibleErrors
                   ? {
                       type: "validation",
-                      message: "Required",
+                      message: "Has validation errors",
                     }
-                  : undefined
+                  : null
               }
-              defaultOpen={hasErrors}
+              defaultOpen={hasErrors || formIsInvalidButNoVisibleErrors}
             >
               <div className="space-y-6 overflow-visible pr-1 pb-1">
                 <div className="relative">
@@ -127,7 +134,7 @@ export function Address({
                   >
                     <SelectTrigger
                       className={cn(
-                        error?.label
+                        sectionErrors?.label
                           ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
                           : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
                         "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
@@ -150,7 +157,7 @@ export function Address({
                       ))}
                     </SelectContent>
                   </Select>
-                  {error?.label && (
+                  {sectionErrors?.label && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       Required
                     </p>
@@ -171,15 +178,15 @@ export function Address({
                   <Input
                     {...register(`${name}.${index}.line1`)}
                     className={cn(
-                      error?.line1
+                      sectionErrors?.line1
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:text-sm [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
                   />
-                  {error?.line1 && (
+                  {sectionErrors?.line1 && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
-                      Required ={" "}
+                      Required
                     </p>
                   )}
                 </div>
@@ -189,13 +196,13 @@ export function Address({
                   <Input
                     {...register(`${name}.${index}.line2`)}
                     className={cn(
-                      error?.line2
+                      sectionErrors?.line2
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:text-sm [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
                   />
-                  {error?.line2 && (
+                  {sectionErrors?.line2 && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       Required
                     </p>
@@ -216,13 +223,13 @@ export function Address({
                   <Input
                     {...register(`${name}.${index}.city`)}
                     className={cn(
-                      error?.city
+                      sectionErrors?.city
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
                     )}
                   />
-                  {error?.city && (
+                  {sectionErrors?.city && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       Required
                     </p>
@@ -284,7 +291,7 @@ export function Address({
                     data-slot="input"
                     className={cn(
                       "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-                      error?.postal
+                      sectionErrors?.postal
                         ? "border-[#DB4437] [&[data-slot=input]]:focus-visible:border-[#DB4437]"
                         : "border-input [&[data-slot=input]]:focus-visible:border-input",
                       "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
@@ -293,7 +300,7 @@ export function Address({
                     value={
                       selectedCountry === savedCountry ? field.postal || "" : ""
                     }
-                    onAccept={(value) => {
+                    onAccept={async (value) => {
                       const finalValue =
                         selectedCountry === "Canada"
                           ? value.toUpperCase()
@@ -302,9 +309,12 @@ export function Address({
                         shouldValidate: true,
                         shouldDirty: true,
                       })
+
+                      // Trigger validation after setting value
+                      await trigger(`${name}.${index}.postal`)
                     }}
                   />
-                  {error?.postal && (
+                  {sectionErrors?.postal && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       Required
                     </p>
@@ -323,7 +333,7 @@ export function Address({
                     Country
                   </Label>
                   <Select
-                    onValueChange={(newCountry) => {
+                    onValueChange={async (newCountry) => {
                       const current = getValues(`${name}.${index}`)
                       if (current.country && current.postal) {
                         postalCodeByCountry.current[current.country] =
@@ -341,7 +351,10 @@ export function Address({
                       setValue(
                         `${name}.${index}.region`,
                         newConfig.defaultRegion,
-                        { shouldValidate: true, shouldDirty: true }
+                        {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        }
                       )
                       setValue(
                         `${name}.${index}.postal`,
@@ -351,12 +364,15 @@ export function Address({
                           shouldDirty: true,
                         }
                       )
+
+                      // Trigger validation for the entire address section
+                      await trigger(`${name}.${index}`)
                     }}
                     value={field.country || DEFAULT_COUNTRY}
                   >
                     <SelectTrigger
                       className={cn(
-                        error?.country
+                        sectionErrors?.country
                           ? "border-[#DB4437] [&[data-slot=select-trigger]]:focus-visible:border-[#DB4437]"
                           : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
                         "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
@@ -376,7 +392,7 @@ export function Address({
                       ))}
                     </SelectContent>
                   </Select>
-                  {error?.country && (
+                  {sectionErrors?.country && (
                     <p className="absolute mt-1 text-sm text-[#DB4437]">
                       Required
                     </p>
