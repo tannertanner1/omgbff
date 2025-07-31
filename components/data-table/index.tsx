@@ -153,10 +153,13 @@ export function DataTable<TData, TValue>({
               <span className="sr-only">More</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px]">
+          <DropdownMenuContent
+            align="end"
+            className="[&[data-slot=dropdown-menu-content]]:bg-background [&[data-slot=dropdown-menu-content]]:text-foreground w-[200px]"
+          >
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Filter</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
+              <DropdownMenuSubContent className="[&[data-slot=dropdown-menu-sub-content]]:bg-background [&[data-slot=dropdown-menu-sub-content]]:text-foreground">
                 <DropdownMenuRadioGroup
                   value={selectedColumn}
                   onValueChange={setSelectedColumn}

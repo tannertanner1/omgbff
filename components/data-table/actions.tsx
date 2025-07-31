@@ -61,7 +61,10 @@ export function Actions<T extends { id: string }>({
             <IconDots className="h-4 w-4 transition-colors" />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent
+          align="end"
+          className="[&[data-slot=dropdown-menu-content]]:bg-background [&[data-slot=dropdown-menu-content]]:text-foreground"
+        >
           {onEdit && (
             <DropdownMenuItem
               onClick={handleEdit}

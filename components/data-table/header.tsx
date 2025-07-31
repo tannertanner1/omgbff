@@ -25,8 +25,8 @@ export const Header = React.memo(
         <DropdownMenuTrigger asChild>
           <div
             className={cn(
-              "flex cursor-pointer select-none items-center gap-2",
-              "transition-colors hover:text-primary",
+              "flex cursor-pointer items-center gap-2 select-none",
+              "hover:text-primary transition-colors",
               isOpen && "text-primary"
             )}
           >
@@ -38,21 +38,21 @@ export const Header = React.memo(
           align="start"
           side="bottom"
           sticky="partial"
-          className="w-[100px]"
+          className="[&[data-slot=dropdown-menu-content]]:bg-background [&[data-slot=dropdown-menu-content]]:text-foreground w-[100px]"
           collisionPadding={12}
           updatePositionStrategy="always"
         >
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <IconArrowUp className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <IconArrowUp className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <IconArrowDown className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <IconArrowDown className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <IconEyeOff className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            <IconEyeOff className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
             Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
