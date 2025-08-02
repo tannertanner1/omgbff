@@ -98,7 +98,7 @@ function AppSidebar({
                     </SidebarMenuButton>
                     <SidebarMenuAction
                       showOnHover
-                      className="flex items-center justify-center"
+                      className="[&[data-slot=sidebar-menu-action]]:hover:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:hover:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:peer-data-[active=true]/menu-button:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:peer-data-[active=true]/menu-button:text-sidebar-accent-foreground"
                     >
                       <Link
                         href={`${item.url}/new`}
