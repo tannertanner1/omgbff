@@ -15,6 +15,7 @@ import {
 import type { Session } from "next-auth"
 import { ITEMS } from "@/data/menu-items"
 import { role } from "@/data/system-roles"
+import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -98,7 +99,12 @@ function AppSidebar({
                     </SidebarMenuButton>
                     <SidebarMenuAction
                       showOnHover
-                      className="[&[data-slot=sidebar-menu-action]]:hover:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:hover:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:peer-data-[active=true]/menu-button:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:peer-data-[active=true]/menu-button:text-sidebar-accent-foreground"
+                      className={cn(
+                        "flex items-center justify-center",
+                        pathname === `${item.url}/new`
+                          ? "[&[data-slot=sidebar-menu-action]]:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:text-sidebar-accent-foreground md:opacity-100"
+                          : "[&[data-slot=sidebar-menu-action]]:hover:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:text-transparent"
+                      )}
                     >
                       <Link
                         href={`${item.url}/new`}

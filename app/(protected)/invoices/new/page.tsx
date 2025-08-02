@@ -8,10 +8,10 @@ import { createAction } from "../actions"
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { organizationId?: string }
+  searchParams: Promise<{ organizationId?: string }>
 }) {
   const user = await verifySession()
-  const { organizationId } = searchParams
+  const { organizationId } = await searchParams
   const [organizations, customers] = await Promise.all([
     getAllOrganizations(),
     getAllCustomers(),
