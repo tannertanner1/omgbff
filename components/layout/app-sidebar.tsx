@@ -102,8 +102,8 @@ function AppSidebar({
                       className={cn(
                         "flex items-center justify-center",
                         pathname === `${item.url}/new`
-                          ? "[&[data-slot=sidebar-menu-action]]:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:text-sidebar-accent-foreground md:opacity-100"
-                          : "[&[data-slot=sidebar-menu-action]]:hover:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:text-transparent"
+                          ? "[&[data-slot=sidebar-menu-action]]:bg-sidebar-accent [&[data-slot=sidebar-menu-action]]:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:md:opacity-100"
+                          : "[&[data-slot=sidebar-menu-action]]:hover:text-sidebar-accent-foreground [&[data-slot=sidebar-menu-action]]:md:text-transparent"
                       )}
                     >
                       <Link
