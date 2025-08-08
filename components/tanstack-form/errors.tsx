@@ -1,14 +1,33 @@
 import { AnyFieldMeta } from "@tanstack/react-form"
-import { ZodError } from "zod"
+import { useFormContext } from "."
 
 const Errors = ({ meta }: { meta: AnyFieldMeta }) => {
-  if (!meta.isTouched) return null
+  const form = useFormContext()
 
-  return meta.errors.map(({ message }: ZodError, index) => (
-    <p key={index} className="text-destructive text-sm font-medium">
-      {message}
-    </p>
-  ))
+  return (
+    <form.Subscribe selector={(state) => state.submissionAttempts}>
+      {(submissionAttempts) => {
+        // Progressive disclosure
+        const showOnSubmitErrors = submissionAttempts === 0
+        const showOnChangeErrors = submissionAttempts > 0
+
+        return (
+          <>
+            {showOnSubmitErrors && meta.errorMap.onSubmit && (
+              <p className="text-destructive text-sm font-medium">
+                {meta.errorMap.onSubmit}
+              </p>
+            )}
+            {showOnChangeErrors && meta.errorMap.onChange && (
+              <p className="text-destructive text-sm font-medium">
+                {meta.errorMap.onChange}
+              </p>
+            )}
+          </>
+        )
+      }}
+    </form.Subscribe>
+  )
 }
 
 export { Errors }

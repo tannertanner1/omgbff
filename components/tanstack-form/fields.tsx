@@ -1,5 +1,4 @@
 import { useFieldContext } from "."
-import { Errors } from "./errors"
 import { Label } from "@/components/ui/label"
 import { Input as InputComponent } from "@/components/ui/input"
 import {
@@ -11,36 +10,22 @@ import {
 } from "@/components/ui/select"
 import { Checkbox as CheckboxComponent } from "@/components/ui/checkbox"
 
-const Checkbox = ({
+const Input = ({
   label,
-  description,
-}: {
-  label: string
-  description?: string
-}) => {
-  const field = useFieldContext<boolean>()
+  ...props
+}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => {
+  const field = useFieldContext<string>()
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center space-x-2">
-        <CheckboxComponent
-          id={field.name}
-          checked={field.state.value}
-          onCheckedChange={(checked) => {
-            field.handleChange(checked === true)
-          }}
-          onBlur={field.handleBlur}
-        />
-        <div className="grid gap-1.5 leading-none">
-          <Label htmlFor={field.name} className="cursor-pointer">
-            {label}
-          </Label>
-          {description && (
-            <p className="text-muted-foreground text-sm">{description}</p>
-          )}
-        </div>
-      </div>
-      <Errors meta={field.state.meta} />
+    <div className="space-y-1">
+      <Label htmlFor={field.name}>{label}</Label>
+      <InputComponent
+        id={field.name}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        {...props}
+      />
     </div>
   )
 }
@@ -58,49 +43,54 @@ const Select = ({
   const field = useFieldContext<string>()
 
   return (
-    <div className="space-y-2">
-      <div className="space-y-1">
-        <Label htmlFor={field.name}>{label}</Label>
-        <SelectComponent
-          value={field.state.value}
-          onValueChange={(value) => field.handleChange(value)}
-        >
-          <SelectTrigger id={field.name} onBlur={field.handleBlur}>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectComponent>
-      </div>
-      <Errors meta={field.state.meta} />
+    <div className="space-y-1">
+      <Label htmlFor={field.name}>{label}</Label>
+      <SelectComponent
+        value={field.state.value}
+        onValueChange={(value) => field.handleChange(value)}
+      >
+        <SelectTrigger id={field.name} onBlur={field.handleBlur}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectComponent>
     </div>
   )
 }
 
-const Input = ({
+const Checkbox = ({
   label,
-  ...props
-}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => {
-  const field = useFieldContext<string>()
+  description,
+}: {
+  label: string
+  description?: string
+}) => {
+  const field = useFieldContext<boolean>()
 
   return (
-    <div className="space-y-2">
-      <div className="space-y-1">
-        <Label htmlFor={field.name}>{label}</Label>
-        <InputComponent
-          id={field.name}
-          value={field.state.value}
-          onChange={(e) => field.handleChange(e.target.value)}
-          onBlur={field.handleBlur}
-          {...props}
-        />
+    <div className="flex items-center space-x-2">
+      <CheckboxComponent
+        id={field.name}
+        checked={field.state.value}
+        onCheckedChange={(checked) => {
+          field.handleChange(checked === true)
+        }}
+        onBlur={field.handleBlur}
+      />
+      <div className="grid gap-1.5 leading-none">
+        <Label htmlFor={field.name} className="cursor-pointer">
+          {label}
+        </Label>
+        {description && (
+          <p className="text-muted-foreground text-sm">{description}</p>
+        )}
       </div>
-      <Errors meta={field.state.meta} />
     </div>
   )
 }
