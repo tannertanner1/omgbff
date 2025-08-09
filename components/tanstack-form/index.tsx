@@ -1,6 +1,5 @@
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
 import { Input, Select, Checkbox } from "./fields"
-import { Errors } from "./errors"
 import { Button } from "./button"
 
 export const { fieldContext, useFieldContext, formContext, useFormContext } =
@@ -13,7 +12,6 @@ export const { useAppForm } = createFormHook({
     Checkbox,
   },
   formComponents: {
-    Errors,
     Button,
   },
   fieldContext,
