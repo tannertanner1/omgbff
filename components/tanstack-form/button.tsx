@@ -19,7 +19,7 @@ const Button = ({ label }: { label: string }) => {
           <ButtonComponent
             type="submit"
             variant="outline"
-            className="[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border transition-colors duration-300 ease-in-out"
+            className="[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary max-w-[] mt-4 w-full border transition-colors duration-300 ease-in-out"
             disabled={isSubmitting}
             aria-disabled={isSubmitting}
           >
@@ -34,12 +34,12 @@ const Button = ({ label }: { label: string }) => {
               {isSubmitSuccessful ? (
                 <IconCircleCheck className="h-5 w-5 text-[#0F9D58]" />
               ) : (
-                <IconCircleX className="h-5 w-5 text-[#DB4437]" />
+                <IconCircleX className="text-destructive h-5 w-5" />
               )}
               <span
                 className={cn(
                   "text-sm",
-                  isSubmitSuccessful ? "text-[#0F9D58]" : "text-[#DB4437]"
+                  isSubmitSuccessful ? "text-[#0F9D58]" : "text-destructive"
                 )}
               >
                 {isSubmitSuccessful ? "Success" : "Error"}

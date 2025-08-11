@@ -1,18 +1,16 @@
 "use server"
 
 import {
-  ServerValidateError,
   createServerValidate,
+  ServerValidateError,
 } from "@tanstack/react-form/nextjs"
-import { data, schema } from "./form"
+import { data } from "./form"
 
 const serverValidate = createServerValidate({
   ...data,
-  canSubmitWhenInvalid: false,
-  validators: {
-    onSubmit: schema,
+  onServerValidate: ({ value }) => {
+    console.log("Server validation", value)
   },
-  onServerValidate: async ({ value }) => {},
 })
 
 async function createAction(prev: unknown, formData: FormData) {

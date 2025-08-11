@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Checkbox as CheckboxComponent } from "@/components/ui/checkbox"
+import { Textarea as TextareaComponent } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 const Label = ({
@@ -19,12 +20,13 @@ const Label = ({
 }: { required?: boolean } & React.LabelHTMLAttributes<HTMLLabelElement>) => {
   return (
     <LabelComponent
-      // htmlFor={field.name}
       {...props}
       className={cn(
         props.className,
         "mb-2 block pt-6",
-        required ? "after:ml-0.5 after:text-[#DB4437] after:content-['*']" : ""
+        required
+          ? "after:text-destructive after:ml-0.5 after:content-['*']"
+          : ""
       )}
     >
       {children}
@@ -34,66 +36,127 @@ const Label = ({
 
 const Input = ({
   label,
+  required,
+  type = "text",
   ...props
-}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => {
+}: {
+  label: string
+  required?: boolean
+  type?: string
+} & React.InputHTMLAttributes<HTMLInputElement>) => {
   const field = useFieldContext<string>()
 
   return (
-    <div className="space-y-2">
-      <div className="space-y-1">
-        <Label htmlFor={field.name}>{label}</Label>
-        <InputComponent
-          id={field.name}
-          value={field.state.value}
-          onChange={(e) => field.handleChange(e.target.value)}
-          onBlur={field.handleBlur}
-          {...props}
-          className={cn(
-            props.className,
-            !field.state.meta.isValid && field.state.meta.isTouched
-              ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
-              : "border-input [&[data-slot=input]]:focus-visible:border-input",
-            "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
-          )}
-        />
-      </div>
+    <div className="relative">
+      <Label htmlFor={field.name}>{label}</Label>
+      <InputComponent
+        id={field.name}
+        type={type}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        {...props}
+        className={cn(
+          props.className,
+          !field.state.meta.isValid && field.state.meta.isTouched
+            ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
+            : "border-input [&[data-slot=input]]:focus-visible:border-input",
+          "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
+        )}
+      />
       <Errors meta={field.state.meta} />
     </div>
   )
 }
 
-type Option = { value: string; label: string }
+const Textarea = ({
+  label,
+  required,
+  rows = 1,
+  ...props
+}: {
+  label: string
+  required?: boolean
+  rows?: number
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
+  const field = useFieldContext<string>()
+
+  return (
+    <div className="relative">
+      <Label htmlFor={field.name}>{label}</Label>
+      <TextareaComponent
+        id={field.name}
+        rows={rows}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        {...props}
+        className={cn(
+          props.className,
+          "[&[data-slot=textarea]]:bg-background mb-1",
+          !field.state.meta.isValid && field.state.meta.isTouched
+            ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
+            : "[&[data-slot=textarea]]:focus-visible:border-input",
+          "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
+          "field-sizing-content min-h-0 resize-none overflow-hidden"
+        )}
+      />
+      <Errors meta={field.state.meta} />
+    </div>
+  )
+}
+
 const Select = ({
   label,
   options,
   placeholder,
+  required,
+  disabled,
 }: {
   label: string
-  options: Option[]
+  options: { value: string; label: string }[]
   placeholder?: string
+  required?: boolean
+  disabled?: boolean
 }) => {
   const field = useFieldContext<string>()
 
   return (
-    <div className="space-y-2">
-      <div className="space-y-1">
-        <Label htmlFor={field.name}>{label}</Label>
-        <SelectComponent
-          value={field.state.value}
-          onValueChange={(value) => field.handleChange(value)}
+    <div className="relative">
+      <Label htmlFor={field.name} required={required}>
+        {label}
+      </Label>
+      <SelectComponent
+        name={field.name}
+        value={field.state.value}
+        required={required}
+        disabled={disabled}
+        onValueChange={(value) => field.handleChange(value)}
+      >
+        <SelectTrigger
+          id={field.name}
+          onBlur={field.handleBlur}
+          className={cn(
+            !field.state.meta.isValid && field.state.meta.isTouched
+              ? "border-destructuve [&[data-slot=select-trigger]]:focus-visible:border-destructuve"
+              : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
+            "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
+          )}
         >
-          <SelectTrigger id={field.name} onBlur={field.handleBlur}>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectComponent>
-      </div>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
+          {options.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectComponent>
       <Errors meta={field.state.meta} />
     </div>
   )
@@ -102,9 +165,13 @@ const Select = ({
 const Checkbox = ({
   label,
   description,
+  required,
+  disabled,
 }: {
   label: string
   description?: string
+  required?: boolean
+  disabled?: boolean
 }) => {
   const field = useFieldContext<boolean>()
 
@@ -118,6 +185,8 @@ const Checkbox = ({
             field.handleChange(checked === true)
           }}
           onBlur={field.handleBlur}
+          required={required}
+          disabled={disabled}
         />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor={field.name} className="cursor-pointer">
@@ -133,113 +202,4 @@ const Checkbox = ({
   )
 }
 
-export { Input, Select, Checkbox }
-
-// import { useFieldContext, useFormContext } from "."
-// import { Errors } from "./errors"
-// import { Label } from "@/components/ui/label"
-// import { Input as InputComponent } from "@/components/ui/input"
-// import {
-//   Select as SelectComponent,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select"
-// import { Checkbox as CheckboxComponent } from "@/components/ui/checkbox"
-
-// const Input = ({
-//   label,
-//   ...props
-// }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => {
-//   const field = useFieldContext<string>()
-
-//   return (
-//     <div className="space-y-2">
-//       <div className="space-y-1">
-//         <Label htmlFor={field.name}>{label}</Label>
-//         <InputComponent
-//           id={field.name}
-//           value={field.state.value}
-//           onChange={(e) => field.handleChange(e.target.value)}
-//           onBlur={field.handleBlur}
-//           {...props}
-//         />
-//       </div>
-//       <Errors meta={field.state.meta} />
-//     </div>
-//   )
-// }
-
-// type Option = { value: string; label: string }
-// const Select = ({
-//   label,
-//   options,
-//   placeholder,
-// }: {
-//   label: string
-//   options: Option[]
-//   placeholder?: string
-// }) => {
-//   const field = useFieldContext<string>()
-
-//   return (
-//     <div className="space-y-2">
-//       <div className="space-y-1">
-//         <Label htmlFor={field.name}>{label}</Label>
-//         <SelectComponent
-//           value={field.state.value}
-//           onValueChange={(value) => field.handleChange(value)}
-//         >
-//           <SelectTrigger id={field.name} onBlur={field.handleBlur}>
-//             <SelectValue placeholder={placeholder} />
-//           </SelectTrigger>
-//           <SelectContent>
-//             {options.map((option) => (
-//               <SelectItem key={option.value} value={option.value}>
-//                 {option.label}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </SelectComponent>
-//       </div>
-//       <Errors meta={field.state.meta} />
-//     </div>
-//   )
-// }
-
-// const Checkbox = ({
-//   label,
-//   description,
-// }: {
-//   label: string
-//   description?: string
-// }) => {
-//   const field = useFieldContext<boolean>()
-
-//   return (
-//     <div className="space-y-2">
-//       <div className="flex items-center space-x-2">
-//         <CheckboxComponent
-//           id={field.name}
-//           checked={field.state.value}
-//           onCheckedChange={(checked) => {
-//             field.handleChange(checked === true)
-//           }}
-//           onBlur={field.handleBlur}
-//         />
-//         <div className="grid gap-1.5 leading-none">
-//           <Label htmlFor={field.name} className="cursor-pointer">
-//             {label}
-//           </Label>
-//           {description && (
-//             <p className="text-muted-foreground text-sm">{description}</p>
-//           )}
-//         </div>
-//       </div>
-//       <Errors meta={field.state.meta} />
-//     </div>
-//   )
-// }
-
-// export { Input, Select, Checkbox }
+export { Input, Textarea, Select, Checkbox }

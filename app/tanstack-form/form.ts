@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { formOptions } from "@tanstack/react-form/nextjs"
+import { formOptions, revalidateLogic } from "@tanstack/react-form/nextjs"
 
 const schema = z.object({
   name: z.string().min(1, { message: "Required" }),
@@ -13,9 +13,13 @@ const data = formOptions({
     email: "",
   } as Schema,
   validators: {
-    onSubmit: schema,
+    onChange: schema,
   },
   canSubmitWhenInvalid: false,
+  validationLogic: revalidateLogic({
+    mode: "submit",
+    modeAfterSubmission: "change",
+  }),
 })
 
-export { data, schema }
+export { schema, data }
