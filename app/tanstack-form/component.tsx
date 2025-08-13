@@ -2,10 +2,14 @@
 
 import { useActionState } from "react"
 import { initialFormState } from "@tanstack/react-form/nextjs"
-import { mergeForm, useTransform } from "@tanstack/react-form"
+import {
+  mergeForm,
+  useTransform,
+  // revalidateLogic
+} from "@tanstack/react-form"
 import { useAppForm } from "@/components/tanstack-form"
 import { createAction } from "./actions"
-import { data } from "./form"
+import { data, schema } from "./form"
 
 function Component() {
   const [state, action] = useActionState(createAction, initialFormState)
@@ -14,6 +18,13 @@ function Component() {
     ...data,
     transform: useTransform((baseForm) => mergeForm(baseForm, state!), [state]),
 
+    validators: {
+      onSubmit: schema,
+    },
+    // validationLogic: revalidateLogic({
+    //   mode: "submit",
+    //   modeAfterSubmission: "change",
+    // }),
     onSubmit: async ({ value }) => {
       console.log("Client validation", value)
     },
@@ -25,6 +36,9 @@ function Component() {
         noValidate
         className="space-y-4"
         action={action}
+        // onSubmit={() => {
+        //   form.handleSubmit()
+        // }}
         onSubmit={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -33,9 +47,6 @@ function Component() {
       >
         <form.AppField
           name="name"
-          validators={{
-            onSubmit: ({ value }) => (!value ? "Required" : null),
-          }}
           children={(field) => (
             <>
               <field.Input label="Name" />
