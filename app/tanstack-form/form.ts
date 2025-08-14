@@ -22,10 +22,6 @@ const data = formOptions({
     onSubmit: schema,
   },
   canSubmitWhenInvalid: false,
-  // validationLogic: revalidateLogic({
-  //   mode: "submit",
-  //   modeAfterSubmission: "change",
-  // }),
 })
 
 export { schema, data }
