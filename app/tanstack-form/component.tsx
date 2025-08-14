@@ -39,9 +39,7 @@ function Component() {
         // onSubmit={() => {
         //   form.handleSubmit()
         // }}
-        onSubmit={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
+        onSubmit={() => {
           form.handleSubmit()
         }}
       >
