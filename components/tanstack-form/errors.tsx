@@ -4,11 +4,12 @@ import { ZodError } from "zod"
 const Errors = ({ meta }: { meta: AnyFieldMeta }) => {
   if (!meta.isTouched) return null
 
-  return meta.errors.map(({ message }: ZodError, index) => (
-    <p key={index} className="text-destructive text-sm font-medium">
-      {message}
-    </p>
-  ))
+  const firstError = meta.errors[0] as ZodError
+  if (!firstError) return null
+
+  return (
+    <p className="text-destructive text-sm font-medium">{firstError.message}</p>
+  )
 }
 
 const FormError = ({
