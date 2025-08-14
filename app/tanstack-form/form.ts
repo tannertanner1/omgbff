@@ -20,21 +20,8 @@ const data = formOptions({
   } as Schema,
   validator: {
     onSubmit: schema,
-    name: ({ value }) => {
-      if (!value) return "Name is required"
-      return undefined
-    },
-    email: ({ value }) => {
-      if (!value) return "Email is required"
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Invalid email format"
-      return undefined
-    },
   },
   canSubmitWhenInvalid: false,
-  validationLogic: {
-    mode: "submit",
-    modeAfterSubmission: "change",
-  },
 })
 
 export { schema, data }
