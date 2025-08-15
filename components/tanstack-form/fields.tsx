@@ -58,7 +58,13 @@ const Input = ({
         {...props}
         className={cn(
           props.className,
-          !field.state.meta.isValid && field.state.meta.isTouched
+          // !field.state.meta.isValid && field.state.meta.isTouched
+          (field.state.meta.errorMap.onDynamic ||
+            field.state.meta.errorMap.onChange ||
+            field.state.meta.errorMap.onBlur ||
+            field.state.meta.errorMap.onSubmit ||
+            field.state.meta.errors[0]) &&
+            field.state.meta.isTouched
             ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
             : "border-input [&[data-slot=input]]:focus-visible:border-input",
           "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
@@ -94,7 +100,13 @@ const Textarea = ({
         className={cn(
           props.className,
           "[&[data-slot=textarea]]:bg-background mb-1",
-          !field.state.meta.isValid && field.state.meta.isTouched
+          // !field.state.meta.isValid && field.state.meta.isTouched
+          (field.state.meta.errorMap.onDynamic ||
+            field.state.meta.errorMap.onChange ||
+            field.state.meta.errorMap.onBlur ||
+            field.state.meta.errorMap.onSubmit ||
+            field.state.meta.errors[0]) &&
+            field.state.meta.isTouched
             ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
             : "[&[data-slot=textarea]]:focus-visible:border-input",
           "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
@@ -137,7 +149,13 @@ const Select = ({
           id={field.name}
           onBlur={field.handleBlur}
           className={cn(
-            !field.state.meta.isValid && field.state.meta.isTouched
+            // !field.state.meta.isValid && field.state.meta.isTouched
+            (field.state.meta.errorMap.onDynamic ||
+              field.state.meta.errorMap.onChange ||
+              field.state.meta.errorMap.onBlur ||
+              field.state.meta.errorMap.onSubmit ||
+              field.state.meta.errors[0]) &&
+              field.state.meta.isTouched
               ? "border-destructuve [&[data-slot=select-trigger]]:focus-visible:border-destructuve"
               : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
             "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"

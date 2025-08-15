@@ -2,46 +2,35 @@
 
 import { useActionState } from "react"
 import { initialFormState } from "@tanstack/react-form/nextjs"
-import {
-  mergeForm,
-  useTransform,
-  // revalidateLogic
-} from "@tanstack/react-form"
+import { revalidateLogic, mergeForm, useTransform } from "@tanstack/react-form"
 import { useAppForm } from "@/components/tanstack-form"
-import { createAction } from "./actions"
+import { someAction } from "./actions"
 import { data, schema } from "./form"
 
 function Component() {
-  const [state, action] = useActionState(createAction, initialFormState)
+  const [state, action] = useActionState(someAction, initialFormState)
 
   const form = useAppForm({
     ...data,
     transform: useTransform((baseForm) => mergeForm(baseForm, state!), [state]),
 
+    canSubmitWhenInvalid: false,
+    validationLogic: revalidateLogic({
+      mode: "submit",
+      modeAfterSubmission: "change",
+    }),
     validators: {
-      onSubmit: schema,
-    },
-    // validationLogic: revalidateLogic({
-    //   mode: "submit",
-    //   modeAfterSubmission: "change",
-    // }),
-    onSubmit: async ({ value }) => {
-      console.log("Client validation", value)
+      onDynamic: schema,
     },
   })
 
   return (
-    <div className="mx-auto mt-10 max-w-5xl px-8">
+    <div className="mx-auto mt-2 max-w-5xl px-8">
       <form
         noValidate
         className="space-y-4"
         action={action}
-        // onSubmit={() => {
-        //   form.handleSubmit()
-        // }}
-        onSubmit={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
+        onSubmit={() => {
           form.handleSubmit()
         }}
       >
@@ -53,19 +42,13 @@ function Component() {
             </>
           )}
         />
-        <form.AppField
-          name="email"
-          children={(field) => (
-            <>
-              <field.Input label="Email" type="email" />
-            </>
-          )}
-        />
         <form.AppForm>
           <form.Button label="Submit" />
         </form.AppForm>
 
-        {/* <pre>{JSON.stringify(form.state, null, 2)}</pre> */}
+        <pre className="pb-2 font-mono text-xs">
+          {JSON.stringify(form.state, null, 2)}
+        </pre>
       </form>
     </div>
   )

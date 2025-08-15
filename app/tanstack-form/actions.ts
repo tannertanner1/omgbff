@@ -8,15 +8,14 @@ import { data } from "./form"
 
 const serverValidate = createServerValidate({
   ...data,
-  onServerValidate: async ({ value }) => {
-    console.log("Server validation", value)
+  onServerValidate: ({ value }) => {
+    console.log("validatedData:", value)
   },
 })
 
-async function createAction(prev: unknown, formData: FormData) {
+async function someAction(prev: unknown, formData: FormData) {
   try {
-    const validatedData = await serverValidate(formData)
-    console.log("validatedData", validatedData)
+    await serverValidate(formData)
   } catch (e) {
     if (e instanceof ServerValidateError) {
       return e.formState
@@ -27,4 +26,4 @@ async function createAction(prev: unknown, formData: FormData) {
   }
 }
 
-export { createAction }
+export { someAction }
