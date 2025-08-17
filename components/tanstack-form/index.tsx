@@ -5,7 +5,7 @@ import { Button } from "./button"
 export const { fieldContext, useFieldContext, formContext, useFormContext } =
   createFormHookContexts()
 
-export const { useAppForm, withForm, withFieldGroup } = createFormHook({
+export const { withForm, useAppForm } = createFormHook({
   fieldComponents: {
     Input,
     Textarea,

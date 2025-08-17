@@ -1,7 +1,13 @@
-import { withFieldGroup } from "."
+import { withForm } from "."
 
-const Phone = withFieldGroup({
-  render: function Render({}) {
+const Phone = withForm({
+  defaultValues: {
+    phone: [] as Array<{
+      label: string
+      number: string
+    }>,
+  },
+  render: ({}) => {
     return <></>
   },
 })
