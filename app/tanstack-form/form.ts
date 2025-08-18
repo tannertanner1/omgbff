@@ -21,8 +21,18 @@ type Schema = z.infer<typeof schema>
 const data = formOptions({
   defaultValues: {
     name: "",
-    address: [],
-    phone: [],
+    address: [
+      {
+        label: "",
+        street: "",
+      },
+    ],
+    phone: [
+      {
+        label: "",
+        number: "",
+      },
+    ],
   } as Schema,
 })
 

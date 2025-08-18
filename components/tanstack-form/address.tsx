@@ -12,7 +12,10 @@ const Address = withForm({
           {(field) => (
             <div className="pt-4">
               {field.state.value.map((_, i) => (
-                <div key={i} className="rounded-md border border-dashed pt-2">
+                <div
+                  key={i}
+                  className="rounded-[0.625rem] border border-dashed pt-2"
+                >
                   <Badge className="bg-accent border-accent text-primary rounded-full border">
                     Address {i + 1}
                   </Badge>
@@ -45,7 +48,7 @@ const Address = withForm({
                   })
                 }
               >
-                Add Address
+                Add
               </Button>
             </div>
           )}

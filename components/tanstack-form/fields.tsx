@@ -14,19 +14,22 @@ import { Textarea as TextareaComponent } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 const Label = ({
-  required,
   children,
+  required,
   ...props
-}: { required?: boolean } & React.LabelHTMLAttributes<HTMLLabelElement>) => {
+}: {
+  children: React.ReactNode
+  required?: boolean
+} & React.LabelHTMLAttributes<HTMLLabelElement>) => {
   return (
     <LabelComponent
       {...props}
       className={cn(
-        props.className,
         "mb-2 block pt-6",
         required
           ? "after:text-destructive after:ml-0.5 after:content-['*']"
-          : ""
+          : "",
+        props.className
       )}
     >
       {children}
@@ -57,7 +60,6 @@ const Input = ({
         onBlur={field.handleBlur}
         {...props}
         className={cn(
-          props.className,
           // !field.state.meta.isValid && field.state.meta.isTouched
           (field.state.meta.errorMap.onDynamic ||
             field.state.meta.errorMap.onChange ||
@@ -67,7 +69,8 @@ const Input = ({
             field.state.meta.isTouched
             ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
             : "border-input [&[data-slot=input]]:focus-visible:border-input",
-          "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0"
+          "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0",
+          props.className
         )}
       />
       <Errors meta={field.state.meta} />
@@ -98,7 +101,6 @@ const Textarea = ({
         onBlur={field.handleBlur}
         {...props}
         className={cn(
-          props.className,
           "[&[data-slot=textarea]]:bg-background mb-1",
           // !field.state.meta.isValid && field.state.meta.isTouched
           (field.state.meta.errorMap.onDynamic ||
@@ -110,7 +112,8 @@ const Textarea = ({
             ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
             : "[&[data-slot=textarea]]:focus-visible:border-input",
           "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
-          "field-sizing-content min-h-0 resize-none overflow-hidden"
+          "field-sizing-content min-h-0 resize-none overflow-hidden",
+          props.className
         )}
       />
       <Errors meta={field.state.meta} />
