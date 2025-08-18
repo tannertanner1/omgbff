@@ -42,3 +42,5 @@ next-env.d.ts
 
 _private
 .cursor/rules/
+.cursorignore
+.cursorindexingignore

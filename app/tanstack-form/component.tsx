@@ -6,6 +6,7 @@ import { revalidateLogic, mergeForm, useTransform } from "@tanstack/react-form"
 import { useAppForm } from "@/components/tanstack-form"
 import { someAction } from "./actions"
 import { data, schema } from "./form"
+import { Button } from "@/components/ui/button"
 
 function Component() {
   const [state, action] = useActionState(someAction, initialFormState)
@@ -34,17 +35,33 @@ function Component() {
           form.handleSubmit()
         }}
       >
-        <form.AppField
+        {/* <form.AppField
           name="name"
           children={(field) => (
             <>
               <field.Input label="Name" />
             </>
           )}
+        /> */}
+        <form.AppField
+          name="name"
+          children={(field) => <field.Input label="Name" />}
         />
+
+        <Address form={form} />
+        <Phone form={form} />
+
         <form.AppForm>
           <form.Button label="Submit" />
         </form.AppForm>
+
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => console.log(form.state)}
+        >
+          Debug
+        </Button>
 
         <pre className="pb-2 font-mono text-xs">
           {JSON.stringify(form.state, null, 2)}
