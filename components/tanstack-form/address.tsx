@@ -22,8 +22,23 @@ const Address = withForm({
                   <form.AppField name={`address[${i}].label`}>
                     {(subField) => <subField.Input label="Label" />}
                   </form.AppField>
-                  <form.AppField name={`address[${i}].street`}>
-                    {(subField) => <subField.Input label="Street" />}
+                  <form.AppField name={`address[${i}].line1`}>
+                    {(subField) => <subField.Input label="Street line 1" />}
+                  </form.AppField>
+                  <form.AppField name={`address[${i}].line2`}>
+                    {(subField) => <subField.Input label="Street line 2" />}
+                  </form.AppField>
+                  <form.AppField name={`address[${i}].city`}>
+                    {(subField) => <subField.Input label="City" />}
+                  </form.AppField>
+                  <form.AppField name={`address[${i}].region`}>
+                    {(subField) => <subField.Input label="Region" />}
+                  </form.AppField>
+                  <form.AppField name={`address[${i}].postal`}>
+                    {(subField) => <subField.Input label="Postal code" />}
+                  </form.AppField>
+                  <form.AppField name={`address[${i}].country`}>
+                    {(subField) => <subField.Input label="Country" />}
                   </form.AppField>
                   <div className="mb-4">
                     <Button
@@ -44,7 +59,12 @@ const Address = withForm({
                 onClick={() =>
                   field.pushValue({
                     label: "",
-                    street: "",
+                    line1: "",
+                    line2: "",
+                    city: "",
+                    region: "",
+                    postal: "",
+                    country: "",
                   })
                 }
               >
