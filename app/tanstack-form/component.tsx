@@ -37,14 +37,6 @@ function Component() {
           form.handleSubmit()
         }}
       >
-        {/* <form.AppField
-          name="name"
-          children={(field) => (
-            <>
-              <field.Input label="Name" />
-            </>
-          )}
-        /> */}
         <form.AppField
           name="name"
           children={(field) => <field.Input label="Name" />}

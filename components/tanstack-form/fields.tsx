@@ -54,6 +54,7 @@ const Input = ({
       <Label htmlFor={field.name}>{label}</Label>
       <InputComponent
         id={field.name}
+        name={field.name}
         type={type}
         value={field.state.value}
         onChange={(e) => field.handleChange(e.target.value)}
@@ -95,6 +96,7 @@ const Textarea = ({
       <Label htmlFor={field.name}>{label}</Label>
       <TextareaComponent
         id={field.name}
+        name={field.name}
         rows={rows}
         value={field.state.value}
         onChange={(e) => field.handleChange(e.target.value)}
@@ -150,6 +152,7 @@ const Select = ({
       >
         <SelectTrigger
           id={field.name}
+          name={field.name}
           onBlur={field.handleBlur}
           className={cn(
             // !field.state.meta.isValid && field.state.meta.isTouched
@@ -201,6 +204,7 @@ const Checkbox = ({
       <div className="flex items-center space-x-2">
         <CheckboxComponent
           id={field.name}
+          name={field.name}
           checked={field.state.value}
           onCheckedChange={(checked) => {
             field.handleChange(checked === true)

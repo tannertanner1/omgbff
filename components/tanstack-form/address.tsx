@@ -56,17 +56,7 @@ const Address = withForm({
                 type="button"
                 variant="outline"
                 className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border bg-transparent transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
-                onClick={() =>
-                  field.pushValue({
-                    label: "",
-                    line1: "",
-                    line2: "",
-                    city: "",
-                    region: "",
-                    postal: "",
-                    country: "",
-                  })
-                }
+                onClick={() => field.pushValue(data.defaultValues.address[0])}
               >
                 Add
               </Button>

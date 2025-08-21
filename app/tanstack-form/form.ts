@@ -1,22 +1,31 @@
 import { formOptions } from "@tanstack/react-form/nextjs"
 import { z } from "zod"
+import {
+  ADDRESS,
+  PROVINCE,
+  STATE,
+  PREFECTURE,
+  COUNTRY,
+  PHONE,
+} from "@/data/customer-fields"
+import type { Address, Region, Country, Phone } from "@/data/customer-fields"
 
 const schema = z.object({
   name: z.string().min(1, "Required"),
   address: z.array(
     z.object({
-      label: z.string(),
+      label: z.enum(ADDRESS),
       line1: z.string().min(1, "Required"),
       line2: z.string().optional(),
       city: z.string().min(1, "Required"),
-      region: z.string(),
+      region: z.union([z.enum(PROVINCE), z.enum(STATE), z.enum(PREFECTURE)]),
       postal: z.string().min(1, "Required"),
-      country: z.string(),
+      country: z.enum(COUNTRY),
     })
   ),
   phone: z.array(
     z.object({
-      label: z.string(),
+      label: z.enum(PHONE),
       number: z.string().min(1, "Required"),
     })
   ),
@@ -28,22 +37,22 @@ const data = formOptions({
     name: "",
     address: [
       {
-        label: "",
+        label: ADDRESS[0] as Address,
         line1: "",
         line2: "",
         city: "",
-        region: "",
+        region: "" as Region,
         postal: "",
-        country: "",
+        country: COUNTRY[0] as Country,
       },
     ],
     phone: [
       {
-        label: "",
+        label: PHONE[0] as Phone,
         number: "",
       },
     ],
   } as Schema,
 })
 
-export { data, schema, type Schema }
+export { schema, data }
