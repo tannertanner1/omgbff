@@ -1,5 +1,13 @@
 import { withForm } from "."
 import { data } from "@/app/tanstack-form/form"
+import {
+  ADDRESS,
+  COUNTRY,
+  STATE,
+  PROVINCE,
+  PREFECTURE,
+  CONFIG,
+} from "@/data/customer-fields"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -20,7 +28,19 @@ const Address = withForm({
                     Address {i + 1}
                   </Badge>
                   <form.AppField name={`address[${i}].label`}>
-                    {(subField) => <subField.Input label="Label" />}
+                    {(subField) => (
+                      <subField.Select
+                        label="Label"
+                        options={ADDRESS.filter(
+                          (label) =>
+                            !form
+                              .getFieldValue("address")
+                              ?.some(
+                                (addr, idx) => idx !== i && addr.label === label
+                              )
+                        )}
+                      />
+                    )}
                   </form.AppField>
                   <form.AppField name={`address[${i}].line1`}>
                     {(subField) => <subField.Input label="Street line 1" />}
@@ -32,13 +52,55 @@ const Address = withForm({
                     {(subField) => <subField.Input label="City" />}
                   </form.AppField>
                   <form.AppField name={`address[${i}].region`}>
-                    {(subField) => <subField.Input label="Region" />}
+                    {(subField) => {
+                      const country = form.getFieldValue(
+                        `address[${i}].country`
+                      )
+                      const options =
+                        country === "Canada"
+                          ? PROVINCE
+                          : country === "United States"
+                            ? STATE
+                            : country === "Japan"
+                              ? PREFECTURE
+                              : []
+                      return (
+                        <subField.Select label="Region" options={options} />
+                      )
+                    }}
                   </form.AppField>
                   <form.AppField name={`address[${i}].postal`}>
                     {(subField) => <subField.Input label="Postal code" />}
                   </form.AppField>
-                  <form.AppField name={`address[${i}].country`}>
-                    {(subField) => <subField.Input label="Country" />}
+                  <form.AppField
+                    name={`address[${i}].country`}
+                    listeners={{
+                      onChange: ({ value }) => {
+                        const config = CONFIG[value as keyof typeof CONFIG]
+                        if (config) {
+                          form.setFieldValue(
+                            `address[${i}].region`,
+                            config.defaultRegion
+                          )
+                          // Backup retry if field wasn't updated
+                          setTimeout(() => {
+                            const currentRegion = form.getFieldValue(
+                              `address[${i}].region`
+                            )
+                            if (currentRegion !== config.defaultRegion) {
+                              form.setFieldValue(
+                                `address[${i}].region`,
+                                config.defaultRegion
+                              )
+                            }
+                          }, 100)
+                        }
+                      },
+                    }}
+                  >
+                    {(subField) => (
+                      <subField.Select label="Country" options={COUNTRY} />
+                    )}
                   </form.AppField>
                   <div className="mb-4">
                     <Button
@@ -56,7 +118,21 @@ const Address = withForm({
                 type="button"
                 variant="outline"
                 className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border bg-transparent transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
-                onClick={() => field.pushValue(data.defaultValues.address[0])}
+                onClick={() => {
+                  const usedLabels =
+                    form.getFieldValue("address")?.map((addr) => addr.label) ||
+                    []
+                  const nextLabel =
+                    ADDRESS.find((label) => !usedLabels.includes(label)) ||
+                    ADDRESS[0]
+                  field.pushValue({
+                    ...data.defaultValues.address[0],
+                    label: nextLabel,
+                  })
+                }}
+                disabled={
+                  form.getFieldValue("address")?.length >= ADDRESS.length
+                }
               >
                 Add
               </Button>

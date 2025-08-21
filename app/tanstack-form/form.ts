@@ -7,6 +7,7 @@ import {
   PREFECTURE,
   COUNTRY,
   PHONE,
+  CONFIG,
 } from "@/data/customer-fields"
 import type { Address, Region, Country, Phone } from "@/data/customer-fields"
 
@@ -41,7 +42,7 @@ const data = formOptions({
         line1: "",
         line2: "",
         city: "",
-        region: "" as Region,
+        region: CONFIG[COUNTRY[0]].defaultRegion as Region,
         postal: "",
         country: COUNTRY[0] as Country,
       },

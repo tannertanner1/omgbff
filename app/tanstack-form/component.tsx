@@ -46,7 +46,7 @@ function Component() {
         <Phone form={form} />
 
         <form.AppForm>
-          <form.Button label="Submit" />
+          <form.Button children="Submit" />
         </form.AppForm>
 
         <Button

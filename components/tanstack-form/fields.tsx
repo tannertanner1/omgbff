@@ -131,7 +131,7 @@ const Select = ({
   disabled,
 }: {
   label: string
-  options: { value: string; label: string }[]
+  options: ReadonlyArray<{ value: string; label: string } | string>
   placeholder?: string
   required?: boolean
   disabled?: boolean
@@ -152,7 +152,6 @@ const Select = ({
       >
         <SelectTrigger
           id={field.name}
-          name={field.name}
           onBlur={field.handleBlur}
           className={cn(
             // !field.state.meta.isValid && field.state.meta.isTouched
@@ -170,15 +169,21 @@ const Select = ({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="[&[data-slot=select-content]]:dark:bg-background w-full [&[data-slot=select-content]]:rounded-[0.625rem]">
-          {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
-            >
-              {option.label}
-            </SelectItem>
-          ))}
+          {options
+            .map((option) =>
+              typeof option === "string"
+                ? { value: option, label: option }
+                : option
+            )
+            .map((option) => (
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+              >
+                {option.label}
+              </SelectItem>
+            ))}
         </SelectContent>
       </SelectComponent>
       <Errors meta={field.state.meta} />
