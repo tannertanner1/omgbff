@@ -163,7 +163,7 @@ const Select = ({
               field.state.meta.isTouched
               ? "border-destructuve [&[data-slot=select-trigger]]:focus-visible:border-destructuve"
               : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
-            "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
+            "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:text-base [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:md:text-sm [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
           )}
         >
           <SelectValue placeholder={placeholder} />
@@ -179,7 +179,7 @@ const Select = ({
               <SelectItem
                 key={option.value}
                 value={option.value}
-                className="w-full [&[data-slot=select-item]]:rounded-[0.625rem]"
+                className="w-full [&[data-slot=select-item]]:rounded-[0.625rem] [&[data-slot=select-item]]:text-base [&[data-slot=select-item]]:md:text-sm"
               >
                 {option.label}
               </SelectItem>
