@@ -1,14 +1,6 @@
 import { formOptions } from "@tanstack/react-form/nextjs"
 import { z } from "zod"
-import {
-  ADDRESS,
-  PROVINCE,
-  STATE,
-  PREFECTURE,
-  COUNTRY,
-  PHONE,
-  CONFIG,
-} from "@/data/customer-fields"
+import { ADDRESS, COUNTRY, PHONE, CONFIG } from "@/data/customer-fields"
 import type { Address, Region, Country, Phone } from "@/data/customer-fields"
 
 const schema = z.object({
@@ -19,7 +11,7 @@ const schema = z.object({
       line1: z.string().min(1, "Required"),
       line2: z.string().optional(),
       city: z.string().min(1, "Required"),
-      region: z.union([z.enum(PROVINCE), z.enum(STATE), z.enum(PREFECTURE)]),
+      region: z.string(),
       postal: z.string().min(1, "Required"),
       country: z.enum(COUNTRY),
     })
