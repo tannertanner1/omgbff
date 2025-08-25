@@ -25,7 +25,7 @@ const Label = ({
     <LabelComponent
       {...props}
       className={cn(
-        "mb-2 block pt-6",
+        "mb-2 block pt-8", // [.flex_&]:mb-0 [.flex_&]:pt-0
         required
           ? "after:text-destructive after:ml-0.5 after:content-['*']"
           : "",
@@ -51,7 +51,9 @@ const Input = ({
 
   return (
     <div className="relative">
-      <Label htmlFor={field.name}>{label}</Label>
+      <Label htmlFor={field.name} required={required}>
+        {label}
+      </Label>
       <InputComponent
         id={field.name}
         name={field.name}
@@ -61,13 +63,7 @@ const Input = ({
         onBlur={field.handleBlur}
         {...props}
         className={cn(
-          // !field.state.meta.isValid && field.state.meta.isTouched
-          (field.state.meta.errorMap.onDynamic ||
-            field.state.meta.errorMap.onChange ||
-            field.state.meta.errorMap.onBlur ||
-            field.state.meta.errorMap.onSubmit ||
-            field.state.meta.errors[0]) &&
-            field.state.meta.isTouched
+          field.state.meta.errors.length > 0 && field.state.meta.isTouched
             ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
             : "border-input [&[data-slot=input]]:focus-visible:border-input",
           "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0",
@@ -93,7 +89,9 @@ const Textarea = ({
 
   return (
     <div className="relative">
-      <Label htmlFor={field.name}>{label}</Label>
+      <Label htmlFor={field.name} required={required}>
+        {label}
+      </Label>
       <TextareaComponent
         id={field.name}
         name={field.name}
@@ -104,13 +102,7 @@ const Textarea = ({
         {...props}
         className={cn(
           "[&[data-slot=textarea]]:bg-background mb-1",
-          // !field.state.meta.isValid && field.state.meta.isTouched
-          (field.state.meta.errorMap.onDynamic ||
-            field.state.meta.errorMap.onChange ||
-            field.state.meta.errorMap.onBlur ||
-            field.state.meta.errorMap.onSubmit ||
-            field.state.meta.errors[0]) &&
-            field.state.meta.isTouched
+          field.state.meta.errors.length > 0 && field.state.meta.isTouched
             ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
             : "[&[data-slot=textarea]]:focus-visible:border-input",
           "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
@@ -125,16 +117,16 @@ const Textarea = ({
 
 const Select = ({
   label,
-  options,
-  placeholder,
   required,
+  options,
   disabled,
+  placeholder,
 }: {
   label: string
-  options: ReadonlyArray<{ value: string; label: string } | string>
-  placeholder?: string
   required?: boolean
+  options: ReadonlyArray<{ value: string; label: string } | string>
   disabled?: boolean
+  placeholder?: string
 }) => {
   const field = useFieldContext<string>()
 
@@ -146,7 +138,6 @@ const Select = ({
       <SelectComponent
         name={field.name}
         value={field.state.value}
-        required={required}
         disabled={disabled}
         onValueChange={(value) => field.handleChange(value)}
       >
@@ -154,14 +145,8 @@ const Select = ({
           id={field.name}
           onBlur={field.handleBlur}
           className={cn(
-            // !field.state.meta.isValid && field.state.meta.isTouched
-            (field.state.meta.errorMap.onDynamic ||
-              field.state.meta.errorMap.onChange ||
-              field.state.meta.errorMap.onBlur ||
-              field.state.meta.errorMap.onSubmit ||
-              field.state.meta.errors[0]) &&
-              field.state.meta.isTouched
-              ? "border-destructuve [&[data-slot=select-trigger]]:focus-visible:border-destructuve"
+            field.state.meta.errors.length > 0 && field.state.meta.isTouched
+              ? "border-destructive [&[data-slot=select-trigger]]:focus-visible:border-destructive"
               : "border-input [&[data-slot=select-trigger]]:focus-visible:border-input",
             "[&[data-slot=select-trigger]]:dark:bg-background w-full [&[data-slot=select-trigger]]:rounded-[0.625rem] [&[data-slot=select-trigger]]:text-base [&[data-slot=select-trigger]]:focus-visible:ring-0 [&[data-slot=select-trigger]]:md:text-sm [&[data-slot=select-trigger]]:dark:focus-visible:ring-0"
           )}
@@ -193,13 +178,13 @@ const Select = ({
 
 const Checkbox = ({
   label,
-  description,
   required,
+  description,
   disabled,
 }: {
   label: string
-  description?: string
   required?: boolean
+  description?: string
   disabled?: boolean
 }) => {
   const field = useFieldContext<boolean>()
@@ -215,11 +200,14 @@ const Checkbox = ({
             field.handleChange(checked === true)
           }}
           onBlur={field.handleBlur}
-          required={required}
           disabled={disabled}
         />
         <div className="grid gap-1.5 leading-none">
-          <Label htmlFor={field.name} className="cursor-pointer">
+          <Label
+            htmlFor={field.name}
+            required={required}
+            className="cursor-pointer"
+          >
             {label}
           </Label>
           {description && (

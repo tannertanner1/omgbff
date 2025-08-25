@@ -27,6 +27,9 @@ const eslintConfig = [
   },
   ...compat.config({
     extends: ["next", "prettier"],
+    rules: {
+      "react/no-children-prop": "off",
+    },
   }),
 ];
 

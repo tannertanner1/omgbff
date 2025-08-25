@@ -21,7 +21,7 @@ const Button = ({
           variant="outline"
           {...props}
           className={cn(
-            "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary max-w-[] mt-4 w-full border transition-colors duration-300 ease-in-out",
+            "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary w-full border transition-colors duration-300 ease-in-out",
             props.className
           )}
         >

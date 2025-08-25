@@ -39,7 +39,7 @@ function Component() {
       >
         <form.AppField
           name="name"
-          children={(field) => <field.Input label="Name" />}
+          children={(field) => <field.Input label="Name" required />}
         />
 
         <Address form={form} />

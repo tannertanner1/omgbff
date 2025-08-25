@@ -11,19 +11,21 @@ const Phone = withForm({
       <>
         <form.Field name="phone" mode="array">
           {(field) => (
-            <div className="pt-4">
+            <div className="py-4">
               {field.state.value.map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-[0.625rem] border border-dashed pt-2"
+                  className="rounded-[0.625rem] border border-dashed"
                 >
                   <Badge className="bg-accent border-accent text-primary rounded-full border">
-                    Phone {i + 1}
+                    {form.getFieldValue(`phone[${i}].label`) ||
+                      `Phone ${i + 1}`}
                   </Badge>
                   <form.AppField name={`phone[${i}].label`}>
                     {(subField) => (
                       <subField.Select
                         label="Label"
+                        required
                         options={PHONE.filter(
                           (label) =>
                             !form
@@ -37,13 +39,13 @@ const Phone = withForm({
                     )}
                   </form.AppField>
                   <form.AppField name={`phone[${i}].number`}>
-                    {(subField) => <subField.Input label="Number" />}
+                    {(subField) => <subField.Input label="Number" required />}
                   </form.AppField>
-                  <div className="mb-4">
+                  <div className="my-8">
                     <Button
                       type="button"
                       variant="outline"
-                      className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background mt-6 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
+                      className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
                       onClick={() => field.removeValue(i)}
                     >
                       Remove
@@ -54,7 +56,7 @@ const Phone = withForm({
               <Button
                 type="button"
                 variant="outline"
-                className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border bg-transparent transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
+                className="[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary border bg-transparent transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
                 onClick={() => {
                   const usedLabels =
                     form.getFieldValue("phone")?.map((phone) => phone.label) ||
