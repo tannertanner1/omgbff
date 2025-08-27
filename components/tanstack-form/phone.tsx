@@ -39,7 +39,14 @@ const Phone = withForm({
                     )}
                   </form.AppField>
                   <form.AppField name={`phone[${i}].number`}>
-                    {(subField) => <subField.Input label="Number" required />}
+                    {(subField) => (
+                      <subField.Mask
+                        label="Number"
+                        required
+                        mask="(000) 000-0000"
+                        definitions={{ "0": /[0-9]/ }}
+                      />
+                    )}
                   </form.AppField>
                   <div className="my-8">
                     <Button

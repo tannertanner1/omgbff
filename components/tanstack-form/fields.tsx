@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox as CheckboxComponent } from "@/components/ui/checkbox"
 import { Textarea as TextareaComponent } from "@/components/ui/textarea"
+import { IMaskInput } from "react-imask"
 import { cn } from "@/lib/utils"
 
 const Label = ({
@@ -63,6 +64,52 @@ const Input = ({
         onBlur={field.handleBlur}
         {...props}
         className={cn(
+          field.state.meta.errors.length > 0 && field.state.meta.isTouched
+            ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
+            : "border-input [&[data-slot=input]]:focus-visible:border-input",
+          "[&[data-slot=input]]:dark:bg-background [&[data-slot=input]]:focus-visible:ring-0 [&[data-slot=input]]:dark:focus-visible:ring-0",
+          props.className
+        )}
+      />
+      <Errors meta={field.state.meta} />
+    </div>
+  )
+}
+
+const Mask = ({
+  label,
+  required,
+  mask,
+  definitions,
+  ...props
+}: {
+  label: string
+  required?: boolean
+  mask: string
+  definitions?: Record<string, RegExp>
+} & Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "onChange" | "onBlur"
+>) => {
+  const field = useFieldContext<string>()
+
+  return (
+    <div className="relative">
+      <Label htmlFor={field.name} required={required}>
+        {label}
+      </Label>
+      <IMaskInput
+        id={field.name}
+        name={field.name}
+        mask={mask}
+        definitions={definitions}
+        value={field.state.value}
+        onAccept={(value) => field.handleChange(value)}
+        onBlur={field.handleBlur}
+        data-slot="input"
+        {...(props as any)}
+        className={cn(
+          "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
           field.state.meta.errors.length > 0 && field.state.meta.isTouched
             ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
             : "border-input [&[data-slot=input]]:focus-visible:border-input",
@@ -220,4 +267,4 @@ const Checkbox = ({
   )
 }
 
-export { Input, Textarea, Select, Checkbox }
+export { Input, Mask, Textarea, Select, Checkbox }

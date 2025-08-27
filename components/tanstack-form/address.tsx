@@ -78,9 +78,20 @@ const Address = withForm({
                     }}
                   </form.AppField>
                   <form.AppField name={`address[${i}].postal`}>
-                    {(subField) => (
-                      <subField.Input label="Postal code" required />
-                    )}
+                    {(subField) => {
+                      const country = form.getFieldValue(
+                        `address[${i}].country`
+                      )
+                      const config = CONFIG[country as keyof typeof CONFIG]
+                      return (
+                        <subField.Mask
+                          label={config.postalLabel}
+                          required
+                          mask={config.postalMask}
+                          definitions={{ a: /[A-Za-z]/, "9": /[0-9]/ }}
+                        />
+                      )
+                    }}
                   </form.AppField>
                   <form.AppField
                     name={`address[${i}].country`}
