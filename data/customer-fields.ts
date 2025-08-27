@@ -139,25 +139,28 @@ const region = pgEnum("region", [...STATE, ...PROVINCE, ...PREFECTURE])
 
 const CONFIG = {
   Canada: {
-    defaultRegion: "British Columbia",
     regions: PROVINCE,
+    defaultRegion: "British Columbia",
     regionLabel: "Province",
     postalLabel: "Postal code",
     postalMask: "a9a 9a9",
+    postalRegex: /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/,
   },
   "United States": {
-    defaultRegion: "California",
     regions: STATE,
+    defaultRegion: "California",
     regionLabel: "State",
     postalLabel: "ZIP code",
     postalMask: "99999-9999",
+    postalRegex: /^\d{5}(-\d{4})?$/,
   },
   Japan: {
-    defaultRegion: "Tokyo",
     regions: PREFECTURE,
+    defaultRegion: "Tokyo",
     regionLabel: "Prefecture",
     postalLabel: "Postal code",
     postalMask: "999-9999",
+    postalRegex: /^\d{3}-\d{4}$/,
   },
 } as const
 

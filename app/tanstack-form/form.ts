@@ -4,22 +4,32 @@ import { ADDRESS, COUNTRY, PHONE, CONFIG } from "@/data/customer-fields"
 import type { Address, Region, Country, Phone } from "@/data/customer-fields"
 
 const schema = z.object({
-  name: z.string().min(1, "Required"),
+  name: z.string().min(1, "Required").min(2, "Invalid"),
   address: z.array(
-    z.object({
-      label: z.enum(ADDRESS),
-      line1: z.string().min(1, "Required"),
-      line2: z.string().optional(),
-      city: z.string().min(1, "Required"),
-      region: z.string(),
-      postal: z.string().min(1, "Required"),
-      country: z.enum(COUNTRY),
-    })
+    z
+      .object({
+        label: z.enum(ADDRESS),
+        line1: z.string().min(1, "Required"),
+        line2: z.string().optional(),
+        city: z.string().min(1, "Required"),
+        region: z.string(),
+        postal: z.string().min(1, "Required"),
+        country: z.enum(COUNTRY),
+      })
+      .superRefine((val, ctx) => {
+        const re = CONFIG[val.country].postalRegex
+        if (val.postal && re && !re.test(val.postal)) {
+          ctx.addIssue({ code: "custom", message: "Invalid", path: ["postal"] })
+        }
+      })
   ),
   phone: z.array(
     z.object({
       label: z.enum(PHONE),
-      number: z.string().min(1, "Required"),
+      number: z
+        .string()
+        .min(1, "Required")
+        .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Invalid"),
     })
   ),
 })

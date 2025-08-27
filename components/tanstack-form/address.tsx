@@ -89,6 +89,7 @@ const Address = withForm({
                           required
                           mask={config.postalMask}
                           definitions={{ a: /[A-Za-z]/, "9": /[0-9]/ }}
+                          prepare={(str) => str.toUpperCase()}
                         />
                       )
                     }}

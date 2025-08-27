@@ -81,12 +81,14 @@ const Mask = ({
   required,
   mask,
   definitions,
+  prepare,
   ...props
 }: {
   label: string
   required?: boolean
   mask: string
   definitions?: Record<string, RegExp>
+  prepare?: (str: string) => string
 } & Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "value" | "onChange" | "onBlur"
@@ -101,10 +103,12 @@ const Mask = ({
       <IMaskInput
         id={field.name}
         name={field.name}
+        lazy={true}
         mask={mask}
         definitions={definitions}
+        prepare={prepare}
         value={field.state.value}
-        onAccept={(value) => field.handleChange(value)}
+        onAccept={(value) => field.handleChange(String(value))}
         onBlur={field.handleBlur}
         data-slot="input"
         {...(props as any)}
