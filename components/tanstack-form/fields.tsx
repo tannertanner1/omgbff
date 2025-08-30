@@ -113,7 +113,7 @@ const Mask = ({
         data-slot="input"
         {...(props as any)}
         className={cn(
-          "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+          "placeholder:text-muted-foreground flex h-9 w-full rounded-[0.625rem] border bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           field.state.meta.errors.length > 0 && field.state.meta.isTouched
             ? "border-destructive [&[data-slot=input]]:focus-visible:border-destructive"
             : "border-input [&[data-slot=input]]:focus-visible:border-input",

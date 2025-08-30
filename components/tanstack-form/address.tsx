@@ -60,6 +60,7 @@ const Address = withForm({
                       const country = form.getFieldValue(
                         `address[${i}].country`
                       )
+                      const config = CONFIG[country as keyof typeof CONFIG]
                       const options =
                         country === "Canada"
                           ? PROVINCE
@@ -70,7 +71,7 @@ const Address = withForm({
                               : []
                       return (
                         <subField.Select
-                          label="Region"
+                          label={config?.regionLabel || "Region"}
                           required
                           options={options}
                         />
@@ -85,7 +86,7 @@ const Address = withForm({
                       const config = CONFIG[country as keyof typeof CONFIG]
                       return (
                         <subField.Mask
-                          label={config.postalLabel}
+                          label={config?.postalLabel || "Postal code"}
                           required
                           mask={config.postalMask}
                           definitions={{ a: /[A-Za-z]/, "9": /[0-9]/ }}
