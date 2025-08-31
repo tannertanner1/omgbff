@@ -135,6 +135,7 @@ const Address = withForm({
                       variant="outline"
                       className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
                       onClick={() => field.removeValue(i)}
+                      disabled={field.state.value.length <= 1}
                     >
                       Remove
                     </Button>
