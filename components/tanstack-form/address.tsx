@@ -105,6 +105,8 @@ const Address = withForm({
                             `address[${i}].region`,
                             config.defaultRegion
                           )
+                          // Clear postal field when country changes
+                          form.setFieldValue(`address[${i}].postal`, "")
                           // Backup retry if field wasn't updated
                           setTimeout(() => {
                             const currentRegion = form.getFieldValue(
