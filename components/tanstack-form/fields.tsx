@@ -107,8 +107,8 @@ const Mask = ({
         mask={mask}
         definitions={definitions}
         prepare={prepare}
-        value={field.state.value}
-        onAccept={(value) => field.handleChange(String(value))}
+        defaultValue={field.state.value}
+        onAccept={(value: any) => field.handleChange(String(value))}
         onBlur={field.handleBlur}
         data-slot="input"
         {...(props as any)}
