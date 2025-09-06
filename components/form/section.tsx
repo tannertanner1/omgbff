@@ -32,7 +32,6 @@ export function Section({
       className={cn(
         "bg-background overflow-visible rounded-lg",
         // Add padding to accommodate neobrutal shadows
-        "-m-1 p-1",
         error && ""
       )}
     >
@@ -79,7 +78,7 @@ export function Section({
                   <Button
                     type="button"
                     variant="outline"
-                    className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background mt-4 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem] [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
+                    className="[&[data-slot=button]]:bg-background [&[data-slot=button]]:hover:text-background mt-4 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full [&[data-slot=button]]:border-[#DB4437] [&[data-slot=button]]:text-[#DB4437] [&[data-slot=button]]:hover:bg-[#DB4437]"
                     onClick={onRemove}
                   >
                     Remove

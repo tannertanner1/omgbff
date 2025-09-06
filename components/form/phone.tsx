@@ -47,7 +47,7 @@ export function Phone({
   const usedLabels = controlledFields.map((field) => field.label)
 
   return (
-    <div className="w-[21.5rem] overflow-visible pt-6">
+    <div className="w-full max-w-sm overflow-visible pt-6">
       <Label
         className={cn(
           "mb-2 block",
@@ -58,7 +58,7 @@ export function Phone({
       >
         Phone
       </Label>
-      <div className="space-y-4 overflow-visible pr-1 pb-1">
+      <div className="space-y-4 overflow-visible pb-1">
         {controlledFields.map((field, index) => {
           const error = fieldErrors?.[index] as FieldErrors | undefined
           const hasErrors =
@@ -82,7 +82,7 @@ export function Phone({
               }
               defaultOpen={hasErrors}
             >
-              <div className="space-y-6 overflow-visible pr-1 pb-1">
+              <div className="space-y-6 overflow-visible pb-1">
                 <div className="relative">
                   <Label
                     className={cn(
@@ -173,7 +173,7 @@ export function Phone({
           type="button"
           variant="outline"
           className={cn(
-            "[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem]"
+            "[&[data-slot=button]]:border-muted [&[data-slot=button]]:hover:border-primary [&[data-slot=button]]:bg-muted [&[data-slot=button]]:text-primary [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-8 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
           )}
           onClick={() =>
             append({

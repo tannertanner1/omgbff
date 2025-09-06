@@ -327,7 +327,7 @@ export function Form({
                         type="submit"
                         variant="outline"
                         className={cn(
-                          "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-[21rem]"
+                          "[&[data-slot=button]]:border-primary [&[data-slot=button]]:bg-primary [&[data-slot=button]]:text-background [&[data-slot=button]]:hover:bg-background [&[data-slot=button]]:hover:text-primary mt-4 border transition-colors duration-300 ease-in-out [&[data-slot=button]]:w-full"
                         )}
                         disabled={isPending}
                         aria-disabled={isPending}
