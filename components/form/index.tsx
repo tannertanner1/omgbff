@@ -238,7 +238,6 @@ export function Form({
                                     "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
                                     "field-sizing-content"
                                   )}
-                                  rows={2}
                                   disabled={field.disabled}
                                 />
                               ) : field.type === "select" ? (

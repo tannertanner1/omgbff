@@ -311,13 +311,6 @@
 [data-slot="card"] {
   border-radius: 1rem;
 }
-[data-slot="textarea"] {
-  min-height: 2.25rem !important;
-  padding-top: 0.25rem !important;
-  padding-bottom: 0.25rem !important;
-  -webkit-appearance: none;
-  line-height: 1.5rem !important;
-}
 
 [data-slot="input"],
 [data-slot="textarea"] {
@@ -336,6 +329,16 @@
 }
 [data-slot="select-trigger"][data-state="open"] {
   box-shadow: none;
+}
+
+[data-slot="textarea"] {
+  min-height: 2.25rem !important;
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  -webkit-appearance: none;
+  line-height: 1.5rem !important;
+  resize: vertical !important;
+  overflow: auto !important;
 }
 
 [data-slot="sidebar-inset"] {
