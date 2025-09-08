@@ -236,9 +236,9 @@ export function Form({
                                       ? "border-[#DB4437] [&[data-slot=textarea]]:focus-visible:border-[#DB4437]"
                                       : "[&[data-slot=textarea]]:focus-visible:border-input",
                                     "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
-                                    "field-sizing-content min-h-0 resize-none overflow-hidden"
+                                    "field-sizing-content"
                                   )}
-                                  rows={1}
+                                  rows={2}
                                   disabled={field.disabled}
                                 />
                               ) : field.type === "select" ? (

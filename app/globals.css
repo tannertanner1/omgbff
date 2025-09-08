@@ -315,6 +315,8 @@
   min-height: 2.25rem !important;
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
+  -webkit-appearance: none;
+  line-height: 1.5rem !important;
 }
 
 [data-slot="input"],
