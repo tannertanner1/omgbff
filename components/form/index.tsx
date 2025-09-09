@@ -226,20 +226,33 @@ export function Form({
                                 </Label>
                               )}
                               {field.type === "textarea" ? (
-                                <Textarea
-                                  id={field.name}
-                                  {...methods.register(field.name)}
-                                  aria-describedby={`${field.name}-error`}
-                                  className={cn(
-                                    "[&[data-slot=textarea]]:bg-background mb-1",
-                                    methods.formState.errors[field.name]
-                                      ? "border-[#DB4437] [&[data-slot=textarea]]:focus-visible:border-[#DB4437]"
-                                      : "[&[data-slot=textarea]]:focus-visible:border-input",
-                                    "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
-                                    "field-sizing-content"
-                                  )}
-                                  disabled={field.disabled}
-                                />
+                                <div className="grow-wrap">
+                                  <Textarea
+                                    id={field.name}
+                                    {...methods.register(field.name)}
+                                    aria-describedby={`${field.name}-error`}
+                                    className={cn(
+                                      "[&[data-slot=textarea]]:bg-background mb-1",
+                                      methods.formState.errors[field.name]
+                                        ? "border-[#DB4437] [&[data-slot=textarea]]:focus-visible:border-[#DB4437]"
+                                        : "[&[data-slot=textarea]]:focus-visible:border-input",
+                                      "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0"
+                                    )}
+                                    // rows={1}
+                                    disabled={field.disabled}
+                                    onInput={(e) => {
+                                      const target =
+                                        e.target as HTMLTextAreaElement
+                                      const wrapper = target.parentElement
+                                      if (wrapper) {
+                                        wrapper.setAttribute(
+                                          "data-replicated-value",
+                                          target.value
+                                        )
+                                      }
+                                    }}
+                                  />
+                                </div>
                               ) : field.type === "select" ? (
                                 <Select
                                   name={field.name}
