@@ -238,7 +238,7 @@ export function Form({
                                         : "[&[data-slot=textarea]]:focus-visible:border-input",
                                       "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0"
                                     )}
-                                    // rows={1}
+                                    rows={1}
                                     disabled={field.disabled}
                                     onInput={(e) => {
                                       const target =
