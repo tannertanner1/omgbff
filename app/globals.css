@@ -337,8 +337,6 @@
   padding-bottom: 0.25rem !important;
   -webkit-appearance: none;
   line-height: 1.5rem !important;
-  resize: vertical !important;
-  overflow: auto !important;
 }
 
 .grow-wrap {
@@ -352,6 +350,8 @@
 .grow-wrap > textarea,
 .grow-wrap::after {
   grid-area: 1 / 1 / 2 / 2;
+  resize: none;
+  overflow: hidden;
 }
 
 [data-slot="sidebar-inset"] {
