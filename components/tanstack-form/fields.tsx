@@ -129,12 +129,10 @@ const Mask = ({
 const Textarea = ({
   label,
   required,
-  rows = 1,
   ...props
 }: {
   label: string
   required?: boolean
-  rows?: number
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) => {
   const field = useFieldContext<string>()
 
@@ -143,24 +141,31 @@ const Textarea = ({
       <Label htmlFor={field.name} required={required}>
         {label}
       </Label>
-      <TextareaComponent
-        id={field.name}
-        name={field.name}
-        rows={rows}
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
-        onBlur={field.handleBlur}
-        {...props}
-        className={cn(
-          "[&[data-slot=textarea]]:bg-background mb-1",
-          field.state.meta.errors.length > 0 && field.state.meta.isTouched
-            ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
-            : "[&[data-slot=textarea]]:focus-visible:border-input",
-          "[&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
-          "field-sizing-content min-h-0 resize-none overflow-hidden",
-          props.className
-        )}
-      />
+      <div className="grow-wrap">
+        <TextareaComponent
+          id={field.name}
+          name={field.name}
+          value={field.state.value}
+          onChange={(e) => field.handleChange(e.target.value)}
+          onBlur={field.handleBlur}
+          rows={1}
+          onInput={(e) => {
+            const target = e.target as HTMLTextAreaElement
+            const wrapper = target.parentElement
+            if (wrapper) {
+              wrapper.setAttribute("data-replicated-value", target.value)
+            }
+          }}
+          {...props}
+          className={cn(
+            field.state.meta.errors.length > 0 && field.state.meta.isTouched
+              ? "border-destructive [&[data-slot=textarea]]:focus-visible:border-destructive"
+              : "[&[data-slot=textarea]]:focus-visible:border-input",
+            "[&[data-slot=textarea]]:bg-background [&[data-slot=textarea]]:focus-visible:ring-0 [&[data-slot=textarea]]:dark:focus-visible:ring-0",
+            props.className
+          )}
+        />
+      </div>
       <Errors meta={field.state.meta} />
     </div>
   )
