@@ -8,7 +8,10 @@ const schema = z.object({
   address: z.array(
     z
       .object({
-        label: z.enum(ADDRESS),
+        label: z.preprocess(
+          (val) => (val === "" || val == null ? ADDRESS[0] : val),
+          z.enum(ADDRESS)
+        ),
         line1: z.string().min(1, "Required"),
         line2: z.string().optional(),
         city: z.string().min(1, "Required"),
@@ -25,7 +28,10 @@ const schema = z.object({
   ),
   phone: z.array(
     z.object({
-      label: z.enum(PHONE),
+      label: z.preprocess(
+        (val) => (val === "" || val == null ? PHONE[0] : val),
+        z.enum(PHONE)
+      ),
       number: z
         .string()
         .min(1, "Required")
