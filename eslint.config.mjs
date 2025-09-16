@@ -14,7 +14,6 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
-      "@next/next/no-img-element": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-unused-expressions": "off",
@@ -28,6 +27,7 @@ const eslintConfig = [
   ...compat.config({
     extends: ["next", "prettier"],
     rules: {
+      "@next/next/no-img-element": "off",
       "react/no-children-prop": "off",
     },
   }),
