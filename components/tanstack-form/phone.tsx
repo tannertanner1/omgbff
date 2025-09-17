@@ -21,7 +21,16 @@ const Phone = withForm({
                     {form.getFieldValue(`phone[${i}].label`) ||
                       `Phone ${i + 1}`}
                   </Badge>
-                  <form.AppField name={`phone[${i}].label`}>
+                  <form.AppField
+                    name={`phone[${i}].label`}
+                    listeners={{
+                      onChange: ({ value }) => {
+                        if (!value) {
+                          form.setFieldValue(`phone[${i}].label`, PHONE[0])
+                        }
+                      },
+                    }}
+                  >
                     {(subField) => (
                       <subField.Select
                         label="Label"

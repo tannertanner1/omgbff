@@ -28,7 +28,16 @@ const Address = withForm({
                     {form.getFieldValue(`address[${i}].label`) ||
                       `Address ${i + 1}`}
                   </Badge>
-                  <form.AppField name={`address[${i}].label`}>
+                  <form.AppField
+                    name={`address[${i}].label`}
+                    listeners={{
+                      onChange: ({ value }) => {
+                        if (!value) {
+                          form.setFieldValue(`address[${i}].label`, ADDRESS[0])
+                        }
+                      },
+                    }}
+                  >
                     {(subField) => (
                       <subField.Select
                         label="Label"
