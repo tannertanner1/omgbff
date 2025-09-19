@@ -25,7 +25,7 @@ function Component() {
   })
 
   return (
-    <div className="mt-2">
+    <div className="mx-auto mt-2 max-w-5xl px-8">
       <form
         noValidate
         className="space-y-4"
