@@ -4,7 +4,7 @@ import { z } from "zod"
 const schema = z.object({
   name: z.string().optional(),
   email: z.string().min(1, "Required").email("Invalid"),
-  message: z.string().min(1, "Required").optional(),
+  message: z.string().min(1, "Required"),
 })
 type Schema = z.infer<typeof schema>
 

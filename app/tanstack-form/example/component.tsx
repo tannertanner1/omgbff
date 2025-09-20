@@ -21,6 +21,7 @@ function Component() {
     }),
     validators: {
       onDynamic: schema,
+      onSubmit: schema,
     },
   })
 
