@@ -47,8 +47,20 @@ function Component() {
           name="message"
           children={(field) => <field.Textarea label="Message" required />}
         />
+        <form.AppField
+          name="files"
+          children={(field) => (
+            <field.File
+              label="Attachments"
+              accept="image/*"
+              maxSize={5 * 1024 * 1024} // 5MB
+              maxFiles={2}
+              multiple
+            />
+          )}
+        />
 
-        <div className="pt-8">
+        <div className="pt-8 pb-12">
           <form.AppForm>
             <form.Button children="Send" />
           </form.AppForm>

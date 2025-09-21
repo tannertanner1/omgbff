@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useMemo } from "react"
+import React, { useCallback, useState, useMemo } from "react"
 import { DndContext, useDroppable } from "@dnd-kit/core"
 import { IMaskInput } from "react-imask"
 import { IconUpload, IconX, IconPhoto } from "@tabler/icons-react"
@@ -300,7 +300,6 @@ const File = ({
 }) => {
   const field = useFieldContext<File[]>()
   const [isDragOver, setIsDragOver] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const files = useMemo(() => field.state.value || [], [field.state.value])
 
@@ -402,34 +401,48 @@ const File = ({
     [processFiles]
   )
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      processFiles(e.target.files)
+  const openFileDialog = () => {
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = accept
+    input.multiple = multiple
+    input.name = field.name
+    input.onchange = (e) => {
+      const target = e.target as HTMLInputElement
+      if (target.files && target.files.length > 0) {
+        processFiles(target.files)
+      }
     }
-    // Reset input value to allow selecting the same file again
-    e.target.value = ""
+    input.click()
   }
 
-  const openFileDialog = () => {
-    fileInputRef.current?.click()
-  }
+  // Sync files back to hidden input for form submission
+  React.useEffect(() => {
+    const existingInput = document.querySelector(
+      `input[name="${field.name}"]`
+    ) as HTMLInputElement
+    if (existingInput && files.length > 0) {
+      const dataTransfer = new DataTransfer()
+      files.forEach((file) => dataTransfer.items.add(file))
+      existingInput.files = dataTransfer.files
+    }
+  }, [files, field.name])
 
   return (
     <DndContext>
       <div className={cn("relative", className)}>
-        <LabelComponent htmlFor={field.name} className="mb-2 block">
+        <Label htmlFor={field.name} required={required}>
           {label}
-        </LabelComponent>
+        </Label>
 
-        {/* Hidden */}
+        {/* Hidden for submission */}
         <input
-          ref={fileInputRef}
           type="file"
-          accept={accept}
+          name={field.name}
           multiple={multiple}
-          onChange={handleFileInputChange}
+          accept={accept}
           className="sr-only"
-          {...props}
+          onChange={() => {}} // Controlled by component
         />
 
         {/* Dropzone */}
@@ -441,18 +454,18 @@ const File = ({
           onDrop={(e) => handleDragEvent(e, "drop")}
           onClick={openFileDialog}
           className={cn(
-            "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-all duration-200",
+            "border-input relative flex cursor-pointer flex-col items-center justify-center rounded-[0.625rem] border p-8 transition-all duration-200",
             "hover:bg-accent/50 focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
-            isDragOver && "border-primary bg-primary/10 scale-[1.02]",
+            isDragOver && "border-input bg-primary/10 scale-[1.02]",
             field.state.meta.errors.length > 0 && field.state.meta.isTouched
               ? "border-destructive"
-              : "border-muted-foreground/25"
+              : "border-input"
           )}
         >
           <div
             className={cn(
-              "mb-4 flex items-center justify-center rounded-full border p-2.5 transition-all duration-200",
-              isDragOver && "border-primary bg-primary/20 scale-110"
+              "mb-4 flex items-center justify-center rounded-full p-2.5 transition-all duration-200",
+              isDragOver && "border-input bg-primary/20 scale-110"
             )}
           >
             <IconUpload
@@ -468,7 +481,7 @@ const File = ({
               Drag and drop or{" "}
               <button
                 type="button"
-                className="text-primary hover:underline focus:outline-none"
+                className="text-primary hover:no-underline focus:outline-none"
                 onClick={(e) => {
                   e.stopPropagation()
                   openFileDialog()
@@ -495,7 +508,7 @@ const File = ({
                   variant="ghost"
                   size="sm"
                   onClick={clearAll}
-                  className="hover:bg-destructive/10 hover:text-destructive text-xs"
+                  className="[&[data-slot=button]]:bg-background hover:text-destructive text-xs hover:dark:bg-transparent"
                 >
                   Clear all
                 </Button>
@@ -506,7 +519,7 @@ const File = ({
               {files.map((file, index) => (
                 <div
                   key={`${file.name}-${index}`}
-                  className="border-border hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3 transition-all duration-200"
+                  className="border-border flex items-center gap-3 rounded-[0.625rem] border p-3 transition-all duration-200"
                 >
                   <div className="flex-shrink-0">
                     {file.type.startsWith("image/") ? (
@@ -535,7 +548,7 @@ const File = ({
                       e.stopPropagation()
                       removeFile(index)
                     }}
-                    className="hover:bg-destructive/10 hover:text-destructive h-8 w-8 flex-shrink-0 p-0"
+                    className="[&[data-slot=button]]:bg-background hover:text-destructive h-8 w-8 flex-shrink-0 p-0 hover:dark:bg-transparent"
                   >
                     <IconX className="h-4 w-4" />
                   </Button>
