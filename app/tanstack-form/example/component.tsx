@@ -51,7 +51,7 @@ function Component() {
           name="files"
           children={(field) => (
             <field.File
-              label="Attachments"
+              label="Files"
               accept="image/*"
               maxSize={5 * 1024 * 1024} // 5MB
               maxFiles={2}

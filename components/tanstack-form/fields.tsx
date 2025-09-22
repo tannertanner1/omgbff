@@ -454,7 +454,7 @@ const File = ({
           onDrop={(e) => handleDragEvent(e, "drop")}
           onClick={openFileDialog}
           className={cn(
-            "border-input relative flex cursor-pointer flex-col items-center justify-center rounded-[0.625rem] border p-8 transition-all duration-200",
+            "border-input relative flex cursor-pointer flex-col items-center justify-center rounded-[0.625rem] border border-dashed p-8 transition-all duration-200",
             "hover:bg-accent/50 focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
             isDragOver && "border-input bg-primary/10 scale-[1.02]",
             field.state.meta.errors.length > 0 && field.state.meta.isTouched
@@ -500,7 +500,6 @@ const File = ({
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">
                 {/* Files ({files.length}/{maxFiles}) */}
-                Files
               </p>
               {files.length > 1 && (
                 <Button
@@ -519,7 +518,7 @@ const File = ({
               {files.map((file, index) => (
                 <div
                   key={`${file.name}-${index}`}
-                  className="border-border flex items-center gap-3 rounded-[0.625rem] border p-3 transition-all duration-200"
+                  className="bg-accent/50 flex items-center gap-3 rounded-[0.625rem] p-3 transition-all duration-200"
                 >
                   <div className="flex-shrink-0">
                     {file.type.startsWith("image/") ? (
@@ -548,7 +547,7 @@ const File = ({
                       e.stopPropagation()
                       removeFile(index)
                     }}
-                    className="[&[data-slot=button]]:bg-background hover:text-destructive h-8 w-8 flex-shrink-0 p-0 hover:dark:bg-transparent"
+                    className="hover:text-destructive h-8 w-8 flex-shrink-0 p-0 hover:dark:bg-transparent [&[data-slot=button]]:bg-transparent"
                   >
                     <IconX className="h-4 w-4" />
                   </Button>
@@ -557,11 +556,6 @@ const File = ({
             </div>
           </div>
         )}
-        {/* Description */}
-        <p className="text-muted-foreground mt-2 text-xs">
-          Upload up to {maxFiles} images up to {formatBytes(maxSize)} each.
-        </p>
-
         <Errors meta={field.state.meta} />
       </div>
     </DndContext>
