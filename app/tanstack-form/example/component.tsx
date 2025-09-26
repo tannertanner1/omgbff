@@ -8,7 +8,7 @@ import {
   useTransform,
   useStore,
 } from "@tanstack/react-form"
-import { useAppForm } from "@/components/form"
+import { useAppForm } from "@/components/tanstack-form"
 import { serverAction } from "./actions"
 import { data, schema } from "./form"
 import { cn } from "@/lib/utils"
@@ -62,7 +62,7 @@ function Component() {
   )
 
   return (
-    <div className="mt-2">
+    <div className="mx-auto mt-2 max-w-lg px-8">
       <form
         noValidate
         className="space-y-4"

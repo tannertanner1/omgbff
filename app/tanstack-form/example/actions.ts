@@ -15,7 +15,7 @@ const serverValidate = createServerValidate({
   },
 })
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.AUTH_RESEND_KEY)
 
 async function serverAction(prev: unknown, formData: FormData) {
   try {
@@ -57,8 +57,8 @@ async function serverAction(prev: unknown, formData: FormData) {
 
     // Send email
     await resend.emails.send({
-      from: `${config.name} <${config.email}>` as string,
-      to: [`${config.name} <${config.email}>` as string],
+      from: process.env.AUTH_RESEND_EMAIL as string,
+      to: [process.env.AUTH_RESEND_EMAIL as string],
       replyTo: replyTo,
       subject: subject,
       html: `<p>${message}</p>`,

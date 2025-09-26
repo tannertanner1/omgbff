@@ -510,7 +510,7 @@ const Files = ({
                     <span className="pl-0.5 text-base font-medium md:text-sm">
                       {displayName}
                     </span>
-                    <span className="text-muted-foreground mt-0.5 text-sm md:text-xs">
+                    <span className="text-foreground/70 mt-0.5 text-sm md:text-xs">
                       {formatBytes(file.size)}
                     </span>
                   </div>
