@@ -280,22 +280,18 @@ const Checkbox = ({
   )
 }
 
-const File = ({
+const Files = ({
   label,
   required,
-  accept = "image/*",
-  maxSize = 5 * 1024 * 1024, // 5MB default
-  maxFiles = 2,
-  multiple = true,
+  accept = "",
+  placeholder,
   className,
   ...props
 }: {
   label: string
   required?: boolean
   accept?: string
-  maxSize?: number // in bytes
-  maxFiles?: number
-  multiple?: boolean
+  placeholder?: string
   className?: string
 }) => {
   const field = useFieldContext<File[]>()
@@ -304,11 +300,11 @@ const File = ({
   const files = useMemo(() => field.state.value || [], [field.state.value])
 
   const formatBytes = useCallback((bytes: number): string => {
-    if (bytes === 0) return "0 Bytes"
+    if (bytes === 0) return "0B"
     const k = 1024
-    const sizes = ["Bytes", "KB", "MB", "GB"]
+    const sizes = ["B", "KB", "MB", "GB"]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + sizes[i]
+    return Math.round(bytes / Math.pow(k, i)) + sizes[i]
   }, [])
 
   const { setNodeRef: setDroppableRef } = useDroppable({
@@ -317,9 +313,6 @@ const File = ({
 
   const validateFile = useCallback(
     (file: File): string | null => {
-      if (maxSize && file.size > maxSize) {
-        return `File size must be less than ${formatBytes(maxSize)}`
-      }
       if (accept) {
         const acceptedTypes = accept.split(",").map((type) => type.trim())
         const fileType = file.type
@@ -342,19 +335,13 @@ const File = ({
       }
       return null
     },
-    [maxSize, accept, formatBytes]
+    [accept]
   )
 
   const processFiles = useCallback(
     (fileList: FileList) => {
       const newFiles: File[] = []
       const errors: string[] = []
-
-      // Check total file count
-      if (files.length + fileList.length > maxFiles) {
-        errors.push(`Maximum ${maxFiles} files allowed`)
-        return
-      }
 
       Array.from(fileList).forEach((file) => {
         const error = validateFile(file)
@@ -366,20 +353,22 @@ const File = ({
       })
 
       if (newFiles.length > 0) {
+        const maxTotalBytes = 10 * 1024 * 1024
+        const currentBytes = files.reduce((sum, f) => sum + (f.size || 0), 0)
+        const newBytes = newFiles.reduce((sum, f) => sum + (f.size || 0), 0)
+        if (currentBytes + newBytes > maxTotalBytes) {
+          return
+        }
         const updatedFiles = [...files, ...newFiles]
         field.handleChange(updatedFiles)
       }
     },
-    [files, field, maxFiles, validateFile]
+    [files, field, validateFile]
   )
 
   const removeFile = (index: number) => {
     const updatedFiles = files.filter((_, i) => i !== index)
     field.handleChange(updatedFiles)
-  }
-
-  const clearAll = () => {
-    field.handleChange([])
   }
 
   const handleDragEvent = useCallback(
@@ -405,7 +394,7 @@ const File = ({
     const input = document.createElement("input")
     input.type = "file"
     input.accept = accept
-    input.multiple = multiple
+    input.multiple = true
     input.name = field.name
     input.onchange = (e) => {
       const target = e.target as HTMLInputElement
@@ -428,6 +417,14 @@ const File = ({
     }
   }, [files, field.name])
 
+  // // Preserve files when form resets due to validation errors
+  // React.useEffect(() => {
+  //   // Only reset files if the form was successfully submitted (not due to validation errors)
+  //   if (field.form.state.isSubmitSuccessful && files.length > 0) {
+  //     field.handleChange([])
+  //   }
+  // }, [field.form.state.isSubmitSuccessful, files.length, field])
+
   return (
     <DndContext>
       <div className={cn("relative", className)}>
@@ -435,17 +432,17 @@ const File = ({
           {label}
         </Label>
 
-        {/* Hidden for submission */}
+        {/* Hidden input */}
         <input
           type="file"
           name={field.name}
-          multiple={multiple}
+          multiple
           accept={accept}
           className="sr-only"
           onChange={() => {}} // Controlled by component
         />
 
-        {/* Dropzone */}
+        {/* Drop zone */}
         <div
           ref={setDroppableRef}
           onDragEnter={(e) => handleDragEvent(e, "enter")}
@@ -454,112 +451,86 @@ const File = ({
           onDrop={(e) => handleDragEvent(e, "drop")}
           onClick={openFileDialog}
           className={cn(
-            "border-input relative flex cursor-pointer flex-col items-center justify-center rounded-[0.625rem] border border-dashed p-8 transition-all duration-200",
-            "hover:bg-accent/50 focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
-            isDragOver && "border-input bg-primary/10 scale-[1.02]",
+            "relative flex min-h-9 cursor-pointer items-center gap-2 rounded-[0.625rem] border bg-transparent px-3 py-0.5 transition-all duration-200",
+            "shadow-xs hover:shadow-none active:shadow-none",
+            isDragOver && "border-input shadow-none",
             field.state.meta.errors.length > 0 && field.state.meta.isTouched
-              ? "border-destructive"
-              : "border-input"
+              ? "border-destructive focus-visible:border-destructive"
+              : "border-input focus-visible:border-input",
+            "dark:bg-background focus-visible:ring-0 dark:focus-visible:ring-0"
           )}
         >
-          <div
-            className={cn(
-              "mb-4 flex items-center justify-center rounded-full p-2.5 transition-all duration-200",
-              isDragOver && "border-input bg-primary/20 scale-110"
-            )}
-          >
-            <IconUpload
-              className={cn(
-                "text-muted-foreground h-6 w-6 transition-all duration-200",
-                isDragOver && "text-primary scale-110"
-              )}
-            />
-          </div>
+          {/* File tags inside the dropzone */}
+          {files.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {files.map((file, index) => {
+                // Safety check for file object
+                if (!file || !file.name) {
+                  return null
+                }
 
-          <div className="text-center">
-            <p className="text-sm font-medium transition-colors duration-200">
-              Drag and drop or{" "}
-              <button
-                type="button"
-                className="text-primary hover:no-underline focus:outline-none"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  openFileDialog()
-                }}
-              >
-                choose files
-              </button>{" "}
-              to upload
-            </p>
-          </div>
-        </div>
+                // Smart truncation: keep extension, truncate middle
+                const lastDotIndex = file.name.lastIndexOf(".")
+                const hasExtension = lastDotIndex !== -1
+                const name = hasExtension
+                  ? file.name.substring(0, lastDotIndex)
+                  : file.name
+                const extension = hasExtension
+                  ? file.name.substring(lastDotIndex)
+                  : ""
 
-        {/* List */}
-        {files.length > 0 && (
-          <div className="mt-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">
-                {/* Files ({files.length}/{maxFiles}) */}
-              </p>
-              {files.length > 1 && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearAll}
-                  className="[&[data-slot=button]]:bg-background hover:text-destructive text-xs hover:dark:bg-transparent"
-                >
-                  Clear all
-                </Button>
-              )}
-            </div>
+                const maxTotalLength = 20
+                let displayName = file.name
 
-            <div className="space-y-2">
-              {files.map((file, index) => (
-                <div
-                  key={`${file.name}-${index}`}
-                  className="bg-accent/50 flex items-center gap-3 rounded-[0.625rem] p-3 transition-all duration-200"
-                >
-                  <div className="flex-shrink-0">
-                    {file.type.startsWith("image/") ? (
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        className="h-10 w-10 rounded object-cover"
-                      />
-                    ) : (
-                      <div className="bg-muted flex h-10 w-10 items-center justify-center rounded">
-                        <IconPhoto className="h-4 w-4" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{file.name}</p>
-                    <p className="text-muted-foreground text-xs">
-                      {formatBytes(file.size)}
-                    </p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
+                if (file.name.length > maxTotalLength && hasExtension) {
+                  const availableForName = maxTotalLength - extension.length - 3 // 3 for "..."
+                  if (name.length > availableForName) {
+                    const keepFromStart = Math.floor(availableForName / 2)
+                    const keepFromEnd = availableForName - keepFromStart
+                    displayName =
+                      name.substring(0, keepFromStart) +
+                      "..." +
+                      name.substring(name.length - keepFromEnd) +
+                      extension
+                  }
+                } else if (file.name.length > maxTotalLength) {
+                  displayName =
+                    file.name.substring(0, maxTotalLength - 3) + "..."
+                }
+
+                return (
+                  <div
+                    key={`${file.name}-${index}`}
+                    className="bg-input/50 inline-flex cursor-pointer items-center gap-1.5 rounded-[0.625rem] px-2 py-0.25 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation()
                       removeFile(index)
                     }}
-                    className="hover:text-destructive h-8 w-8 flex-shrink-0 p-0 hover:dark:bg-transparent [&[data-slot=button]]:bg-transparent"
                   >
-                    <IconX className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
+                    <span className="pl-0.5 text-base font-medium md:text-sm">
+                      {displayName}
+                    </span>
+                    <span className="text-muted-foreground mt-0.5 text-sm md:text-xs">
+                      {formatBytes(file.size)}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Placeholder text when no files */}
+          {files.length === 0 && placeholder && (
+            <span className="text-muted-foreground text-sm">
+              {isDragOver ? "Drop files here" : placeholder}
+            </span>
+          )}
+        </div>
+
         <Errors meta={field.state.meta} />
       </div>
     </DndContext>
   )
 }
 
-export { Input, Mask, Textarea, Select, Checkbox, File }
+export { Input, Mask, Textarea, Select, Checkbox, Files }

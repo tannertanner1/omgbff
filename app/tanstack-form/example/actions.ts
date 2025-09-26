@@ -5,7 +5,7 @@ import {
   ServerValidateError,
 } from "@tanstack/react-form/nextjs"
 import { Resend } from "resend"
-import { data } from "./form"
+import { data, schema } from "./form"
 import { DOMAIN } from "@/data/public-routes"
 
 const serverValidate = createServerValidate({
@@ -15,16 +15,25 @@ const serverValidate = createServerValidate({
   },
 })
 
-const resend = new Resend(process.env.AUTH_RESEND_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 async function serverAction(prev: unknown, formData: FormData) {
   try {
     const validatedData = await serverValidate(formData)
-    // prettier-ignore
-    // console.log("FormData:", JSON.stringify(Object.fromEntries(Object.entries(validatedData).filter(([key]) => !key.startsWith("$ACTION_"))), null, 2))
 
     // Extract files directly from FormData rather than TanStack Form validation handling File objects
     const files = formData.getAll("files") as File[]
+
+    // Validate file size limit
+    if (files.length > 0) {
+      const totalBytes = files.reduce((sum, file) => sum + file.size, 0)
+      if (totalBytes > 10 * 1024 * 1024) {
+        return {
+          errors: [{ message: "Max. 10MB" }],
+          values: validatedData,
+        }
+      }
+    }
     const { name, email, message } = validatedData
     const replyTo = name ? `${name} <${email}>` : email
     const subject = name ? `Message from ${name}` : `Message from ${DOMAIN}`
@@ -48,8 +57,8 @@ async function serverAction(prev: unknown, formData: FormData) {
 
     // Send email
     await resend.emails.send({
-      from: process.env.AUTH_RESEND_EMAIL as string,
-      to: [process.env.AUTH_RESEND_EMAIL as string],
+      from: `${config.name} <${config.email}>` as string,
+      to: [`${config.name} <${config.email}>` as string],
       replyTo: replyTo,
       subject: subject,
       html: `<p>${message}</p>`,
@@ -57,12 +66,12 @@ async function serverAction(prev: unknown, formData: FormData) {
     })
 
     return {
-      values: {
-        name: "",
-        email: "",
-        message: "",
-        files: [],
-      },
+      // values: {
+      //   name: "",
+      //   email: "",
+      //   message: "",
+      //   files: [],
+      // },
     }
   } catch (e) {
     if (e instanceof ServerValidateError) {

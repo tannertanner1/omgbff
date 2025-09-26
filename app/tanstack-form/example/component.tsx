@@ -1,18 +1,35 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, startTransition } from "react"
 import { initialFormState } from "@tanstack/react-form/nextjs"
-import { revalidateLogic, mergeForm, useTransform } from "@tanstack/react-form"
-import { useAppForm } from "@/components/tanstack-form"
+import {
+  revalidateLogic,
+  mergeForm,
+  useTransform,
+  useStore,
+} from "@tanstack/react-form"
+import { useAppForm } from "@/components/form"
 import { serverAction } from "./actions"
 import { data, schema } from "./form"
+import { cn } from "@/lib/utils"
 
 function Component() {
   const [state, action] = useActionState(serverAction, initialFormState)
 
   const form = useAppForm({
     ...data,
-    transform: useTransform((baseForm) => mergeForm(baseForm, state!), [state]),
+    // transform: useTransform((baseForm) => mergeForm(baseForm, state!), [state]),
+    transform: useTransform(
+      (baseForm) => {
+        if (!state) return baseForm
+        // Only merge errors, not values, to preserve files
+        return mergeForm(baseForm, {
+          ...state,
+          values: baseForm.state.values, // Preserve current form values including files
+        })
+      },
+      [state]
+    ),
 
     canSubmitWhenInvalid: false,
     validationLogic: revalidateLogic({
@@ -21,17 +38,37 @@ function Component() {
     }),
     validators: {
       onDynamic: schema,
-      onSubmit: schema,
+    },
+    onSubmit: async ({ value }) => {
+      const formData = new FormData()
+      Object.entries(value).forEach(([key, val]) => {
+        if (key === "files" && Array.isArray(val)) {
+          val.forEach((file: File) => formData.append("files", file))
+        } else if (val !== undefined && val !== null) {
+          formData.append(key, String(val))
+        }
+      })
+      startTransition(() => {
+        action(formData)
+      })
     },
   })
 
+  const formErrors = useStore(form.store, (formState) => formState.errors)
+  const formErrorMap = useStore(form.store, (formState) => formState.errorMap)
+  const isSubmitSuccessful = useStore(
+    form.store,
+    (formState) => formState.isSubmitSuccessful
+  )
+
   return (
-    <div className="mx-auto mt-2 max-w-5xl px-8">
+    <div className="mt-2">
       <form
         noValidate
         className="space-y-4"
         action={action}
-        onSubmit={() => {
+        onSubmit={(e) => {
+          e.preventDefault()
           form.handleSubmit()
         }}
       >
@@ -49,21 +86,28 @@ function Component() {
         />
         <form.AppField
           name="files"
-          children={(field) => (
-            <field.File
-              label="Files"
-              accept="image/*"
-              maxSize={5 * 1024 * 1024} // 5MB
-              maxFiles={2}
-              multiple
-            />
-          )}
+          children={(field) => <field.Files label="Files" />}
         />
 
-        <div className="pt-8 pb-12">
+        <div className="relative pt-8">
           <form.AppForm>
             <form.Button children="Send" />
           </form.AppForm>
+
+          {(isSubmitSuccessful || formErrorMap.onSubmit) && (
+            <div className="absolute top-full right-0 left-0 mt-6 flex justify-center">
+              <span
+                className={cn(
+                  "text-sm",
+                  isSubmitSuccessful ? "text-[#0F9D58]" : "text-destructive"
+                )}
+              >
+                {isSubmitSuccessful
+                  ? "Message sent successfully!"
+                  : formErrorMap.onSubmit || "Please try again."}
+              </span>
+            </div>
+          )}
         </div>
       </form>
     </div>
