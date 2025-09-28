@@ -50,7 +50,7 @@ export async function feedback(
       from: process.env.AUTH_RESEND_EMAIL as string,
       to: [process.env.AUTH_RESEND_EMAIL as string],
       subject: subject,
-      html: `<p>${message}</p>`,
+      html: `<div style="white-space: pre-wrap;">${message}</div>`,
     })
 
     return {

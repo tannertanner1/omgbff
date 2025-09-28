@@ -61,7 +61,7 @@ async function serverAction(prev: unknown, formData: FormData) {
       to: [process.env.AUTH_RESEND_EMAIL as string],
       replyTo: replyTo,
       subject: subject,
-      html: `<p>${message}</p>`,
+      html: `<div style="white-space: pre-wrap;">${message}</div>`,
       attachments: attachments,
     })
 
