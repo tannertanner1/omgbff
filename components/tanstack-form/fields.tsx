@@ -353,12 +353,6 @@ const Files = ({
       })
 
       if (newFiles.length > 0) {
-        const maxTotalBytes = 10 * 1024 * 1024
-        const currentBytes = files.reduce((sum, f) => sum + (f.size || 0), 0)
-        const newBytes = newFiles.reduce((sum, f) => sum + (f.size || 0), 0)
-        if (currentBytes + newBytes > maxTotalBytes) {
-          return
-        }
         const updatedFiles = [...files, ...newFiles]
         field.handleChange(updatedFiles)
       }
@@ -469,7 +463,7 @@ const Files = ({
                   return null
                 }
 
-                // Smart truncation: keep extension, truncate middle
+                // Truncate middle to keep extension
                 const lastDotIndex = file.name.lastIndexOf(".")
                 const hasExtension = lastDotIndex !== -1
                 const name = hasExtension
@@ -483,7 +477,7 @@ const Files = ({
                 let displayName = file.name
 
                 if (file.name.length > maxTotalLength && hasExtension) {
-                  const availableForName = maxTotalLength - extension.length - 3 // 3 for "..."
+                  const availableForName = maxTotalLength - extension.length - 3
                   if (name.length > availableForName) {
                     const keepFromStart = Math.floor(availableForName / 2)
                     const keepFromEnd = availableForName - keepFromStart
@@ -501,6 +495,7 @@ const Files = ({
                 return (
                   <div
                     key={`${file.name}-${index}`}
+                    // dark:bg-accent
                     className="bg-input/50 inline-flex cursor-pointer items-center gap-1.5 rounded-[0.625rem] px-2 py-0.25 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation()
@@ -510,7 +505,10 @@ const Files = ({
                     <span className="pl-0.5 text-base font-medium md:text-sm">
                       {displayName}
                     </span>
-                    <span className="text-foreground/70 mt-0.5 text-sm md:text-xs">
+                    <span
+                      // text-muted-foreground
+                      className="text-foreground/70 mt-0.5 text-sm md:text-xs"
+                    >
                       {formatBytes(file.size)}
                     </span>
                   </div>

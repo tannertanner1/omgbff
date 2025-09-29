@@ -29,7 +29,9 @@ async function serverAction(prev: unknown, formData: FormData) {
       const totalBytes = files.reduce((sum, file) => sum + file.size, 0)
       if (totalBytes > 10 * 1024 * 1024) {
         return {
-          errors: [{ message: "Max. 10MB" }],
+          fieldErrors: {
+            files: ["Max. 10MB"],
+          },
           values: validatedData,
         }
       }
