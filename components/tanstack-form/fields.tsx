@@ -411,13 +411,13 @@ const Files = ({
     }
   }, [files, field.name])
 
-  // // Preserve files when form resets due to validation errors
-  // React.useEffect(() => {
-  //   // Only reset files if the form was successfully submitted (not due to validation errors)
-  //   if (field.form.state.isSubmitSuccessful && files.length > 0) {
-  //     field.handleChange([])
-  //   }
-  // }, [field.form.state.isSubmitSuccessful, files.length, field])
+  // Clear files only on successful submission
+  React.useEffect(() => {
+    // Only clear files if the form was successfully submitted (not due to validation errors)
+    if (field.form.state.isSubmitSuccessful && files.length > 0) {
+      field.handleChange([])
+    }
+  }, [field.form.state.isSubmitSuccessful, files.length, field])
 
   return (
     <DndContext>

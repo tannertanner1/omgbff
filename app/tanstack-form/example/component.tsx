@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, startTransition } from "react"
+import { useActionState, useEffect, startTransition } from "react"
 import { initialFormState } from "@tanstack/react-form/nextjs"
 import {
   revalidateLogic,
@@ -60,6 +60,16 @@ function Component() {
     form.store,
     (formState) => formState.isSubmitSuccessful
   )
+
+  // Reset form on success with delay
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => {
+        form.reset()
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isSubmitSuccessful, form])
 
   return (
     <div className="mx-auto mt-2 max-w-lg px-8">
